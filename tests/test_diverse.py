@@ -32,9 +32,10 @@ class TestConverters(TestCase):
         self.assertEqual(TypeB("bar", True, False).convert_to(TypeC), TypeC("bar", True, False))
         self.assertEqual(TypeC(TypeB("bar", True, False)), TypeC("bar", True, False))
 
-        # check that conversion A --> C also works (implicitly created)
-        self.assertEqual(TypeA("baz", True, False).convert_to(TypeC), TypeC("baz", True, False))
-        self.assertEqual(TypeC(TypeA("baz", True, False)), TypeC("baz", True, False))
+        # check that conversion A --> C DOES NOT work!
+        self.assertRaises(NotImplementedError, lambda: TypeA("baz", True, False).convert_to(TypeC))
+        self.assertRaises(NotImplementedError, lambda: TypeC(TypeA("baz", True, False)))
+
 
         # register conversion C --> B
         AbstractBase.register_converter(from_type=TypeC,
@@ -42,22 +43,24 @@ class TestConverters(TestCase):
                                         conv_func=lambda pitch_c: TypeB(pitch_c._value,
                                                                         pitch_c.is_pitch(),
                                                                         pitch_c.is_class()))
-        # check that conversion C --> B also works (implicitly created)
-        self.assertEqual(TypeC("baz", True, False).convert_to(TypeB), TypeB("baz", True, False))
-        self.assertEqual(TypeB(TypeC("baz", True, False)), TypeB("baz", True, False))
+        # check that conversion C --> B works
+        self.assertEqual(TypeC("foo", True, False).convert_to(TypeB), TypeB("foo", True, False))
+        self.assertEqual(TypeB(TypeC("foo", True, False)), TypeB("foo", True, False))
 
         # register conversion B --> A
-        # BUT: block the implicit create of C --> A converter!
+        # CREATE implicit converter C --> A
         AbstractBase.register_converter(from_type=TypeB,
                                         to_type=TypeA,
                                         conv_func=lambda pitch_b: TypeA(pitch_b._value,
                                                                         pitch_b.is_pitch(),
                                                                         pitch_b.is_class()),
-                                        create_implicit_converters=False)  # BLOCK HERE
-        # check that conversion B --> A also works (implicitly created)
-        self.assertEqual(TypeB("baz", True, False).convert_to(TypeA), TypeA("baz", True, False))
-        self.assertEqual(TypeA(TypeB("baz", True, False)), TypeA("baz", True, False))
+                                        create_implicit_converters=True)  # CREATE HERE
+        # check that conversion B --> A works
+        self.assertEqual(TypeB("bar", True, False).convert_to(TypeA), TypeA("bar", True, False))
+        self.assertEqual(TypeA(TypeB("bar", True, False)), TypeA("bar", True, False))
 
-        # check that conversion C --> A DOES NOT work!
-        self.assertRaises(NotImplementedError, lambda: TypeC("baz", True, False).convert_to(TypeA))
-        self.assertRaises(NotImplementedError, lambda: TypeA(TypeC("baz", True, False)))
+        # check that conversion C --> A also works (implicitly created)
+        self.assertEqual(TypeC("baz", True, False).convert_to(TypeA), TypeA("baz", True, False))
+        self.assertEqual(TypeA(TypeC("baz", True, False)), TypeA("baz", True, False))
+
+

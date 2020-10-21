@@ -54,9 +54,9 @@ class AbstractBase:
 
     @staticmethod
     def register_converter(from_type, to_type, conv_func,
-                           overwrite_explicit_converters=None,
-                           overwrite_implicit_converter=True,
-                           create_implicit_converters=True):
+                           overwrite_explicit_converters=False,
+                           overwrite_implicit_converter=False,
+                           create_implicit_converters=False):
         """
         Register a converter from from_type to other type. The converter function should be function taking as its
         single argument an from_type object and returning an other_type object.
@@ -64,7 +64,7 @@ class AbstractBase:
         :param conv_func: converter function from from_type to other_type
         :param overwrite_explicit_converters: can be True, False, or None (default); if True and there exists an
         explicit converter (i.e. the list of converter functions is of length 1), replace it by this converter function;
-        if False, don't replace explicit converters; if None, raise a ValueError if an explicit converter exists
+        if False raise a ValueError if an explicit converter exists
         :param overwrite_implicit_converter: if there exists an implicit converter (i.e. the list of converter functions
         is of length greater than 1) replace it by this converter function
         :param create_implicit_converters: if there is an (explicit or implicit) converter from type X to type
@@ -89,11 +89,11 @@ class AbstractBase:
             # implicit or explicit converter are already registered
             if len(converter) == 1:
                 # explicit converter
-                if overwrite_explicit_converters is None:
+                if overwrite_explicit_converters:
+                    set_new_converter = True
+                else:
                     raise ValueError("An explicit converter already exists. Set overwrite_explicit_converters=True to "
                                      "overwrite.")
-                elif overwrite_explicit_converters:
-                    set_new_converter = True
             else:
                 # implicit converter
                 if overwrite_implicit_converter:
@@ -765,13 +765,11 @@ def convert_spelled_to_enharmonic(spelled):
 
 AbstractBase.register_converter(from_type=Spelled,
                                 to_type=Enharmonic,
-                                conv_func=convert_spelled_to_enharmonic,
-                                create_implicit_converters=False)
+                                conv_func=convert_spelled_to_enharmonic)
 
 def convert_enharmonic_to_logfreq(enharmonic):
     return LogFreq(enharmonic.freq(), is_freq=True, is_pitch=enharmonic.is_pitch(), is_class=enharmonic.is_class())
 
 AbstractBase.register_converter(from_type=Enharmonic,
                                 to_type=LogFreq,
-                                conv_func=convert_enharmonic_to_logfreq,
-                                create_implicit_converters=False)
+                                conv_func=convert_enharmonic_to_logfreq)
