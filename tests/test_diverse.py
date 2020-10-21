@@ -16,8 +16,8 @@ class TestConverters(TestCase):
         AbstractBase.register_converter(from_type=TypeA,
                                         to_type=TypeB,
                                         conv_func=lambda pitch_a: TypeB(pitch_a._value,
-                                                                        pitch_a.is_pitch(),
-                                                                        pitch_a.is_class()))
+                                                                        pitch_a.is_pitch,
+                                                                        pitch_a.is_class))
         # check conversion works (both via convert_to() and via initialisation)
         self.assertEqual(TypeA("foo", True, False).convert_to(TypeB), TypeB("foo", True, False))
         self.assertEqual(TypeB(TypeA("foo", True, False)), TypeB("foo", True, False))
@@ -26,8 +26,8 @@ class TestConverters(TestCase):
         AbstractBase.register_converter(from_type=TypeB,
                                         to_type=TypeC,
                                         conv_func=lambda pitch_b: TypeC(pitch_b._value,
-                                                                        pitch_b.is_pitch(),
-                                                                        pitch_b.is_class()))
+                                                                        pitch_b.is_pitch,
+                                                                        pitch_b.is_class))
         # check conversion works (both via convert_to() and via initialisation)
         self.assertEqual(TypeB("bar", True, False).convert_to(TypeC), TypeC("bar", True, False))
         self.assertEqual(TypeC(TypeB("bar", True, False)), TypeC("bar", True, False))
@@ -41,8 +41,8 @@ class TestConverters(TestCase):
         AbstractBase.register_converter(from_type=TypeC,
                                         to_type=TypeB,
                                         conv_func=lambda pitch_c: TypeB(pitch_c._value,
-                                                                        pitch_c.is_pitch(),
-                                                                        pitch_c.is_class()))
+                                                                        pitch_c.is_pitch,
+                                                                        pitch_c.is_class))
         # check that conversion C --> B works
         self.assertEqual(TypeC("foo", True, False).convert_to(TypeB), TypeB("foo", True, False))
         self.assertEqual(TypeB(TypeC("foo", True, False)), TypeB("foo", True, False))
@@ -52,8 +52,8 @@ class TestConverters(TestCase):
         AbstractBase.register_converter(from_type=TypeB,
                                         to_type=TypeA,
                                         conv_func=lambda pitch_b: TypeA(pitch_b._value,
-                                                                        pitch_b.is_pitch(),
-                                                                        pitch_b.is_class()),
+                                                                        pitch_b.is_pitch,
+                                                                        pitch_b.is_class),
                                         create_implicit_converters=True)  # CREATE HERE
         # check that conversion B --> A works
         self.assertEqual(TypeB("bar", True, False).convert_to(TypeA), TypeA("bar", True, False))

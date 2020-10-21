@@ -31,9 +31,9 @@ class TestSpelled(TestCase):
                 if not is_class:
                     p += "4"
                 pp = Spelled(p)
-                self.assertEqual(is_class, pp.is_class())
-                self.assertTrue(pp.is_pitch())
-                self.assertFalse(pp.is_interval())
+                self.assertEqual(is_class, pp.is_class)
+                self.assertTrue(pp.is_pitch)
+                self.assertFalse(pp.is_interval)
                 self.assertEqual(str(pp), p)
                 self.assertEqual(pp.fifth_steps(), idx - 26)
             for idx, (i, ir) in enumerate(zip(self.line_of_intervals, reversed(self.line_of_intervals))):
@@ -44,11 +44,11 @@ class TestSpelled(TestCase):
                     ir += ":4"
                 ii = Spelled(i)
                 iir = Spelled(ir)
-                self.assertEqual(is_class, ii.is_class())
-                self.assertEqual(is_class, iir.is_class())
+                self.assertEqual(is_class, ii.is_class)
+                self.assertEqual(is_class, iir.is_class)
                 self.assertEqual(ii, iir)
-                self.assertFalse(ii.is_pitch())
-                self.assertTrue(ii.is_interval())
+                self.assertFalse(ii.is_pitch)
+                self.assertTrue(ii.is_interval)
                 self.assertEqual(str(ii), i)
                 self.assertEqual(ii.name(), i)
                 self.assertEqual(iir.name(), i)
@@ -86,8 +86,8 @@ class TestSpelled(TestCase):
 
         # for idx_1, p_1 in enumerate(line_of_fifths):
         #     pp_1 = Spelled(p_1)
-        #     self.assertTrue(pp_1.is_pitch())
-        #     self.assertTrue(pp_1.is_class())
+        #     self.assertTrue(pp_1.is_pitch)
+        #     self.assertTrue(pp_1.is_class)
         #     # self.assertEqual(str(pp_1), p_1)
         #     self.assertEqual(pp_1.fifth_steps(), idx_1 - 22)
         #

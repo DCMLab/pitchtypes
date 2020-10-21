@@ -32,8 +32,8 @@ class AbstractBase:
                 ret = converter(ret)
             # checks
             assert isinstance(ret, to_type), f"Conversion failed, expected type {to_type} but got {type(ret)}"
-            assert value.is_pitch() == ret.is_pitch(), f"{value.is_pitch()} {ret.is_pitch()}"
-            assert value.is_class() == ret.is_class(), f"{value.is_class()} {ret.is_class()}"
+            assert value.is_pitch == ret.is_pitch, f"{value.is_pitch} {ret.is_pitch}"
+            assert value.is_class == ret.is_class, f"{value.is_class} {ret.is_class}"
             return ret
 
     @staticmethod
@@ -131,17 +131,17 @@ class AbstractBase:
                     other_converters[another_to_type] = converter_pipeline
 
     def __init__(self, value, is_pitch=None, is_class=None, *args, **kwargs):
-        # if value is derived from AbstractBase, try to convert to this type and get the _value
+        # if value is derived from AbstractBase, try to convert to this type and get the value
         if AbstractBase._is_derived_from_abstract_base(value):
-            if is_class is not None and is_class != value.is_class():
-                raise ValueError(f"Class property of provided value ({value.is_class()}) conflicts with explicitly "
+            if is_class is not None and is_class != value.is_class:
+                raise ValueError(f"Class property of provided value ({value.is_class}) conflicts with explicitly "
                                  f"provided value ({is_class}).")
-            is_class = value.is_class()
-            if is_pitch is not None and is_pitch != value.is_pitch():
-                raise ValueError(f"Pitch/Interval property of provided value ({value.is_pitch()}) conflicts with "
+            is_class = value.is_class
+            if is_pitch is not None and is_pitch != value.is_pitch:
+                raise ValueError(f"Pitch/Interval property of provided value ({value.is_pitch}) conflicts with "
                                  f"explicitly provided value ({is_pitch}).")
-            is_pitch = value.is_pitch()
-            value = value.convert_to(self.__class__)._value  ## ToDo: this should be returned by using __new__
+            is_pitch = value.is_pitch
+            value = value.convert_to(self.__class__).value  ## ToDo: this should be returned by using __new__
         # make sure is_pitch and is_class are set
         if is_pitch is None or is_class is None:
             raise ValueError("is_pitch and is_class parameter have to be set when initialising from value")
@@ -153,35 +153,42 @@ class AbstractBase:
         self._is_class = is_class
         self._value = value
 
-    def is_class(self):
-        return self._is_class
-
-    def to_class(self):
-        if self.is_class():
-            raise TypeError("Cannot convert to class type, is already class type.")
-        return self.__class__(value=self._value, is_pitch=self.is_pitch(), is_class=True)
-
+    @property
     def is_pitch(self):
         return self._is_pitch
 
-    def to_pitch(self):
-        if self.is_pitch():
-            raise TypeError("Is already pitch.")
-        return self.__class__(value=self._value, is_pitch=True, is_class=self.is_class())
-
+    @property
     def is_interval(self):
         return not self._is_pitch
 
+    @property
+    def is_class(self):
+        return self._is_class
+
+    @property
+    def value(self):
+        return self._value
+
+    def to_class(self):
+        if self.is_class:
+            raise TypeError("Cannot convert to class type, is already class type.")
+        return self.__class__(value=self.value, is_pitch=self.is_pitch, is_class=True)
+
+    def to_pitch(self):
+        if self.is_pitch:
+            raise TypeError("Is already pitch.")
+        return self.__class__(value=self.value, is_pitch=True, is_class=self.is_class)
+
     def to_interval(self):
-        if self.is_interval():
+        if self.is_interval:
             raise TypeError("Is already interval.")
-        return self.__class__(value=self._value, is_pitch=False, is_class=self.is_class())
+        return self.__class__(value=self.value, is_pitch=False, is_class=self.is_class)
 
     def _create_pitch(self, value):
-        return self.__class__(value=value, is_pitch=True, is_class=self.is_class())
+        return self.__class__(value=value, is_pitch=True, is_class=self.is_class)
 
     def _create_interval(self, value):
-        return self.__class__(value=value, is_pitch=False, is_class=self.is_class())
+        return self.__class__(value=value, is_pitch=False, is_class=self.is_class)
 
     def _is_pitch_of_same_type(self, other, do_raise=False, message=False):
         if do_raise and message:
@@ -194,7 +201,7 @@ class AbstractBase:
                 return msg
             else:
                 return False
-        if not other.is_pitch():
+        if not other.is_pitch:
             msg = f"Object is not a pitch ({other}; type {type(other)})"
             if do_raise:
                 raise TypeError(msg)
@@ -202,8 +209,8 @@ class AbstractBase:
                 return msg
             else:
                 return False
-        if self.is_class() != other.is_class():
-            msg = f"Class mismatch (this: {self.is_class()}, other: {other.is_class()})"
+        if self.is_class != other.is_class:
+            msg = f"Class mismatch (this: {self.is_class}, other: {other.is_class})"
             if do_raise:
                 raise TypeError(msg)
             elif message:
@@ -226,7 +233,7 @@ class AbstractBase:
                 return msg
             else:
                 return False
-        if not other.is_interval():
+        if other.is_pitch:
             msg = f"Object is not an interval ({other}; type {type(other)})"
             if do_raise:
                 raise TypeError(msg)
@@ -234,8 +241,8 @@ class AbstractBase:
                 return msg
             else:
                 return False
-        if self.is_class() != other.is_class():
-            msg = f"Mismatch in class property (this: {self.is_class()}, other: {other.is_class()})"
+        if self.is_class != other.is_class:
+            msg = f"Mismatch in class property (this: {self.is_class}, other: {other.is_class})"
             if do_raise:
                 raise TypeError(msg)
             elif message:
@@ -249,96 +256,88 @@ class AbstractBase:
 
     def __repr__(self):
         return f"{self.__class__.__name__}" \
-               f"{'Pitch' if self.is_pitch() else 'Interval'}" \
-               f"{'Class' if self.is_class() else ''}" \
-               f"({self._value})"
+               f"{'Pitch' if self.is_pitch else 'Interval'}" \
+               f"{'Class' if self.is_class else ''}" \
+               f"({self.value})"
 
     def __sub__(self, other):
-        if self.is_pitch():
+        if self.is_pitch:
             if self._is_pitch_of_same_type(other):
-                return self._create_interval(self._value - other._value)
+                return self._create_interval(self.value - other.value)
             elif self._is_interval_of_same_type(other):
-                return self._create_pitch(self._value - other._value)
+                return self._create_pitch(self.value - other.value)
             else:
                 raise TypeError(f"Expected pitch or interval of same type. Got the following error messages:\n"
                                 f"    is not pitch of same type: "
                                 f"{self._is_pitch_of_same_type(other, message=True)}\n"
                                 f"    is not interval of same type: "
                                 f"{self._is_interval_of_same_type(other, message=True)}")
-        elif self.is_interval():
+        else:
             if self._is_interval_of_same_type(other):
-                return self._create_interval(self._value - other._value)
+                return self._create_interval(self.value - other.value)
             else:
                 self._is_interval_of_same_type(other, do_raise=True)
-        else:
-            raise NotImplementedError("This type is neither pitch nor interval")
 
     def __add__(self, other):
-        if self.is_pitch():
+        if self.is_pitch:
             if self._is_interval_of_same_type(other):
-                return self._create_pitch(self._value + other._value)
+                return self._create_pitch(self.value + other.value)
             else:
                 raise TypeError("Cannot add a pitch to a pitch (second one must be an interval)")
-        elif self.is_interval():
+        else:
             if self._is_interval_of_same_type(other):
-                return self._create_interval(self._value + other._value)
+                return self._create_interval(self.value + other.value)
             else:
                 raise TypeError("Cannot add a pitch to an interval (second one must be an interval)")
-        else:
-            raise NotImplementedError("This type is neither pitch nor interval")
 
     def __eq__(self, other):
-        if self.is_pitch():
+        if self.is_pitch:
             if self._is_pitch_of_same_type(other):
-                return self._value == other._value
-            else:
-                return NotImplemented
-        elif self.is_interval():
-            if self._is_interval_of_same_type(other):
-                return self._value == other._value
+                return self.value == other.value
             else:
                 return NotImplemented
         else:
-            raise NotImplementedError("This type is neither pitch nor interval")
+            if self._is_interval_of_same_type(other):
+                return self.value == other.value
+            else:
+                return NotImplemented
 
     def __hash__(self):
-        return hash((self._value, self._is_pitch, self._is_class))
+        return hash((self.value, self.is_pitch, self.is_class))
 
     def __lt__(self, other):
-        if self.is_class():
+        if self.is_class:
             # cyclic order
             return NotImplemented
-        elif self.is_pitch():
+        if self.is_pitch:
             if self._is_pitch_of_same_type(other):
-                return self._value < other._value
-            else:
-                return NotImplemented
-        elif self.is_interval():
-            if self._is_interval_of_same_type(other):
-                return self._value < other._value
+                return self.value < other.value
             else:
                 return NotImplemented
         else:
-            raise NotImplementedError("This type is neither pitch nor interval")
+            if self._is_interval_of_same_type(other):
+                return self.value < other.value
+            else:
+                return NotImplemented
 
     def __mul__(self, other):
-        if self.is_interval():
-            return self._create_interval(self._value * other)
-        else:
+        if self.is_pitch:
             return NotImplemented
+        else:
+            return self._create_interval(self.value * other)
 
     def __rmul__(self, other):
         return self.__mul__(other)
 
     def __truediv__(self, other):
-        if self.is_interval():
-            return self.__mul__(1 / other)
-        else:
+        if self.is_pitch:
             return NotImplemented
+        else:
+            return self.__mul__(1 / other)
 
     def __abs__(self):
-        if self.is_interval() and self.is_class():
-            return abs(self._value)
+        if self.is_interval and self.is_class:
+            return abs(self.value)
         else:
             raise NotImplementedError
 
@@ -356,9 +355,9 @@ class Spelled(AbstractBase):
     _interval_regex = re.compile("^(?P<sign>[-+])(?P<quality>(A*)|(M)|(P)|(m)|(d*))(?P<generic>[1-7])(?P<octave>(:-?[0-9]+)?)$")
 
     def to_class(self):
-        if self.is_class():
+        if self.is_class:
             raise TypeError("Is already class.")
-        return self.__class__(value=np.array([self._value[0], 0]), is_pitch=self.is_pitch(), is_class=True)
+        return self.__class__(value=np.array([self.value[0], 0]), is_pitch=self.is_pitch, is_class=True)
 
     @staticmethod
     def _init_from_int(value, is_pitch, is_class):
@@ -514,70 +513,66 @@ class Spelled(AbstractBase):
         return self.name()
 
     def __eq__(self, other):
-        if self.is_pitch():
+        if self.is_pitch:
             if self._is_pitch_of_same_type(other):
-                return tuple(self._value) == tuple(other._value)
-            else:
-                return NotImplemented
-        elif self.is_interval():
-            if self._is_interval_of_same_type(other):
-                return tuple(self._value) == tuple(other._value)
+                return tuple(self.value) == tuple(other.value)
             else:
                 return NotImplemented
         else:
-            raise NotImplementedError("This type is neither pitch nor interval")
+            if self._is_interval_of_same_type(other):
+                return tuple(self.value) == tuple(other.value)
+            else:
+                return NotImplemented
 
     def __lt__(self, other):
-        if self.is_class():
+        if self.is_class:
             # cyclic order
             return NotImplemented
-        elif self.is_pitch():
+        if self.is_pitch:
             if self._is_pitch_of_same_type(other):
-                return self._value[0] < other._value[0]
-            else:
-                return NotImplemented
-        elif self.is_interval():
-            if self._is_interval_of_same_type(other):
-                return self._value[0] < other._value[0]
+                return self.value[0] < other.value[0]
             else:
                 return NotImplemented
         else:
-            raise NotImplementedError("This type is neither pitch nor interval")
+            if self._is_interval_of_same_type(other):
+                return self.value[0] < other.value[0]
+            else:
+                return NotImplemented
 
     def __hash__(self):
-        return hash((self._value[0], self._value[1], self._is_pitch, self._is_class))
+        return hash((self.value[0], self.value[1], self.is_pitch, self.is_class))
 
     def __abs__(self):
-        if self.is_interval() and self.is_class():
-            return abs(self._value[0])
+        if self.is_interval and self.is_class:
+            return abs(self.value[0])
         else:
             raise NotImplementedError
 
     def name(self, negative=None):
-        if self.is_pitch():
+        if self.is_pitch:
             if negative is not None:
                 raise ValueError("specifying parameter 'negative' is only valid for interval class types")
-            pitch_class = ["F", "C", "G", "D", "A", "E", "B"][(self._value[0] + 1) % 7]
-            sharp_flat = (self._value[0] + 1) // 7
+            pitch_class = ["F", "C", "G", "D", "A", "E", "B"][(self.value[0] + 1) % 7]
+            sharp_flat = (self.value[0] + 1) // 7
             pitch_class += ('#' if sharp_flat > 0 else 'b') * abs(sharp_flat)
-            if self.is_class():
+            if self.is_class:
                 return pitch_class
             else:
-                return pitch_class + str(self._value[1])
-        elif self.is_interval():
-            if self.is_class():
+                return pitch_class + str(self.value[1])
+        else:
+            if self.is_class:
                 if negative is None:
                     negative = False
             else:
                 if negative is None:
-                    negative = self._value[1] < 0
+                    negative = self.value[1] < 0
                 else:
                     raise ValueError("specifying parameter 'negative' is only valid for interval class types")
             if negative:
-                delta = -self._value[0]
+                delta = -self.value[0]
                 sign = "-"
             else:
-                delta = self._value[0]
+                delta = self.value[0]
                 sign = "+"
             phase = delta % 7
             period = (5 - delta) // 7
@@ -598,16 +593,16 @@ class Spelled(AbstractBase):
                 quality = "A" * abs(period)
             else:
                 raise RuntimeWarning("This is a bug!")
-            if self.is_class():
+            if self.is_class:
                 return sign + quality + generic_interval
             else:
-                return sign + quality + generic_interval + ":" + str(abs(self._value[1]))
+                return sign + quality + generic_interval + ":" + str(abs(self.value[1]))
 
     def fifth_steps(self):
-        return self._value[0]
+        return self.value[0]
 
     def octave(self):
-        return self._value[1]
+        return self.value[1]
 
 
 class Enharmonic(AbstractBase):
@@ -616,8 +611,8 @@ class Enharmonic(AbstractBase):
         # pre-process value
         if isinstance(value, str):
             value = Spelled(value=value, is_class=is_class)
-            is_pitch = value.is_pitch()
-            is_class = value.is_class()
+            is_pitch = value.is_pitch
+            is_class = value.is_class
         elif isinstance(value, numbers.Number):
             int_value = int(value)
             if int_value != value:
@@ -637,21 +632,21 @@ class Enharmonic(AbstractBase):
         super().__init__(value=value, is_pitch=is_pitch, is_class=is_class, **kwargs)
 
     def to_class(self):
-        if self.is_class():
+        if self.is_class:
             raise TypeError("Is already class.")
-        return self.__class__(value=self._value % 12, is_pitch=self.is_pitch(), is_class=True)
+        return self.__class__(value=self.value % 12, is_pitch=self.is_pitch, is_class=True)
 
     def __int__(self):
-        return self._value
+        return self.value
 
     def __repr__(self):
         return self.name()
 
     def octave(self):
-        return self._value // 12 - 1
+        return self.value // 12 - 1
 
     def freq(self):
-        return 2 ** ((self._value - 69) / 12) * 440
+        return 2 ** ((self.value - 69) / 12) * 440
 
     def fifth_steps(self, sharp_flat=None):
         pitch_class = int(self.to_class())
@@ -671,7 +666,7 @@ class Enharmonic(AbstractBase):
         return fifth_steps
 
     def name(self, sharp_flat=None):
-        if self.is_pitch():
+        if self.is_pitch:
             if sharp_flat is None:
                 sharp_flat = "sharp"
             if sharp_flat == "sharp":
@@ -680,8 +675,8 @@ class Enharmonic(AbstractBase):
                 base_names = ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"]
             else:
                 raise ValueError("parameter 'sharp_flat' must be one of ['sharp', 'flat']")
-            pc = base_names[self._value % 12]
-            if self.is_class():
+            pc = base_names[self.value % 12]
+            if self.is_class:
                 return pc
             else:
                 return pc + str(self.octave())
@@ -689,8 +684,8 @@ class Enharmonic(AbstractBase):
             if sharp_flat is not None:
                 raise ValueError(f"parameter 'sharp_flat' can only be used for pitch types and should be None for "
                                  f"interval types (is {sharp_flat})")
-            sign = "-" if self._value < 0 else "+"
-            return sign + str(abs(self._value))
+            sign = "-" if self.value < 0 else "+"
+            return sign + str(abs(self.value))
 
 
 class LogFreq(AbstractBase):
@@ -725,27 +720,27 @@ class LogFreq(AbstractBase):
         super().__init__(value=value, is_pitch=is_pitch, is_class=is_class, **kwargs)
 
     def to_class(self):
-        if self.is_class():
+        if self.is_class:
             raise TypeError("Is already class.")
-        return self.__class__(value=self._value % np.log(2), is_pitch=self.is_pitch(), is_class=True)
+        return self.__class__(value=self.value % np.log(2), is_pitch=self.is_pitch, is_class=True)
 
     def freq(self):
-        if self.is_pitch():
-            return np.exp(self._value)
+        if self.is_pitch:
+            return np.exp(self.value)
         else:
             raise NotImplementedError
 
     def __float__(self):
-        return float(self._value)
+        return float(self.value)
 
     def __repr__(self):
         s = f"{np.format_float_positional(self.freq(), fractional=True, precision=self._print_precision)}"
-        if self.is_pitch():
+        if self.is_pitch:
             s += "Hz"
         return s
 
 def convert_spelled_to_enharmonic(spelled):
-    if spelled.is_pitch():
+    if spelled.is_pitch:
         fifth_steps_from_f = spelled.fifth_steps() + 1
         # base pitch
         base_pitch = ((fifth_steps_from_f % 7 - 1) * 7) % 12
@@ -756,19 +751,18 @@ def convert_spelled_to_enharmonic(spelled):
             # note: floor divide rounds down (for negative numbers that is equal to the remainder of division minus one)
             accidentals = fifth_steps_from_f // 7
         return Enharmonic(value=12 * (spelled.octave() + 1) + base_pitch + accidentals,
-                          is_pitch=spelled.is_pitch(),
-                          is_class=spelled.is_class())
-    elif spelled.is_interval():
-        raise NotImplementedError
+                          is_pitch=spelled.is_pitch,
+                          is_class=spelled.is_class)
     else:
         raise NotImplementedError
+
 
 AbstractBase.register_converter(from_type=Spelled,
                                 to_type=Enharmonic,
                                 conv_func=convert_spelled_to_enharmonic)
 
 def convert_enharmonic_to_logfreq(enharmonic):
-    return LogFreq(enharmonic.freq(), is_freq=True, is_pitch=enharmonic.is_pitch(), is_class=enharmonic.is_class())
+    return LogFreq(enharmonic.freq(), is_freq=True, is_pitch=enharmonic.is_pitch, is_class=enharmonic.is_class)
 
 AbstractBase.register_converter(from_type=Enharmonic,
                                 to_type=LogFreq,

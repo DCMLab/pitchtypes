@@ -10,23 +10,25 @@ class TestEnharmonic(TestCase):
                 p = Enharmonic(61, is_pitch=is_pitch, is_class=is_class)
                 # check for pitch versus interval
                 if is_pitch is True or is_pitch is None:
-                    self.assertTrue(p.is_pitch())
+                    self.assertTrue(p.is_pitch)
+                    self.assertFalse(p.is_interval)
                 elif is_pitch is False:
-                    self.assertFalse(p.is_pitch())
+                    self.assertFalse(p.is_pitch)
+                    self.assertTrue(p.is_interval)
                 # check class is correctly set
                 if is_class is True:
-                    self.assertTrue(p.is_class())
+                    self.assertTrue(p.is_class)
                 elif is_class is False or is_class is None:
-                    self.assertFalse(p.is_class())
+                    self.assertFalse(p.is_class)
                     pc = p.to_class()
-                    self.assertTrue(pc.is_class())
-                    if pc.is_pitch():
+                    self.assertTrue(pc.is_class)
+                    if pc.is_pitch:
                         self.assertEqual(str(pc), "C#")
                     else:
                         self.assertEqual(str(pc), "+1")
                 # check str is correct
-                if p.is_pitch():
-                    if p.is_class():
+                if p.is_pitch:
+                    if p.is_class:
                         self.assertEqual(str(p), "C#")
                         self.assertEqual(p.name(), "C#")
                         self.assertEqual(p.name(sharp_flat='sharp'), "C#")
@@ -39,7 +41,7 @@ class TestEnharmonic(TestCase):
                         self.assertEqual(p.name(sharp_flat='flat'), "Db4")
                         self.assertRaises(ValueError, lambda: p.name(sharp_flat='invalid'))
                 else:
-                    if p.is_class():
+                    if p.is_class:
                         self.assertEqual(str(p), "+1")
                         self.assertEqual(p.name(), "+1")
                         self.assertRaises(ValueError, lambda: p.name(sharp_flat='sharp'))

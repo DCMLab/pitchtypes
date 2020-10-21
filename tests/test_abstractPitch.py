@@ -13,46 +13,46 @@ class TestAbstractPitch(TestCase):
                 # class type
                 if is_class:
                     # if it's a class type
-                    # is_class() should return true
-                    self.assertTrue(p_or_i.is_class())
+                    # is_class should be true
+                    self.assertTrue(p_or_i.is_class)
                     # conversion to class type should fail
                     self.assertRaises(TypeError, p_or_i.to_class)
                 else:
                     # if it's NOT a class type
-                    # is_class() should return true
-                    self.assertFalse(p_or_i.is_class())
+                    # is_class should be true
+                    self.assertFalse(p_or_i.is_class)
                     # conversion to class type should be possible
                     c = p_or_i.to_class()
                     # and produce a class type
-                    self.assertTrue(c.is_class())
+                    self.assertTrue(c.is_class)
                 # pitch vs interval
                 if is_pitch:
                     # should be indicated correctly
-                    self.assertTrue(p_or_i.is_pitch())
-                    self.assertFalse(p_or_i.is_interval())
+                    self.assertTrue(p_or_i.is_pitch)
+                    self.assertFalse(p_or_i.is_interval)
                     # conversion to interval should be possible
                     i = p_or_i.to_interval()
                     # and result in an interval
-                    self.assertTrue(i.is_interval())
-                    self.assertFalse(i.is_pitch())
+                    self.assertFalse(i.is_pitch)
+                    self.assertTrue(i.is_interval)
                     # conversion to pitch should fail
                     self.assertRaises(TypeError, p_or_i.to_pitch)
                 else:
                     # should be indicated correctly
-                    self.assertTrue(p_or_i.is_interval())
-                    self.assertFalse(p_or_i.is_pitch())
+                    self.assertFalse(p_or_i.is_pitch)
+                    self.assertTrue(p_or_i.is_interval)
                     # conversion to pitch should be possible
                     p = p_or_i.to_pitch()
                     # and result in a pitch
-                    self.assertTrue(p.is_pitch())
-                    self.assertFalse(p.is_interval())
+                    self.assertTrue(p.is_pitch)
+                    self.assertFalse(p.is_interval)
                     # conversion to interval should fail
                     self.assertRaises(TypeError, p_or_i.to_interval)
 
                 # creating a pitch of same type but with different value
                 p = p_or_i._create_pitch("x")
                 # should have same class property
-                self.assertEqual(p.is_class(), p_or_i.is_class())
+                self.assertEqual(p.is_class, p_or_i.is_class)
                 # should be pitch of same type
                 self.assertTrue(p_or_i._is_pitch_of_same_type(p))
                 # should not be interval of same type
@@ -61,7 +61,7 @@ class TestAbstractPitch(TestCase):
                 # creating an interval of same type but with different value
                 i = p_or_i._create_interval("x")
                 # should have same class property
-                self.assertEqual(i.is_class(), p_or_i.is_class())
+                self.assertEqual(i.is_class, p_or_i.is_class)
                 # should be interval of same type
                 self.assertTrue(p_or_i._is_interval_of_same_type(i))
                 # should not be pitch of same type
