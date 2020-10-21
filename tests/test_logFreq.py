@@ -1,11 +1,11 @@
 from unittest import TestCase
-from pitchtypes import LogFreq, Enharmonic
+from pitchtypes import LogFreqPitch, EnharmonicPitch
 
 
 class TestLogFreq(TestCase):
 
     def test_against_MIDI(self):
-        self.assertAlmostEqual(LogFreq(Enharmonic("A4")).freq(), 440)
+        self.assertAlmostEqual(EnharmonicPitch("A4").convert_to(LogFreqPitch).freq(), 440)
 
     # def test_print_precision(self):
     #     self.fail()

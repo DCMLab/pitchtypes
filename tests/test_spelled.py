@@ -1,5 +1,5 @@
 from unittest import TestCase
-from pitchtypes import Spelled
+from pitchtypes import Spelled, SpelledPitch, SpelledInterval, SpelledPitchClass, SpelledIntervalClass
 
 class TestSpelled(TestCase):
 
@@ -25,25 +25,60 @@ class TestSpelled(TestCase):
         "AAA4", "AAA1", "AAA5", "AAA2", "AAA6", "AAA3", "AAA7"
     ]
 
+    def test_types(self):
+        # make sure the types are linking correctly
+        self.assertEqual(Spelled._base_type, None)
+        self.assertEqual(Spelled._pitch_type, SpelledPitch)
+        self.assertEqual(Spelled._interval_type, SpelledInterval)
+        self.assertEqual(Spelled._pitch_class_type, SpelledPitchClass)
+        self.assertEqual(Spelled._interval_class_type, SpelledIntervalClass)
+        self.assertEqual(SpelledPitch._base_type, Spelled)
+        self.assertEqual(SpelledInterval._base_type, Spelled)
+        self.assertEqual(SpelledPitchClass._base_type, Spelled)
+        self.assertEqual(SpelledIntervalClass._base_type, Spelled)
+
     def test_init(self):
-        for is_class in [False, True]:
+        # create class and non-class objects
+        for is_class in [True, False]:
+            # create pitch (class) objects
             for idx, p in enumerate(self.line_of_fifths):
-                if not is_class:
+                if is_class:
+                    pp = SpelledPitchClass(p)
+                else:
                     p += "4"
-                pp = Spelled(p)
+                    pp = SpelledPitch(p)
+                # check base type is set on object
+                self.assertEqual(pp._base_type, Spelled)
+                # create a derived type (usually called from the base class to recreate derived class)
+                d = pp._create_derived_type()
+                # check it is a different object
+                self.assertFalse(pp is d)
+                # but compares equal to existing
+                self.assertEqual(pp, d)
+                # check class property is correct
                 self.assertEqual(is_class, pp.is_class)
+                # check pitch property is correct
                 self.assertTrue(pp.is_pitch)
+                # check interval property is correct
                 self.assertFalse(pp.is_interval)
+                # check string representation is correct
                 self.assertEqual(str(pp), p)
+                # check fifths steps are corrects
                 self.assertEqual(pp.fifth_steps(), idx - 26)
+            # create interval (class) objects
             for idx, (i, ir) in enumerate(zip(self.line_of_intervals, reversed(self.line_of_intervals))):
                 i = "+" + i
                 ir = "-" + ir
-                if not is_class:
+                if is_class:
+                    ii = SpelledIntervalClass(i)
+                    iir = SpelledIntervalClass(ir)
+                else:
                     i += ":4"
                     ir += ":4"
-                ii = Spelled(i)
-                iir = Spelled(ir)
+                    ii = SpelledInterval(i)
+                    iir = SpelledInterval(ir)
+                self.assertEqual(ii._base_type, Spelled)
+                self.assertEqual(iir._base_type, Spelled)
                 self.assertEqual(is_class, ii.is_class)
                 self.assertEqual(is_class, iir.is_class)
                 self.assertEqual(ii, iir)
@@ -62,15 +97,15 @@ class TestSpelled(TestCase):
 
     def test_arithmetics(self):
         for p, i in zip(self.line_of_fifths, self.line_of_intervals):
-            p = Spelled(p)
-            i = Spelled("+" + i)
-            ref = Spelled("C")
+            p = SpelledPitchClass(p)
+            i = SpelledIntervalClass("+" + i)
+            ref = SpelledPitchClass("C")
             delta = p - ref
             self.assertEqual(delta, i)
             self.assertEqual(ref + delta, p)
 
-            p1 = Spelled("C#4")
-            p2 = Spelled("Gb5")
+            p1 = SpelledPitch("C#4")
+            p2 = SpelledPitch("Gb5")
             # i1 = Spelled("+dd5:1")
             # i2 = Spelled("-AA4:-1")
             # print(i1, i2)
@@ -82,7 +117,7 @@ class TestSpelled(TestCase):
             # print(f"{i} - {i} = {i - i}")
             # print(f"{i} + {i} = {i + i}")
             self.assertRaises(TypeError, lambda: p1 + p2)
-            self.assertRaises(TypeError, lambda: Spelled("G") - Spelled("G4"))
+            self.assertRaises(TypeError, lambda: SpelledPitchClass("G") - SpelledPitch("G4"))
 
         # for idx_1, p_1 in enumerate(line_of_fifths):
         #     pp_1 = Spelled(p_1)
