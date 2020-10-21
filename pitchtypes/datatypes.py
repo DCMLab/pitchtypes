@@ -8,10 +8,10 @@ from functools import total_ordering
 class AbstractBase:
 
     _base_type = None
-    _pitch_type = None
-    _interval_type = None
-    _pitch_class_type = None
-    _interval_class_type = None
+    Pitch = None
+    Interval = None
+    PitchClass = None
+    IntervalClass = None
 
     # store converters for classes derived from Pitch;
     # it's a dict of dicts, so that _converters[A][B] returns is a list of functions that, when executed
@@ -21,7 +21,7 @@ class AbstractBase:
     @classmethod
     def link_pitch_type(cls, create_init=True):
         def decorator(pitch_type):
-            cls._pitch_type = pitch_type
+            cls.Pitch = pitch_type
             pitch_type._base_type = cls
             if create_init:
                 def __init__(self, *args, **kwargs):
@@ -33,7 +33,7 @@ class AbstractBase:
     @classmethod
     def link_interval_type(cls, create_init=True):
         def decorator(interval_type):
-            cls._interval_type = interval_type
+            cls.Interval = interval_type
             interval_type._base_type = cls
             if create_init:
                 def __init__(self, *args, **kwargs):
@@ -45,7 +45,7 @@ class AbstractBase:
     @classmethod
     def link_pitch_class_type(cls, create_init=True):
         def decorator(pitch_class_type):
-            cls._pitch_class_type = pitch_class_type
+            cls.PitchClass = pitch_class_type
             pitch_class_type._base_type = cls
             if create_init:
                 def __init__(self, *args, **kwargs):
@@ -57,7 +57,7 @@ class AbstractBase:
     @classmethod
     def link_interval_class_type(cls, create_init=True):
         def decorator(interval_class_type):
-            cls._interval_class_type = interval_class_type
+            cls.IntervalClass = interval_class_type
             interval_class_type._base_type = cls
             if create_init:
                 def __init__(self, *args, **kwargs):
@@ -65,6 +65,33 @@ class AbstractBase:
                 setattr(interval_class_type, "__init__", __init__)
             return interval_class_type
         return decorator
+
+    @staticmethod
+    def create_subtypes():
+        def decorator(cls):
+            # create the four Pitch/Interval(Class) types
+            @cls.link_pitch_type()
+            class Pitch(cls): pass
+
+            @cls.link_interval_type()
+            class Interval(cls): pass
+
+            @cls.link_pitch_class_type()
+            class PitchClass(cls): pass
+
+            @cls.link_interval_class_type()
+            class IntervalClass(cls): pass
+
+            # set their name appropriately
+            Pitch.__name__ = cls.__name__ + "Pitch"
+            Interval.__name__ = cls.__name__ + "Interval"
+            PitchClass.__name__ = cls.__name__ + "PitchClass"
+            IntervalClass.__name__ = cls.__name__ + "IntervalClass"
+
+            # return the class (which now has the linked sub-types)
+            return cls
+        return decorator
+
 
     @staticmethod
     def _is_derived_from_abstract_base(object, object_is_type=False):
@@ -220,14 +247,14 @@ class AbstractBase:
     def _create_derived_type(self):
         if self.is_class:
             if self.is_pitch:
-                return self._pitch_class_type(self.value)
+                return self.PitchClass(self.value)
             else:
-                return self._interval_class_type(self.value)
+                return self.IntervalClass(self.value)
         else:
             if self.is_pitch:
-                return self._pitch_type(self.value)
+                return self.Pitch(self.value)
             else:
-                return self._interval_type(self.value)
+                return self.Interval(self.value)
 
     @property
     def is_pitch(self):
@@ -256,40 +283,40 @@ class AbstractBase:
     def __sub__(self, other):
         if self.is_pitch:
             if self.is_class:
-                if isinstance(other, self._pitch_class_type):
-                    return self._interval_class_type(self.value - other.value)
-                elif isinstance(other, self._interval_class_type):
-                    return self._pitch_class_type(self.value - other.value)
+                if isinstance(other, self.PitchClass):
+                    return self.IntervalClass(self.value - other.value)
+                elif isinstance(other, self.IntervalClass):
+                    return self.PitchClass(self.value - other.value)
             else:
-                if isinstance(other, self._pitch_type):
-                    return self._interval_type(self.value - other.value)
-                elif isinstance(other, self._interval_type):
-                    return self._pitch_type(self.value - other.value)
+                if isinstance(other, self.Pitch):
+                    return self.Interval(self.value - other.value)
+                elif isinstance(other, self.Interval):
+                    return self.Pitch(self.value - other.value)
         else:
             if self.is_class:
-                if isinstance(other, self._interval_class_type):
-                    return self._interval_class_type(self.value - other.value)
+                if isinstance(other, self.IntervalClass):
+                    return self.IntervalClass(self.value - other.value)
             else:
-                if isinstance(other, self._interval_type):
-                    return self._interval_type(self.value - other.value)
+                if isinstance(other, self.Interval):
+                    return self.Interval(self.value - other.value)
         raise TypeError(f"Operation {self} - {other} is undefined (types {type(self)} and {type(other)})")
 
 
     def __add__(self, other):
         if self.is_pitch:
             if self.is_class:
-                if isinstance(other, self._interval_class_type):
-                    return self._pitch_class_type(self.value + other.value)
+                if isinstance(other, self.IntervalClass):
+                    return self.PitchClass(self.value + other.value)
             else:
-                if isinstance(other, self._interval_type):
-                    return self._pitch_type(self.value + other.value)
+                if isinstance(other, self.Interval):
+                    return self.Pitch(self.value + other.value)
         else:
             if self.is_class:
-                if isinstance(other, self._interval_class_type):
-                    return self._interval_class_type(self.value + other.value)
+                if isinstance(other, self.IntervalClass):
+                    return self.IntervalClass(self.value + other.value)
             else:
-                if isinstance(other, self._interval_type):
-                    return self._interval_type(self.value + other.value)
+                if isinstance(other, self.Interval):
+                    return self.Interval(self.value + other.value)
         raise TypeError(f"Operation {self} + {other} is undefined (types {type(self)} and {type(other)})")
 
     def __eq__(self, other):
@@ -314,12 +341,12 @@ class AbstractBase:
             # cyclic order
             return NotImplemented
         if self.is_pitch:
-            if isinstance(other, self._pitch_type):
+            if isinstance(other, self.Pitch):
                 return self.value < other.value
             else:
                 return NotImplemented
         else:
-            if isinstance(other, self._interval_type):
+            if isinstance(other, self.Interval):
                 return self.value < other.value
             else:
                 return NotImplemented
@@ -329,9 +356,9 @@ class AbstractBase:
             return NotImplemented
         else:
             if self.is_class:
-                return self._interval_class_type(self.value * other)
+                return self.IntervalClass(self.value * other)
             else:
-                return self._interval_type(self.value * other)
+                return self.Interval(self.value * other)
 
     def __rmul__(self, other):
         return self.__mul__(other)
@@ -519,7 +546,7 @@ class Spelled(AbstractBase):
     def __lt__(self, other):
         # spelled pitch is not generally ordered because it is two dimensional
         # but spelled pitch CLASSES can be ordered along the line of fifths (which is done here)
-        if self.is_class and isinstance(other, self._pitch_type):
+        if self.is_class and isinstance(other, self.Pitch):
             return self.value[0] < other.value[0]
         else:
             return NotImplemented
@@ -622,9 +649,9 @@ class Enharmonic(AbstractBase):
         if self.is_class:
             raise TypeError("Is already class.")
         if self.is_pitch:
-            return self._pitch_class_type(value=self.value % 12)
+            return self.PitchClass(value=self.value % 12)
         else:
-            return self._interval_class_type(value=self.value % 12)
+            return self.IntervalClass(value=self.value % 12)
 
     def __int__(self):
         return self.value

@@ -56,3 +56,22 @@ class TestConverters(TestCase):
 
         # check that conversion C --> A also works (implicitly created)
         self.assertEqual(TypeC("baz", True, False).convert_to(TypeA), TypeA("baz", True, False))
+
+    def test_implementing_new_type(self):
+
+        # define new type with sub-types
+        @AbstractBase.create_subtypes()
+        class New(AbstractBase): pass
+
+        # make sure the types are linking correctly
+        self.assertEqual(New._base_type, None)
+        self.assertEqual(New.Pitch._base_type, New)
+        self.assertEqual(New.Interval._base_type, New)
+        self.assertEqual(New.PitchClass._base_type, New)
+        self.assertEqual(New.IntervalClass._base_type, New)
+
+        # make sure they print correctly (implying the class name to be set correctly)
+        self.assertEqual(str(New.Pitch("test")), "NewPitch(test)")
+        self.assertEqual(str(New.Interval("test")), "NewInterval(test)")
+        self.assertEqual(str(New.PitchClass("test")), "NewPitchClass(test)")
+        self.assertEqual(str(New.IntervalClass("test")), "NewIntervalClass(test)")

@@ -28,10 +28,10 @@ class TestSpelled(TestCase):
     def test_types(self):
         # make sure the types are linking correctly
         self.assertEqual(Spelled._base_type, None)
-        self.assertEqual(Spelled._pitch_type, SpelledPitch)
-        self.assertEqual(Spelled._interval_type, SpelledInterval)
-        self.assertEqual(Spelled._pitch_class_type, SpelledPitchClass)
-        self.assertEqual(Spelled._interval_class_type, SpelledIntervalClass)
+        self.assertEqual(Spelled.Pitch, SpelledPitch)
+        self.assertEqual(Spelled.Interval, SpelledInterval)
+        self.assertEqual(Spelled.PitchClass, SpelledPitchClass)
+        self.assertEqual(Spelled.IntervalClass, SpelledIntervalClass)
         self.assertEqual(SpelledPitch._base_type, Spelled)
         self.assertEqual(SpelledInterval._base_type, Spelled)
         self.assertEqual(SpelledPitchClass._base_type, Spelled)

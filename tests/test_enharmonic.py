@@ -7,10 +7,10 @@ class TestEnharmonic(TestCase):
     def test_types(self):
         # make sure the types are linking correctly
         self.assertEqual(Enharmonic._base_type, None)
-        self.assertEqual(Enharmonic._pitch_type, EnharmonicPitch)
-        self.assertEqual(Enharmonic._interval_type, EnharmonicInterval)
-        self.assertEqual(Enharmonic._pitch_class_type, EnharmonicPitchClass)
-        self.assertEqual(Enharmonic._interval_class_type, EnharmonicIntervalClass)
+        self.assertEqual(Enharmonic.Pitch, EnharmonicPitch)
+        self.assertEqual(Enharmonic.Interval, EnharmonicInterval)
+        self.assertEqual(Enharmonic.PitchClass, EnharmonicPitchClass)
+        self.assertEqual(Enharmonic.IntervalClass, EnharmonicIntervalClass)
         self.assertEqual(EnharmonicPitch._base_type, Enharmonic)
         self.assertEqual(EnharmonicInterval._base_type, Enharmonic)
         self.assertEqual(EnharmonicPitchClass._base_type, Enharmonic)

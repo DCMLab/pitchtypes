@@ -6,7 +6,7 @@ from itertools import product
 
 class TestAbstractPitch(TestCase):
 
-    def test_creating_new_types(self):
+    def test_implementing_subtypes(self):
 
         @AbstractBase.link_pitch_type()
         class AbstractPitch(AbstractBase): pass
@@ -22,10 +22,10 @@ class TestAbstractPitch(TestCase):
 
         # make sure the linking worked
         self.assertEqual(AbstractBase._base_type, None)
-        self.assertEqual(AbstractBase._pitch_type, AbstractPitch)
-        self.assertEqual(AbstractBase._interval_type, AbstractInterval)
-        self.assertEqual(AbstractBase._pitch_class_type, AbstractPitchClass)
-        self.assertEqual(AbstractBase._interval_class_type, AbstractIntervalClass)
+        self.assertEqual(AbstractBase.Pitch, AbstractPitch)
+        self.assertEqual(AbstractBase.Interval, AbstractInterval)
+        self.assertEqual(AbstractBase.PitchClass, AbstractPitchClass)
+        self.assertEqual(AbstractBase.IntervalClass, AbstractIntervalClass)
         self.assertEqual(AbstractPitch._base_type, AbstractBase)
         self.assertEqual(AbstractInterval._base_type, AbstractBase)
         self.assertEqual(AbstractPitchClass._base_type, AbstractBase)
