@@ -13,11 +13,6 @@ class AbstractBase:
     PitchClass = None
     IntervalClass = None
 
-    # store converters for classes derived from Pitch;
-    # it's a dict of dicts, so that _converters[A][B] returns is a list of functions that, when executed
-    # successively, converts A to B
-    _converters = {}
-
     @classmethod
     def link_pitch_type(cls, create_init=True):
         def decorator(pitch_type):
@@ -91,149 +86,6 @@ class AbstractBase:
             # return the class (which now has the linked sub-types)
             return cls
         return decorator
-
-
-    @staticmethod
-    def _is_derived_from_abstract_base(object, object_is_type=False):
-        if object_is_type:
-            return AbstractBase in object.__mro__
-        else:
-            return AbstractBase in object.__class__.__mro__
-
-    @staticmethod
-    def _convert(obj, to_type):
-        # check that the object and the desired type are both derived from AbstractBase
-        AbstractBase._is_derived_from_abstract_base(obj)
-        AbstractBase._is_derived_from_abstract_base(to_type, object_is_type=True)
-        # get base type of obj
-        if obj._base_type is None:
-            from_base_type = obj.__class__
-        else:
-            from_base_type = obj._base_type
-        # and to_type
-        if to_type._base_type is None:
-            to_type_is_base = True
-            to_base_type = to_type
-        else:
-            to_type_is_base = False
-            to_base_type = to_type._base_type
-        # check for self-conversion
-        if to_base_type == from_base_type:
-            # check for conversion between different subtypes
-            if type(obj) != to_type:
-                raise TypeError(f"Cannot convert {obj} of type {type(obj)} to type {to_type}, which are different "
-                                f"types but have the same base type ({to_base_type})")
-            # skip self-conversion
-            ret = obj
-        else:
-            # use conversion pipeline starting with the object itself
-            ret = obj
-            # sequentially apply converters from pipeline
-            for converter in AbstractBase.get_converter(from_base_type, to_base_type):
-                ret = converter(ret)
-            # converters generally produce an object of the base class
-            if not to_type_is_base:
-                # so we need to get the correct derived type if to_type is not the base class itself
-                ret = ret._create_derived_type()
-        # checks
-        assert isinstance(ret, to_type), f"Conversion failed, expected type {to_type} but got {type(ret)}"
-        assert obj.is_pitch == ret.is_pitch, f"{obj.is_pitch} {ret.is_pitch}"
-        assert obj.is_class == ret.is_class, f"{obj.is_class} {ret.is_class}"
-        return ret
-
-    @staticmethod
-    def get_converter(from_type, to_type=None):
-        # return dedicated converter if other_type was specified or list of existing converters otherwise
-        if to_type is not None:
-            all_converters = AbstractBase.get_converter(from_type)
-            try:
-                return all_converters[to_type]
-            except KeyError:
-                raise NotImplementedError(f"Type '{from_type}' does not have any converter registered for type "
-                                          f"'{to_type}'")
-        else:
-            try:
-                return AbstractBase._converters[from_type]
-            except KeyError:
-                raise NotImplementedError(f"There are no converters registered for type '{from_type}'")
-
-    @staticmethod
-    def register_converter(from_type, to_type, conv_func,
-                           overwrite_explicit_converters=False,
-                           overwrite_implicit_converter=False,
-                           create_implicit_converters=False):
-        """
-        Register a converter from from_type to other type. The converter function should be function taking as its
-        single argument an from_type object and returning an other_type object.
-        :param to_type: other type derived from AbstractBase, which the converter function converts to
-        :param conv_func: converter function from from_type to other_type
-        :param overwrite_explicit_converters: can be True, False, or None (default); if True and there exists an
-        explicit converter (i.e. the list of converter functions is of length 1), replace it by this converter function;
-        if False raise a ValueError if an explicit converter exists
-        :param overwrite_implicit_converter: if there exists an implicit converter (i.e. the list of converter functions
-        is of length greater than 1) replace it by this converter function
-        :param create_implicit_converters: if there is an (explicit or implicit) converter from type X to type
-        from_type, add an implicit converter from type X to other_type by extending the list of converter functions from
-        X to from_type by this converter function; if there already exists an (explicit or implicit) converter from X to
-        other_type, it will not be overwritten
-        """
-        # not self-conversion
-        if from_type == to_type:
-            raise TypeError(f"Not allows to add converters from a type to itself (from: {from_type}, to: {to_type})")
-        # initialise converter dict if it does not exist
-        if from_type not in AbstractBase._converters:
-            AbstractBase._converters[from_type] = {}
-        # get existing converters from from_type to to_type and decide whether to set new converter
-        set_new_converter = False
-        try:
-            converter = AbstractBase.get_converter(from_type, to_type)
-        except NotImplementedError:
-            # no existing converters
-            set_new_converter = True
-        else:
-            # implicit or explicit converter are already registered
-            if len(converter) == 1:
-                # explicit converter
-                if overwrite_explicit_converters:
-                    set_new_converter = True
-                else:
-                    raise ValueError("An explicit converter already exists. Set overwrite_explicit_converters=True to "
-                                     "overwrite.")
-            else:
-                # implicit converter
-                if overwrite_implicit_converter:
-                    set_new_converter = True
-        # set the new converter
-        if set_new_converter:
-            AbstractBase._converters[from_type][to_type] = [conv_func]
-        # extend implicit converters
-        if create_implicit_converters:
-            for another_from_type, other_converters in AbstractBase._converters.items():
-                # remember new converters to not change dict while iterating over it
-                new_converters = []
-                for another_to_type, converter_pipeline in other_converters.items():
-                    # trying to prepend this converter [from_type --> to_type == another_from_type --> another_to_type]
-                    if to_type == another_from_type:
-                        # don't add implicit self-converters
-                        if from_type == another_to_type:
-                            continue
-                        # get existing converters from_type --> ???
-                        converters = AbstractBase.get_converter(from_type)
-                        # add the extended converter if one does not exist
-                        if another_to_type not in converters:
-                            converters[another_to_type] = [conv_func] + converter_pipeline
-                    # try to append this converter [another_from_type --> another_to_type == from_type --> to_type]
-                    if another_to_type == from_type:
-                        # don't add implicit self-converters
-                        if another_from_type == to_type:
-                            continue
-                        # already initialised and we have the existing converters another_from_type --> ???
-                        # add the extended converter if one does not exist
-                        if to_type not in other_converters:
-                            new_converters.append((to_type, converter_pipeline + [conv_func]))
-                # insert new converters
-                for another_to_type, converter_pipeline in new_converters:
-                    other_converters[another_to_type] = converter_pipeline
 
     def __init__(self, value, is_pitch, is_class, *args, **kwargs):
         # call __init__ on super to be cooperative in multi-inheritance,
@@ -374,10 +226,6 @@ class AbstractBase:
             return abs(self.value)
         else:
             raise NotImplementedError
-
-    def convert_to(self, other_type):
-        AbstractBase._is_derived_from_abstract_base(other_type, object_is_type=True)
-        return AbstractBase._convert(self, other_type)
 
 
 class Spelled(AbstractBase):
@@ -522,22 +370,21 @@ class Spelled(AbstractBase):
         return int_value, is_pitch, is_class
 
     def __init__(self, value, is_pitch, is_class, *args, **kwargs):
-        if not AbstractBase._is_derived_from_abstract_base(value):
-            exceptions = []
-            for f in [Spelled._init_from_int,
-                      Spelled._init_from_str,
-                      Spelled._init_from_listlike]:
-                try:
-                    value, is_pitch, is_class = f(value=value, is_pitch=is_pitch, is_class=is_class)
-                except (ValueError, TypeError) as ex:
-                    exceptions.append(ex)
-                    continue
-                break
-            else:
-                ex_list = '\n'.join([f"    {type(ex).__name__}: {ex}" for ex in exceptions])
-                raise ValueError(f"Could not initialise with provided parameters (value={value}, is_pitch={is_pitch}, "
-                                 f"is_class={is_class}). Different attempts resulted in the following exceptions being "
-                                 f"raised:\n{ex_list}")
+        exceptions = []
+        for f in [Spelled._init_from_int,
+                  Spelled._init_from_str,
+                  Spelled._init_from_listlike]:
+            try:
+                value, is_pitch, is_class = f(value=value, is_pitch=is_pitch, is_class=is_class)
+            except (ValueError, TypeError) as ex:
+                exceptions.append(ex)
+                continue
+            break
+        else:
+            ex_list = '\n'.join([f"    {type(ex).__name__}: {ex}" for ex in exceptions])
+            raise ValueError(f"Could not initialise with provided parameters (value={value}, is_pitch={is_pitch}, "
+                             f"is_class={is_class}). Different attempts resulted in the following exceptions being "
+                             f"raised:\n{ex_list}")
         super().__init__(value=value, is_pitch=is_pitch, is_class=is_class, *args, **kwargs)
 
     def __repr__(self):
@@ -634,7 +481,7 @@ class Enharmonic(AbstractBase):
     def __init__(self, value, is_pitch, is_class, *args, **kwargs):
         # pre-process value
         if isinstance(value, str):
-            value = Spelled(value=value, is_pitch=is_pitch, is_class=is_class).convert_to(Enharmonic).value
+            value = convert(Spelled(value=value, is_pitch=is_pitch, is_class=is_class), Enharmonic).value
         elif isinstance(value, numbers.Number):
             int_value = int(value)
             if int_value != value:
@@ -737,11 +584,10 @@ class LogFreq(AbstractBase):
         :param value: frequency or log-frequency (default) value
         :param is_freq: whether value is frequency or log-frequency
         """
-        if not AbstractBase._is_derived_from_abstract_base(value):
-            if is_freq:
-                value = np.log(value)
-            else:
-                value = float(value)
+        if is_freq:
+            value = np.log(value)
+        else:
+            value = float(value)
         super().__init__(value=value, is_pitch=is_pitch, is_class=is_class, *args, **kwargs)
 
     def to_class(self):
@@ -777,6 +623,160 @@ class LogFreqPitchClass(LogFreq): pass
 class LogFreqIntervalClass(LogFreq): pass
 
 
+class Converters:
+
+    # store converters for classes derived from Pitch;
+    # it's a dict of dicts, so that _converters[A][B] returns is a list of functions that, when executed
+    # successively, converts A to B
+    _converters = {}
+
+    @staticmethod
+    def _is_derived_from_abstract_base(object, object_is_type=False):
+        if object_is_type:
+            return AbstractBase in object.__mro__
+        else:
+            return AbstractBase in object.__class__.__mro__
+
+    @staticmethod
+    def _convert(obj, to_type):
+        # check that the object and the desired type are both derived from AbstractBase
+        Converters._is_derived_from_abstract_base(obj)
+        Converters._is_derived_from_abstract_base(to_type, object_is_type=True)
+        # get base type of obj
+        if obj._base_type is None:
+            from_base_type = obj.__class__
+        else:
+            from_base_type = obj._base_type
+        # and to_type
+        if to_type._base_type is None:
+            to_type_is_base = True
+            to_base_type = to_type
+        else:
+            to_type_is_base = False
+            to_base_type = to_type._base_type
+        # check for self-conversion
+        if to_base_type == from_base_type:
+            # check for conversion between different subtypes
+            if type(obj) != to_type:
+                raise TypeError(f"Cannot convert {obj} of type {type(obj)} to type {to_type}, which are different "
+                                f"types but have the same base type ({to_base_type})")
+            # skip self-conversion
+            ret = obj
+        else:
+            # use conversion pipeline starting with the object itself
+            ret = obj
+            # sequentially apply converters from pipeline
+            for converter in Converters.get_converter(from_base_type, to_base_type):
+                ret = converter(ret)
+            # converters generally produce an object of the base class
+            if not to_type_is_base:
+                # so we need to get the correct derived type if to_type is not the base class itself
+                ret = ret._create_derived_type()
+        # checks
+        assert isinstance(ret, to_type), f"Conversion failed, expected type {to_type} but got {type(ret)}"
+        assert obj.is_pitch == ret.is_pitch, f"{obj.is_pitch} {ret.is_pitch}"
+        assert obj.is_class == ret.is_class, f"{obj.is_class} {ret.is_class}"
+        return ret
+
+    @staticmethod
+    def get_converter(from_type, to_type=None):
+        # return dedicated converter if other_type was specified or list of existing converters otherwise
+        if to_type is not None:
+            all_converters = Converters.get_converter(from_type)
+            try:
+                return all_converters[to_type]
+            except KeyError:
+                raise NotImplementedError(f"Type '{from_type}' does not have any converter registered for type "
+                                          f"'{to_type}'")
+        else:
+            try:
+                return Converters._converters[from_type]
+            except KeyError:
+                raise NotImplementedError(f"There are no converters registered for type '{from_type}'")
+
+    @staticmethod
+    def register_converter(from_type, to_type, conv_func,
+                           overwrite_explicit_converters=False,
+                           overwrite_implicit_converter=False,
+                           create_implicit_converters=False):
+        """
+        Register a converter from from_type to other type. The converter function should be function taking as its
+        single argument an from_type object and returning an other_type object.
+        :param to_type: other type derived from AbstractBase, which the converter function converts to
+        :param conv_func: converter function from from_type to other_type
+        :param overwrite_explicit_converters: can be True, False, or None (default); if True and there exists an
+        explicit converter (i.e. the list of converter functions is of length 1), replace it by this converter function;
+        if False raise a ValueError if an explicit converter exists
+        :param overwrite_implicit_converter: if there exists an implicit converter (i.e. the list of converter functions
+        is of length greater than 1) replace it by this converter function
+        :param create_implicit_converters: if there is an (explicit or implicit) converter from type X to type
+        from_type, add an implicit converter from type X to other_type by extending the list of converter functions from
+        X to from_type by this converter function; if there already exists an (explicit or implicit) converter from X to
+        other_type, it will not be overwritten
+        """
+        # not self-conversion
+        if from_type == to_type:
+            raise TypeError(f"Not allows to add converters from a type to itself (from: {from_type}, to: {to_type})")
+        # initialise converter dict if it does not exist
+        if from_type not in Converters._converters:
+            Converters._converters[from_type] = {}
+        # get existing converters from from_type to to_type and decide whether to set new converter
+        set_new_converter = False
+        try:
+            converter = Converters.get_converter(from_type, to_type)
+        except NotImplementedError:
+            # no existing converters
+            set_new_converter = True
+        else:
+            # implicit or explicit converter are already registered
+            if len(converter) == 1:
+                # explicit converter
+                if overwrite_explicit_converters:
+                    set_new_converter = True
+                else:
+                    raise ValueError("An explicit converter already exists. Set overwrite_explicit_converters=True to "
+                                     "overwrite.")
+            else:
+                # implicit converter
+                if overwrite_implicit_converter:
+                    set_new_converter = True
+        # set the new converter
+        if set_new_converter:
+            Converters._converters[from_type][to_type] = [conv_func]
+        # extend implicit converters
+        if create_implicit_converters:
+            for another_from_type, other_converters in Converters._converters.items():
+                # remember new converters to not change dict while iterating over it
+                new_converters = []
+                for another_to_type, converter_pipeline in other_converters.items():
+                    # trying to prepend this converter [from_type --> to_type == another_from_type --> another_to_type]
+                    if to_type == another_from_type:
+                        # don't add implicit self-converters
+                        if from_type == another_to_type:
+                            continue
+                        # get existing converters from_type --> ???
+                        converters = Converters.get_converter(from_type)
+                        # add the extended converter if one does not exist
+                        if another_to_type not in converters:
+                            converters[another_to_type] = [conv_func] + converter_pipeline
+                    # try to append this converter [another_from_type --> another_to_type == from_type --> to_type]
+                    if another_to_type == from_type:
+                        # don't add implicit self-converters
+                        if another_from_type == to_type:
+                            continue
+                        # already initialised and we have the existing converters another_from_type --> ???
+                        # add the extended converter if one does not exist
+                        if to_type not in other_converters:
+                            new_converters.append((to_type, converter_pipeline + [conv_func]))
+                # insert new converters
+                for another_to_type, converter_pipeline in new_converters:
+                    other_converters[another_to_type] = converter_pipeline
+
+def convert(self, other_type):
+    Converters._is_derived_from_abstract_base(other_type, object_is_type=True)
+    return Converters._convert(self, other_type)
+
+
 def convert_spelled_to_enharmonic(spelled):
     if spelled.is_pitch:
         fifth_steps_from_f = spelled.fifth_steps() + 1
@@ -795,13 +795,13 @@ def convert_spelled_to_enharmonic(spelled):
         raise NotImplementedError
 
 
-AbstractBase.register_converter(from_type=Spelled,
+Converters.register_converter(from_type=Spelled,
                                 to_type=Enharmonic,
                                 conv_func=convert_spelled_to_enharmonic)
 
 def convert_enharmonic_to_logfreq(enharmonic):
     return LogFreq(enharmonic.freq(), is_freq=True, is_pitch=enharmonic.is_pitch, is_class=enharmonic.is_class)
 
-AbstractBase.register_converter(from_type=Enharmonic,
+Converters.register_converter(from_type=Enharmonic,
                                 to_type=LogFreq,
                                 conv_func=convert_enharmonic_to_logfreq)
