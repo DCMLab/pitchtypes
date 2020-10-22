@@ -381,19 +381,15 @@ class Spelled(AbstractBase):
     def __lt__(self, other):
         # spelled pitch is not generally ordered because it is two dimensional
         # but spelled pitch CLASSES can be ordered along the line of fifths (which is done here)
-        if self.is_class and isinstance(other, self.Pitch):
+        if self.is_class and (
+                (self.is_pitch and isinstance(other, self.PitchClass)) or
+                (self.is_interval and isinstance(other, self.IntervalClass))
+        ):
             return self.value[0] < other.value[0]
-        else:
-            return NotImplemented
+        return NotImplemented
 
     def __hash__(self):
         return hash((self.__class__.__name__, self.value[0], self.value[1], self.is_pitch, self.is_class))
-
-    def __abs__(self):
-        if self.is_interval and self.is_class:
-            return abs(self.value[0])
-        else:
-            raise NotImplementedError
 
     def convert_to_enharmonic(self):
         if self.is_pitch:
@@ -483,7 +479,9 @@ class SpelledInterval(Spelled): pass
 class SpelledPitchClass(Spelled): pass
 
 @Spelled.link_interval_class_type()
-class SpelledIntervalClass(Spelled): pass
+class SpelledIntervalClass(Spelled):
+    def __abs__(self):
+        return abs(self.value[0])
 
 
 class Enharmonic(AbstractBase):
