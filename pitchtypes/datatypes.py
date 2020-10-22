@@ -470,13 +470,16 @@ class Spelled(AbstractBase):
         return self.value[1]
 
 @Spelled.link_pitch_type()
-class SpelledPitch(Spelled): pass
+class SpelledPitch(Spelled):
+    pass
 
 @Spelled.link_interval_type()
-class SpelledInterval(Spelled): pass
+class SpelledInterval(Spelled):
+    pass
 
 @Spelled.link_pitch_class_type()
-class SpelledPitchClass(Spelled): pass
+class SpelledPitchClass(Spelled):
+    pass
 
 @Spelled.link_interval_class_type()
 class SpelledIntervalClass(Spelled):
@@ -569,13 +572,16 @@ class EnharmonicPitch(Enharmonic):
         return self.value
 
 @Enharmonic.link_interval_type()
-class EnharmonicInterval(Enharmonic): pass
+class EnharmonicInterval(Enharmonic):
+    pass
 
 @Enharmonic.link_pitch_class_type()
-class EnharmonicPitchClass(Enharmonic): pass
+class EnharmonicPitchClass(Enharmonic):
+    pass
 
 @Enharmonic.link_interval_class_type()
-class EnharmonicIntervalClass(Enharmonic): pass
+class EnharmonicIntervalClass(Enharmonic):
+    pass
 
 
 class LogFreq(AbstractBase):
@@ -625,16 +631,20 @@ class LogFreq(AbstractBase):
         return s
 
 @LogFreq.link_pitch_type()
-class LogFreqPitch(LogFreq): pass
+class LogFreqPitch(LogFreq):
+    pass
 
 @LogFreq.link_interval_type()
-class LogFreqInterval(LogFreq): pass
+class LogFreqInterval(LogFreq):
+    pass
 
 @LogFreq.link_pitch_class_type()
-class LogFreqPitchClass(LogFreq): pass
+class LogFreqPitchClass(LogFreq):
+    pass
 
 @LogFreq.link_interval_class_type()
-class LogFreqIntervalClass(LogFreq): pass
+class LogFreqIntervalClass(LogFreq):
+    pass
 
 
 class Converters:
