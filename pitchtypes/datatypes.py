@@ -225,11 +225,6 @@ class Spelled(AbstractBase):
     # ToDo: regex includes "P3", "m5" etc which are invalid values --> change that
     _interval_regex = re.compile("^(?P<sign>[-+])(?P<quality>(A*)|(M)|(P)|(m)|(d*))(?P<generic>[1-7])(?P<octave>(:-?[0-9]+)?)$")
 
-    def to_class(self):
-        if self.is_class:
-            raise TypeError("Is already class.")
-        return self.__class__(value=np.array([self.value[0], 0]), is_pitch=self.is_pitch, is_class=True)
-
     @staticmethod
     def _init_from_int(value, is_pitch, is_class):
         try:
@@ -397,6 +392,28 @@ class Spelled(AbstractBase):
         else:
             raise NotImplementedError
 
+    def convert_to_enharmonic(self):
+        if self.is_pitch:
+            fifth_steps_from_f = self.fifth_steps() + 1
+            # base pitch
+            base_pitch = ((fifth_steps_from_f % 7 - 1) * 7) % 12
+            # chromatic semitone steps
+            if fifth_steps_from_f >= 0:
+                accidentals = fifth_steps_from_f // 7
+            else:
+                # note: floor divide rounds down (for negative numbers that is equal to the remainder of division minus one)
+                accidentals = fifth_steps_from_f // 7
+            return Enharmonic(value=12 * (self.octave() + 1) + base_pitch + accidentals,
+                              is_pitch=self.is_pitch,
+                              is_class=self.is_class)
+        else:
+            raise NotImplementedError
+
+    def to_class(self):
+        if self.is_class:
+            raise TypeError("Is already class.")
+        return self.__class__(value=np.array([self.value[0], 0]), is_pitch=self.is_pitch, is_class=True)
+
     def name(self, negative=None):
         if self.is_pitch:
             if negative is not None:
@@ -481,6 +498,9 @@ class Enharmonic(AbstractBase):
                 value = value % 12
         # hand on initialisation to other base classes
         super().__init__(value=value, is_pitch=is_pitch, is_class=is_class, *args, **kwargs)
+
+    def convert_to_logfreq(self):
+        return LogFreq(self.freq(), is_freq=True, is_pitch=self.is_pitch, is_class=self.is_class)
 
     def to_class(self):
         if self.is_class:
@@ -762,36 +782,21 @@ class Converters:
                 for another_to_type, converter_pipeline in new_converters:
                     other_converters[another_to_type] = converter_pipeline
 
-def convert(self, other_type):
-    Converters._is_derived_from_abstract_base(other_type, object_is_type=True)
-    return Converters._convert(self, other_type)
+    @staticmethod
+    def convert(obj, other_type):
+        Converters._is_derived_from_abstract_base(obj)
+        Converters._is_derived_from_abstract_base(other_type, object_is_type=True)
+        return Converters._convert(obj, other_type)
 
 
-def convert_spelled_to_enharmonic(spelled):
-    if spelled.is_pitch:
-        fifth_steps_from_f = spelled.fifth_steps() + 1
-        # base pitch
-        base_pitch = ((fifth_steps_from_f % 7 - 1) * 7) % 12
-        # chromatic semitone steps
-        if fifth_steps_from_f >= 0:
-            accidentals = fifth_steps_from_f // 7
-        else:
-            # note: floor divide rounds down (for negative numbers that is equal to the remainder of division minus one)
-            accidentals = fifth_steps_from_f // 7
-        return Enharmonic(value=12 * (spelled.octave() + 1) + base_pitch + accidentals,
-                          is_pitch=spelled.is_pitch,
-                          is_class=spelled.is_class)
-    else:
-        raise NotImplementedError
+def convert(*args, **kwargs):
+    return Converters.convert(*args, **kwargs)
 
 
 Converters.register_converter(from_type=Spelled,
                                 to_type=Enharmonic,
-                                conv_func=convert_spelled_to_enharmonic)
-
-def convert_enharmonic_to_logfreq(enharmonic):
-    return LogFreq(enharmonic.freq(), is_freq=True, is_pitch=enharmonic.is_pitch, is_class=enharmonic.is_class)
+                                conv_func=lambda spelled: spelled.convert_to_enharmonic())
 
 Converters.register_converter(from_type=Enharmonic,
                                 to_type=LogFreq,
-                                conv_func=convert_enharmonic_to_logfreq)
+                                conv_func=lambda enharmonic: enharmonic.convert_to_logfreq())
