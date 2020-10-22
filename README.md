@@ -2,7 +2,7 @@
 
 # pitchtypes
 
-Musically meaningful pitch types
+Musically meaningful pitch types.
 
 This library provides Python types that handle pitch in a musically correct way. For instance, spelled pitch is handled correctly:
 
@@ -11,9 +11,9 @@ This library provides Python types that handle pitch in a musically correct way.
 >>> p1 = SpelledPitchClass("C#")
 >>> p2 = SpelledPitchClass("Gb")
 >>> i = p1 - p2
->>> print(type(i))
+>>> type(i)
 <class 'pitchtypes.datatypes.SpelledIntervalClass'>
->>> print(i)
+>>> i
 +AA4
 ```
 
@@ -23,13 +23,13 @@ Of course, you can also convert spelled pitches to their enharmonic equivalents:
 >>> from pitchtypes import SpelledPitch, EnharmonicPitch
 >>> spelled = SpelledPitch("C#4")
 >>> enharmonic = spelled.convert_to(EnharmonicPitch)
->>> print(type(enharmonic))
+>>> type(enharmonic)
 <class 'pitchtypes.datatypes.EnharmonicPitch'>
->>> print(enharmonic.midi)
+>>> enharmonic.midi
 61
->>> print(enharmonic.name('sharp'))
+>>> enharmonic.name('sharp')
 C#4
->>> print(enharmonic.name('flat'))
+>>> enharmonic.name('flat')
 Db4
 ```
 
@@ -39,7 +39,6 @@ And used continuous log-frequency space (assuming twelve-tone equal temperament 
 >>> from pitchtypes import EnharmonicPitch, LogFreqPitch
 >>> enharmonic = EnharmonicPitch("A4")
 >>> logfreq = enharmonic.convert_to(LogFreqPitch)
->>> print(logfreq)
+>>> logfreq
 440.Hz
 ```
-
