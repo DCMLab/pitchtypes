@@ -217,6 +217,9 @@ class AbstractBase:
             return abs(self.value)
         raise NotImplementedError
 
+    def convert_to(self, other_type):
+        return Converters.convert(self, other_type)
+
 
 class Spelled(AbstractBase):
 
@@ -488,7 +491,7 @@ class Enharmonic(AbstractBase):
     def __init__(self, value, is_pitch, is_class, *args, **kwargs):
         # pre-process value
         if isinstance(value, str):
-            value = convert(Spelled(value=value, is_pitch=is_pitch, is_class=is_class), Enharmonic).value
+            value = Spelled(value=value, is_pitch=is_pitch, is_class=is_class).convert_to(Enharmonic).value
         elif isinstance(value, numbers.Number):
             int_value = int(value)
             if int_value != value:
@@ -787,10 +790,6 @@ class Converters:
         Converters._is_derived_from_abstract_base(obj)
         Converters._is_derived_from_abstract_base(other_type, object_is_type=True)
         return Converters._convert(obj, other_type)
-
-
-def convert(*args, **kwargs):
-    return Converters.convert(*args, **kwargs)
 
 
 Converters.register_converter(from_type=Spelled,

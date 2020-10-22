@@ -1,5 +1,5 @@
 from unittest import TestCase
-from pitchtypes import AbstractBase, Enharmonic, Converters, convert
+from pitchtypes import AbstractBase, Enharmonic, Converters
 
 
 class TestConverters(TestCase):
@@ -19,7 +19,7 @@ class TestConverters(TestCase):
                                                                         pitch_a.is_pitch,
                                                                         pitch_a.is_class))
         # check conversion works
-        self.assertEqual(convert(TypeA("foo", True, False), TypeB), TypeB("foo", True, False))
+        self.assertEqual(TypeA("foo", True, False).convert_to(TypeB), TypeB("foo", True, False))
 
         # register converter B --> C
         Converters.register_converter(from_type=TypeB,
@@ -28,10 +28,10 @@ class TestConverters(TestCase):
                                                                         pitch_b.is_pitch,
                                                                         pitch_b.is_class))
         # check conversion works
-        self.assertEqual(convert(TypeB("bar", True, False), TypeC), TypeC("bar", True, False))
+        self.assertEqual(TypeB("bar", True, False).convert_to(TypeC), TypeC("bar", True, False))
 
         # check that conversion A --> C DOES NOT work!
-        self.assertRaises(NotImplementedError, lambda: convert(TypeA("baz", True, False), TypeC))
+        self.assertRaises(NotImplementedError, lambda: TypeA("baz", True, False).convert_to(TypeC))
 
 
         # register conversion C --> B
@@ -41,7 +41,7 @@ class TestConverters(TestCase):
                                                                         pitch_c.is_pitch,
                                                                         pitch_c.is_class))
         # check that conversion C --> B works
-        self.assertEqual(convert(TypeC("foo", True, False), TypeB), TypeB("foo", True, False))
+        self.assertEqual(TypeC("foo", True, False).convert_to(TypeB), TypeB("foo", True, False))
 
         # register conversion B --> A
         # CREATE implicit converter C --> A
@@ -52,10 +52,10 @@ class TestConverters(TestCase):
                                                                         pitch_b.is_class),
                                         create_implicit_converters=True)  # CREATE HERE
         # check that conversion B --> A works
-        self.assertEqual(convert(TypeB("bar", True, False), TypeA), TypeA("bar", True, False))
+        self.assertEqual(TypeB("bar", True, False).convert_to(TypeA), TypeA("bar", True, False))
 
         # check that conversion C --> A also works (implicitly created)
-        self.assertEqual(convert(TypeC("baz", True, False), TypeA), TypeA("baz", True, False))
+        self.assertEqual(TypeC("baz", True, False).convert_to(TypeA), TypeA("baz", True, False))
 
     def test_implementing_new_type(self):
 
