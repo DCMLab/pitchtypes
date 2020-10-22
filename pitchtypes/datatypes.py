@@ -563,7 +563,10 @@ class Enharmonic(AbstractBase):
             return sign + str(abs(self.value))
 
 @Enharmonic.link_pitch_type()
-class EnharmonicPitch(Enharmonic): pass
+class EnharmonicPitch(Enharmonic):
+    @property
+    def midi(self):
+        return self.value
 
 @Enharmonic.link_interval_type()
 class EnharmonicInterval(Enharmonic): pass
