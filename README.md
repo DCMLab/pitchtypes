@@ -42,3 +42,4 @@ And used continuous log-frequency space (assuming twelve-tone equal temperament 
 >>> logfreq
 440.Hz
 ```
+For more examples, have a look at the [Tutorial.ipynb](Tutorial.ipynb)!
