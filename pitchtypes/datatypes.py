@@ -178,7 +178,7 @@ class AbstractBase:
                                 f"{self.is_class}/{other.is_class}). This either means that someone has messed with "
                                 f"the private properties or that the types were not implemented correctly (by creating "
                                 f"four separate sub-types).")
-            if isinstance(self.value, np.ndarray) and isinstance(other.value, np.ndarray):
+            if isinstance(self.value, np.ndarray) or isinstance(other.value, np.ndarray):
                 return np.array_equal(self.value, other.value)
             else:
                 return self.value == other.value
@@ -189,43 +189,33 @@ class AbstractBase:
         return hash((self.__class__.__name__, self.value, self.is_pitch, self.is_class))
 
     def __lt__(self, other):
-        if self.is_class:
-            # cyclic order
-            return NotImplemented
-        if self.is_pitch:
-            if isinstance(other, self.Pitch):
-                return self.value < other.value
-            else:
-                return NotImplemented
-        else:
-            if isinstance(other, self.Interval):
-                return self.value < other.value
-            else:
-                return NotImplemented
+        if not self.is_class and (
+                (self.is_pitch and isinstance(other, self.Pitch)) or
+                (self.is_interval and isinstance(other, self.Interval))
+        ):
+            return self.value < other.value
+        return NotImplemented
 
     def __mul__(self, other):
-        if self.is_pitch:
-            return NotImplemented
-        else:
+        if self.is_interval:
             if self.is_class:
                 return self.IntervalClass(self.value * other)
             else:
                 return self.Interval(self.value * other)
+        return NotImplemented
 
     def __rmul__(self, other):
         return self.__mul__(other)
 
     def __truediv__(self, other):
-        if self.is_pitch:
-            return NotImplemented
-        else:
+        if self.is_interval:
             return self.__mul__(1 / other)
+        return NotImplemented
 
     def __abs__(self):
         if self.is_interval and self.is_class:
             return abs(self.value)
-        else:
-            raise NotImplementedError
+        raise NotImplementedError
 
 
 class Spelled(AbstractBase):
