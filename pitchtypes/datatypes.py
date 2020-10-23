@@ -392,21 +392,18 @@ class Spelled(AbstractBase):
         return hash((self.__class__.__name__, self.value[0], self.value[1], self.is_pitch, self.is_class))
 
     def convert_to_enharmonic(self):
-        if self.is_pitch:
-            fifth_steps_from_f = self.fifth_steps() + 1
-            # base pitch
-            base_pitch = ((fifth_steps_from_f % 7 - 1) * 7) % 12
-            # chromatic semitone steps
-            if fifth_steps_from_f >= 0:
-                accidentals = fifth_steps_from_f // 7
-            else:
-                # note: floor divide rounds down (for negative numbers that is equal to the remainder of division minus one)
-                accidentals = fifth_steps_from_f // 7
-            return Enharmonic(value=12 * (self.octave() + 1) + base_pitch + accidentals,
-                              is_pitch=self.is_pitch,
-                              is_class=self.is_class)
+        fifth_steps_from_f = self.fifth_steps() + 1
+        # base pitch
+        base_pitch = ((fifth_steps_from_f % 7 - 1) * 7) % 12
+        # chromatic semitone steps
+        if fifth_steps_from_f >= 0:
+            accidentals = fifth_steps_from_f // 7
         else:
-            raise NotImplementedError
+            # note: floor divide rounds down (for negative numbers that is equal to the remainder of division minus one)
+            accidentals = fifth_steps_from_f // 7
+        return Enharmonic(value=12 * (self.octave() + 1) + base_pitch + accidentals,
+                          is_pitch=self.is_pitch,
+                          is_class=self.is_class)
 
     def to_class(self):
         if self.is_class:

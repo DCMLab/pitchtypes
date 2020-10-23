@@ -1,5 +1,5 @@
 from unittest import TestCase
-from pitchtypes import Spelled, SpelledPitch, SpelledInterval, SpelledPitchClass, SpelledIntervalClass
+from pitchtypes import Spelled, SpelledPitch, SpelledInterval, SpelledPitchClass, SpelledIntervalClass, Enharmonic
 
 class TestSpelled(TestCase):
 
@@ -44,9 +44,15 @@ class TestSpelled(TestCase):
             for idx, p in enumerate(self.line_of_fifths):
                 if is_class:
                     pp = SpelledPitchClass(p)
+                    # check conversion to enharmonic
+                    self.assertEqual(pp.convert_to_enharmonic(), Enharmonic.PitchClass(p))
+                    self.assertEqual(pp.convert_to(Enharmonic.PitchClass), Enharmonic.PitchClass(p))
                 else:
                     p += "4"
                     pp = SpelledPitch(p)
+                    # check conversion to enharmonic
+                    self.assertEqual(pp.convert_to_enharmonic(), Enharmonic.Pitch(p))
+                    self.assertEqual(pp.convert_to(Enharmonic.Pitch), Enharmonic.Pitch(p))
                 # check base type is set on object
                 self.assertEqual(pp._base_type, Spelled)
                 # create a derived type (usually called from the base class to recreate derived class)
@@ -72,11 +78,17 @@ class TestSpelled(TestCase):
                 if is_class:
                     ii = SpelledIntervalClass(i)
                     iir = SpelledIntervalClass(ir)
+                    ii.convert_to_enharmonic()
+                    self.assertEqual(ii.convert_to_enharmonic(), Enharmonic.IntervalClass(i))
+                    self.assertEqual(ii.convert_to(Enharmonic.IntervalClass), Enharmonic.IntervalClass(i))
                 else:
                     i += ":4"
                     ir += ":4"
                     ii = SpelledInterval(i)
                     iir = SpelledInterval(ir)
+                    # check conversion to enharmonic
+                    self.assertEqual(ii.convert_to_enharmonic(), Enharmonic.Interval(i))
+                    self.assertEqual(ii.convert_to(Enharmonic.Interval), Enharmonic.Interval(i))
                 self.assertEqual(ii._base_type, Spelled)
                 self.assertEqual(iir._base_type, Spelled)
                 self.assertEqual(is_class, ii.is_class)
