@@ -415,8 +415,8 @@ class Spelled(AbstractBase):
             if negative is not None:
                 raise ValueError("specifying parameter 'negative' is only valid for interval class types")
             pitch_class = ["F", "C", "G", "D", "A", "E", "B"][(self.value[0] + 1) % 7]
-            sharp_flat = (self.value[0] + 1) // 7
-            pitch_class += ('#' if sharp_flat > 0 else 'b') * abs(sharp_flat)
+            flat_sharp = (self.value[0] + 1) // 7
+            pitch_class += ('#' if flat_sharp > 0 else 'b') * abs(flat_sharp)
             if self.is_class:
                 return pitch_class
             else:
@@ -486,6 +486,11 @@ class SpelledIntervalClass(Spelled):
 
 class Enharmonic(AbstractBase):
 
+    @classmethod
+    def print_options(cls, as_int=None, flat_sharp=None):
+        cls.Pitch.print_options(as_int=as_int, flat_sharp=flat_sharp)
+        cls.PitchClass.print_options(as_int=as_int, flat_sharp=flat_sharp)
+
     def __init__(self, value, is_pitch, is_class, *args, **kwargs):
         # pre-process value
         if isinstance(value, str):
@@ -523,47 +528,77 @@ class Enharmonic(AbstractBase):
     def freq(self):
         return 2 ** ((self.value - 69) / 12) * 440
 
-    def fifth_steps(self, sharp_flat=None):
+    def fifth_steps(self, flat_sharp=None):
         pitch_class = int(self.to_class())
         if pitch_class % 2 == 0:
             fifth_steps = pitch_class
         else:
             fifth_steps = (pitch_class + 6) % 12
-        if sharp_flat is None:
+        if flat_sharp is None:
             if fifth_steps > 6:
                 fifth_steps -= 12
-        elif sharp_flat == "sharp":
+        elif flat_sharp == "sharp":
             pass
-        elif sharp_flat == "flat":
+        elif flat_sharp == "flat":
             fifth_steps %= -12
         else:
-            raise ValueError(f"parameter 'sharp_flat' must be one of {['sharp', 'flat', None]}")
+            raise ValueError(f"parameter 'flat_sharp' must be one of {['sharp', 'flat', None]}")
         return fifth_steps
 
-    def name(self, sharp_flat=None):
+    def name(self, as_int=None, flat_sharp=None):
         if self.is_pitch:
-            if sharp_flat is None:
-                sharp_flat = "sharp"
-            if sharp_flat == "sharp":
+            if flat_sharp is None:
+                flat_sharp = "sharp"
+            if as_int is None:
+                as_int = False
+            if as_int:
+                return str(self.value)
+            if flat_sharp == "sharp":
                 base_names = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
-            elif sharp_flat == "flat":
+            elif flat_sharp == "flat":
                 base_names = ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"]
             else:
-                raise ValueError("parameter 'sharp_flat' must be one of ['sharp', 'flat']")
+                raise ValueError("parameter 'flat_sharp' must be one of ['sharp', 'flat']")
             pc = base_names[self.value % 12]
             if self.is_class:
                 return pc
             else:
                 return pc + str(self.octave())
         else:
-            if sharp_flat is not None:
-                raise ValueError(f"parameter 'sharp_flat' can only be used for pitch types and should be None for "
-                                 f"interval types (is {sharp_flat})")
+            if flat_sharp is not None:
+                raise ValueError(f"parameter 'flat_sharp' can only be used for pitch types and should be None for "
+                                 f"interval types (is {flat_sharp})")
             sign = "-" if self.value < 0 else "+"
             return sign + str(abs(self.value))
 
 @Enharmonic.link_pitch_type()
 class EnharmonicPitch(Enharmonic):
+
+    # how should Pitch and PitchClass types be printed
+    _print_as_int = False
+    _print_flat_sharp = 'sharp'
+
+    @classmethod
+    def print_options(cls, as_int=None, flat_sharp=None):
+        if as_int is not None:
+            cls._print_as_int = as_int
+        if flat_sharp is not None:
+            if flat_sharp not in ['sharp', 'flat']:
+                raise ValueError("'flat_sharp' has to be one of ['sharp', 'flat']")
+            else:
+                cls._print_flat_sharp = flat_sharp
+        if as_int is None and flat_sharp is None:
+            print(f"print options in {cls.__name__}:\n"
+                  f"    as_int: {cls._print_as_int}\n"
+                  f"    flat_sharp: {cls._print_flat_sharp}")
+
+    def name(self, as_int=None, flat_sharp=None):
+        if as_int is None:
+            as_int = self._print_as_int
+        if flat_sharp is None:
+            flat_sharp = self._print_flat_sharp
+        return super().name(as_int=as_int, flat_sharp=flat_sharp)
+
     @property
     def midi(self):
         return self.value
@@ -574,7 +609,31 @@ class EnharmonicInterval(Enharmonic):
 
 @Enharmonic.link_pitch_class_type()
 class EnharmonicPitchClass(Enharmonic):
-    pass
+
+    # how should Pitch and PitchClass types be printed
+    _print_as_int = False
+    _print_flat_sharp = 'sharp'
+
+    @classmethod
+    def print_options(cls, as_int=None, flat_sharp=None):
+        if as_int is not None:
+            cls._print_as_int = as_int
+        if flat_sharp is not None:
+            if flat_sharp not in ['sharp', 'flat']:
+                raise ValueError("'flat_sharp' has to be one of ['sharp', 'flat']")
+            else:
+                cls._print_flat_sharp = flat_sharp
+        if as_int is None and flat_sharp is None:
+            print(f"print options in {cls.__name__}:\n"
+                  f"    as_int: {cls._print_as_int}\n"
+                  f"    flat_sharp: {cls._print_flat_sharp}")
+
+    def name(self, as_int=None, flat_sharp=None):
+        if as_int is None:
+            as_int = self._print_as_int
+        if flat_sharp is None:
+            flat_sharp = self._print_flat_sharp
+        return super().name(as_int=as_int, flat_sharp=flat_sharp)
 
 @Enharmonic.link_interval_class_type()
 class EnharmonicIntervalClass(Enharmonic):

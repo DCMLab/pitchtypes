@@ -54,26 +54,61 @@ class TestEnharmonic(TestCase):
                     if p.is_class:
                         self.assertEqual(str(p), "C#")
                         self.assertEqual(p.name(), "C#")
-                        self.assertEqual(p.name(sharp_flat='sharp'), "C#")
-                        self.assertEqual(p.name(sharp_flat='flat'), "Db")
-                        self.assertRaises(ValueError, lambda: p.name(sharp_flat='invalid'))
+                        self.assertEqual(p.name(flat_sharp='sharp'), "C#")
+                        self.assertEqual(p.name(flat_sharp='flat'), "Db")
+                        self.assertRaises(ValueError, lambda: p.name(flat_sharp='invalid'))
                     else:
                         self.assertEqual(str(p), "C#4")
                         self.assertEqual(p.name(), "C#4")
-                        self.assertEqual(p.name(sharp_flat='sharp'), "C#4")
-                        self.assertEqual(p.name(sharp_flat='flat'), "Db4")
-                        self.assertRaises(ValueError, lambda: p.name(sharp_flat='invalid'))
+                        self.assertEqual(p.name(flat_sharp='sharp'), "C#4")
+                        self.assertEqual(p.name(flat_sharp='flat'), "Db4")
+                        self.assertRaises(ValueError, lambda: p.name(flat_sharp='invalid'))
                 else:
                     if p.is_class:
                         self.assertEqual(str(p), "+1")
                         self.assertEqual(p.name(), "+1")
-                        self.assertRaises(ValueError, lambda: p.name(sharp_flat='sharp'))
-                        self.assertRaises(ValueError, lambda: p.name(sharp_flat='flat'))
+                        self.assertRaises(ValueError, lambda: p.name(flat_sharp='sharp'))
+                        self.assertRaises(ValueError, lambda: p.name(flat_sharp='flat'))
                     else:
                         self.assertEqual(str(p), "+61")
                         self.assertEqual(p.name(), "+61")
-                        self.assertRaises(ValueError, lambda: p.name(sharp_flat='sharp'))
-                        self.assertRaises(ValueError, lambda: p.name(sharp_flat='flat'))
+                        self.assertRaises(ValueError, lambda: p.name(flat_sharp='sharp'))
+                        self.assertRaises(ValueError, lambda: p.name(flat_sharp='flat'))
+
+    def test_print_options(self):
+        p = EnharmonicPitch("C#4")
+        pc = EnharmonicPitchClass("C#")
+        # check default values
+        self.assertEqual(EnharmonicPitch._print_as_int, False)
+        self.assertEqual(EnharmonicPitch._print_flat_sharp, 'sharp')
+        self.assertEqual(EnharmonicPitchClass._print_as_int, False)
+        self.assertEqual(EnharmonicPitchClass._print_flat_sharp, 'sharp')
+        self.assertEqual(p.name(), "C#4")
+        self.assertEqual(pc.name(), "C#")
+        # change for both
+        Enharmonic.print_options(as_int=True, flat_sharp='flat')
+        self.assertEqual(EnharmonicPitch._print_as_int, True)
+        self.assertEqual(EnharmonicPitch._print_flat_sharp, 'flat')
+        self.assertEqual(EnharmonicPitchClass._print_as_int, True)
+        self.assertEqual(EnharmonicPitchClass._print_flat_sharp, 'flat')
+        self.assertEqual(p.name(), "61")
+        self.assertEqual(pc.name(), "1")
+        # change for Pitch
+        EnharmonicPitch.print_options(as_int=False)
+        self.assertEqual(EnharmonicPitch._print_as_int, False)
+        self.assertEqual(EnharmonicPitch._print_flat_sharp, 'flat')
+        self.assertEqual(EnharmonicPitchClass._print_as_int, True)
+        self.assertEqual(EnharmonicPitchClass._print_flat_sharp, 'flat')
+        self.assertEqual(p.name(), "Db4")
+        self.assertEqual(pc.name(), "1")
+        # change for PitchClass
+        EnharmonicPitchClass.print_options(as_int=False)
+        self.assertEqual(EnharmonicPitch._print_as_int, False)
+        self.assertEqual(EnharmonicPitch._print_flat_sharp, 'flat')
+        self.assertEqual(EnharmonicPitchClass._print_as_int, False)
+        self.assertEqual(EnharmonicPitchClass._print_flat_sharp, 'flat')
+        self.assertEqual(p.name(), "Db4")
+        self.assertEqual(pc.name(), "Db")
 
     # some other tests
 
