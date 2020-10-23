@@ -2,9 +2,14 @@
 
 # pitchtypes
 
-Musically meaningful pitch types.
+**Musically meaningful types**
 
-This library provides Python types that handle pitch in a musically correct way. For instance, spelled pitch is handled correctly:
+The purpose of this Python library is to:
+
+1. Provide types that handle pitch in a musically correct way.
+2. Make it easy to implement other musically meaningful types.
+
+For instance, spelled pitch is handled correctly:
 
 ```python
 >>> from pitchtypes import SpelledPitchClass
