@@ -1,4 +1,5 @@
 ![tests](https://github.com/DCMLab/pitchtypes/workflows/tests/badge.svg)
+[![codecov](https://codecov.io/gh/DCMLab/pitchtypes/branch/main/graph/badge.svg)](https://codecov.io/gh/DCMLab/pitchtypes)
 
 # pitchtypes
 
