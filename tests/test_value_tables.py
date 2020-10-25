@@ -51,6 +51,9 @@ class TestValueTables(TestCase):
                                 "PitchClass_minus_PitchClass": False,
                                 "PitchClass_minus_IntervalClass": False,
                                 "IntervalClass_minus_IntervalClass": False}
+            # ignore dot files
+            if folder.startswith("."):
+                continue
             # the folders are assumed to be named according to the base types, which are imported
             base_type = getattr(import_module('pitchtypes'), folder)
             # go through all the value tables
