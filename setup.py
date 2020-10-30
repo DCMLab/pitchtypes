@@ -4,9 +4,10 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="dcml-musical-pitch-types", # Replace with your own username
+    name="pitchtypes",
     version="0.0.1",
     author="Robert Lieck",
+    author_email="robert.lieck@epfl.ch",
     description="musically meaningful pitch types",
     long_description=long_description,
     long_description_content_type="text/markdown",
