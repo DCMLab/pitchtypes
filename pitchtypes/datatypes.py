@@ -1,3 +1,4 @@
+#  Copyright (c) 2020 Rober Lieck
 import re
 import numpy as np
 import numbers
