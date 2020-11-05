@@ -188,7 +188,6 @@ class AbstractBase:
                     return self.Interval(self.value - other.value)
         raise TypeError(f"Operation {self} - {other} is undefined (types {type(self)} and {type(other)})")
 
-
     def __add__(self, other):
         if self.is_pitch:
             if self.is_class:
@@ -521,17 +520,21 @@ class Spelled(AbstractBase):
     def octave(self):
         return self.value[1]
 
+
 @Spelled.link_pitch_type()
 class SpelledPitch(Spelled):
     pass
+
 
 @Spelled.link_interval_type()
 class SpelledInterval(Spelled):
     pass
 
+
 @Spelled.link_pitch_class_type()
 class SpelledPitchClass(Spelled):
     pass
+
 
 @Spelled.link_interval_class_type()
 class SpelledIntervalClass(Spelled):
@@ -658,9 +661,11 @@ class EnharmonicPitch(Enharmonic):
     def midi(self):
         return self.value
 
+
 @Enharmonic.link_interval_type()
 class EnharmonicInterval(Enharmonic):
     pass
+
 
 @Enharmonic.link_pitch_class_type()
 class EnharmonicPitchClass(Enharmonic):
@@ -689,6 +694,7 @@ class EnharmonicPitchClass(Enharmonic):
         if flat_sharp is None:
             flat_sharp = self._print_flat_sharp
         return super().name(as_int=as_int, flat_sharp=flat_sharp)
+
 
 @Enharmonic.link_interval_class_type()
 class EnharmonicIntervalClass(Enharmonic):
@@ -741,17 +747,21 @@ class LogFreq(AbstractBase):
             s += "Hz"
         return s
 
+
 @LogFreq.link_pitch_type()
 class LogFreqPitch(LogFreq):
     pass
+
 
 @LogFreq.link_interval_type()
 class LogFreqInterval(LogFreq):
     pass
 
+
 @LogFreq.link_pitch_class_type()
 class LogFreqPitchClass(LogFreq):
     pass
+
 
 @LogFreq.link_interval_class_type()
 class LogFreqIntervalClass(LogFreq):

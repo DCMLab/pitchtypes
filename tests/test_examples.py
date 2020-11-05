@@ -1,5 +1,6 @@
 from unittest import TestCase
 
+
 class TestExamples(TestCase):
 
     def test_readme_1(self):
