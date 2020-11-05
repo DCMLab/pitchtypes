@@ -8,36 +8,39 @@ class TestAbstractPitch(TestCase):
 
     def test_implementing_subtypes(self):
 
-        @AbstractBase.link_pitch_type()
-        class AbstractPitch(AbstractBase): pass
+        class NewType(AbstractBase):
+            pass
 
-        @AbstractBase.link_interval_type()
-        class AbstractInterval(AbstractBase): pass
+        @NewType.link_pitch_type()
+        class NewTypePitch(NewType): pass
 
-        @AbstractBase.link_pitch_class_type()
-        class AbstractPitchClass(AbstractBase): pass
+        @NewType.link_interval_type()
+        class NewTypeInterval(NewType): pass
 
-        @AbstractBase.link_interval_class_type()
-        class AbstractIntervalClass(AbstractBase): pass
+        @NewType.link_pitch_class_type()
+        class NewTypePitchClass(NewType): pass
+
+        @NewType.link_interval_class_type()
+        class NewTypeIntervalClass(NewType): pass
 
         # make sure the linking worked
-        self.assertEqual(AbstractBase._base_type, None)
-        self.assertEqual(AbstractBase.Pitch, AbstractPitch)
-        self.assertEqual(AbstractBase.Interval, AbstractInterval)
-        self.assertEqual(AbstractBase.PitchClass, AbstractPitchClass)
-        self.assertEqual(AbstractBase.IntervalClass, AbstractIntervalClass)
-        self.assertEqual(AbstractPitch._base_type, AbstractBase)
-        self.assertEqual(AbstractInterval._base_type, AbstractBase)
-        self.assertEqual(AbstractPitchClass._base_type, AbstractBase)
-        self.assertEqual(AbstractIntervalClass._base_type, AbstractBase)
+        self.assertEqual(NewType._base_type, None)
+        self.assertEqual(NewType.Pitch, NewTypePitch)
+        self.assertEqual(NewType.Interval, NewTypeInterval)
+        self.assertEqual(NewType.PitchClass, NewTypePitchClass)
+        self.assertEqual(NewType.IntervalClass, NewTypeIntervalClass)
+        self.assertEqual(NewTypePitch._base_type, NewType)
+        self.assertEqual(NewTypeInterval._base_type, NewType)
+        self.assertEqual(NewTypePitchClass._base_type, NewType)
+        self.assertEqual(NewTypeIntervalClass._base_type, NewType)
 
         # some basic arithmetics
-        p = AbstractPitch("pitch")
-        i = AbstractInterval("interval")
-        pc = AbstractPitchClass("pitch class")
-        ic = AbstractIntervalClass("interval class")
-        self.assertEqual(p + i, AbstractPitch("pitchinterval"))
-        self.assertEqual(pc + ic, AbstractPitchClass("pitch classinterval class"))
+        p = NewTypePitch("pitch")
+        i = NewTypeInterval("interval")
+        pc = NewTypePitchClass("pitch class")
+        ic = NewTypeIntervalClass("interval class")
+        self.assertEqual(p + i, NewTypePitch("pitchinterval"))
+        self.assertEqual(pc + ic, NewTypePitchClass("pitch classinterval class"))
         self.assertRaises(TypeError, lambda: i + p)
         self.assertRaises(TypeError, lambda: i + ic)
 
@@ -73,23 +76,6 @@ class TestAbstractPitch(TestCase):
                     self.assertTrue(p_or_i.is_interval)
 
     def test_arithmetics(self):
-
-        # create default types to make AbstractBase usable
-        @AbstractBase.link_pitch_type()
-        class AbstractPitch(AbstractBase):
-            pass
-
-        @AbstractBase.link_interval_type()
-        class AbstractInterval(AbstractBase):
-            pass
-
-        @AbstractBase.link_pitch_class_type()
-        class AbstractPitchClass(AbstractBase):
-            pass
-
-        @AbstractBase.link_interval_class_type()
-        class AbstractIntervalClass(AbstractBase):
-            pass
 
         for v_1, v_2, v_3 in np.random.randint(-2, 3, (10, 3)):
             for is_pitch_1, is_pitch_2, is_class_1, is_class_2 in product(*([[True, False]] * 4)):
@@ -193,23 +179,6 @@ class TestAbstractPitch(TestCase):
                                 self.assertEqual(pi_2 < pi_1, v_2 < v_1)
 
     def test_hashing(self):
-
-        # create default types to make AbstractBase usable
-        @AbstractBase.link_pitch_type()
-        class AbstractPitch(AbstractBase):
-            pass
-
-        @AbstractBase.link_interval_type()
-        class AbstractInterval(AbstractBase):
-            pass
-
-        @AbstractBase.link_pitch_class_type()
-        class AbstractPitchClass(AbstractBase):
-            pass
-
-        @AbstractBase.link_interval_class_type()
-        class AbstractIntervalClass(AbstractBase):
-            pass
 
         for v_1, v_2, in np.random.randint(0, 2, (10, 2)):
             for is_pitch_1, is_pitch_2, is_class_1, is_class_2 in product(*([[True, False]] * 4)):
