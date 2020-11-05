@@ -32,3 +32,6 @@ class TestHarmonic(TestCase):
         self.assertEqual("HarmonicIntervalClass([None, 1, -2, 3, -4])", str(Harmonic.IntervalClass([1, -2, 3, -4])))
         # initialise from string
         self.assertEqual("HarmonicIntervalClass([None, 1, -2, 3, -4])", str(Harmonic.IntervalClass("[1, -2, 3, -4]")))
+
+    def test_to_class(self):
+        self.assertEqual(Harmonic.Interval([1, 2, 3, 4, 5]).to_class(), Harmonic.IntervalClass([2, 3, 4, 5]))
