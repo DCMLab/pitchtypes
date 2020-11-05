@@ -17,9 +17,9 @@ class TestValueTables(TestCase):
         :return: the object
         """
         if sub_type == "Pitch":
-            self.fail()
+            return base_type.Pitch(val)
         elif sub_type == "Interval":
-            self.fail()
+            return base_type.Interval(val)
         elif sub_type == "PitchClass":
             return base_type.PitchClass(val)
         elif sub_type == "IntervalClass":
@@ -29,9 +29,11 @@ class TestValueTables(TestCase):
 
     def test_value_tables(self):
         # regular expression for selecting what operation to perform on what type
-        check_regex = re.compile("^(?P<type1>Pitch|Interval|PitchClass|IntervalClass)"
-                                 "_(?P<operation>.+)_"
-                                 "(?P<type2>Pitch|Interval|PitchClass|IntervalClass)$")
+        type_regex = re.compile("^(?P<type>Pitch|Interval|PitchClass|IntervalClass)$")
+        operation_regex = re.compile("^(?P<type1>Pitch|Interval|PitchClass|IntervalClass)"
+                                     "_(?P<operation>.+)_"
+                                     "(?P<type2>Pitch|Interval|PitchClass|IntervalClass)$")
+        inversion_regex = re.compile("^(?P<type>Interval|IntervalClass)_inversion$")
         # go through the folders in base_dir containing value tables
         base_dir = "value_tables"
         for folder in os.listdir(base_dir):
@@ -51,6 +53,9 @@ class TestValueTables(TestCase):
                                 "PitchClass_minus_PitchClass": False,
                                 "PitchClass_minus_IntervalClass": False,
                                 "IntervalClass_minus_IntervalClass": False}
+            # remember what inversion checks have been done
+            inversion_checks = {"Interval": False,
+                                "IntervalClass": False}
             # ignore dot files
             if folder.startswith("."):
                 continue
@@ -69,37 +74,42 @@ class TestValueTables(TestCase):
                                  comments=None)
                 # the file name without extension is used for determining the check to be performed
                 check = table[:-4]
-                # check shape
-                if arr.shape[0] == 1:
-                    # if the first dimension is 1 (row vector) this is a type check
-                    # go through all values
+                type_match = type_regex.match(check)
+                op_match = operation_regex.match(check)
+                inv_match = inversion_regex.match(check)
+                matches = np.array([type_match is not None, op_match is not None, inv_match is not None])
+                self.assertFalse(matches.sum() == 0,
+                                 f"Could not match {check} against any of the regular expressions ({matches}):\n"
+                                 f"{type_regex.pattern}\n{operation_regex.pattern}\n{inversion_regex.pattern}")
+                self.assertTrue(matches.sum() == 1,
+                                f"Found more than one match for {check} against the regular expressions ({matches}):\n"
+                                f"{type_regex.pattern}\n{operation_regex.pattern}\n{inversion_regex.pattern}")
+                # type checks
+                if type_match is not None:
+                    # go through all values (if the first dimension is of length 1; its a row vector)
                     for val in arr[0, :]:
                         # get the object
-                        obj = self.make_obj(base_type=base_type, sub_type=check, val=val)
+                        obj = self.make_obj(base_type=base_type, sub_type=type_match['type'], val=val)
                         # make sure it prints as the string it was initialised from
                         self.assertEqual(str(obj), val)
                     # mark type as checked
-                    type_checks[check] = True
-                else:
+                    type_checks[type_match['type']] = True
+                elif op_match is not None:
                     # otherwise it's an operation check
-                    # match against regex
-                    match = check_regex.match(check)
-                    # make sure the match was successful
-                    self.assertIsNotNone(match, f"Could not match {check} to regex {check_regex.pattern}")
                     # iterate through rows (skip first)
                     for idx_1 in range(1, arr.shape[0]):
                         # initialise first object from first column
                         obj_1 = self.make_obj(base_type=base_type,
-                                              sub_type=match['type1'],
+                                              sub_type=op_match['type1'],
                                               val=arr[idx_1, 0])
                         # iterate through columns (skip first)
                         for idx_2 in range(1, arr.shape[1]):
                             # initialise second object from first row
                             obj_2 = self.make_obj(base_type=base_type,
-                                                  sub_type=match['type2'],
+                                                  sub_type=op_match['type2'],
                                                   val=arr[0, idx_2])
                             # determine the operation to check
-                            operation = match['operation']
+                            operation = op_match['operation']
                             # remember result for error reporting
                             res = None
                             # catch errors (an later re-raise) for better reporting
@@ -121,6 +131,10 @@ class TestValueTables(TestCase):
                                 raise
                     # mark operation as checked
                     operation_checks[check] = True
+                elif inv_match is not None:
+                    self.fail()
+                else:
+                    self.fail()
             # make sure all sub-types were checked
             if not np.all(list(type_checks.values())):
                 unchecked_types = ''.join(f"\n    {key}" for key, val in type_checks.items() if not val)
@@ -129,3 +143,7 @@ class TestValueTables(TestCase):
             if not np.all(list(operation_checks.values())):
                 unchecked_ops = ''.join(f"\n    {key}" for key, val in operation_checks.items() if not val)
                 self.fail(f"For base type {folder} some operations were not checked:{unchecked_ops}")
+            # make sure all inversions were checked
+            if not np.all(list(inversion_checks.values())):
+                unchecked_inversions = ''.join(f"\n    {key}" for key, val in inversion_checks.items() if not val)
+                self.fail(f"For base type {folder} some inversions were not checked:{unchecked_inversions}")
