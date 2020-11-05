@@ -300,6 +300,30 @@ class Harmonic(AbstractBase):
         super().__init__(*args, **kwargs)
 
 
+@Harmonic.link_pitch_type()
+class HarmonicPitch(Harmonic):
+    def __init__(self, base_pitch, exponents):
+        exponents = self.parse_exponents(exponents=exponents)
+        super().__init__(value=np.array([base_pitch] + list(exponents), dtype=object),
+                         is_pitch=True,
+                         is_class=False)
+
+    def __repr__(self):
+        return f"{self.__class__.__name__}({self.value[0]} {list(self.value[1:])})"
+
+
+@Harmonic.link_pitch_class_type()
+class HarmonicPitchClass(Harmonic):
+    def __init__(self, base_pitch, exponents):
+        exponents = self.parse_exponents(exponents=exponents)
+        super().__init__(value=np.array([base_pitch] + list(exponents), dtype=object),
+                         is_pitch=True,
+                         is_class=False)
+
+    def __repr__(self):
+        return f"{self.__class__.__name__}({self.value[0]} {[None] + list(self.value[1:])})"
+
+
 @Harmonic.link_interval_type()
 class HarmonicInterval(Harmonic):
     def __init__(self, exponents):
