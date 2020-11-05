@@ -15,74 +15,108 @@ class AbstractBase:
     IntervalClass = None
 
     @classmethod
-    def link_pitch_type(cls, create_init=True):
+    def link_pitch_type(cls, skip_name_check=False):
         def decorator(pitch_type):
             cls.Pitch = pitch_type
             pitch_type._base_type = cls
-            if create_init:
+            if "__init__" not in vars(pitch_type):
                 def __init__(self, *args, **kwargs):
                     super(pitch_type, self).__init__(is_pitch=True, is_class=False, *args, **kwargs)
                 setattr(pitch_type, "__init__", __init__)
+            if not skip_name_check:
+                got_name = pitch_type.__name__
+                expected_name = cls.__name__ + "Pitch"
+                if got_name != expected_name:
+                    raise TypeError(f"Got class named {got_name}, but expected {expected_name}. "
+                                    f"Use skip_name_check=True to suppress.")
             return pitch_type
         return decorator
 
     @classmethod
-    def link_interval_type(cls, create_init=True):
+    def link_interval_type(cls, skip_name_check=False):
         def decorator(interval_type):
             cls.Interval = interval_type
             interval_type._base_type = cls
-            if create_init:
+            if "__init__" not in vars(interval_type):
                 def __init__(self, *args, **kwargs):
                     super(interval_type, self).__init__(is_pitch=False, is_class=False, *args, **kwargs)
                 setattr(interval_type, "__init__", __init__)
+            if not skip_name_check:
+                got_name = interval_type.__name__
+                expected_name = cls.__name__ + "Interval"
+                if got_name != expected_name:
+                    raise TypeError(f"Got class named {got_name}, but expected {expected_name}. "
+                                    f"Use skip_name_check=True to suppress.")
             return interval_type
         return decorator
 
     @classmethod
-    def link_pitch_class_type(cls, create_init=True):
+    def link_pitch_class_type(cls, skip_name_check=False):
         def decorator(pitch_class_type):
             cls.PitchClass = pitch_class_type
             pitch_class_type._base_type = cls
-            if create_init:
+            if "__init__" not in vars(pitch_class_type):
                 def __init__(self, *args, **kwargs):
                     super(pitch_class_type, self).__init__(is_pitch=True, is_class=True, *args, **kwargs)
                 setattr(pitch_class_type, "__init__", __init__)
+            if not skip_name_check:
+                got_name = pitch_class_type.__name__
+                expected_name = cls.__name__ + "PitchClass"
+                if got_name != expected_name:
+                    raise TypeError(f"Got class named {got_name}, but expected {expected_name}. "
+                                    f"Use skip_name_check=True to suppress.")
             return pitch_class_type
         return decorator
 
     @classmethod
-    def link_interval_class_type(cls, create_init=True):
+    def link_interval_class_type(cls, skip_name_check=False):
         def decorator(interval_class_type):
             cls.IntervalClass = interval_class_type
             interval_class_type._base_type = cls
-            if create_init:
+            if "__init__" not in vars(interval_class_type):
                 def __init__(self, *args, **kwargs):
                     super(interval_class_type, self).__init__(is_pitch=False, is_class=True, *args, **kwargs)
                 setattr(interval_class_type, "__init__", __init__)
+            if not skip_name_check:
+                got_name = interval_class_type.__name__
+                expected_name = cls.__name__ + "IntervalClass"
+                if got_name != expected_name:
+                    raise TypeError(f"Got class named {got_name}, but expected {expected_name}. "
+                                    f"Use skip_name_check=True to suppress.")
             return interval_class_type
         return decorator
 
     @staticmethod
     def create_subtypes():
         def decorator(cls):
-            # create the four Pitch/Interval(Class) types
-            @cls.link_pitch_type()
-            class Pitch(cls): pass
+            # for the four Pitch/Interval(Class) types:
+            # 1) create a class
+            # 2) name it appropriately
+            # 3) link to base class
 
-            @cls.link_interval_type()
-            class Interval(cls): pass
-
-            @cls.link_pitch_class_type()
-            class PitchClass(cls): pass
-
-            @cls.link_interval_class_type()
-            class IntervalClass(cls): pass
-
-            # set their name appropriately
+            # Pitch
+            class Pitch(cls):
+                pass
             Pitch.__name__ = cls.__name__ + "Pitch"
+            cls.link_pitch_type()(Pitch)
+
+            # Interval
+            class Interval(cls):
+                pass
             Interval.__name__ = cls.__name__ + "Interval"
+            cls.link_interval_type()(Interval)
+
+            # PitchClass
+            class PitchClass(cls):
+                pass
             PitchClass.__name__ = cls.__name__ + "PitchClass"
+            cls.link_pitch_class_type()(PitchClass)
+
+            # IntervalClass
+            class IntervalClass(cls):
+                pass
             IntervalClass.__name__ = cls.__name__ + "IntervalClass"
+            cls.link_interval_class_type()(IntervalClass)
 
             # return the class (which now has the linked sub-types)
             return cls
