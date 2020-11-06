@@ -95,9 +95,6 @@ class TestSpelled(TestCase):
                 if is_class:
                     self.assertEqual(ii.name(negative=True), ir)
                     self.assertEqual(iir.name(negative=True), ir)
-                else:
-                    self.assertRaises(ValueError, lambda: ii.name(negative=True))
-                    self.assertRaises(ValueError, lambda: iir.name(negative=True))
                 self.assertEqual(ii.fifth_steps(), idx - 26)
 
     def test_arithmetics(self):

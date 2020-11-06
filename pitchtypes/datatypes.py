@@ -446,109 +446,95 @@ class Spelled(AbstractBase):
             if self.is_class:
                 return EnharmonicPitchClass(value=base_pitch + accidentals)
             else:
-                return EnharmonicPitch(value=12 * (self.octave() + 1) + base_pitch + accidentals)
+                return EnharmonicPitch(value=12 * (self.octaves() + 1) + base_pitch + accidentals)
         else:
             if self.is_class:
                 return EnharmonicIntervalClass(value=base_pitch + accidentals)
             else:
-                return EnharmonicInterval(value=12 * (self.octave() + 1) + base_pitch + accidentals)
+                return EnharmonicInterval(value=12 * (self.octaves() + 1) + base_pitch + accidentals)
 
     def to_class(self):
         if self.is_class:
             raise TypeError("Is already class.")
         return self.__class__(value=np.array([self.value[0], 0]), is_pitch=self.is_pitch, is_class=True)
 
-    def name(self, negative=None):
-        if self.is_pitch:
-            if negative is not None:
-                raise ValueError("specifying parameter 'negative' is only valid for interval class types")
-            if self.is_class:
-                fifths_steps = self.value
-            else:
-                fifths_steps = self.value[1]
-            pitch_class = ["F", "C", "G", "D", "A", "E", "B"][(fifths_steps + 1) % 7]
-            flat_sharp = (fifths_steps + 1) // 7
-            pitch_class += ('#' if flat_sharp > 0 else 'b') * abs(flat_sharp)
-            if self.is_class:
-                return pitch_class
-            else:
-                return pitch_class + str(self.value[0])
-        else:
-            if self.is_class:
-                if negative is None:
-                    negative = False
-                fifths_steps = self.value
-            else:
-                if negative is None:
-                    negative = self.value[0] < 0
-                else:
-                    raise ValueError("specifying parameter 'negative' is only valid for interval class types")
-                fifths_steps = self.value[1]
-            if negative:
-                delta = -fifths_steps
-                sign = "-"
-            else:
-                delta = fifths_steps
-                sign = "+"
-            phase = delta % 7
-            period = (5 - delta) // 7
-            generic_interval = ["1", "5", "2", "6", "3", "7", "4"][phase]
-            if abs(delta) <= 1:
-                quality = "p"
-            elif abs(delta) <= 5:
-                if delta > 0:
-                    quality = "M"
-                else:
-                    quality = "m"
-            elif period > 0:
-                if generic_interval in ["4", "1", "5"]:
-                    quality = "d" * period
-                else:
-                    quality = "d" * (period - 1)
-            elif period < 0:
-                quality = "a" * abs(period)
-            else:
-                raise RuntimeWarning("This is a bug!")
-            if self.is_class:
-                return sign + quality + generic_interval
-            else:
-                return sign + quality + generic_interval + ":" + str(abs(self.value[0]))
+    def fifth_steps(self):
+        raise NotImplementedError
+
+    def diatonic_steps(self):
+        raise NotImplementedError
 
 
 @Spelled.link_pitch_type()
 class SpelledPitch(Spelled):
     def __init__(self, value):
         if isinstance(value, str):
-            oct, fifths = self.parse_pitch(value)
+            octaves, fifths = self.parse_pitch(value)
         else:
-            oct, fifths = value
+            octaves, fifths = value
         assert isinstance(fifths, numbers.Integral)
-        assert isinstance(oct, numbers.Integral)
-        super().__init__(value=np.array([oct, fifths]), is_pitch=True, is_class=False)
+        assert isinstance(octaves, numbers.Integral)
+        super().__init__(value=np.array([octaves, fifths]), is_pitch=True, is_class=False)
 
-    def octave(self):
+    def octaves(self):
         return self.value[0]
 
     def fifth_steps(self):
         return self.value[1]
+
+    def diatonic_steps(self):
+        return (self.fifth_steps() * 4) % 7 + self.octaves() * 7
+
+    def name(self):
+        pitch_class = ["F", "C", "G", "D", "A", "E", "B"][(self.fifth_steps() + 1) % 7]
+        flat_sharp = (self.fifth_steps() + 1) // 7
+        pitch_class += ('#' if flat_sharp > 0 else 'b') * abs(flat_sharp)
+        return pitch_class + str(self.value[0])
 
 
 @Spelled.link_interval_type()
 class SpelledInterval(Spelled):
     def __init__(self, value):
         if isinstance(value, str):
-            oct, fifths = self.parse_interval(value)
+            octaves, fifths = self.parse_interval(value)
         else:
-            oct, fifths = value
+            octaves, fifths = value
         assert isinstance(fifths, numbers.Integral)
-        assert isinstance(oct, numbers.Integral)
-        super().__init__(value=np.array([oct, fifths]), is_pitch=False, is_class=False)
+        assert isinstance(octaves, numbers.Integral)
+        super().__init__(value=np.array([octaves, fifths]), is_pitch=False, is_class=False)
 
-    def octave(self):
+    def octaves(self):
         return self.value[0]
 
     def fifth_steps(self):
         return self.value[1]
+
+    def diatonic_steps(self):
+        return (self.fifth_steps() * 4) % 7 + self.octaves() * 7
+
+    def name(self):
+        delta = self.fifth_steps()
+        sign = "+"
+        phase = delta % 7
+        period = (5 - delta) // 7
+        generic_interval = ["1", "5", "2", "6", "3", "7", "4"][phase]
+        if abs(delta) <= 1:
+            quality = "p"
+        elif abs(delta) <= 5:
+            if delta > 0:
+                quality = "M"
+            else:
+                quality = "m"
+        elif period > 0:
+            if generic_interval in ["4", "1", "5"]:
+                quality = "d" * period
+            else:
+                quality = "d" * (period - 1)
+        elif period < 0:
+            quality = "a" * abs(period)
+        else:
+            raise RuntimeWarning("This is a bug!")
+        return sign + quality + generic_interval + ":" + str(abs(self.octaves()))
 
 
 @Spelled.link_pitch_class_type()
@@ -556,8 +542,8 @@ class SpelledInterval(Spelled):
 class SpelledPitchClass(Spelled):
     def __init__(self, value):
         if isinstance(value, str):
-            oct, fifths = self.parse_pitch(value)
-            assert oct is None
+            octaves, fifths = self.parse_pitch(value)
+            assert octaves is None
         else:
             fifths = value
         assert isinstance(fifths, numbers.Integral)
@@ -572,20 +558,26 @@ class SpelledPitchClass(Spelled):
     def fifth_steps(self):
         return self.value
 
+    def diatonic_steps(self):
+        return (self.fifth_steps() * 4) % 7
+
+    def name(self):
+        pitch_class = ["F", "C", "G", "D", "A", "E", "B"][(self.fifth_steps() + 1) % 7]
+        flat_sharp = (self.fifth_steps() + 1) // 7
+        pitch_class += ('#' if flat_sharp > 0 else 'b') * abs(flat_sharp)
+        return pitch_class
+
 
 @Spelled.link_interval_class_type()
 class SpelledIntervalClass(Spelled):
     def __init__(self, value):
         if isinstance(value, str):
-            oct, fifths = self.parse_interval(value)
-            assert oct is None
+            octaves, fifths = self.parse_interval(value)
+            assert octaves is None
         else:
             fifths = value
         assert isinstance(fifths, numbers.Integral)
         super().__init__(value=fifths, is_pitch=False, is_class=True)
-
-    def fifth_steps(self):
-        return self.value
 
     def __abs__(self):
         """Absolute value of steps along the line of fifths"""
@@ -596,6 +588,42 @@ class SpelledIntervalClass(Spelled):
         if type(other) == SpelledIntervalClass:
             return self.value < other.value
         return NotImplemented
+
+    def fifth_steps(self):
+        return self.value
+
+    def diatonic_steps(self):
+        return (self.fifth_steps() * 4) % 7
+
+    def name(self, negative=None):
+        if negative is None:
+            negative = False
+        if negative:
+            delta = -self.fifth_steps()
+            sign = "-"
+        else:
+            delta = self.fifth_steps()
+            sign = "+"
+        phase = delta % 7
+        period = (5 - delta) // 7
+        generic_interval = ["1", "5", "2", "6", "3", "7", "4"][phase]
+        if abs(delta) <= 1:
+            quality = "p"
+        elif abs(delta) <= 5:
+            if delta > 0:
+                quality = "M"
+            else:
+                quality = "m"
+        elif period > 0:
+            if generic_interval in ["4", "1", "5"]:
+                quality = "d" * period
+            else:
+                quality = "d" * (period - 1)
+        elif period < 0:
+            quality = "a" * abs(period)
+        else:
+            raise RuntimeWarning("This is a bug!")
+        return sign + quality + generic_interval
 
 
 class Enharmonic(AbstractBase):
