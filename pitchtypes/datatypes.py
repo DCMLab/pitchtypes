@@ -292,9 +292,6 @@ class AbstractBase(Object):
 
 class Harmonic(AbstractBase):
 
-    Pitch = None
-    PitchClass = None
-
     @staticmethod
     def parse_exponents(exponents):
         if isinstance(exponents, str):
