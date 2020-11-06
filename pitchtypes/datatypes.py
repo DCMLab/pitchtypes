@@ -190,11 +190,6 @@ class AbstractBase(Object):
     def __setattr__(self, key, value):
         raise AttributeError("Class is frozen, attributes cannot be set")
 
-    def to_class(self):
-        if self.is_class:
-            raise TypeError("Cannot convert to class type, is already class type.")
-        return self.__class__(value=self.value, is_pitch=self.is_pitch, is_class=True)
-
     def __repr__(self):
         return f"{self.__class__.__name__}({self.value})"
 

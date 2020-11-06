@@ -60,27 +60,11 @@ class TestAbstractPitch(TestCase):
         self.assertRaises(TypeError, lambda: i + p)
         self.assertRaises(TypeError, lambda: i + ic)
 
-
     def test_AbstractPitch(self):
         for is_pitch in [True, False]:
             for is_class in [True, False]:
                 # create a pitch or interval (class)
                 p_or_i = AbstractBase(value="p", is_pitch=is_pitch, is_class=is_class)
-                # class type
-                if is_class:
-                    # if it's a class type
-                    # is_class should be true
-                    self.assertTrue(p_or_i.is_class)
-                    # conversion to class type should fail
-                    self.assertRaises(TypeError, p_or_i.to_class)
-                else:
-                    # if it's NOT a class type
-                    # is_class should be true
-                    self.assertFalse(p_or_i.is_class)
-                    # conversion to class type should be possible
-                    c = p_or_i.to_class()
-                    # and produce a class type
-                    self.assertTrue(c.is_class)
                 # pitch vs interval
                 if is_pitch:
                     # should be indicated correctly
