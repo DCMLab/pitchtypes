@@ -499,9 +499,16 @@ class Spelled(AbstractBase):
         else:
             # note: floor divide rounds down (for negative numbers that is equal to the remainder of division minus one)
             accidentals = fifth_steps_from_f // 7
-        return Enharmonic(value=12 * (self.octave() + 1) + base_pitch + accidentals,
-                          is_pitch=self.is_pitch,
-                          is_class=self.is_class)
+        if self.is_pitch:
+            if self.is_class:
+                return EnharmonicPitchClass(value=12 * (self.octave() + 1) + base_pitch + accidentals)
+            else:
+                return EnharmonicPitch(value=12 * (self.octave() + 1) + base_pitch + accidentals)
+        else:
+            if self.is_class:
+                return EnharmonicIntervalClass(value=12 * (self.octave() + 1) + base_pitch + accidentals)
+            else:
+                return EnharmonicInterval(value=12 * (self.octave() + 1) + base_pitch + accidentals)
 
     def to_class(self):
         if self.is_class:
@@ -596,7 +603,16 @@ class Enharmonic(AbstractBase):
     def __init__(self, value, is_pitch, is_class, **kwargs):
         # pre-process value
         if isinstance(value, str):
-            value = Spelled(value=value, is_pitch=is_pitch, is_class=is_class).convert_to(Enharmonic).value
+            if is_pitch:
+                if is_class:
+                    value = SpelledPitchClass(value=value).convert_to(EnharmonicPitchClass).value
+                else:
+                    value = SpelledPitch(value=value).convert_to(EnharmonicPitch).value
+            else:
+                if is_class:
+                    value = SpelledIntervalClass(value=value).convert_to(EnharmonicIntervalClass).value
+                else:
+                    value = SpelledInterval(value=value).convert_to(EnharmonicInterval).value
         elif isinstance(value, numbers.Number):
             int_value = int(value)
             if int_value != value:
@@ -608,7 +624,16 @@ class Enharmonic(AbstractBase):
         super().__init__(value=value, is_pitch=is_pitch, is_class=is_class, **kwargs)
 
     def convert_to_logfreq(self):
-        return LogFreq(self.freq(), is_freq=True, is_pitch=self.is_pitch, is_class=self.is_class)
+        if self.is_pitch:
+            if self.is_class:
+                return LogFreqPitchClass(self.freq(), is_freq=True)
+            else:
+                return LogFreqPitch(self.freq(), is_freq=True)
+        else:
+            if self.is_class:
+                return LogFreqIntervalClass(self.freq(), is_freq=True)
+            else:
+                return LogFreqInterval(self.freq(), is_freq=True)
 
     def to_class(self):
         if self.is_class:
@@ -820,47 +845,16 @@ class Converters:
     _converters = {}
 
     @staticmethod
-    def _is_derived_from_abstract_base(object, object_is_type=False):
-        if object_is_type:
-            return AbstractBase in object.__mro__
-        else:
-            return AbstractBase in object.__class__.__mro__
-
-    @staticmethod
-    def _convert(obj, to_type):
-        # check that the object and the desired type are both derived from AbstractBase
-        Converters._is_derived_from_abstract_base(obj)
-        Converters._is_derived_from_abstract_base(to_type, object_is_type=True)
-        # get base type of obj
-        if obj._base_type is None:
-            from_base_type = obj.__class__
-        else:
-            from_base_type = obj._base_type
-        # and to_type
-        if to_type._base_type is None:
-            to_type_is_base = True
-            to_base_type = to_type
-        else:
-            to_type_is_base = False
-            to_base_type = to_type._base_type
-        # check for self-conversion
-        if to_base_type == from_base_type:
-            # check for conversion between different subtypes
-            if type(obj) != to_type:
-                raise TypeError(f"Cannot convert {obj} of type {type(obj)} to type {to_type}, which are different "
-                                f"types but have the same base type ({to_base_type})")
-            # skip self-conversion
+    def convert(obj, to_type):
+        # skip self-conversion
+        if type(obj) == to_type:
             ret = obj
         else:
             # use conversion pipeline starting with the object itself
             ret = obj
             # sequentially apply converters from pipeline
-            for converter in Converters.get_converter(from_base_type, to_base_type):
+            for converter in Converters.get_converter(type(obj), to_type):
                 ret = converter(ret)
-            # converters generally produce an object of the base class
-            if not to_type_is_base:
-                # so we need to get the correct derived type if to_type is not the base class itself
-                ret = ret._create_derived_type()
         # checks
         assert isinstance(ret, to_type), f"Conversion failed, expected type {to_type} but got {type(ret)}"
         assert obj.is_pitch == ret.is_pitch, f"{obj.is_pitch} {ret.is_pitch}"
@@ -961,17 +955,29 @@ class Converters:
                 for another_to_type, converter_pipeline in new_converters:
                     other_converters[another_to_type] = converter_pipeline
 
-    @staticmethod
-    def convert(obj, other_type):
-        Converters._is_derived_from_abstract_base(obj)
-        Converters._is_derived_from_abstract_base(other_type, object_is_type=True)
-        return Converters._convert(obj, other_type)
 
+Converters.register_converter(from_type=Spelled.Pitch,
+                              to_type=Enharmonic.Pitch,
+                              conv_func=lambda spelled: spelled.convert_to_enharmonic())
+Converters.register_converter(from_type=Spelled.Interval,
+                              to_type=Enharmonic.Interval,
+                              conv_func=lambda spelled: spelled.convert_to_enharmonic())
+Converters.register_converter(from_type=Spelled.PitchClass,
+                              to_type=Enharmonic.PitchClass,
+                              conv_func=lambda spelled: spelled.convert_to_enharmonic())
+Converters.register_converter(from_type=Spelled.IntervalClass,
+                              to_type=Enharmonic.IntervalClass,
+                              conv_func=lambda spelled: spelled.convert_to_enharmonic())
 
-Converters.register_converter(from_type=Spelled,
-                                to_type=Enharmonic,
-                                conv_func=lambda spelled: spelled.convert_to_enharmonic())
-
-Converters.register_converter(from_type=Enharmonic,
-                                to_type=LogFreq,
-                                conv_func=lambda enharmonic: enharmonic.convert_to_logfreq())
+Converters.register_converter(from_type=Enharmonic.Pitch,
+                              to_type=LogFreq.Pitch,
+                              conv_func=lambda enharmonic: enharmonic.convert_to_logfreq())
+Converters.register_converter(from_type=Enharmonic.Interval,
+                              to_type=LogFreq.Interval,
+                              conv_func=lambda enharmonic: enharmonic.convert_to_logfreq())
+Converters.register_converter(from_type=Enharmonic.PitchClass,
+                              to_type=LogFreq.PitchClass,
+                              conv_func=lambda enharmonic: enharmonic.convert_to_logfreq())
+Converters.register_converter(from_type=Enharmonic.IntervalClass,
+                              to_type=LogFreq.IntervalClass,
+                              conv_func=lambda enharmonic: enharmonic.convert_to_logfreq())
