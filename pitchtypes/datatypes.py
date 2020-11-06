@@ -14,7 +14,6 @@ class Object:
     pass
 
 
-@total_ordering
 class AbstractBase(Object):
 
     @classmethod
@@ -217,14 +216,6 @@ class AbstractBase(Object):
     def __hash__(self):
         return hash((self.__class__.__name__, self.value, self.is_pitch, self.is_class))
 
-    def __lt__(self, other):
-        if not self.is_class and (
-                (self.is_pitch and isinstance(other, self.Pitch)) or
-                (self.is_interval and isinstance(other, self.Interval))
-        ):
-            return self.value < other.value
-        return NotImplemented
-
     def __mul__(self, other):
         if self.is_interval:
             if self.is_class:
@@ -240,11 +231,6 @@ class AbstractBase(Object):
         if self.is_interval:
             return self.__mul__(1 / other)
         return NotImplemented
-
-    def __abs__(self):
-        if self.is_interval and self.is_class:
-            return abs(self.value)
-        raise NotImplementedError
 
     def convert_to(self, other_type):
         return Converters.convert(self, other_type)
@@ -455,16 +441,6 @@ class Spelled(AbstractBase):
     def __repr__(self):
         return self.name()
 
-    def __lt__(self, other):
-        # spelled pitch is not generally ordered because it is two dimensional
-        # but spelled pitch CLASSES can be ordered along the line of fifths (which is done here)
-        if self.is_class and (
-                (self.is_pitch and isinstance(other, self.PitchClass)) or
-                (self.is_interval and isinstance(other, self.IntervalClass))
-        ):
-            return self.value[0] < other.value[0]
-        return NotImplemented
-
     def __hash__(self):
         return hash((self.__class__.__name__, self.value[0], self.value[1], self.is_pitch, self.is_class))
 
@@ -562,14 +538,26 @@ class SpelledInterval(Spelled):
 
 
 @Spelled.link_pitch_class_type()
+@total_ordering
 class SpelledPitchClass(Spelled):
-    pass
+    def __lt__(self, other):
+        """Spelled pitch classes are ordered along the line of fifths."""
+        if type(other) == SpelledPitchClass:
+            return self.value < other.value
+        return NotImplemented
 
 
 @Spelled.link_interval_class_type()
 class SpelledIntervalClass(Spelled):
     def __abs__(self):
-        return abs(self.value[0])
+        """Absolute value of steps along the line of fifths"""
+        return abs(self.value)
+
+    def __lt__(self, other):
+        """Spelled interval classes are ordered along the line of fifths."""
+        if type(other) == SpelledIntervalClass:
+            return self.value < other.value
+        return NotImplemented
 
 
 class Enharmonic(AbstractBase):

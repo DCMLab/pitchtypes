@@ -169,33 +169,6 @@ class TestAbstractPitch(TestCase):
                         else:
                             self.assertEqual(pi_1 == pi_2, v_1 == v_2)
                             self.assertEqual(pi_2 == pi_1, v_2 == v_1)
-                # inequality can only be check for matching non-class types
-                if is_class_1 != is_class_2:
-                    self.assertRaises(TypeError, lambda: pi_1 < pi_2)
-                    self.assertRaises(TypeError, lambda: pi_2 < pi_1)
-                else:
-                    if is_pitch_1:
-                        if is_pitch_2:
-                            if is_class_1 and is_class_2:
-                                self.assertRaises(TypeError, lambda: pi_1 < pi_2)
-                                self.assertRaises(TypeError, lambda: pi_2 < pi_1)
-                            else:
-                                self.assertEqual(pi_1 < pi_2, v_1 < v_2)
-                                self.assertEqual(pi_2 < pi_1, v_2 < v_1)
-                        else:
-                            self.assertRaises(TypeError, lambda: pi_1 < pi_2)
-                            self.assertRaises(TypeError, lambda: pi_2 < pi_1)
-                    else:
-                        if is_pitch_2:
-                            self.assertRaises(TypeError, lambda: pi_1 < pi_2)
-                            self.assertRaises(TypeError, lambda: pi_2 < pi_1)
-                        else:
-                            if is_class_1 and is_class_2:
-                                self.assertRaises(TypeError, lambda: pi_1 < pi_2)
-                                self.assertRaises(TypeError, lambda: pi_2 < pi_1)
-                            else:
-                                self.assertEqual(pi_1 < pi_2, v_1 < v_2)
-                                self.assertEqual(pi_2 < pi_1, v_2 < v_1)
 
     def test_hashing(self):
 
