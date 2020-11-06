@@ -250,26 +250,6 @@ class AbstractBase(Object):
         return Converters.convert(self, other_type)
 
 
-@AbstractBase.link_pitch_type()
-class AbstractBasePitch(AbstractBase):
-    pass
-
-
-@AbstractBase.link_pitch_class_type()
-class AbstractBasePitchClass(AbstractBase):
-    pass
-
-
-@AbstractBase.link_interval_type()
-class AbstractBaseInterval(AbstractBase):
-    pass
-
-
-@AbstractBase.link_interval_class_type()
-class AbstractBaseIntervalClass(AbstractBase):
-    pass
-
-
 class Harmonic(AbstractBase):
 
     Pitch = None

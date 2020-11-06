@@ -93,6 +93,9 @@ class TestAbstractPitch(TestCase):
 
     def test_arithmetics(self):
 
+        # create abstract sub-types to allow for checks
+        AbstractBase.create_subtypes()(AbstractBase)
+
         for v_1, v_2, v_3 in np.random.randint(-2, 3, (10, 3)):
             for is_pitch_1, is_pitch_2, is_class_1, is_class_2 in product(*([[True, False]] * 4)):
                 pi_1 = self.create_derived(v_1, is_pitch_1, is_class_1)
