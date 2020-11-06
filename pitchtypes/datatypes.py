@@ -340,109 +340,61 @@ class HarmonicIntervalClass(Harmonic):
 class Spelled(AbstractBase):
 
     _pitch_regex = re.compile("^(?P<class>[A-G])(?P<modifiers>(b*)|(#*))(?P<octave>(-?[0-9]+)?)$")
-    _interval_regex = re.compile("^(?P<sign>[-+])(?P<quality>(A*)|(M)|(P)|(m)|(d*))(?P<generic>[1-7])(?P<octave>(:-?[0-9]+)?)$")
+    _interval_regex = re.compile("^(?P<sign>[-+])?(?P<quality>(a*)|(M)|(p)|(m)|(d*))(?P<generic>[1-7])(?P<octave>(:-?[0-9]+)?)$")
 
     @staticmethod
-    def _init_from_int(value, is_pitch, is_class):
-        try:
-            int_value = int(value)
-            float_value = float(value)
-            if int_value != float_value:
-                raise ValueError(f"Initialization from integer failed: Interpreting the provided value of {value} as "
-                                 f"integer ({int_value}) differs from its interpretation as float ({float_value})")
-            value = np.array([int(value), 0], dtype=np.int)
-        except TypeError:
-            raise ValueError(f"Initialization from integer failed: Could not inteprete {value} as integer")
-        if is_class is False:
-            raise TypeError(f"Initialization from integer failed: Only pitch and interval classes can be initialised "
-                            f"from an integer value but is_class={is_class} was provided.")
-        if is_pitch is None:
-            raise ValueError(f"Initialization from integer failed: For initialisation from an integer, please "
-                             f"explicitly provide the is_pitch argument as True or False.")
-        return value, is_pitch, True
-
-    @staticmethod
-    def _init_from_str(value, is_pitch, is_class):
-        if not isinstance(value, str):
-            raise TypeError(f"Initialization from string failed: Value is not a string (got {value} of type "
-                            f"{type(value)})")
-        str_value = value
-        pitch_match = Spelled._pitch_regex.match(value)
-        interval_match = Spelled._interval_regex.match(value)
-        if pitch_match is None and interval_match is None:
-            raise ValueError(f"Initialization from string failed: "
-                             f"{value} does neither match the regular expression for spelled pitch names "
-                             f"'{Spelled._pitch_regex.pattern}' nor that for spelled interval names "
-                             f"'{Spelled._interval_regex.pattern}'.")
-        if pitch_match is not None and interval_match is not None:
-            raise ValueError(f"Initialization from string failed: "
-                             f"{value} matches both the regular expression for spelled pitch names "
-                             f"'{Spelled._pitch_regex.pattern}' and that for spelled interval names "
-                             f"'{Spelled._interval_regex.pattern}'. This is a bug (the two regex expressions should "
-                             f"be disjoint).")
-        octave = None
-        if pitch_match is not None:
-            if is_pitch is False:
-                raise ValueError(f"Initialization from string failed: "
-                                 f"{value} matches the regular expression for spelled pitch names "
-                                 f"({Spelled._pitch_regex.pattern}) but is_pitch was explicitly specified as "
-                                 f"{is_pitch}")
-            octave = pitch_match['octave']
-            is_pitch = True
-            # initialise value with diatonic pitch class
-            value = np.array([{"F": -1, "C": 0, "G": 1, "D": 2, "A": 3, "E": 4, "B": 5}[pitch_match['class']], 0])
-            # add modifiers
-            if "#" in pitch_match['modifiers']:
-                value[0] += 7 * len(pitch_match['modifiers'])
-            else:
-                value[0] -= 7 * len(pitch_match['modifiers'])
-        if interval_match is not None:
-            if is_pitch is True:
-                raise ValueError(f"Initialization from string failed: "
-                                 f"{value} matches the regular expression for spelled interval names "
-                                 f"({Spelled._interval_regex.pattern}) but is_pitch was explicitly specified as "
-                                 f"{is_pitch}")
-            octave = interval_match['octave'][1:]
-            is_pitch = False
-            # initialise value with generic interval classes
-            value = np.array([{"4": -1, "1": 0, "5": 1, "2": 2, "6": 3, "3": 4, "7": 5}[interval_match['generic']], 0])
-            # add modifiers
-            if interval_match['quality'] in ["P", "M"]:
-                pass
-            elif interval_match['quality'] == "m":
-                value[0] -= 7
-            elif "A" in interval_match['quality']:
-                value[0] += 7 * len(interval_match['quality'])
-            elif "d" in interval_match['quality']:
-                if interval_match['generic'] in ["4", "1", "5"]:
-                    value[0] -= 7 * len(interval_match['quality'])
-                else:
-                    value[0] -= 7 * (len(interval_match['quality']) + 1)
-            else:
-                raise RuntimeError(f"Initialization from string failed: "
-                                   f"Unexpected interval quality '{interval_match['quality']}'. This is a bug and "
-                                   f"means that either the used regex is bad or the handling code.")
-            if interval_match['sign'] == '-':
-                value[0] *= -1
+    def parse_pitch(s):
+        if not isinstance(s, str):
+            raise TypeError(f"expected string as input, got {s}")
+        pitch_match = Spelled._pitch_regex.match(s)
+        if pitch_match is None:
+            raise ValueError(f"could not match '{s}' with regex: '{Spelled._pitch_regex.pattern}'")
+        octave = pitch_match['octave']
+        # initialise fifth steps from diatonic pitch class
+        fifth_steps = {"F": -1, "C": 0, "G": 1, "D": 2, "A": 3, "E": 4, "B": 5}[pitch_match['class']]
+        # add modifiers
+        if "#" in pitch_match['modifiers']:
+            fifth_steps += 7 * len(pitch_match['modifiers'])
+        else:
+            fifth_steps -= 7 * len(pitch_match['modifiers'])
         # add octave
         if octave == "":
-            if is_class is None:
-                is_class = True
-            else:
-                if not is_class:
-                    raise ValueError(f"Initialization from string failed: "
-                                     f"Inconsistent arguments: {str_value} indicates a pitch class but "
-                                     f"'is_class' is {is_class}")
+            return None, fifth_steps
         else:
-            if is_class is None:
-                is_class = False
+            return int(octave), fifth_steps
+
+    @staticmethod
+    def parse_interval(s):
+        if not isinstance(s, str):
+            raise TypeError("expecte string as input, got {s}")
+        interval_match = Spelled._interval_regex.match(s)
+        if interval_match is None:
+            raise ValueError(f"could not match '{s}' with regex: '{Spelled._interval_regex.pattern}'")
+        octave = interval_match['octave'][1:]
+        # initialise value with generic interval classes
+        fifth_steps = {"4": -1, "1": 0, "5": 1, "2": 2, "6": 3, "3": 4, "7": 5}[interval_match['generic']]
+        # add modifiers
+        if interval_match['quality'] in ["p", "M"]:
+            pass
+        elif interval_match['quality'] == "m":
+            fifth_steps -= 7
+        elif "a" in interval_match['quality']:
+            fifth_steps += 7 * len(interval_match['quality'])
+        elif "d" in interval_match['quality']:
+            if interval_match['generic'] in ["4", "1", "5"]:
+                fifth_steps -= 7 * len(interval_match['quality'])
             else:
-                if is_class:
-                    raise ValueError(f"Initialization from string failed: "
-                                     f"Inconsistent arguments: {str_value} does not indicate a pitch class but "
-                                     f"'is_class' is {is_class}")
-            value[1] += int(octave)
-        return value, is_pitch, is_class
+                fifth_steps -= 7 * (len(interval_match['quality']) + 1)
+        else:
+            raise RuntimeError(f"Initialization from string failed: "
+                               f"Unexpected interval quality '{interval_match['quality']}'. This is a bug and "
+                               f"means that either the used regex is bad or the handling code.")
+        if interval_match['sign'] == '-':
+            fifth_steps *= -1
+        if octave == "":
+            return None, fifth_steps
+        else:
+            return int(octave), fifth_steps
 
     @staticmethod
     def _init_from_listlike(value, is_pitch, is_class):
@@ -472,21 +424,6 @@ class Spelled(AbstractBase):
         return int_value, is_pitch, is_class
 
     def __init__(self, value, is_pitch, is_class, **kwargs):
-        exceptions = []
-        for f in [Spelled._init_from_int,
-                  Spelled._init_from_str,
-                  Spelled._init_from_listlike]:
-            try:
-                value, is_pitch, is_class = f(value=value, is_pitch=is_pitch, is_class=is_class)
-            except (ValueError, TypeError) as ex:
-                exceptions.append(ex)
-                continue
-            break
-        else:
-            ex_list = '\n'.join([f"    {type(ex).__name__}: {ex}" for ex in exceptions])
-            raise ValueError(f"Could not initialise with provided parameters (value={value}, is_pitch={is_pitch}, "
-                             f"is_class={is_class}). Different attempts resulted in the following exceptions being "
-                             f"raised:\n{ex_list}")
         super().__init__(value=value, is_pitch=is_pitch, is_class=is_class, **kwargs)
 
     def __repr__(self):
@@ -507,12 +444,12 @@ class Spelled(AbstractBase):
             accidentals = fifth_steps_from_f // 7
         if self.is_pitch:
             if self.is_class:
-                return EnharmonicPitchClass(value=12 * (self.octave() + 1) + base_pitch + accidentals)
+                return EnharmonicPitchClass(value=base_pitch + accidentals)
             else:
                 return EnharmonicPitch(value=12 * (self.octave() + 1) + base_pitch + accidentals)
         else:
             if self.is_class:
-                return EnharmonicIntervalClass(value=12 * (self.octave() + 1) + base_pitch + accidentals)
+                return EnharmonicIntervalClass(value=base_pitch + accidentals)
             else:
                 return EnharmonicInterval(value=12 * (self.octave() + 1) + base_pitch + accidentals)
 
@@ -525,33 +462,39 @@ class Spelled(AbstractBase):
         if self.is_pitch:
             if negative is not None:
                 raise ValueError("specifying parameter 'negative' is only valid for interval class types")
-            pitch_class = ["F", "C", "G", "D", "A", "E", "B"][(self.value[0] + 1) % 7]
-            flat_sharp = (self.value[0] + 1) // 7
+            if self.is_class:
+                fifths_steps = self.value
+            else:
+                fifths_steps = self.value[1]
+            pitch_class = ["F", "C", "G", "D", "A", "E", "B"][(fifths_steps + 1) % 7]
+            flat_sharp = (fifths_steps + 1) // 7
             pitch_class += ('#' if flat_sharp > 0 else 'b') * abs(flat_sharp)
             if self.is_class:
                 return pitch_class
             else:
-                return pitch_class + str(self.value[1])
+                return pitch_class + str(self.value[0])
         else:
             if self.is_class:
                 if negative is None:
                     negative = False
+                fifths_steps = self.value
             else:
                 if negative is None:
-                    negative = self.value[1] < 0
+                    negative = self.value[0] < 0
                 else:
                     raise ValueError("specifying parameter 'negative' is only valid for interval class types")
+                fifths_steps = self.value[1]
             if negative:
-                delta = -self.value[0]
+                delta = -fifths_steps
                 sign = "-"
             else:
-                delta = self.value[0]
+                delta = fifths_steps
                 sign = "+"
             phase = delta % 7
             period = (5 - delta) // 7
             generic_interval = ["1", "5", "2", "6", "3", "7", "4"][phase]
             if abs(delta) <= 1:
-                quality = "P"
+                quality = "p"
             elif abs(delta) <= 5:
                 if delta > 0:
                     quality = "M"
@@ -563,43 +506,87 @@ class Spelled(AbstractBase):
                 else:
                     quality = "d" * (period - 1)
             elif period < 0:
-                quality = "A" * abs(period)
+                quality = "a" * abs(period)
             else:
                 raise RuntimeWarning("This is a bug!")
             if self.is_class:
                 return sign + quality + generic_interval
             else:
-                return sign + quality + generic_interval + ":" + str(abs(self.value[1]))
-
-    def fifth_steps(self):
-        return self.value[0]
-
-    def octave(self):
-        return self.value[1]
+                return sign + quality + generic_interval + ":" + str(abs(self.value[0]))
 
 
 @Spelled.link_pitch_type()
 class SpelledPitch(Spelled):
-    pass
+    def __init__(self, value):
+        if isinstance(value, str):
+            oct, fifths = self.parse_pitch(value)
+        else:
+            oct, fifths = value
+        assert isinstance(fifths, numbers.Integral)
+        assert isinstance(oct, numbers.Integral)
+        super().__init__(value=np.array([oct, fifths]), is_pitch=True, is_class=False)
+
+    def octave(self):
+        return self.value[0]
+
+    def fifth_steps(self):
+        return self.value[1]
 
 
 @Spelled.link_interval_type()
 class SpelledInterval(Spelled):
-    pass
+    def __init__(self, value):
+        if isinstance(value, str):
+            oct, fifths = self.parse_interval(value)
+        else:
+            oct, fifths = value
+        assert isinstance(fifths, numbers.Integral)
+        assert isinstance(oct, numbers.Integral)
+        super().__init__(value=np.array([oct, fifths]), is_pitch=False, is_class=False)
+
+    def octave(self):
+        return self.value[0]
+
+    def fifth_steps(self):
+        return self.value[1]
 
 
 @Spelled.link_pitch_class_type()
 @total_ordering
 class SpelledPitchClass(Spelled):
+    def __init__(self, value):
+        if isinstance(value, str):
+            oct, fifths = self.parse_pitch(value)
+            assert oct is None
+        else:
+            fifths = value
+        assert isinstance(fifths, numbers.Integral)
+        super().__init__(value=fifths, is_pitch=True, is_class=True)
+
     def __lt__(self, other):
         """Spelled pitch classes are ordered along the line of fifths."""
         if type(other) == SpelledPitchClass:
             return self.value < other.value
         return NotImplemented
 
+    def fifth_steps(self):
+        return self.value
+
 
 @Spelled.link_interval_class_type()
 class SpelledIntervalClass(Spelled):
+    def __init__(self, value):
+        if isinstance(value, str):
+            oct, fifths = self.parse_interval(value)
+            assert oct is None
+        else:
+            fifths = value
+        assert isinstance(fifths, numbers.Integral)
+        super().__init__(value=fifths, is_pitch=False, is_class=True)
+
+    def fifth_steps(self):
+        return self.value
+
     def __abs__(self):
         """Absolute value of steps along the line of fifths"""
         return abs(self.value)

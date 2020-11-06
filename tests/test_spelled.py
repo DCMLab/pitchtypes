@@ -19,10 +19,10 @@ class TestSpelled(TestCase):
         "ddd4", "ddd1", "ddd5", "dd2", "dd6", "dd3", "dd7",
         "dd4", "dd1", "dd5", "d2", "d6", "d3", "d7",
         "d4", "d1", "d5", "m2", "m6", "m3", "m7",
-        "P4", "P1", "P5", "M2", "M6", "M3", "M7",
-        "A4", "A1", "A5", "A2", "A6", "A3", "A7",
-        "AA4", "AA1", "AA5", "AA2", "AA6", "AA3", "AA7",
-        "AAA4", "AAA1", "AAA5", "AAA2", "AAA6", "AAA3", "AAA7"
+        "p4", "p1", "p5", "M2", "M6", "M3", "M7",
+        "a4", "a1", "a5", "a2", "a6", "a3", "a7",
+        "aa4", "aa1", "aa5", "aa2", "aa6", "aa3", "aa7",
+        "aaa4", "aaa1", "aaa5", "aaa2", "aaa6", "aaa3", "aaa7"
     ]
 
     def test_types(self):
@@ -112,7 +112,7 @@ class TestSpelled(TestCase):
             p1 = SpelledPitch("C#4")
             p2 = SpelledPitch("Gb5")
             # i1 = Spelled("+dd5:1")
-            # i2 = Spelled("-AA4:-1")
+            # i2 = Spelled("-aa4:-1")
             # print(i1, i2)
             # i = p2 - p1
             # print(i)
