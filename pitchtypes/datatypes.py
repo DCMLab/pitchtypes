@@ -35,14 +35,27 @@ class AbstractBase(Object):
         return decorator
 
     @classmethod
-    def link_interval_type(cls, skip_name_check=False):
+    def link_interval_type(cls, skip_name_check=False, create_mul=True):
         def decorator(interval_type):
             cls.Interval = interval_type
             interval_type._base_type = cls
+            # create __init__
             if "__init__" not in vars(interval_type):
                 def __init__(self, value, **kwargs):
                     super(interval_type, self).__init__(value=value, is_pitch=False, is_class=False, **kwargs)
+
                 setattr(interval_type, "__init__", __init__)
+            # create __mul__ and __rmul__
+            if create_mul:
+                def __mul__(self, other):
+                    return self.IntervalClass(self.value * other)
+
+                def __rmul__(self, other):
+                    return self.__mul__(other)
+
+                setattr(interval_type, "__mul__", __mul__)
+                setattr(interval_type, "__rmul__", __rmul__)
+            # perform name check
             if not skip_name_check:
                 got_name = interval_type.__name__
                 expected_name = cls.__name__ + "Interval"
@@ -71,14 +84,26 @@ class AbstractBase(Object):
         return decorator
 
     @classmethod
-    def link_interval_class_type(cls, skip_name_check=False):
+    def link_interval_class_type(cls, skip_name_check=False, create_mul=True):
         def decorator(interval_class_type):
             cls.IntervalClass = interval_class_type
             interval_class_type._base_type = cls
+            # create __init__
             if "__init__" not in vars(interval_class_type):
                 def __init__(self, value, **kwargs):
                     super(interval_class_type, self).__init__(value=value, is_pitch=False, is_class=True, **kwargs)
                 setattr(interval_class_type, "__init__", __init__)
+            # create __mul__ and __rmul__
+            if create_mul:
+                def __mul__(self, other):
+                    return self.IntervalClass(self.value * other)
+
+                def __rmul__(self, other):
+                    return self.__mul__(other)
+
+                setattr(interval_class_type, "__mul__", __mul__)
+                setattr(interval_class_type, "__rmul__", __rmul__)
+            # perform name check
             if not skip_name_check:
                 got_name = interval_class_type.__name__
                 expected_name = cls.__name__ + "IntervalClass"
@@ -215,17 +240,6 @@ class AbstractBase(Object):
 
     def __hash__(self):
         return hash((self.__class__.__name__, self.value, self.is_pitch, self.is_class))
-
-    def __mul__(self, other):
-        if self.is_interval:
-            if self.is_class:
-                return self.IntervalClass(self.value * other)
-            else:
-                return self.Interval(self.value * other)
-        return NotImplemented
-
-    def __rmul__(self, other):
-        return self.__mul__(other)
 
     def __truediv__(self, other):
         if self.is_interval:
