@@ -35,7 +35,7 @@ class AbstractBase(Object):
         return decorator
 
     @classmethod
-    def link_interval_type(cls, skip_name_check=False, create_mul=True):
+    def link_interval_type(cls, skip_name_check=False, create_mul=True, create_div=True):
         def decorator(interval_type):
             cls.Interval = interval_type
             interval_type._base_type = cls
@@ -55,6 +55,12 @@ class AbstractBase(Object):
 
                 setattr(interval_type, "__mul__", __mul__)
                 setattr(interval_type, "__rmul__", __rmul__)
+            # create __truediv__
+            if create_div:
+                def __truediv__(self, other):
+                    return self.__mul__(1 / other)
+
+                setattr(interval_type, "__truediv__", __truediv__)
             # perform name check
             if not skip_name_check:
                 got_name = interval_type.__name__
@@ -84,7 +90,7 @@ class AbstractBase(Object):
         return decorator
 
     @classmethod
-    def link_interval_class_type(cls, skip_name_check=False, create_mul=True):
+    def link_interval_class_type(cls, skip_name_check=False, create_mul=True, create_div=True):
         def decorator(interval_class_type):
             cls.IntervalClass = interval_class_type
             interval_class_type._base_type = cls
@@ -103,6 +109,12 @@ class AbstractBase(Object):
 
                 setattr(interval_class_type, "__mul__", __mul__)
                 setattr(interval_class_type, "__rmul__", __rmul__)
+            # create __truediv__
+            if create_div:
+                def __truediv__(self, other):
+                    return self.__mul__(1 / other)
+
+                setattr(interval_class_type, "__truediv__", __truediv__)
             # perform name check
             if not skip_name_check:
                 got_name = interval_class_type.__name__
@@ -240,11 +252,6 @@ class AbstractBase(Object):
 
     def __hash__(self):
         return hash((self.__class__.__name__, self.value, self.is_pitch, self.is_class))
-
-    def __truediv__(self, other):
-        if self.is_interval:
-            return self.__mul__(1 / other)
-        return NotImplemented
 
     def convert_to(self, other_type):
         return Converters.convert(self, other_type)
