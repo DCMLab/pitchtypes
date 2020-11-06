@@ -8,12 +8,6 @@ from functools import total_ordering
 @total_ordering
 class AbstractBase:
 
-    _base_type = None
-    Pitch = None
-    Interval = None
-    PitchClass = None
-    IntervalClass = None
-
     @classmethod
     def link_pitch_type(cls, skip_name_check=False):
         def decorator(pitch_type):

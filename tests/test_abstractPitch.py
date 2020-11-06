@@ -12,19 +12,23 @@ class TestAbstractPitch(TestCase):
             pass
 
         @NewType.link_pitch_type()
-        class NewTypePitch(NewType): pass
+        class NewTypePitch(NewType):
+            pass
 
         @NewType.link_interval_type()
-        class NewTypeInterval(NewType): pass
+        class NewTypeInterval(NewType):
+            pass
 
         @NewType.link_pitch_class_type()
-        class NewTypePitchClass(NewType): pass
+        class NewTypePitchClass(NewType):
+            pass
 
         @NewType.link_interval_class_type()
-        class NewTypeIntervalClass(NewType): pass
+        class NewTypeIntervalClass(NewType):
+            pass
 
         # make sure the linking worked
-        self.assertEqual(NewType._base_type, None)
+        self.assertRaises(AttributeError, lambda: NewType._base_type)
         self.assertEqual(NewType.Pitch, NewTypePitch)
         self.assertEqual(NewType.Interval, NewTypeInterval)
         self.assertEqual(NewType.PitchClass, NewTypePitchClass)

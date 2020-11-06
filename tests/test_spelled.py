@@ -27,7 +27,6 @@ class TestSpelled(TestCase):
 
     def test_types(self):
         # make sure the types are linking correctly
-        self.assertEqual(Spelled._base_type, None)
         self.assertEqual(Spelled.Pitch, SpelledPitch)
         self.assertEqual(Spelled.Interval, SpelledInterval)
         self.assertEqual(Spelled.PitchClass, SpelledPitchClass)

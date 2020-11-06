@@ -64,7 +64,7 @@ class TestConverters(TestCase):
         class New(AbstractBase): pass
 
         # make sure the types are linking correctly
-        self.assertEqual(New._base_type, None)
+        self.assertRaises(AttributeError, lambda: New._base_type)
         self.assertEqual(New.Pitch._base_type, New)
         self.assertEqual(New.Interval._base_type, New)
         self.assertEqual(New.PitchClass._base_type, New)

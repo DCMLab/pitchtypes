@@ -6,7 +6,6 @@ class TestEnharmonic(TestCase):
 
     def test_types(self):
         # make sure the types are linking correctly
-        self.assertEqual(Enharmonic._base_type, None)
         self.assertEqual(Enharmonic.Pitch, EnharmonicPitch)
         self.assertEqual(Enharmonic.Interval, EnharmonicInterval)
         self.assertEqual(Enharmonic.PitchClass, EnharmonicPitchClass)
