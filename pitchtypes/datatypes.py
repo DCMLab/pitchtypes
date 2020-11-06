@@ -595,18 +595,22 @@ class SpelledIntervalClass(Spelled):
     def diatonic_steps(self):
         return (self.fifth_steps() * 4) % 7
 
-    def name(self, negative=None):
-        if negative is None:
-            negative = False
+    def generic(self, negative=False):
+        if negative:
+            delta = -self.fifth_steps()
+        else:
+            delta = self.fifth_steps()
+        phase = delta % 7
+        return [1, 5, 2, 6, 3, 7, 4][phase]
+
+    def name(self, negative=False):
         if negative:
             delta = -self.fifth_steps()
             sign = "-"
         else:
             delta = self.fifth_steps()
             sign = "+"
-        phase = delta % 7
         period = (5 - delta) // 7
-        generic_interval = ["1", "5", "2", "6", "3", "7", "4"][phase]
         if abs(delta) <= 1:
             quality = "p"
         elif abs(delta) <= 5:
@@ -615,7 +619,7 @@ class SpelledIntervalClass(Spelled):
             else:
                 quality = "m"
         elif period > 0:
-            if generic_interval in ["4", "1", "5"]:
+            if self.generic(negative) in [4, 1, 5]:
                 quality = "d" * period
             else:
                 quality = "d" * (period - 1)
@@ -623,7 +627,7 @@ class SpelledIntervalClass(Spelled):
             quality = "a" * abs(period)
         else:
             raise RuntimeWarning("This is a bug!")
-        return sign + quality + generic_interval
+        return sign + quality + str(self.generic(negative))
 
 
 class Enharmonic(AbstractBase):
