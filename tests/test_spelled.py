@@ -54,12 +54,6 @@ class TestSpelled(TestCase):
                     self.assertEqual(pp.convert_to(Enharmonic.Pitch), Enharmonic.Pitch(p))
                 # check base type is set on object
                 self.assertEqual(pp._base_type, Spelled)
-                # create a derived type (usually called from the base class to recreate derived class)
-                d = pp._create_derived_type()
-                # check it is a different object
-                self.assertFalse(pp is d)
-                # but compares equal to existing
-                self.assertEqual(pp, d)
                 # check class property is correct
                 self.assertEqual(is_class, pp.is_class)
                 # check pitch property is correct

@@ -6,6 +6,18 @@ from itertools import product
 
 class TestAbstractPitch(TestCase):
 
+    def create_derived(self, value, is_pitch, is_class):
+        if is_pitch:
+            if is_class:
+                return AbstractBase.PitchClass(value=value)
+            else:
+                return AbstractBase.Pitch(value=value)
+        else:
+            if is_class:
+                return AbstractBase.IntervalClass(value=value)
+            else:
+                return AbstractBase.Interval(value=value)
+
     def test_implementing_subtypes(self):
 
         class NewType(AbstractBase):
@@ -83,8 +95,8 @@ class TestAbstractPitch(TestCase):
 
         for v_1, v_2, v_3 in np.random.randint(-2, 3, (10, 3)):
             for is_pitch_1, is_pitch_2, is_class_1, is_class_2 in product(*([[True, False]] * 4)):
-                pi_1 = AbstractBase(value=v_1, is_pitch=is_pitch_1, is_class=is_class_1)._create_derived_type()
-                pi_2 = AbstractBase(value=v_2, is_pitch=is_pitch_2, is_class=is_class_2)._create_derived_type()
+                pi_1 = self.create_derived(v_1, is_pitch_1, is_class_1)
+                pi_2 = self.create_derived(v_2, is_pitch_2, is_class_2)
                 # addition and subtraction are not defined for mixed class and non-class types
                 if is_class_1 != is_class_2:
                     self.assertRaises(TypeError, lambda: pi_1 + pi_2)
@@ -186,8 +198,8 @@ class TestAbstractPitch(TestCase):
 
         for v_1, v_2, in np.random.randint(0, 2, (10, 2)):
             for is_pitch_1, is_pitch_2, is_class_1, is_class_2 in product(*([[True, False]] * 4)):
-                pi_1 = AbstractBase(value=v_1, is_pitch=is_pitch_1, is_class=is_class_1)._create_derived_type()
-                pi_2 = AbstractBase(value=v_2, is_pitch=is_pitch_2, is_class=is_class_2)._create_derived_type()
+                pi_1 = self.create_derived(value=v_1, is_pitch=is_pitch_1, is_class=is_class_1)
+                pi_2 = self.create_derived(value=v_2, is_pitch=is_pitch_2, is_class=is_class_2)
                 s = set()
                 self.assertFalse(pi_1 in s)
                 s.add(pi_1)
