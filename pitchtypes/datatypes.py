@@ -20,8 +20,8 @@ class AbstractBase:
             cls.Pitch = pitch_type
             pitch_type._base_type = cls
             if "__init__" not in vars(pitch_type):
-                def __init__(self, *args, **kwargs):
-                    super(pitch_type, self).__init__(is_pitch=True, is_class=False, *args, **kwargs)
+                def __init__(self, value, **kwargs):
+                    super(pitch_type, self).__init__(value=value, is_pitch=True, is_class=False, **kwargs)
                 setattr(pitch_type, "__init__", __init__)
             if not skip_name_check:
                 got_name = pitch_type.__name__
@@ -38,8 +38,8 @@ class AbstractBase:
             cls.Interval = interval_type
             interval_type._base_type = cls
             if "__init__" not in vars(interval_type):
-                def __init__(self, *args, **kwargs):
-                    super(interval_type, self).__init__(is_pitch=False, is_class=False, *args, **kwargs)
+                def __init__(self, value, **kwargs):
+                    super(interval_type, self).__init__(value=value, is_pitch=False, is_class=False, **kwargs)
                 setattr(interval_type, "__init__", __init__)
             if not skip_name_check:
                 got_name = interval_type.__name__
@@ -56,8 +56,8 @@ class AbstractBase:
             cls.PitchClass = pitch_class_type
             pitch_class_type._base_type = cls
             if "__init__" not in vars(pitch_class_type):
-                def __init__(self, *args, **kwargs):
-                    super(pitch_class_type, self).__init__(is_pitch=True, is_class=True, *args, **kwargs)
+                def __init__(self, value, **kwargs):
+                    super(pitch_class_type, self).__init__(value=value, is_pitch=True, is_class=True, **kwargs)
                 setattr(pitch_class_type, "__init__", __init__)
             if not skip_name_check:
                 got_name = pitch_class_type.__name__
@@ -74,8 +74,8 @@ class AbstractBase:
             cls.IntervalClass = interval_class_type
             interval_class_type._base_type = cls
             if "__init__" not in vars(interval_class_type):
-                def __init__(self, *args, **kwargs):
-                    super(interval_class_type, self).__init__(is_pitch=False, is_class=True, *args, **kwargs)
+                def __init__(self, value, **kwargs):
+                    super(interval_class_type, self).__init__(value=value, is_pitch=False, is_class=True, **kwargs)
                 setattr(interval_class_type, "__init__", __init__)
             if not skip_name_check:
                 got_name = interval_class_type.__name__
@@ -122,10 +122,10 @@ class AbstractBase:
             return cls
         return decorator
 
-    def __init__(self, value, is_pitch, is_class, *args, **kwargs):
+    def __init__(self, value, is_pitch, is_class, **kwargs):
         # call __init__ on super to be cooperative in multi-inheritance,
-        # otherwise this should just call object.__init__ and *args and **kwargs should be empty
-        super().__init__(*args, **kwargs)
+        # otherwise this should just call object.__init__ and **kwargs should be empty
+        super().__init__(**kwargs)
         # initialise values
         self._is_pitch = is_pitch
         self._is_class = is_class
@@ -461,7 +461,7 @@ class Spelled(AbstractBase):
                              f"as True or False.")
         return int_value, is_pitch, is_class
 
-    def __init__(self, value, is_pitch, is_class, *args, **kwargs):
+    def __init__(self, value, is_pitch, is_class, **kwargs):
         exceptions = []
         for f in [Spelled._init_from_int,
                   Spelled._init_from_str,
@@ -477,7 +477,7 @@ class Spelled(AbstractBase):
             raise ValueError(f"Could not initialise with provided parameters (value={value}, is_pitch={is_pitch}, "
                              f"is_class={is_class}). Different attempts resulted in the following exceptions being "
                              f"raised:\n{ex_list}")
-        super().__init__(value=value, is_pitch=is_pitch, is_class=is_class, *args, **kwargs)
+        super().__init__(value=value, is_pitch=is_pitch, is_class=is_class, **kwargs)
 
     def __repr__(self):
         return self.name()
@@ -599,7 +599,7 @@ class Enharmonic(AbstractBase):
         cls.Pitch.print_options(as_int=as_int, flat_sharp=flat_sharp)
         cls.PitchClass.print_options(as_int=as_int, flat_sharp=flat_sharp)
 
-    def __init__(self, value, is_pitch, is_class, *args, **kwargs):
+    def __init__(self, value, is_pitch, is_class, **kwargs):
         # pre-process value
         if isinstance(value, str):
             value = Spelled(value=value, is_pitch=is_pitch, is_class=is_class).convert_to(Enharmonic).value
@@ -611,7 +611,7 @@ class Enharmonic(AbstractBase):
             if is_class:
                 value = value % 12
         # hand on initialisation to other base classes
-        super().__init__(value=value, is_pitch=is_pitch, is_class=is_class, *args, **kwargs)
+        super().__init__(value=value, is_pitch=is_pitch, is_class=is_class, **kwargs)
 
     def convert_to_logfreq(self):
         return LogFreq(self.freq(), is_freq=True, is_pitch=self.is_pitch, is_class=self.is_class)
@@ -765,7 +765,7 @@ class LogFreq(AbstractBase):
             cls._print_precision = precision
         return cls._print_precision
 
-    def __init__(self, value, is_pitch, is_class, is_freq=False, *args, **kwargs):
+    def __init__(self, value, is_pitch, is_class, is_freq=False, **kwargs):
         """
         Initialise from frequency or log-frequency value.
         :param value: frequency or log-frequency (default) value
@@ -775,7 +775,7 @@ class LogFreq(AbstractBase):
             value = np.log(value)
         else:
             value = float(value)
-        super().__init__(value=value, is_pitch=is_pitch, is_class=is_class, *args, **kwargs)
+        super().__init__(value=value, is_pitch=is_pitch, is_class=is_class, **kwargs)
 
     def to_class(self):
         if self.is_class:
