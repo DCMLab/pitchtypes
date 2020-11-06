@@ -16,113 +16,193 @@ class Object:
 
 class AbstractBase(Object):
 
+    @staticmethod
+    def set_func_attr(sub_type, flags, names, funcs):
+        for flag, name, func in zip(flags, names, funcs):
+            if flag or flag is None and name not in vars(sub_type):
+                setattr(sub_type, name, func)
+
+    @staticmethod
+    def name_check(cls, sub_type, suffix, skip_name_check):
+        if not skip_name_check:
+            got_name = sub_type.__name__
+            expected_name = cls.__name__ + suffix
+            if got_name != expected_name:
+                raise TypeError(f"Got class named {got_name}, but expected {expected_name}. "
+                                f"Use skip_name_check=True to suppress.")
+
     @classmethod
-    def link_pitch_type(cls, skip_name_check=False):
-        def decorator(pitch_type):
-            cls.Pitch = pitch_type
-            pitch_type._base_type = cls
-            if "__init__" not in vars(pitch_type):
-                def __init__(self, value, **kwargs):
-                    super(pitch_type, self).__init__(value=value, is_pitch=True, is_class=False, **kwargs)
-                setattr(pitch_type, "__init__", __init__)
-            if not skip_name_check:
-                got_name = pitch_type.__name__
-                expected_name = cls.__name__ + "Pitch"
-                if got_name != expected_name:
-                    raise TypeError(f"Got class named {got_name}, but expected {expected_name}. "
-                                    f"Use skip_name_check=True to suppress.")
-            return pitch_type
+    def link_pitch_type(cls,
+                        skip_name_check=False,
+                        create_init=None,
+                        create_add=None,
+                        create_sub=None):
+        def decorator(sub_type):
+            # link types
+            cls.Pitch = sub_type
+            sub_type._base_type = cls
+
+            # create default functions
+            def __init__(self, value, **kwargs):
+                super(sub_type, self).__init__(value=value, is_pitch=True, is_class=False, **kwargs)
+
+            def __add__(self, other):
+                if type(other) == self.Interval:
+                    return self.Pitch(self.value + other.value)
+                return NotImplemented
+
+            def __sub__(self, other):
+                if type(other) == self.Pitch:
+                    return self.Interval(self.value - other.value)
+                elif type(other) == self.Interval:
+                    return self.Pitch(self.value - other.value)
+                return NotImplemented
+
+            # set default functions
+            AbstractBase.set_func_attr(sub_type,
+                                       [create_init, create_add, create_sub],
+                                       ['__init__', '__add__', '__sub__'],
+                                       [__init__, __add__, __sub__])
+
+            # check name
+            AbstractBase.name_check(cls, sub_type, "Pitch", skip_name_check)
+
+            return sub_type
         return decorator
 
     @classmethod
-    def link_interval_type(cls, skip_name_check=False, create_mul=True, create_div=True):
-        def decorator(interval_type):
-            cls.Interval = interval_type
-            interval_type._base_type = cls
-            # create __init__
-            if "__init__" not in vars(interval_type):
-                def __init__(self, value, **kwargs):
-                    super(interval_type, self).__init__(value=value, is_pitch=False, is_class=False, **kwargs)
+    def link_interval_type(cls,
+                           skip_name_check=False,
+                           create_init=None,
+                           create_add=None,
+                           create_sub=None,
+                           create_mul=None,
+                           create_div=None):
+        def decorator(sub_type):
+            # link types
+            cls.Interval = sub_type
+            sub_type._base_type = cls
 
-                setattr(interval_type, "__init__", __init__)
-            # create __mul__ and __rmul__
-            if create_mul:
-                def __mul__(self, other):
-                    return self.IntervalClass(self.value * other)
+            # create default functions
+            def __init__(self, value, **kwargs):
+                super(sub_type, self).__init__(value=value, is_pitch=False, is_class=False, **kwargs)
 
-                def __rmul__(self, other):
-                    return self.__mul__(other)
+            def __add__(self, other):
+                if type(other) == self.Interval:
+                    return self.Interval(self.value + other.value)
+                return NotImplemented
 
-                setattr(interval_type, "__mul__", __mul__)
-                setattr(interval_type, "__rmul__", __rmul__)
-            # create __truediv__
-            if create_div:
-                def __truediv__(self, other):
-                    return self.__mul__(1 / other)
+            def __sub__(self, other):
+                if type(other) == self.Interval:
+                    return self.Interval(self.value - other.value)
+                return NotImplemented
 
-                setattr(interval_type, "__truediv__", __truediv__)
+            def __mul__(self, other):
+                return sub_type(self.value * other)
+
+            def __rmul__(self, other):
+                return self.__mul__(other)
+
+            def __truediv__(self, other):
+                return self.__mul__(1 / other)
+
+            # set default functions
+            AbstractBase.set_func_attr(sub_type,
+                                       [create_init, create_add, create_sub, create_mul, create_mul, create_div],
+                                       ['__init__', '__add__', '__sub__', '__mul__', '__rmul__', '__truediv__'],
+                                       [__init__, __add__, __sub__, __mul__, __rmul__, __truediv__])
+
             # perform name check
-            if not skip_name_check:
-                got_name = interval_type.__name__
-                expected_name = cls.__name__ + "Interval"
-                if got_name != expected_name:
-                    raise TypeError(f"Got class named {got_name}, but expected {expected_name}. "
-                                    f"Use skip_name_check=True to suppress.")
-            return interval_type
+            AbstractBase.name_check(cls, sub_type, "Interval", skip_name_check)
+
+            return sub_type
         return decorator
 
     @classmethod
-    def link_pitch_class_type(cls, skip_name_check=False):
-        def decorator(pitch_class_type):
-            cls.PitchClass = pitch_class_type
-            pitch_class_type._base_type = cls
-            if "__init__" not in vars(pitch_class_type):
-                def __init__(self, value, **kwargs):
-                    super(pitch_class_type, self).__init__(value=value, is_pitch=True, is_class=True, **kwargs)
-                setattr(pitch_class_type, "__init__", __init__)
-            if not skip_name_check:
-                got_name = pitch_class_type.__name__
-                expected_name = cls.__name__ + "PitchClass"
-                if got_name != expected_name:
-                    raise TypeError(f"Got class named {got_name}, but expected {expected_name}. "
-                                    f"Use skip_name_check=True to suppress.")
-            return pitch_class_type
+    def link_pitch_class_type(cls,
+                              skip_name_check=False,
+                              create_init=None,
+                              create_add=None,
+                              create_sub=None):
+        def decorator(sub_type):
+            # link types
+            cls.PitchClass = sub_type
+            sub_type._base_type = cls
+
+            # create default functions
+            def __init__(self, value, **kwargs):
+                super(sub_type, self).__init__(value=value, is_pitch=True, is_class=True, **kwargs)
+
+            def __add__(self, other):
+                if type(other) == self.IntervalClass:
+                    return self.PitchClass(self.value + other.value)
+                return NotImplemented
+
+            def __sub__(self, other):
+                if type(other) == self.PitchClass:
+                    return self.IntervalClass(self.value - other.value)
+                elif type(other) == self.IntervalClass:
+                    return self.PitchClass(self.value - other.value)
+                return NotImplemented
+
+            # set default functions
+            AbstractBase.set_func_attr(sub_type,
+                                       [create_init, create_add, create_sub],
+                                       ['__init__', '__add__', '__sub__'],
+                                       [__init__, __add__, __sub__])
+
+            # check name
+            AbstractBase.name_check(cls, sub_type, "PitchClass", skip_name_check)
+
+            return sub_type
         return decorator
 
     @classmethod
-    def link_interval_class_type(cls, skip_name_check=False, create_mul=True, create_div=True):
-        def decorator(interval_class_type):
-            cls.IntervalClass = interval_class_type
-            interval_class_type._base_type = cls
-            # create __init__
-            if "__init__" not in vars(interval_class_type):
-                def __init__(self, value, **kwargs):
-                    super(interval_class_type, self).__init__(value=value, is_pitch=False, is_class=True, **kwargs)
-                setattr(interval_class_type, "__init__", __init__)
-            # create __mul__ and __rmul__
-            if create_mul:
-                def __mul__(self, other):
-                    return self.IntervalClass(self.value * other)
+    def link_interval_class_type(cls,
+                                 skip_name_check=False,
+                                 create_init=None,
+                                 create_add=None,
+                                 create_sub=None,
+                                 create_mul=None,
+                                 create_div=None):
+        def decorator(sub_type):
+            # link types
+            cls.IntervalClass = sub_type
+            sub_type._base_type = cls
 
-                def __rmul__(self, other):
-                    return self.__mul__(other)
+            # create default functions
+            def __init__(self, value, **kwargs):
+                super(sub_type, self).__init__(value=value, is_pitch=False, is_class=True, **kwargs)
 
-                setattr(interval_class_type, "__mul__", __mul__)
-                setattr(interval_class_type, "__rmul__", __rmul__)
-            # create __truediv__
-            if create_div:
-                def __truediv__(self, other):
-                    return self.__mul__(1 / other)
+            def __add__(self, other):
+                if type(other) == self.IntervalClass:
+                    return self.IntervalClass(self.value + other.value)
+                return NotImplemented
 
-                setattr(interval_class_type, "__truediv__", __truediv__)
+            def __sub__(self, other):
+                if type(other) == self.IntervalClass:
+                    return self.IntervalClass(self.value - other.value)
+                return NotImplemented
+
+            def __mul__(self, other):
+                return self.IntervalClass(self.value * other)
+
+            def __rmul__(self, other):
+                return self.__mul__(other)
+
+            def __truediv__(self, other):
+                return self.__mul__(1 / other)
+
+            # set default functions
+            AbstractBase.set_func_attr(sub_type,
+                                       [create_init, create_add, create_sub, create_mul, create_mul, create_div],
+                                       ['__init__', '__add__', '__sub__', '__mul__', '__rmul__', '__truediv__'],
+                                       [__init__, __add__, __sub__, __mul__, __rmul__, __truediv__])
+
             # perform name check
-            if not skip_name_check:
-                got_name = interval_class_type.__name__
-                expected_name = cls.__name__ + "IntervalClass"
-                if got_name != expected_name:
-                    raise TypeError(f"Got class named {got_name}, but expected {expected_name}. "
-                                    f"Use skip_name_check=True to suppress.")
-            return interval_class_type
+            AbstractBase.name_check(cls, sub_type, "IntervalClass", skip_name_check)
+
+            return sub_type
         return decorator
 
     @staticmethod
@@ -193,46 +273,8 @@ class AbstractBase(Object):
     def __repr__(self):
         return f"{self.__class__.__name__}({self.value})"
 
-    def __sub__(self, other):
-        if self.is_pitch:
-            if self.is_class:
-                if isinstance(other, self.PitchClass):
-                    return self.IntervalClass(self.value - other.value)
-                elif isinstance(other, self.IntervalClass):
-                    return self.PitchClass(self.value - other.value)
-            else:
-                if isinstance(other, self.Pitch):
-                    return self.Interval(self.value - other.value)
-                elif isinstance(other, self.Interval):
-                    return self.Pitch(self.value - other.value)
-        else:
-            if self.is_class:
-                if isinstance(other, self.IntervalClass):
-                    return self.IntervalClass(self.value - other.value)
-            else:
-                if isinstance(other, self.Interval):
-                    return self.Interval(self.value - other.value)
-        raise TypeError(f"Operation {self} - {other} is undefined (types {type(self)} and {type(other)})")
-
-    def __add__(self, other):
-        if self.is_pitch:
-            if self.is_class:
-                if isinstance(other, self.IntervalClass):
-                    return self.PitchClass(self.value + other.value)
-            else:
-                if isinstance(other, self.Interval):
-                    return self.Pitch(self.value + other.value)
-        else:
-            if self.is_class:
-                if isinstance(other, self.IntervalClass):
-                    return self.IntervalClass(self.value + other.value)
-            else:
-                if isinstance(other, self.Interval):
-                    return self.Interval(self.value + other.value)
-        raise TypeError(f"Operation {self} + {other} is undefined (types {type(self)} and {type(other)})")
-
     def __eq__(self, other):
-        if isinstance(other, self.__class__):
+        if type(other) == type(self):
             if self.is_pitch != other.is_pitch or self.is_class != other.is_class:
                 raise TypeError(f"The pitch and/or class properties do not match ({self.is_pitch}/{other.is_pitch} and "
                                 f"{self.is_class}/{other.is_class}). This either means that someone has messed with "
