@@ -3,10 +3,19 @@ import re
 import numpy as np
 import numbers
 from functools import total_ordering
+from typing import Any
+
+
+class Object:
+    """
+    This class provides an intermediate layer between 'object' and AbstractBase class to allow for freezing
+    AbstractBase but still set attributes in the __init__ method.
+    """
+    pass
 
 
 @total_ordering
-class AbstractBase:
+class AbstractBase(Object):
 
     @classmethod
     def link_pitch_type(cls, skip_name_check=False):
@@ -116,14 +125,34 @@ class AbstractBase:
             return cls
         return decorator
 
+    # type hints for class attributes set below
+    is_pitch: bool
+    is_interval: bool
+    is_class: bool
+    value: Any
+
     def __init__(self, value, is_pitch, is_class, **kwargs):
         # call __init__ on super to be cooperative in multi-inheritance,
         # otherwise this should just call object.__init__ and **kwargs should be empty
         super().__init__(**kwargs)
-        # initialise values
-        self._is_pitch = is_pitch
-        self._is_class = is_class
-        self._value = value
+        # initialise values (use Object's __setattr__ because the class is frozen)
+        self.setattr('is_pitch', is_pitch)
+        self.setattr('is_interval', not is_pitch)
+        self.setattr('is_class', is_class)
+        self.setattr('value', value)
+
+    def setattr(self, name, value):
+        """
+        Set an attribute to the frozen class. This should only be used in the __init__ method. As the attributes are
+        set indirectly via Object, you should additionally provide type hints in the class definition to let type
+        checkers and IDE know of these attributes.
+        :param name: name of the attribute
+        :param value: value of the attribute
+        """
+        super(Object, self).__setattr__(name, value)
+
+    def __setattr__(self, key, value):
+        raise AttributeError("Class is frozen, attributes cannot be set")
 
     def _create_derived_type(self):
         if self.is_class:
@@ -136,22 +165,6 @@ class AbstractBase:
                 return self.Pitch(self.value)
             else:
                 return self.Interval(self.value)
-
-    @property
-    def is_pitch(self):
-        return self._is_pitch
-
-    @property
-    def is_interval(self):
-        return not self._is_pitch
-
-    @property
-    def is_class(self):
-        return self._is_class
-
-    @property
-    def value(self):
-        return self._value
 
     def to_class(self):
         if self.is_class:
