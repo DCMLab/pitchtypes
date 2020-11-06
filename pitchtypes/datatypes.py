@@ -275,17 +275,13 @@ class AbstractBase(Object):
 
     def __eq__(self, other):
         if type(other) == type(self):
-            if self.is_pitch != other.is_pitch or self.is_class != other.is_class:
-                raise TypeError(f"The pitch and/or class properties do not match ({self.is_pitch}/{other.is_pitch} and "
-                                f"{self.is_class}/{other.is_class}). This either means that someone has messed with "
-                                f"the private properties or that the types were not implemented correctly (by creating "
-                                f"four separate sub-types).")
+            assert self.is_pitch == other.is_pitch
+            assert self.is_class == other.is_class
             if isinstance(self.value, np.ndarray) or isinstance(other.value, np.ndarray):
                 return np.array_equal(self.value, other.value)
             else:
                 return self.value == other.value
-        else:
-            return NotImplemented
+        return False
 
     def __hash__(self):
         return hash((self.__class__.__name__, self.value, self.is_pitch, self.is_class))
