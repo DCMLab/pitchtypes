@@ -1,4 +1,4 @@
-#  Copyright (c) 2020 Rober Lieck
+#  Copyright (c) 2020 Robert Lieck
 import re
 import numpy as np
 import numbers
@@ -322,8 +322,6 @@ class HarmonicIntervalClass(Harmonic):
 class Spelled(AbstractBase):
 
     _pitch_regex = re.compile("^(?P<class>[A-G])(?P<modifiers>(b*)|(#*))(?P<octave>(-?[0-9]+)?)$")
-
-    # ToDo: regex includes "P3", "m5" etc which are invalid values --> change that
     _interval_regex = re.compile("^(?P<sign>[-+])(?P<quality>(A*)|(M)|(P)|(m)|(d*))(?P<generic>[1-7])(?P<octave>(:-?[0-9]+)?)$")
 
     @staticmethod
