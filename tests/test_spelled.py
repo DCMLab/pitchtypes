@@ -1,8 +1,8 @@
 from unittest import TestCase
 from pitchtypes import Spelled, SpelledPitch, SpelledInterval, SpelledPitchClass, SpelledIntervalClass, Enharmonic
 
-class TestSpelled(TestCase):
 
+class TestSpelled(TestCase):
     line_of_fifths = [
         "Dbbbb", "Abbbb", "Ebbbb", "Bbbbb",
         "Fbbb", "Cbbb", "Gbbb", "Dbbb", "Abbb", "Ebbb", "Bbbb",
@@ -65,37 +65,54 @@ class TestSpelled(TestCase):
                 # check fifths steps are corrects
                 self.assertEqual(pp.fifth_steps(), idx - 26)
             # create interval (class) objects
-            for idx, (i, ir) in enumerate(zip(self.line_of_intervals, reversed(self.line_of_intervals))):
-                i = "+" + i
-                ir = "-" + ir
+            for idx, (interval_class_str,
+                      inverse_interval_class_str) in enumerate(zip(self.line_of_intervals,
+                                                                   reversed(self.line_of_intervals))):
+                inverse_interval_class_str = "-" + inverse_interval_class_str
                 if is_class:
-                    ii = SpelledIntervalClass(i)
-                    iir = SpelledIntervalClass(ir)
-                    ii.convert_to_enharmonic()
-                    self.assertEqual(ii.convert_to_enharmonic(), Enharmonic.IntervalClass(i))
-                    self.assertEqual(ii.convert_to(Enharmonic.IntervalClass), Enharmonic.IntervalClass(i))
-                else:
-                    i += ":4"
-                    ir += ":4"
-                    ii = SpelledInterval(i)
-                    iir = SpelledInterval(ir)
+                    # create objects
+                    interval = SpelledIntervalClass(interval_class_str)
+                    inverse_interval = SpelledIntervalClass(inverse_interval_class_str)
                     # check conversion to enharmonic
-                    self.assertEqual(ii.convert_to_enharmonic(), Enharmonic.Interval(i))
-                    self.assertEqual(ii.convert_to(Enharmonic.Interval), Enharmonic.Interval(i))
-                self.assertEqual(ii._base_type, Spelled)
-                self.assertEqual(iir._base_type, Spelled)
-                self.assertEqual(is_class, ii.is_class)
-                self.assertEqual(is_class, iir.is_class)
-                self.assertEqual(ii, iir)
-                self.assertFalse(ii.is_pitch)
-                self.assertTrue(ii.is_interval)
-                self.assertEqual(str(ii), i)
-                self.assertEqual(ii.name(), i)
-                self.assertEqual(iir.name(), i)
+                    self.assertEqual(interval.convert_to_enharmonic(),
+                                     Enharmonic.IntervalClass(interval_class_str))
+                    self.assertEqual(interval.convert_to(Enharmonic.IntervalClass),
+                                     Enharmonic.IntervalClass(interval_class_str))
+                else:
+                    # add octave for non-class
+                    interval_class_str += ":4"
+                    inverse_interval_class_str += ":4"
+                    # create objects
+                    interval = SpelledInterval(interval_class_str)
+                    inverse_interval = SpelledInterval(inverse_interval_class_str)
+                    # check conversion to enharmonic
+                    self.assertEqual(interval.convert_to_enharmonic(),
+                                     Enharmonic.Interval(interval_class_str))
+                    self.assertEqual(interval.convert_to(Enharmonic.Interval),
+                                     Enharmonic.Interval(interval_class_str))
+                # check link to base type
+                self.assertEqual(interval._base_type, Spelled)
+                self.assertEqual(inverse_interval._base_type, Spelled)
+                # check class, pitch, and interval property
+                self.assertEqual(is_class, interval.is_class)
+                self.assertEqual(is_class, inverse_interval.is_class)
+                self.assertFalse(interval.is_pitch)
+                self.assertTrue(interval.is_interval)
+                # check they print the same as the input
+                self.assertEqual(interval_class_str, str(interval))
+                self.assertEqual(interval_class_str, interval.name())
+                # only for classes
                 if is_class:
-                    self.assertEqual(ii.name(negative=True), ir)
-                    self.assertEqual(iir.name(negative=True), ir)
-                self.assertEqual(ii.fifth_steps(), idx - 26)
+                    # the inverse is equivalent
+                    self.assertEqual(interval, inverse_interval)
+                    # so they also print the same
+                    self.assertEqual(interval_class_str, inverse_interval.name())
+                    # and subtracting gives a perfect unison p1
+                    self.assertEqual(SpelledIntervalClass("p1"), interval - inverse_interval)
+                    # the inverse name corresponds to the inverse input
+                    self.assertEqual(inverse_interval_class_str, interval.name(inverse=True))
+                    self.assertEqual(inverse_interval_class_str, inverse_interval.name(inverse=True))
+                self.assertEqual(interval.fifth_steps(), idx - 26)
 
     def test_arithmetics(self):
         for p, i in zip(self.line_of_fifths, self.line_of_intervals):
@@ -105,43 +122,25 @@ class TestSpelled(TestCase):
             delta = p - ref
             self.assertEqual(delta, i)
             self.assertEqual(ref + delta, p)
-
             p1 = SpelledPitch("C#4")
             p2 = SpelledPitch("Gb5")
-            # i1 = Spelled("+dd5:1")
-            # i2 = Spelled("-aa4:-1")
-            # print(i1, i2)
-            # i = p2 - p1
-            # print(i)
-            # print(f"{p2} + {i} = {p2 + i}")
-            # print(f"{p2} - {i} = {p2 - i}")
-            # print(i)
-            # print(f"{i} - {i} = {i - i}")
-            # print(f"{i} + {i} = {i + i}")
             self.assertRaises(TypeError, lambda: p1 + p2)
             self.assertRaises(TypeError, lambda: SpelledPitchClass("G") - SpelledPitch("G4"))
 
-        # for idx_1, p_1 in enumerate(line_of_fifths):
-        #     pp_1 = Spelled(p_1)
-        #     self.assertTrue(pp_1.is_pitch)
-        #     self.assertTrue(pp_1.is_class)
-        #     # self.assertEqual(str(pp_1), p_1)
-        #     self.assertEqual(pp_1.fifth_steps(), idx_1 - 22)
-        #
-        #     print(f"reference point: {p_1}")
-        #     for idx_2, p_2 in enumerate(line_of_fifths):
-        #         pp_2 = Spelled(p_2)
-        #         print(f"{pp_2} - {pp_1} = {pp_2 - pp_1}")
-        #     print("")
-
-    # def test_to_class(self):
-    #     self.fail()
-    #
-    # def test_name(self):
-    #     self.fail()
-    #
-    # def test_fifth_steps(self):
-    #     self.fail()
-    #
-    # def test_octave(self):
-    #     self.fail()
+    def test_from_fifths_functions(self):
+        print(SpelledInterval("ddd2:4"))
+        print(SpelledInterval("-aaa7:4"))
+        for fifths, diatonic, interval_class, inverse_interval_class in [(-1, -4, 'p4', 'p5'),
+                                                                         (0, 0, 'p1', 'p1'),
+                                                                         (1, 4, 'p5', 'p4'),
+                                                                         (2, 8, 'M2', 'm7'),
+                                                                         (3, 12, 'M6', 'm3'),
+                                                                         (4, 16, 'M3', 'm6'),
+                                                                         (5, 20, 'M7', 'm2'),
+                                                                         (6, 24, 'a4', 'd5'),
+                                                                         (7, 28, 'a1', 'd1'),
+                                                                         (8, 32, 'a5', 'd4')]:
+            self.assertEqual(diatonic, Spelled.diatonic_steps_from_fifths(fifths))
+            self.assertEqual(diatonic % 7 + 1, Spelled.generic_interval_class_from_fifths(fifths))
+            self.assertEqual(interval_class, Spelled.interval_class_from_fifths(fifths, inverse=False))
+            self.assertEqual(inverse_interval_class, Spelled.interval_class_from_fifths(fifths, inverse=True))
