@@ -296,7 +296,11 @@ class AbstractBase(Object):
         return False
 
     def __hash__(self):
-        return hash((self.__class__.__name__, self.value, self.is_pitch, self.is_class))
+        if isinstance(self.value, np.ndarray):
+            assert self.value.flags.writeable is False
+            return hash((self.__class__.__name__, self.value.data.tobytes(), self.is_pitch, self.is_class))
+        else:
+            return hash((self.__class__.__name__, self.value, self.is_pitch, self.is_class))
 
     def convert_to(self, other_type):
         return Converters.convert(self, other_type)
