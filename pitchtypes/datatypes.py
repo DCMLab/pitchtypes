@@ -77,7 +77,8 @@ class AbstractBase(Object):
                            create_add=None,
                            create_sub=None,
                            create_mul=None,
-                           create_div=None):
+                           create_div=None,
+                           create_neg=None):
         def decorator(sub_type):
             # link types
             cls.Interval = sub_type
@@ -106,11 +107,16 @@ class AbstractBase(Object):
             def __truediv__(self, other):
                 return self.__mul__(1 / other)
 
+            def __neg__(self):
+                return -1 * self
+
             # set default functions
-            AbstractBase.set_func_attr(sub_type,
-                                       [create_init, create_add, create_sub, create_mul, create_mul, create_div],
-                                       ['__init__', '__add__', '__sub__', '__mul__', '__rmul__', '__truediv__'],
-                                       [__init__, __add__, __sub__, __mul__, __rmul__, __truediv__])
+            AbstractBase.set_func_attr(
+                sub_type,
+                [create_init, create_add, create_sub, create_mul, create_mul, create_div, create_neg],
+                ['__init__', '__add__', '__sub__', '__mul__', '__rmul__', '__truediv__', '__neg__'],
+                [__init__, __add__, __sub__, __mul__, __rmul__, __truediv__, __neg__]
+            )
 
             # perform name check
             AbstractBase.name_check(cls, sub_type, "Interval", skip_name_check)
@@ -164,7 +170,8 @@ class AbstractBase(Object):
                                  create_add=None,
                                  create_sub=None,
                                  create_mul=None,
-                                 create_div=None):
+                                 create_div=None,
+                                 create_neg=None):
         def decorator(sub_type):
             # link types
             cls.IntervalClass = sub_type
@@ -193,11 +200,16 @@ class AbstractBase(Object):
             def __truediv__(self, other):
                 return self.__mul__(1 / other)
 
+            def __neg__(self):
+                return -1 * self
+
             # set default functions
-            AbstractBase.set_func_attr(sub_type,
-                                       [create_init, create_add, create_sub, create_mul, create_mul, create_div],
-                                       ['__init__', '__add__', '__sub__', '__mul__', '__rmul__', '__truediv__'],
-                                       [__init__, __add__, __sub__, __mul__, __rmul__, __truediv__])
+            AbstractBase.set_func_attr(
+                sub_type,
+                [create_init, create_add, create_sub, create_mul, create_mul, create_div, create_neg],
+                ['__init__', '__add__', '__sub__', '__mul__', '__rmul__', '__truediv__', '__neg__'],
+                [__init__, __add__, __sub__, __mul__, __rmul__, __truediv__, __neg__]
+            )
 
             # perform name check
             AbstractBase.name_check(cls, sub_type, "IntervalClass", skip_name_check)
