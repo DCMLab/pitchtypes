@@ -356,10 +356,17 @@ class HarmonicIntervalClass(Harmonic):
 class Spelled(AbstractBase):
 
     _pitch_regex = re.compile("^(?P<class>[A-G])(?P<modifiers>(b*)|(#*))(?P<octave>(-?[0-9]+)?)$")
-    _interval_regex = re.compile("^(?P<sign>[-+])?(?P<quality>(a*)|(M)|(p)|(m)|(d*))(?P<generic>[1-7])(?P<octave>(:-?[0-9]+)?)$")
+    _interval_regex = re.compile("^(?P<sign>[-+])?(?P<quality>(a+)|(M)|(p)|(m)|(d+))(?P<generic>[1-7])(?P<octave>(:[0-9]+)?)$")
 
     @staticmethod
     def parse_pitch(s):
+        """
+        Parse a string as a spelled pitch or spelled pitch class. Returns a tuple (octave, fifths), where octave
+        indicates the octave the pitch lies in (None for spelled pitch classes) and fifths indicates the steps taken
+        along the line of fifths.
+        :param s: string to parse
+        :return: (octave, fifths)
+        """
         if not isinstance(s, str):
             raise TypeError(f"expected string as input, got {s}")
         pitch_match = Spelled._pitch_regex.match(s)
@@ -367,7 +374,7 @@ class Spelled(AbstractBase):
             raise ValueError(f"could not match '{s}' with regex: '{Spelled._pitch_regex.pattern}'")
         octave = pitch_match['octave']
         # initialise fifth steps from diatonic pitch class
-        fifth_steps = {"F": -1, "C": 0, "G": 1, "D": 2, "A": 3, "E": 4, "B": 5}[pitch_match['class']]
+        fifth_steps = Spelled.fifths_from_diatonic_pitch_class(pitch_match['class'])
         # add modifiers
         if "#" in pitch_match['modifiers']:
             fifth_steps += 7 * len(pitch_match['modifiers'])
@@ -381,14 +388,21 @@ class Spelled(AbstractBase):
 
     @staticmethod
     def parse_interval(s):
+        """
+        Parse a string as a spelled interval or spelled interval class. Returns a tuple (sign, octave, fifths), where
+        sign is +1 or -1 and indicates the sign given in the string (no sign means positive), octave indicates the
+        number of full octave steps (in positive or negative direction; None for spelled interval classes), and fifths
+        indicates the steps taken along the line of fifths (i.e. not actual fifth steps that would add to the octaves).
+        :param s: string to parse
+        :return: (sign, octave, fifths)
+        """
         if not isinstance(s, str):
             raise TypeError("expecte string as input, got {s}")
         interval_match = Spelled._interval_regex.match(s)
         if interval_match is None:
             raise ValueError(f"could not match '{s}' with regex: '{Spelled._interval_regex.pattern}'")
-        octave = interval_match['octave'][1:]
         # initialise value with generic interval classes
-        fifth_steps = {"4": -1, "1": 0, "5": 1, "2": 2, "6": 3, "3": 4, "7": 5}[interval_match['generic']]
+        fifth_steps = Spelled.fifths_from_generic_interval_class(int(interval_match['generic']))
         # add modifiers
         if interval_match['quality'] in ["p", "M"]:
             pass
@@ -405,79 +419,136 @@ class Spelled(AbstractBase):
             raise RuntimeError(f"Initialization from string failed: "
                                f"Unexpected interval quality '{interval_match['quality']}'. This is a bug and "
                                f"means that either the used regex is bad or the handling code.")
-        if interval_match['sign'] == '-':
-            fifth_steps *= -1
-        if octave == "":
-            return None, fifth_steps
+        # get octave
+        if interval_match['octave'][1:] == "":
+            octave = None
         else:
-            return int(octave), fifth_steps
+            octave = int(interval_match['octave'][1:])
+        # get sign and bring adapt fifth steps
+        if interval_match['sign'] == '-':
+            sign = -1
+        else:
+            sign = 1
+        return sign, octave, fifth_steps
 
     @staticmethod
-    def _init_from_listlike(value, is_pitch, is_class):
-        int_value = np.array(value, dtype=np.int)
-        if not np.array_equal(int_value, value):
-            raise ValueError(f"Initialization from list-like failed: "
-                             f"Expected integer values but got {value}")
-        if len(int_value) == 1:
-            if not is_class:
-                raise ValueError(f"Initialization from list-like failed: "
-                                 f"Got a single value ({value}), which requires class type, but is_class={is_class} "
-                                 f"was explicitly provided")
-            int_value = np.array([int_value[0], 0], dtype=np.int)
-            is_class = True
-        elif len(int_value) == 2:
-            if is_class:
-                int_value = np.array([int_value[0], 0], dtype=np.int)
-            else:
-                is_class = False
+    def pitch_class_from_fifths(fifth_steps):
+        """
+        Return the pitch class given the number of steps along the line of fifths
+        :param fifth_steps: number of steps along the line of fifths
+        :return: pitch class (e.g. C, Bb, F##, Abbb etc.)
+        """
+        base_pitch = ["F", "C", "G", "D", "A", "E", "B"][(fifth_steps + 1) % 7]
+        flat_sharp = (fifth_steps + 1) // 7
+        return base_pitch + ('#' if flat_sharp > 0 else 'b') * abs(flat_sharp)
+
+    @staticmethod
+    def interval_quality_from_fifths(fifth_steps):
+        """
+        Return the interval quality (major, minor, perfect, augmented, diminished, doubly-augmented etc) given the
+        number of steps along the line of fifths.
+        :param fifth_steps: number of steps along the line of fifths
+        :return: interval quality (M, m, p, a, d, aa, dd, aaa, ddd etc)
+        """
+        if -5 <= fifth_steps <= 5:
+            quality = ['m', 'm', 'm', 'm', 'p', 'p', 'p', 'M', 'M', 'M', 'M'][fifth_steps + 5]
+        elif fifth_steps > 5:
+            quality = 'a' * ((fifth_steps + 1) // 7)
         else:
-            raise ValueError(f"Initialization from list-like failed: "
-                             f"Got wrong number of values: {value}")
-        if is_pitch is None:
-            raise ValueError(f"Initialization from list-like failed: "
-                             f"For initialisation from an integer(s), please explicitly provide the is_pitch argument "
-                             f"as True or False.")
-        return int_value, is_pitch, is_class
+            quality = 'd' * ((-fifth_steps + 1) // 7)
+        return quality
+
+    @staticmethod
+    def diatonic_steps_from_fifths(fifth_steps):
+        """
+        Return the number of diatonic steps corresponding to the number of steps on the line of fifths
+        (`4 * fifth_steps`).
+        :param fifth_steps: number of fifth steps
+        :return: number of diatonic steps
+        """
+        return 4 * fifth_steps
+
+    @staticmethod
+    def generic_interval_class_from_fifths(fifth_steps):
+        """
+        Return the generic interval class corresponding to the given number of fifths. This corresponds to the number of
+        diatonic steps plus one. The generic interval also corresponds to the scale degree when interpreted as the tone
+        reached when starting from the tonic.
+        :param fifth_steps: number of fifth steps
+        :return: scale degree (integer in 1,...,7)
+        """
+        return Spelled.diatonic_steps_from_fifths(fifth_steps) % 7 + 1
+
+    @staticmethod
+    def interval_class_from_fifths(fifths, inverse=False):
+        """
+        Return the interval class corresponding to the given number of steps along the line of fifths. This function
+        combines Spelled.interval_quality_from_fifths and Spelled.generic_interval_class_from_fifths. Specifying
+        inverse=True (default is False) returns the inverse interval class (m2 for M7, aa4 for dd5 etc.).
+        :param fifths: number of fifth steps
+        :param inverse: whether to return the inverse interval class
+        :return: interval class (p1, M3, aa6 etc.)
+        """
+        if inverse:
+            fifths = -fifths
+        return f"{Spelled.interval_quality_from_fifths(fifths)}" \
+               f"{Spelled.generic_interval_class_from_fifths(fifths)}"
+
+    @staticmethod
+    def fifths_from_diatonic_pitch_class(pitch_class):
+        """
+        Return the number of steps along the line of fifths corresponding to a diatonic pitch class.
+        :param pitch_class: a diatonic pitch class; character in A, B, C, D, E, F, G
+        :return: fifth steps; an integer in -1, 0, ... 5
+        """
+        pitch_classes = "ABCDEFG"
+        if pitch_class not in pitch_classes:
+            pitch_classes = "', '".join(pitch_classes)
+            raise ValueError(f"diatonic pitch class must be one of '{pitch_classes}', but got {pitch_class}")
+        return {"F": -1, "C": 0, "G": 1, "D": 2, "A": 3, "E": 4, "B": 5}[pitch_class]
+
+    @staticmethod
+    def fifths_from_generic_interval_class(generic):
+        """
+        Return the number of steps along the line of fifths corresponding to the given generic interval:
+        (2 * generic - 1) % 7 - 1.
+        :param generic: generic interval (integer in 1,...,7)
+        :return: fifth steps (integer in -1, 0, ..., 5)
+        """
+        if not isinstance(generic, numbers.Integral) or not (1 <= generic <= 7):
+            raise ValueError(f"generic interval must be an integer between 1 and 7 (incl.), got {generic}")
+        return (2 * generic - 1) % 7 - 1
 
     def __init__(self, value, is_pitch, is_class, **kwargs):
         super().__init__(value=value, is_pitch=is_pitch, is_class=is_class, **kwargs)
+        if not is_class:
+            self.value.flags.writeable = False
 
     def __repr__(self):
         return self.name()
 
-    def __hash__(self):
-        return hash((self.__class__.__name__, self.value[0], self.value[1], self.is_pitch, self.is_class))
-
     def convert_to_enharmonic(self):
         fifth_steps_from_f = self.fifth_steps() + 1
-        # base pitch
+        # get the base pitch in 0,...,11
         base_pitch = ((fifth_steps_from_f % 7 - 1) * 7) % 12
-        # chromatic semitone steps
-        if fifth_steps_from_f >= 0:
-            accidentals = fifth_steps_from_f // 7
-        else:
-            # note: floor divide rounds down (for negative numbers that is equal to the remainder of division minus one)
-            accidentals = fifth_steps_from_f // 7
+        # get the accidental, i.e. chromatic semitone steps to add to base pitch
+        # (floor-divide (//) rounds down, for negative numbers that is equal to the remainder of division minus one)
+        accidentals = fifth_steps_from_f // 7
         if self.is_pitch:
             if self.is_class:
                 return EnharmonicPitchClass(value=base_pitch + accidentals)
             else:
-                return EnharmonicPitch(value=12 * (self.octaves() + 1) + base_pitch + accidentals)
+                return EnharmonicPitch(value=12 * (self.octave() + 1) + base_pitch + accidentals)
         else:
             if self.is_class:
                 return EnharmonicIntervalClass(value=base_pitch + accidentals)
             else:
-                return EnharmonicInterval(value=12 * (self.octaves() + 1) + base_pitch + accidentals)
+                return EnharmonicInterval(value=12 * (self.octave() + 1) + base_pitch + accidentals)
 
-    def to_class(self):
-        if self.is_class:
-            raise TypeError("Is already class.")
-        return self.__class__(value=np.array([self.value[0], 0]), is_pitch=self.is_pitch, is_class=True)
-
-    def fifth_steps(self):
+    def name(self):
         raise NotImplementedError
 
-    def diatonic_steps(self):
+    def fifth_steps(self):
         raise NotImplementedError
 
 
@@ -486,71 +557,109 @@ class SpelledPitch(Spelled):
     def __init__(self, value):
         if isinstance(value, str):
             octaves, fifths = self.parse_pitch(value)
+            assert isinstance(octaves, numbers.Integral)
+            assert isinstance(fifths, numbers.Integral)
+            # correct for octaves taken by fifth steps
+            octaves -= Spelled.diatonic_steps_from_fifths(fifths) // 7
+            value = np.array([octaves, fifths])
         else:
             octaves, fifths = value
+            assert isinstance(octaves, numbers.Integral)
+            assert isinstance(fifths, numbers.Integral)
+            value = np.array([octaves, fifths])
         assert isinstance(fifths, numbers.Integral)
         assert isinstance(octaves, numbers.Integral)
-        super().__init__(value=np.array([octaves, fifths]), is_pitch=True, is_class=False)
+        super().__init__(value=value, is_pitch=True, is_class=False)
 
-    def octaves(self):
-        return self.value[0]
+    def octave(self):
+        return self.value[0] + self.diatonic_steps_from_fifths(self.fifth_steps()) // 7
 
     def fifth_steps(self):
         return self.value[1]
 
-    def diatonic_steps(self):
-        return (self.fifth_steps() * 4) % 7 + self.octaves() * 7
+    def to_class(self):
+        return self.PitchClass(self.fifth_steps())
 
     def name(self):
-        pitch_class = ["F", "C", "G", "D", "A", "E", "B"][(self.fifth_steps() + 1) % 7]
-        flat_sharp = (self.fifth_steps() + 1) // 7
-        pitch_class += ('#' if flat_sharp > 0 else 'b') * abs(flat_sharp)
-        return pitch_class + str(self.value[0])
+        return f"{self.pitch_class_from_fifths(self.fifth_steps())}{self.octave()}"
 
 
 @Spelled.link_interval_type()
 class SpelledInterval(Spelled):
     def __init__(self, value):
         if isinstance(value, str):
-            octaves, fifths = self.parse_interval(value)
+            sign, octaves, fifths = self.parse_interval(value)
+            assert isinstance(sign, numbers.Integral)
+            assert isinstance(octaves, numbers.Integral)
+            assert isinstance(fifths, numbers.Integral)
+            assert abs(sign) == 1
+            assert octaves >= 0
+            # correct octaves from fifth steps
+            octaves -= Spelled.diatonic_steps_from_fifths(fifths) // 7
+            value = np.array([octaves, fifths])
+            # negate value for negative intervals
+            if sign < 0:
+                value *= -1
         else:
             octaves, fifths = value
-        assert isinstance(fifths, numbers.Integral)
-        assert isinstance(octaves, numbers.Integral)
-        super().__init__(value=np.array([octaves, fifths]), is_pitch=False, is_class=False)
+            assert isinstance(octaves, numbers.Integral)
+            assert isinstance(fifths, numbers.Integral)
+            value = np.array([octaves, fifths])
+        super().__init__(value=value, is_pitch=False, is_class=False)
 
-    def octaves(self):
-        return self.value[0]
+    def diatonic_steps(self):
+        return self.diatonic_steps_from_fifths(self.fifth_steps())
+
+    def octave(self):
+        return self.value[0] + self.diatonic_steps() // 7
 
     def fifth_steps(self):
         return self.value[1]
 
-    def diatonic_steps(self):
-        return (self.fifth_steps() * 4) % 7 + self.octaves() * 7
+    def sign(self):
+        if self.octave() < 0:
+            # if the octave is strictly positive the sign is positive
+            return -1
+        elif self.octave() > 0:
+            # if the octave is strictly negative the sign is negative
+            return 1
+        else:
+            # if the octave is zero the sign depends on the fifth steps
+            if self.diatonic_steps() % 7 != 0:
+                # for anything other than unisons the sign is positive
+                return 1
+            else:
+                if self.fifth_steps() == 0:
+                    # for a perfect unison the sign is zero (neutral element of addition)
+                    return 0
+                elif self.fifth_steps() < 0:
+                    # for diminished unisons the sign is negative
+                    return -1
+                else:
+                    # for augmented unisons the sign is positive
+                    return 1
+
+    def to_class(self):
+        return self.IntervalClass(self.value[1])
 
     def name(self):
-        delta = self.fifth_steps()
-        sign = "+"
-        phase = delta % 7
-        period = (5 - delta) // 7
-        generic_interval = ["1", "5", "2", "6", "3", "7", "4"][phase]
-        if abs(delta) <= 1:
-            quality = "p"
-        elif abs(delta) <= 5:
-            if delta > 0:
-                quality = "M"
-            else:
-                quality = "m"
-        elif period > 0:
-            if generic_interval in ["4", "1", "5"]:
-                quality = "d" * period
-            else:
-                quality = "d" * (period - 1)
-        elif period < 0:
-            quality = "a" * abs(period)
+        octave = abs(self.octave())
+        if self.sign() == -1:
+            # negative intervals are to be printed with "-" sign
+            sign = "-"
+            # in return we have to invert the interval class
+            inverse = True
+            # in the interval representation, the octave "0" is positive, while "-1" is the first negative octave;
+            # an octave of "-1" in internal representation (i.e. the first negative octave) therefore corresponds to an
+            # octave "0" with negative sign in printing; we thus need to subtract one from the absolute value for
+            # printing; the unison (perfect, diminished or augmented) are an exception because they correspond to
+            # zero diatonic steps (when ignoring the octave)
+            if self.diatonic_steps() % 7 != 0:
+                octave -= 1
         else:
-            raise RuntimeWarning("This is a bug!")
-        return sign + quality + generic_interval + ":" + str(abs(self.octaves()))
+            sign = ""
+            inverse = False
+        return sign + self.interval_class_from_fifths(self.fifth_steps(), inverse=inverse) + f":{octave}"
 
 
 @Spelled.link_pitch_class_type()
@@ -574,22 +683,20 @@ class SpelledPitchClass(Spelled):
     def fifth_steps(self):
         return self.value
 
-    def diatonic_steps(self):
-        return (self.fifth_steps() * 4) % 7
-
     def name(self):
-        pitch_class = ["F", "C", "G", "D", "A", "E", "B"][(self.fifth_steps() + 1) % 7]
-        flat_sharp = (self.fifth_steps() + 1) // 7
-        pitch_class += ('#' if flat_sharp > 0 else 'b') * abs(flat_sharp)
-        return pitch_class
+        return self.pitch_class_from_fifths(self.fifth_steps())
 
 
 @Spelled.link_interval_class_type()
 class SpelledIntervalClass(Spelled):
     def __init__(self, value):
         if isinstance(value, str):
-            octaves, fifths = self.parse_interval(value)
+            sign, octaves, fifths = self.parse_interval(value)
+            assert isinstance(sign, numbers.Integral)
+            assert abs(sign) == 1
             assert octaves is None
+            assert isinstance(fifths, numbers.Integral)
+            fifths *= sign
         else:
             fifths = value
         assert isinstance(fifths, numbers.Integral)
@@ -608,42 +715,12 @@ class SpelledIntervalClass(Spelled):
     def fifth_steps(self):
         return self.value
 
-    def diatonic_steps(self):
-        return (self.fifth_steps() * 4) % 7
-
-    def generic(self, negative=False):
-        if negative:
-            delta = -self.fifth_steps()
-        else:
-            delta = self.fifth_steps()
-        phase = delta % 7
-        return [1, 5, 2, 6, 3, 7, 4][phase]
-
-    def name(self, negative=False):
-        if negative:
-            delta = -self.fifth_steps()
+    def name(self, inverse=False):
+        if inverse:
             sign = "-"
         else:
-            delta = self.fifth_steps()
-            sign = "+"
-        period = (5 - delta) // 7
-        if abs(delta) <= 1:
-            quality = "p"
-        elif abs(delta) <= 5:
-            if delta > 0:
-                quality = "M"
-            else:
-                quality = "m"
-        elif period > 0:
-            if self.generic(negative) in [4, 1, 5]:
-                quality = "d" * period
-            else:
-                quality = "d" * (period - 1)
-        elif period < 0:
-            quality = "a" * abs(period)
-        else:
-            raise RuntimeWarning("This is a bug!")
-        return sign + quality + str(self.generic(negative))
+            sign = ""
+        return sign + self.interval_class_from_fifths(self.fifth_steps(), inverse=inverse)
 
 
 class Enharmonic(AbstractBase):
