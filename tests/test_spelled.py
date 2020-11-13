@@ -1,3 +1,4 @@
+import re
 from unittest import TestCase
 from pitchtypes import Spelled, SpelledPitch, SpelledInterval, SpelledPitchClass, SpelledIntervalClass, Enharmonic
 
@@ -144,3 +145,26 @@ class TestSpelled(TestCase):
             self.assertEqual(diatonic % 7 + 1, Spelled.generic_interval_class_from_fifths(fifths))
             self.assertEqual(interval_class, Spelled.interval_class_from_fifths(fifths, inverse=False))
             self.assertEqual(inverse_interval_class, Spelled.interval_class_from_fifths(fifths, inverse=True))
+
+    def test_parsing(self):
+        # attempt to parse non-string should raise TypeError
+        self.assertRaises(TypeError, lambda: Spelled.parse_pitch(5))
+        self.assertRaises(TypeError, lambda: Spelled.parse_interval(5))
+        # bad string input should raise ValueError
+        self.assertRaises(ValueError, lambda: Spelled.parse_pitch("xxx"))
+        self.assertRaises(ValueError, lambda: Spelled.parse_interval("yyy"))
+        # temporally introduce a bug by changing regex
+        old_regex = Spelled._interval_regex
+        Spelled._interval_regex = re.compile("^(?P<generic>[1-7])(?P<quality>[a-z])$")
+        self.assertRaises(RuntimeError, lambda: Spelled.parse_interval("1x"))
+        # change back to not mess up other tests
+        Spelled._interval_regex = old_regex
+
+        # check bad input
+        self.assertRaises(ValueError, lambda: Spelled.fifths_from_diatonic_pitch_class("X"))
+        self.assertRaises(ValueError, lambda: Spelled.fifths_from_generic_interval_class("X"))
+
+        # name and fifths not implemented in base class
+        s = Spelled("x", True, True)
+        self.assertRaises(NotImplementedError, lambda: s.name())
+        self.assertRaises(NotImplementedError, lambda: s.fifth_steps())
