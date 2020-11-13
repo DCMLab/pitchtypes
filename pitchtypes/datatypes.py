@@ -996,7 +996,7 @@ class Converters:
     @staticmethod
     def register_converter(from_type, to_type, conv_func,
                            overwrite_explicit_converters=False,
-                           overwrite_implicit_converter=False,
+                           overwrite_implicit_converters=False,
                            create_implicit_converters=False):
         """
         Register a converter from from_type to other type. The converter function should be function taking as its
@@ -1006,7 +1006,7 @@ class Converters:
         :param overwrite_explicit_converters: can be True, False, or None (default); if True and there exists an
         explicit converter (i.e. the list of converter functions is of length 1), replace it by this converter function;
         if False raise a ValueError if an explicit converter exists
-        :param overwrite_implicit_converter: if there exists an implicit converter (i.e. the list of converter functions
+        :param overwrite_implicit_converters: if there exists an implicit converter (i.e. the list of converter functions
         is of length greater than 1) replace it by this converter function
         :param create_implicit_converters: if there is an (explicit or implicit) converter from type X to type
         from_type, add an implicit converter from type X to other_type by extending the list of converter functions from
@@ -1015,7 +1015,7 @@ class Converters:
         """
         # not self-conversion
         if from_type == to_type:
-            raise TypeError(f"Not allows to add converters from a type to itself (from: {from_type}, to: {to_type})")
+            raise TypeError(f"Not allowed to add converters from a type to itself (from: {from_type}, to: {to_type})")
         # initialise converter dict if it does not exist
         if from_type not in Converters._converters:
             Converters._converters[from_type] = {}
@@ -1037,8 +1037,11 @@ class Converters:
                                      "overwrite.")
             else:
                 # implicit converter
-                if overwrite_implicit_converter:
+                if overwrite_implicit_converters:
                     set_new_converter = True
+                else:
+                    raise ValueError("An implicit converter already exists. Set overwrite_implicit_converters=True to "
+                                     "overwrite.")
         # set the new converter
         if set_new_converter:
             Converters._converters[from_type][to_type] = [conv_func]
@@ -1048,21 +1051,17 @@ class Converters:
                 # remember new converters to not change dict while iterating over it
                 new_converters = []
                 for another_to_type, converter_pipeline in other_converters.items():
-                    # trying to prepend this converter [from_type --> to_type == another_from_type --> another_to_type]
-                    if to_type == another_from_type:
-                        # don't add implicit self-converters
-                        if from_type == another_to_type:
-                            continue
+                    # trying to prepend this converter (but don't add implicit self-converters)
+                    # from_type --> another_to_type := (from_type --> to_type) + (another_from_type --> another_to_type)
+                    if to_type == another_from_type and from_type != another_to_type:
                         # get existing converters from_type --> ???
                         converters = Converters.get_converter(from_type)
                         # add the extended converter if one does not exist
                         if another_to_type not in converters:
                             converters[another_to_type] = [conv_func] + converter_pipeline
-                    # try to append this converter [another_from_type --> another_to_type == from_type --> to_type]
-                    if another_to_type == from_type:
-                        # don't add implicit self-converters
-                        if another_from_type == to_type:
-                            continue
+                    # try to append this converter (but don't add implicit self-converters)
+                    # another_from_type --> to_type := (another_from_type --> another_to_type) + ( from_type --> to_type)
+                    if another_to_type == from_type and another_from_type != to_type:
                         # already initialised and we have the existing converters another_from_type --> ???
                         # add the extended converter if one does not exist
                         if to_type not in other_converters:
