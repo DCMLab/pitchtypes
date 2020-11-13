@@ -19,10 +19,43 @@ class TestAbstractPitch(TestCase):
                 return AbstractBase.Interval(value=value)
 
     def test_implementing_subtypes(self):
-
+        # create a new base type
         class NewType(AbstractBase):
             pass
 
+        # create new sub-types with non-standard names; assert normal linking fails but can be forced
+        class WrongNewTypePitch(NewType):
+            pass
+        self.assertRaises(TypeError, lambda: NewType.link_pitch_type()(WrongNewTypePitch))
+        NewType.link_pitch_type(skip_name_check=True)(WrongNewTypePitch)
+
+        class WrongNewTypeInterval(NewType):
+            pass
+        self.assertRaises(TypeError, lambda: NewType.link_interval_type()(WrongNewTypeInterval))
+        NewType.link_interval_type(skip_name_check=True)(WrongNewTypeInterval)
+
+        class WrongNewTypePitchClass(NewType):
+            pass
+        self.assertRaises(TypeError, lambda: NewType.link_pitch_class_type()(WrongNewTypePitchClass))
+        NewType.link_pitch_class_type(skip_name_check=True)(WrongNewTypePitchClass)
+
+        class WrongNewTypeIntervalClass(NewType):
+            pass
+        self.assertRaises(TypeError, lambda: NewType.link_interval_class_type()(WrongNewTypeIntervalClass))
+        NewType.link_interval_class_type(skip_name_check=True)(WrongNewTypeIntervalClass)
+
+        # make sure the linking worked
+        self.assertRaises(AttributeError, lambda: NewType._base_type)
+        self.assertEqual(NewType.Pitch, WrongNewTypePitch)
+        self.assertEqual(NewType.Interval, WrongNewTypeInterval)
+        self.assertEqual(NewType.PitchClass, WrongNewTypePitchClass)
+        self.assertEqual(NewType.IntervalClass, WrongNewTypeIntervalClass)
+        self.assertEqual(WrongNewTypePitch._base_type, NewType)
+        self.assertEqual(WrongNewTypeInterval._base_type, NewType)
+        self.assertEqual(WrongNewTypePitchClass._base_type, NewType)
+        self.assertEqual(WrongNewTypeIntervalClass._base_type, NewType)
+
+        # create type with standard name
         @NewType.link_pitch_type()
         class NewTypePitch(NewType):
             pass
@@ -59,6 +92,30 @@ class TestAbstractPitch(TestCase):
         self.assertEqual(pc + ic, NewTypePitchClass("pitch classinterval class"))
         self.assertRaises(TypeError, lambda: i + p)
         self.assertRaises(TypeError, lambda: i + ic)
+
+        # to class
+        self.assertEqual(NewTypePitchClass("pitch"), p.to_class())
+        self.assertEqual(NewTypeIntervalClass("interval"), i.to_class())
+        self.assertRaises(AttributeError, lambda: pc.to_class())
+        self.assertRaises(AttributeError, lambda: ic.to_class())
+
+    def test_frozen_and_hash(self):
+        # construct pitch with non-frozen array as value
+        arr = np.array([1, 2, 3])
+        p = AbstractBase(value=arr, is_pitch=True, is_class=True)
+        # try to set value (should raise AttributeError)
+        def f():
+            p.value = "x"
+        self.assertRaises(AttributeError, f)
+        # try to get hash (should raise AssertionError because value is non-frozen numpy array)
+        self.assertRaises(AssertionError, lambda: hash(p))
+
+        # construct pitch with frozen array as value
+        frozen_arr = arr.copy()
+        frozen_arr.flags.writeable = False
+        p = AbstractBase(value=frozen_arr, is_pitch=True, is_class=True)
+        # hashing should work now
+        hash(p)
 
     def test_AbstractPitch(self):
         for is_pitch in [True, False]:
