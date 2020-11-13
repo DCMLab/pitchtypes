@@ -1,5 +1,7 @@
 from unittest import TestCase
 from pitchtypes import Enharmonic, EnharmonicPitch, EnharmonicInterval, EnharmonicPitchClass, EnharmonicIntervalClass
+import io
+import sys
 
 
 class TestEnharmonic(TestCase):
@@ -31,23 +33,24 @@ class TestEnharmonic(TestCase):
                 # check base type is set on object
                 self.assertEqual(p._base_type, Enharmonic)
                 # check for pitch versus interval
-                if is_pitch is True:
+                if is_pitch:
                     self.assertTrue(p.is_pitch)
                     self.assertFalse(p.is_interval)
-                elif is_pitch is False:
+                else:
                     self.assertFalse(p.is_pitch)
                     self.assertTrue(p.is_interval)
                 # check class is correctly set
-                if is_class is True:
+                if is_class:
                     self.assertTrue(p.is_class)
-                elif is_class is False:
+                else:
                     self.assertFalse(p.is_class)
                     pc = p.to_class()
                     self.assertTrue(pc.is_class)
                     if pc.is_pitch:
-                        self.assertEqual(str(pc), "C#")
+                        self.assertEqual("C#", str(pc))
+                        self.assertEqual(1, int(pc))
                     else:
-                        self.assertEqual(str(pc), "+1")
+                        self.assertEqual(1, int(pc))
                 # check str is correct
                 if p.is_pitch:
                     if p.is_class:
@@ -66,15 +69,33 @@ class TestEnharmonic(TestCase):
                     if p.is_class:
                         self.assertEqual(str(p), "+1")
                         self.assertEqual(p.name(), "+1")
-                        self.assertRaises(ValueError, lambda: p.name(flat_sharp='sharp'))
-                        self.assertRaises(ValueError, lambda: p.name(flat_sharp='flat'))
                     else:
                         self.assertEqual(str(p), "+61")
                         self.assertEqual(p.name(), "+61")
-                        self.assertRaises(ValueError, lambda: p.name(flat_sharp='sharp'))
-                        self.assertRaises(ValueError, lambda: p.name(flat_sharp='flat'))
+        # raise for non-integer number input
+        self.assertRaises(ValueError, lambda: Enharmonic(1.1, True, True))
+
+    def test_name(self):
+        e = Enharmonic(1, is_pitch=True, is_class=True)
+        self.assertRaises(NotImplementedError, lambda: e.name())
+
+    def test_convert_to_logfreq(self):
+        for x in [EnharmonicPitch("C4"), EnharmonicPitchClass("C"), EnharmonicInterval(1), EnharmonicIntervalClass(1)]:
+            x.convert_to_logfreq()
 
     def test_print_options(self):
+        # bad input raises
+        self.assertRaises(ValueError, lambda: EnharmonicPitch.print_options(flat_sharp="x"))
+        self.assertRaises(ValueError, lambda: EnharmonicPitchClass.print_options(flat_sharp="x"))
+        # not input prints info
+        old_stdout = sys.stdout
+        for cls in [EnharmonicPitch, EnharmonicPitchClass]:
+            sys.stdout = out = io.StringIO()
+            self.assertFalse(out.getvalue())
+            cls.print_options()
+            self.assertTrue(out.getvalue())
+        sys.stdout = old_stdout
+
         p = EnharmonicPitch("C#4")
         pc = EnharmonicPitchClass("C#")
         # check default values
