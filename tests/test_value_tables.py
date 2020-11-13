@@ -36,7 +36,7 @@ class TestValueTables(TestCase):
                                      "_(?P<operation>.+)_"
                                      "(?P<type2>Pitch|Interval|PitchClass|IntervalClass)$")
         # go through the folders in base_dir containing value tables
-        base_dir = "value_tables"
+        base_dir = "tests/value_tables"
         valid_folders = False
         for folder in os.listdir(base_dir):
             # ignore files and folders starting with a dot
