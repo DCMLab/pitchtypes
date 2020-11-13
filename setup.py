@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="pitchtypes",
-    version="0.1.0",
+    version="0.2.0",
     author="Robert Lieck",
     author_email="robert.lieck@epfl.ch",
     description="musically meaningful pitch types",
