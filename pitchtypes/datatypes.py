@@ -865,60 +865,92 @@ class LogFreq(AbstractBase):
     @classmethod
     def print_precision(cls, precision=None):
         if precision is not None:
+            if not isinstance(precision, numbers.Integral):
+                raise ValueError(f"precision has to be an integer, got {precision}")
+            if cls == LogFreq:
+                for sub_cls in [LogFreq.Pitch, LogFreq.Interval, LogFreq.PitchClass, LogFreq.IntervalClass]:
+                    sub_cls.print_precision(precision)
             cls._print_precision = precision
         return cls._print_precision
 
-    def __init__(self, value, is_pitch, is_class, is_freq=False, **kwargs):
+    def __init__(self, value, is_pitch, is_class, is_log=True, **kwargs):
         """
         Initialise from frequency or log-frequency value.
         :param value: frequency or log-frequency (default) value
-        :param is_freq: whether value is frequency or log-frequency
+        :param is_log: whether value is frequency or log-frequency
         """
-        if is_freq:
-            value = np.log(value)
-        else:
+        if is_log:
             value = float(value)
-        super().__init__(value=value, is_pitch=is_pitch, is_class=is_class, **kwargs)
-
-    def to_class(self):
-        if self.is_class:
-            raise TypeError("Is already class.")
-        return self.__class__(value=self.value % np.log(2), is_pitch=self.is_pitch, is_class=True)
-
-    def freq(self):
-        if self.is_pitch:
-            return np.exp(self.value)
         else:
-            raise NotImplementedError
+            value = np.log(value)
+        super().__init__(value=value, is_pitch=is_pitch, is_class=is_class, **kwargs)
 
     def __float__(self):
         return float(self.value)
 
-    def __repr__(self):
-        s = f"{np.format_float_positional(self.freq(), fractional=True, precision=self._print_precision)}"
-        if self.is_pitch:
-            s += "Hz"
-        return s
-
 
 @LogFreq.link_pitch_type()
 class LogFreqPitch(LogFreq):
-    pass
+    def __init__(self, value, is_freq=True, **kwargs):
+        super().__init__(value, is_pitch=True, is_class=False, is_log=not is_freq, **kwargs)
+
+    def __repr__(self):
+        return f"{np.format_float_positional(self.freq(), fractional=True, precision=self._print_precision)}Hz"
+
+    def to_class(self):
+        return self.PitchClass(self.value, is_freq=False)
+
+    def freq(self):
+        return np.exp(self.value)
 
 
 @LogFreq.link_interval_type()
 class LogFreqInterval(LogFreq):
-    pass
+    def __init__(self, value, is_ratio=True, **kwargs):
+        super().__init__(value, is_pitch=False, is_class=False, is_log=not is_ratio, **kwargs)
+
+    def __repr__(self):
+        return f"{np.format_float_positional(self.ratio(), fractional=True, precision=self._print_precision)}"
+
+    def to_class(self):
+        return self.IntervalClass(self.value, is_ratio=False)
+
+    def ratio(self):
+        return np.exp(self.value)
 
 
 @LogFreq.link_pitch_class_type()
 class LogFreqPitchClass(LogFreq):
-    pass
+    def __init__(self, value, is_freq=True, **kwargs):
+        if is_freq:
+            value = np.log(value)
+        else:
+            value = float(value)
+        value %= np.log(2)
+        super().__init__(value, is_pitch=True, is_class=True, is_log=True, **kwargs)
+
+    def __repr__(self):
+        return f"{np.format_float_positional(self.freq(), fractional=True, precision=self._print_precision)}Hz"
+
+    def freq(self):
+        return np.exp(self.value)
 
 
 @LogFreq.link_interval_class_type()
 class LogFreqIntervalClass(LogFreq):
-    pass
+    def __init__(self, value, is_ratio=True, **kwargs):
+        if is_ratio:
+            value = np.log(value)
+        else:
+            value = float(value)
+        value %= np.log(2)
+        super().__init__(value, is_pitch=False, is_class=True, is_log=True, **kwargs)
+
+    def __repr__(self):
+        return f"{np.format_float_positional(self.ratio(), fractional=True, precision=self._print_precision)}"
+
+    def ratio(self):
+        return np.exp(self.value)
 
 
 class Converters:
