@@ -133,6 +133,18 @@ class TestValueTables(TestCase):
                                 raise
                         else:
                             print_val = val
+                        # check class
+                        if not obj.is_class:
+                            if obj.is_pitch:
+                                class_str = arr[idx, 1]
+                                class_obj = obj.PitchClass(class_str)
+                            else:
+                                class_str = arr[idx, 3]
+                                class_obj = obj.IntervalClass(class_str)
+                            # make sure to_class produces the same object as initialising interval class directly
+                            self.assertEqual(obj.to_class(), class_obj)
+                            # make sure to_class prints the same
+                            self.assertEqual(class_str, str(obj.to_class()))
                         # make sure it prints correctly
                         try:
                             self.assertEqual(print_val, str(obj))
