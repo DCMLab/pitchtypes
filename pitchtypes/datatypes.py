@@ -671,7 +671,6 @@ class SpelledInterval(Spelled):
 
 
 @Spelled.link_pitch_class_type()
-@total_ordering
 class SpelledPitchClass(Spelled):
     def __init__(self, value):
         if isinstance(value, str):
@@ -681,12 +680,6 @@ class SpelledPitchClass(Spelled):
             fifths = value
         assert isinstance(fifths, numbers.Integral)
         super().__init__(value=fifths, is_pitch=True, is_class=True)
-
-    def __lt__(self, other):
-        """Spelled pitch classes are ordered along the line of fifths."""
-        if type(other) == SpelledPitchClass:
-            return self.value < other.value
-        return NotImplemented
 
     def fifth_steps(self):
         return self.value
@@ -709,16 +702,6 @@ class SpelledIntervalClass(Spelled):
             fifths = value
         assert isinstance(fifths, numbers.Integral)
         super().__init__(value=fifths, is_pitch=False, is_class=True)
-
-    def __abs__(self):
-        """Absolute value of steps along the line of fifths"""
-        return abs(self.value)
-
-    def __lt__(self, other):
-        """Spelled interval classes are ordered along the line of fifths."""
-        if type(other) == SpelledIntervalClass:
-            return self.value < other.value
-        return NotImplemented
 
     def fifth_steps(self):
         return self.value
