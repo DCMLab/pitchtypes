@@ -36,7 +36,8 @@ class AbstractBase(Object):
                         skip_name_check=False,
                         create_init=None,
                         create_add=None,
-                        create_sub=None):
+                        create_sub=None,
+                        create_to_class=None):
         def decorator(sub_type):
             # link types
             cls.Pitch = sub_type
@@ -58,11 +59,14 @@ class AbstractBase(Object):
                     return self.Pitch(self.value - other.value)
                 return NotImplemented
 
+            def to_class(self):
+                return self.PitchClass(self.value)
+
             # set default functions
             AbstractBase.set_func_attr(sub_type,
-                                       [create_init, create_add, create_sub],
-                                       ['__init__', '__add__', '__sub__'],
-                                       [__init__, __add__, __sub__])
+                                       [create_init, create_add, create_sub, create_to_class],
+                                       ['__init__', '__add__', '__sub__', 'to_class'],
+                                       [__init__, __add__, __sub__, to_class])
 
             # check name
             AbstractBase.name_check(cls, sub_type, "Pitch", skip_name_check)
@@ -78,7 +82,8 @@ class AbstractBase(Object):
                            create_sub=None,
                            create_mul=None,
                            create_div=None,
-                           create_neg=None):
+                           create_neg=None,
+                           create_to_class=None):
         def decorator(sub_type):
             # link types
             cls.Interval = sub_type
@@ -110,12 +115,15 @@ class AbstractBase(Object):
             def __neg__(self):
                 return -1 * self
 
+            def to_class(self):
+                return self.IntervalClass(self.value)
+
             # set default functions
             AbstractBase.set_func_attr(
                 sub_type,
-                [create_init, create_add, create_sub, create_mul, create_mul, create_div, create_neg],
-                ['__init__', '__add__', '__sub__', '__mul__', '__rmul__', '__truediv__', '__neg__'],
-                [__init__, __add__, __sub__, __mul__, __rmul__, __truediv__, __neg__]
+                [create_init, create_add, create_sub, create_mul, create_mul, create_div, create_neg, create_to_class],
+                ['__init__', '__add__', '__sub__', '__mul__', '__rmul__', '__truediv__', '__neg__', 'to_class'],
+                [__init__, __add__, __sub__, __mul__, __rmul__, __truediv__, __neg__, to_class]
             )
 
             # perform name check
