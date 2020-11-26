@@ -830,7 +830,7 @@ class EnharmonicInterval(Enharmonic):
         return self.IntervalClass(value=self.value % 12)
 
     def name(self):
-        sign = "-" if self.value < 0 else "+"
+        sign = "-" if self.value < 0 else ""
         return sign + str(abs(self.value))
 
 
@@ -850,7 +850,7 @@ class EnharmonicPitchClass(Enharmonic):
 @Enharmonic.link_interval_class_type()
 class EnharmonicIntervalClass(Enharmonic):
     def name(self):
-        sign = "-" if self.value < 0 else "+"
+        sign = "-" if self.value < 0 else ""
         return sign + str(abs(self.value))
 
 

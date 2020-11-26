@@ -1,9 +1,11 @@
 # pitchtypes
 
-[![PyPI version](https://badge.fury.io/py/pitchtypes.svg)](https://badge.fury.io/py/pitchtypes)
 ![build](https://github.com/DCMLab/pitchtypes/workflows/build/badge.svg)
+[![PyPI version](https://badge.fury.io/py/pitchtypes.svg)](https://badge.fury.io/py/pitchtypes)
+
 ![tests](https://github.com/DCMLab/pitchtypes/workflows/tests/badge.svg)
 [![codecov](https://codecov.io/gh/DCMLab/pitchtypes/branch/master/graph/badge.svg)](https://codecov.io/gh/DCMLab/pitchtypes)
+
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 **Musically meaningful types**
@@ -12,6 +14,12 @@ The purpose of this Python library is to:
 
 1. Provide types that handle pitch in a musically correct way.
 2. Make it easy to implement other musically meaningful types.
+
+## Installation
+
+`pip install pitchtypes`
+
+## Minimal Example
 
 For instance, spelled pitch is handled correctly:
 
