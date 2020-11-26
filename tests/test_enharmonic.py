@@ -67,11 +67,11 @@ class TestEnharmonic(TestCase):
                         self.assertRaises(ValueError, lambda: p.name(flat_sharp='invalid'))
                 else:
                     if p.is_class:
-                        self.assertEqual(str(p), "+1")
-                        self.assertEqual(p.name(), "+1")
+                        self.assertEqual(str(p), "1")
+                        self.assertEqual(p.name(), "1")
                     else:
-                        self.assertEqual(str(p), "+61")
-                        self.assertEqual(p.name(), "+61")
+                        self.assertEqual(str(p), "61")
+                        self.assertEqual(p.name(), "61")
         # raise for non-integer number input
         self.assertRaises(ValueError, lambda: Enharmonic(1.1, True, True))
 
