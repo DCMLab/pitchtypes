@@ -12,16 +12,60 @@
 
 **Musically meaningful types**
 
-The purpose of this Python library is to:
+A library for handling musical pitches and intervals in a systematic way.
+For other (and mostly compatible) implementations see:
 
-1. Provide types that handle pitch in a musically correct way.
-2. Make it easy to implement other musically meaningful types.
+- [Pitches.js](https://github.com/DCMLab/Pitches.jl) (Julia)
+- [musicology-pitch](https://github.com/DCMLab/haskell-musicology/tree/master/musicology-pitch) (Haskell)
+- [purescript-pitches](https://github.com/DCMLab/purescript-pitches) (Purescript)
+- [pitches.rs](https://github.com/DCMLab/rust-pitches/blob/main/README.md) (Rust)
+
+The main goals of this library are:
+
+- providing types and operations (such as arithmetics, printing and parsing) for common types of pitches and intervals
+- providing a generic interface for writing code that is agnostic to the specific pitch or interval types.
 
 ## Installation
 
 `pip install pitchtypes`
 
 ## Minimal Example
+
+```python
+import pitchtypes as pt
+
+# write a generic function
+
+def transposeby(pitches, interval):
+    return [pitch + interval for pitch in pitches]
+
+# use it with different pitch types
+
+# spelled pitches correspond to written notes in Western notation
+spelled_pitches = [pt.SpelledPitch(p)
+                   for p in ["C4", "Eb4", "G#4"]]
+print(transposeby(spelled_pitches, pt.SpelledInterval("m3:0"))
+
+# spelled pitch classes work the same but they ignore octaves
+spelled_pitch_classes = [pt.SpelledPitchClass(p)
+                         for p in ["C", "Eb", "G#"]]
+print(transposeby(spelled_pitches, pt.SpelledIntervalClass("m3"))
+
+# enharmonic pitches correspond to keys on the piano
+enharmonic_pitches = [pt.EnharmonicPitch(p)
+                      for p in [60, 63, 68]]
+print(transposeby(spelled_pitches, pt.EnharmonicInterval(3))
+```
+
+Output:
+
+```
+[Eb4, Gb4, B4]
+[Eb, Gb, B]
+[D#4, F#4, B4]
+```
+
+## Old Example (delete/adapt?)
 
 For instance, spelled pitch is handled correctly:
 
