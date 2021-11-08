@@ -1,5 +1,7 @@
 # pitchtypes
 
+[![docs (development version)](https://img.shields.io/badge/docs-dev-blue.svg)](https://dcmlab.github.io/pitchtypes/)
+
 ![build](https://github.com/DCMLab/pitchtypes/workflows/build/badge.svg)
 [![PyPI version](https://badge.fury.io/py/pitchtypes.svg)](https://badge.fury.io/py/pitchtypes)
 
@@ -8,14 +10,10 @@
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
-[![docs (development version)](https://img.shields.io/badge/docs-dev-blue.svg)](https://dcmlab.github.io/pitchtypes/)
-
-**Musically meaningful types**
-
 A library for handling musical pitches and intervals in a systematic way.
 For other (and mostly compatible) implementations see:
 
-- [Pitches.js](https://github.com/DCMLab/Pitches.jl) (Julia)
+- [Pitches.jl](https://github.com/DCMLab/Pitches.jl) (Julia)
 - [musicology-pitch](https://github.com/DCMLab/haskell-musicology/tree/master/musicology-pitch) (Haskell)
 - [purescript-pitches](https://github.com/DCMLab/purescript-pitches) (Purescript)
 - [pitches.rs](https://github.com/DCMLab/rust-pitches/blob/main/README.md) (Rust)
