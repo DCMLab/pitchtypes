@@ -1,0 +1,248 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Spelled Pitch &#8212; pitchtypes  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Enharmonic Pitch" href="enharmonic.html" />
+    <link rel="prev" title="Overview" href="../introduction.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="spelled-pitch">
+<h1>Spelled Pitch<a class="headerlink" href="#spelled-pitch" title="Permalink to this headline">¶</a></h1>
+<p><strong>TODO: adapt to python version</strong></p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>Spelled pitches and intervals are the standard types of the Western music notation system.
+Unlike MIDI pitches, spelled pitches distinguish between enharmonically equivalent pitches
+such as <cite>E♭</cite> and <cite>D♯</cite>.
+Similarly, spelled intervals distinguish between intervals
+such as <cite>m3</cite> (minor 3rd) and <cite>a2</cite> (augmented second) that would be equivalent in the MIDI system.</p>
+<p>You can construct spelled pitches and intervals
+by calling the constructor of a class
+on a string representation of a pitch or interval.
+Spelled pitch classes are represented by an uppercase letter followed by zero or more accidentals,
+which can be either written as <cite>b/#</cite> or as <cite>♭/♯</cite>.
+Spelled pitches take an additional octave number after the letter and the accidentals.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">SpelledPitchClass</span><span class="p">(</span><span class="s2">&quot;Eb&quot;</span><span class="p">)</span>
+<span class="go">Eb</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">SpelledPitch</span><span class="p">(</span><span class="s2">&quot;Eb4&quot;</span><span class="p">)</span>
+<span class="go">Eb4</span>
+</pre></div>
+</div>
+<p>Spelled interval classes consist of one or more letters that indicate the quality of the interval
+and a number between 1 and 7 that indicates the generic interval,
+e.g. <cite>P1</cite> for a perfect unison, <cite>m3</cite> for a minor 3rd or <cite>aa4</cite> for a double augmented 4th.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 19%" />
+<col style="width: 81%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>letter</p></th>
+<th class="head"><p>quality</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>dd…</p></td>
+<td><p>diminished multiple times</p></td>
+</tr>
+<tr class="row-odd"><td><p>d</p></td>
+<td><p>diminished</p></td>
+</tr>
+<tr class="row-even"><td><p>m</p></td>
+<td><p>minor</p></td>
+</tr>
+<tr class="row-odd"><td><p>P</p></td>
+<td><p>perfect</p></td>
+</tr>
+<tr class="row-even"><td><p>M</p></td>
+<td><p>major</p></td>
+</tr>
+<tr class="row-odd"><td><p>a</p></td>
+<td><p>augmented</p></td>
+</tr>
+<tr class="row-even"><td><p>aa…</p></td>
+<td><p>augmented multiple times</p></td>
+</tr>
+</tbody>
+</table>
+<p>Spelled intervals have the same elements as intervals but additionally take a number of octaves,
+written a suffix <cite>:n</cite>, e.g. <cite>P1:0</cite> or <cite>m3:20</cite>.
+By default, intervals are directed upwards. Downwards intervals are indicated by a negative sign,
+e.g. <cite>-M2:1</cite> (a major 9th down).
+For interval classes, downward and upward intervals cannot be distinguish,
+so a downward interval is represented by its complementary upward interval:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="o">-</span><span class="n">SpelledIntervalClass</span><span class="p">(</span><span class="s2">&quot;M3&quot;</span><span class="p">)</span>
+<span class="go">m6</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">SpelledIntervalClass</span><span class="p">(</span><span class="s2">&quot;-M3&quot;</span><span class="p">)</span>
+<span class="go">m6</span>
+</pre></div>
+</div>
+</section>
+<section id="working-with-spelled-intervals">
+<h2>Working with Spelled Intervals<a class="headerlink" href="#working-with-spelled-intervals" title="Permalink to this headline">¶</a></h2>
+<section id="fifths-and-octaves">
+<h3>Fifths and Octaves<a class="headerlink" href="#fifths-and-octaves" title="Permalink to this headline">¶</a></h3>
+<p>Internally, spelled intervals are represented by, 5ths and octaves.
+Both dimensions are logically dependent:
+a major 2nd up is represented by going two 5ths up and one octave down.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">spelled</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># two 5ths, one octave</span>
+<span class="go">M2:0</span>
+</pre></div>
+</div>
+<p>This representation is convenient for arithmetics, which can usually be done component-wise.
+However, special care needs to be taken when converting to other representations.
+For example, the notated octave number (e.g. <cite>:0</cite> in <cite>i”M2:0”</cite>)
+does <em>not</em> correspond to the internal octaves of the interval (-1 in this case).
+In the notation, the interval class (<cite>M2</cite>) and the octave (<cite>:0</cite>) are <em>independent</em>.</p>
+<p>Interpreting the “internal” (or dependent) octave dimension of the interval
+does not make much sense without looking at the fifths.
+Therefore, the function [<cite>octaves</cite>](&#64;ref) returns the “external” (or independent) octaves
+as used in the string representation, e.g.</p>
+<blockquote>
+<div><p>julia&gt; octaves(i”M2:0”)
+0</p>
+<p>julia&gt; octaves(i”M2:1”)
+1</p>
+<p>julia&gt; octaves(i”M2:-1”)
+-1</p>
+</div></blockquote>
+<p>If you want to look at the internal octaves, use [<cite>internalocts</cite>](&#64;ref).
+This corresponds to looking at the <cite>.octaves</cite> field, but works on interval classes too.</p>
+</section>
+<section id="diatonic-steps-and-alterations">
+<h3>Diatonic Steps and Alterations<a class="headerlink" href="#diatonic-steps-and-alterations" title="Permalink to this headline">¶</a></h3>
+<p>We provide a number of convenience functions to derive other properties from this representation.
+The generic interval (i.e. the number of diatonic steps) can be obtained using [<cite>generic</cite>](&#64;ref).
+<cite>generic</cite> respects the direction of the interval but is limitied to a single octave (0 to ±6).
+If you need the total number of diatonic steps, including octaves, use [<cite>diasteps</cite>](&#64;ref).
+The function [<cite>degree</cite>](&#64;ref) returns the scale degree implied by the interval relative to some root.
+Since scale degrees are always above the root, [<cite>degree</cite>](&#64;ref),
+it treats negative intervals like their positive complements:</p>
+<blockquote>
+<div><p>julia&gt; Pitches.generic(Pitches.i”-M3:1”) # some kind of 3rd down
+-2</p>
+<p>julia&gt; Pitches.diasteps(Pitches.i”-M3:1”) # a 10th down
+-9</p>
+<p>julia&gt; Pitches.degree(Pitches.i”-M3:1”) # scale degree VI
+5</p>
+</div></blockquote>
+<p>For interval classes, all three functions are equivalent.
+Note that all three count from 0 (for unison/I), not 1.</p>
+<p>Complementary to the generic interval functions,
+[<cite>alteration</cite>](&#64;ref) returns the specific quality of the interval.
+For perfect or major intervals, it returns <cite>0</cite>.
+Larger absolute intervals return positive values,
+smaller intervals return negative values.</p>
+<p>[<cite>degree</cite>](&#64;ref) and [<cite>alteration</cite>](&#64;ref) also work on pitches.
+<cite>degree(p)</cite> returns an integer corresponding to the letter (C=`0`, D=`1`, …),
+while <cite>alteration(p)</cite> provides the accidentals (natural=`0`, sharps -&gt; positive, flats -&gt; negative).
+For convenience, [<cite>letter(p)</cite>](&#64;ref) returns the letter as an uppercase character.</p>
+<p>## Reference</p>
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">pitchtypes</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Overview</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Spelled Pitch</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#working-with-spelled-intervals">Working with Spelled Intervals</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="enharmonic.html">Enharmonic Pitch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frequencies.html">Log-Frequency Pitch</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="../introduction.html" title="previous chapter">Overview</a></li>
+      <li>Next: <a href="enharmonic.html" title="next chapter">Enharmonic Pitch</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Robert Lieck, Christoph Finkensiep, DCML.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.2.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/types/spelled.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

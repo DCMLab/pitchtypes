@@ -1,0 +1,150 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Enharmonic Pitch &#8212; pitchtypes  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Log-Frequency Pitch" href="frequencies.html" />
+    <link rel="prev" title="Spelled Pitch" href="spelled.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="enharmonic-pitch">
+<h1>Enharmonic Pitch<a class="headerlink" href="#enharmonic-pitch" title="Permalink to this headline">¶</a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p><strong>TODO: fix notation</strong></p>
+<p>Enharmonic pitches and intervals are specified in 12-TET semitones, with 60 as Middle C, as in the MIDI standard.
+Both enharmonic pitches and intervals can be represented by integers,
+However, we provides wrapper classes around <cite>int</cite> to distinguish
+the different interpretations as pitches and intervals (and their respective class variants).
+Enharmonic pitches can be easily created using the <cite>Enharmonic*</cite> constructors, all of which take integers.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 56%" />
+<col style="width: 44%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>constructor example</p></th>
+<th class="head"><p>printed representation</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">EnharmonicInterval(15)</span></code>
+<code class="docutils literal notranslate"><span class="pre">EnharmonicIntervalClass(15)</span></code>
+<code class="docutils literal notranslate"><span class="pre">EnharmonicPitch(60)</span></code>
+<code class="docutils literal notranslate"><span class="pre">EnharmonicPitchClass(60)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">i15</span></code>
+<code class="docutils literal notranslate"><span class="pre">ic3</span></code>
+<code class="docutils literal notranslate"><span class="pre">p60</span></code>
+<code class="docutils literal notranslate"><span class="pre">pc0</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="refecence">
+<h2>Refecence<a class="headerlink" href="#refecence" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">pitchtypes</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spelled.html">Spelled Pitch</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Enharmonic Pitch</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#refecence">Refecence</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="frequencies.html">Log-Frequency Pitch</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="spelled.html" title="previous chapter">Spelled Pitch</a></li>
+      <li>Next: <a href="frequencies.html" title="next chapter">Log-Frequency Pitch</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Robert Lieck, Christoph Finkensiep, DCML.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.2.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="../_sources/types/enharmonic.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
