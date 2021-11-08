@@ -122,4 +122,13 @@ smaller intervals return negative values.
 while `alteration(p)` provides the accidentals (natural=`0`, sharps -> positive, flats -> negative).
 For convenience, [`letter(p)`](@ref) returns the letter as an uppercase character.
 
-## Reference
+Reference
+---------
+
+.. autoclass:: pitchtypes.Spelled
+   :members:
+   :undoc-members:
+
+.. autoclass:: pitchtypes.SpelledInterval
+   :members:
+   :undoc-members:
