@@ -8,6 +8,8 @@
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
+[![docs (development version)](https://img.shields.io/badge/docs-dev-blue.svg)](https://dcmlab.github.io/pitchtypes/)
+
 **Musically meaningful types**
 
 The purpose of this Python library is to:
