@@ -8,7 +8,7 @@ class TestHarmonic(TestCase):
     def test_init(self):
         # check parsing
         # check its converting to int even with float input
-        self.assertEqual(Harmonic.parse_exponents([1, -2, 3, -4.00]).dtype, np.int)
+        self.assertEqual(Harmonic.parse_exponents([1, -2, 3, -4.00]).dtype, int)
         # for non-class
         self.assertTrue(np.array_equal(np.array([1, -2, 3, -4.]), Harmonic.parse_exponents([1, -2, 3, -4])))
         self.assertTrue(np.array_equal(np.array([1, -2, 3, -4]), Harmonic.parse_exponents([1, -2, 3, -4.00])))

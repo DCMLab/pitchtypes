@@ -325,11 +325,11 @@ class Harmonic(AbstractBase):
             if not (exponents_.startswith("[") and exponents_.endswith("]")):
                 raise ValueError(f"'exponents' has to start and end with '[' and ']', respectively")
             try:
-                exponents = np.array(exponents_[1:-1].split(','), dtype=np.int)
+                exponents = np.array(exponents_[1:-1].split(','), dtype=int)
             except ValueError as e:
                 raise ValueError(f"Could not interpret {exponents} as array of integers: {e}")
         else:
-            exponents = np.array(exponents, dtype=np.int)
+            exponents = np.array(exponents, dtype=int)
         return exponents
 
     def __init__(self, *args, **kwargs):
