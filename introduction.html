@@ -63,63 +63,64 @@ Intervals can be thought of as vectors in a vector space (or more precisely: a m
 They can be added, subtracted, negated, and multiplied with integers.
 Pitches, on the other hand, can be seen as points in this space and are represented as intervals
 in relation to an (implicit) origin.</p>
-<p>Interval types (here denoted as <code class="docutils literal notranslate"><span class="pre">I</span></code>) define the following operations:</p>
+<p>Intervals. (here denoted as <code class="docutils literal notranslate"><span class="pre">i</span></code>) support the following operations:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">I</span> <span class="pre">+</span> <span class="pre">I</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">I</span> <span class="pre">-</span> <span class="pre">I</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">-I</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">I</span> <span class="pre">*</span> <span class="pre">Integer</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">Integer</span> <span class="pre">*</span> <span class="pre">I</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">sign(I)</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">abs(I)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">i</span> <span class="pre">+</span> <span class="pre">i</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">i</span> <span class="pre">-</span> <span class="pre">i</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-i</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">i</span> <span class="pre">*</span> <span class="pre">int</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">*</span> <span class="pre">i</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">i.direction()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">i.abs()</span></code></p></li>
 </ul>
-<p>The sign indicates the logical direction of the interval by musical convention
+<p><code class="docutils literal notranslate"><span class="pre">direction</span></code> indicates the logical direction of the interval by musical convention
 (upward = positive, downward = negative),
 even if the interval space is multi-dimensional.
 Consequently, <code class="docutils literal notranslate"><span class="pre">abs</span></code> ensures that an interval is neutral or upward-directed.
 For interval classes (which are generally undirected),
 the sign indicates the direction of the “shortest” class member:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">julia</span><span class="o">&gt;</span> <span class="n">sign</span><span class="p">(</span><span class="n">i</span><span class="s2">&quot;P4&quot;</span><span class="p">)</span>
-<span class="mi">1</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">SpelledIntervalClass</span><span class="p">(</span><span class="s2">&quot;P4&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">direction</span><span class="p">()</span>
+<span class="go">1</span>
 
-<span class="n">julia</span><span class="o">&gt;</span> <span class="n">sign</span><span class="p">(</span><span class="n">i</span><span class="s2">&quot;P5&quot;</span><span class="p">)</span> <span class="c1"># == -i&quot;P4&quot;</span>
-<span class="o">-</span><span class="mi">1</span>
+<span class="go">julia&gt; SpelledIntervalClass(&quot;P5&quot;) # == -&quot;P4&quot;</span>
+<span class="go">-1</span>
 </pre></div>
 </div>
 <p>In addition to arithmetic operations, some special intervals are defined:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">unison(Type{I})</span></code> / <code class="docutils literal notranslate"><span class="pre">zero(Type{I})</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">octave(Type{I})</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">chromsemi(Type{I})</span></code> (a chromatic semitone, optional)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">isstep(I)</span></code> (optional, a predicate that test whether the interval is considered a “step”)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">I.unison()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">I.octave()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">I.chromatic_semitone()</span></code> (a chromatic semitone, optional)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">i.is_step()</span></code> (optional, a predicate that test whether the interval is considered a “step”)</p></li>
 </ul>
 <p>Finally, some operations specify the relationship between intervals and interval classes:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">ic(I)</span></code>: Returns the corresponding interval class.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">embed(IC</span> <span class="pre">[,</span> <span class="pre">octs::Int])</span></code>: Returns a canonical embedding of an interval class into interval space.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">intervaltype(Type{IC})</span> <span class="pre">=</span> <span class="pre">I</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">intervalclasstype(Type{I})</span> <span class="pre">=</span> <span class="pre">IC</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">i.ic()</span></code>: Returns the corresponding interval class.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">i.embed()</span></code>: Returns a canonical embedding of an interval class into interval space.</p></li>
 </ul>
 <p>Pitch operations generally interact with intervals
 (and can be derived from the interval operations):</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">P</span> <span class="pre">+</span> <span class="pre">I</span> <span class="pre">-&gt;</span> <span class="pre">P</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">I</span> <span class="pre">+</span> <span class="pre">P</span> <span class="pre">-&gt;</span> <span class="pre">P</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">P</span> <span class="pre">-</span> <span class="pre">I</span> <span class="pre">-&gt;</span> <span class="pre">P</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">P</span> <span class="pre">-</span> <span class="pre">P</span> <span class="pre">-&gt;</span> <span class="pre">I</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">pc(P)</span> <span class="pre">-&gt;</span> <span class="pre">PC</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">embed(PC</span> <span class="pre">[,</span> <span class="pre">octaves])</span> <span class="pre">-&gt;</span> <span class="pre">P</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">p</span> <span class="pre">+</span> <span class="pre">i</span> <span class="pre">-&gt;</span> <span class="pre">p</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">i</span> <span class="pre">+</span> <span class="pre">p</span> <span class="pre">-&gt;</span> <span class="pre">p</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">p</span> <span class="pre">-</span> <span class="pre">i</span> <span class="pre">-&gt;</span> <span class="pre">p</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">p</span> <span class="pre">-</span> <span class="pre">p</span> <span class="pre">-&gt;</span> <span class="pre">i</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">p.pc()</span> <span class="pre">-&gt;</span> <span class="pre">pc</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pc.embed()</span> <span class="pre">-&gt;</span> <span class="pre">p</span></code></p></li>
 </ul>
 <p>Besides the specific functions of the interface,
 pitch and interval types generally implement basic functions such as</p>
+<p><strong>TODO: pythonify</strong></p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">isless</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">isequal</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">hash</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">show</span></code> (usually also specialized for <code class="docutils literal notranslate"><span class="pre">Pitch{I}</span></code>)</p></li>
+<li><p>equality</p></li>
+<li><p>comparison</p></li>
+<li><p>hashing</p></li>
+<li><p>printing in standard notation</p></li>
 </ul>
 <p>Note that the ordering of pitches is generally not unique,
-so <code class="docutils literal notranslate"><span class="pre">isless</span></code> uses an appropriate convention for each interval type.</p>
+so <code class="docutils literal notranslate"><span class="pre">isless</span></code> uses an appropriate convention for each interval type.
+If you need musically valid comparisons,
+use semantic methods such as <code class="docutils literal notranslate"><span class="pre">direction()</span></code> as appropriate to your use case.</p>
 </section>
 </section>
 
