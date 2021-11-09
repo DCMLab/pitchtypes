@@ -536,22 +536,26 @@ class Spelled(AbstractBase):
         return self.name()
 
     def convert_to_enharmonic(self):
-        fifth_steps_from_f = self.fifth_steps() + 1
-        # get the base pitch in 0,...,11
-        base_pitch = ((fifth_steps_from_f % 7 - 1) * 7) % 12
-        # get the accidental, i.e. chromatic semitone steps to add to base pitch
-        # (floor-divide (//) rounds down, for negative numbers that is equal to the remainder of division minus one)
-        accidentals = fifth_steps_from_f // 7
         if self.is_pitch:
+            fifth_steps_from_f = self.fifth_steps() + 1
+            # get the base pitch in 0,...,11
+            base_pitch = ((fifth_steps_from_f % 7 - 1) * 7) % 12
+            # get the accidental, i.e. chromatic semitone steps to add to base pitch
+            # (floor-divide (//) rounds down, for negative numbers that is equal to the remainder of division minus one)
+            accidentals = fifth_steps_from_f // 7
             if self.is_class:
                 return EnharmonicPitchClass(value=base_pitch + accidentals)
             else:
                 return EnharmonicPitch(value=12 * (self.octave() + 1) + base_pitch + accidentals)
         else:
+            # convert intervals by going via reference pitches
             if self.is_class:
-                return EnharmonicIntervalClass(value=base_pitch + accidentals)
+                spelled_ref_point = SpelledPitchClass("C")
+                enharmonic_ref_point = EnharmonicPitchClass("C")
             else:
-                return EnharmonicInterval(value=12 * (self.octave() + 1) + base_pitch + accidentals)
+                spelled_ref_point = SpelledPitch("C4")
+                enharmonic_ref_point = EnharmonicPitch("C4")
+            return enharmonic_ref_point - (spelled_ref_point - self).convert_to_enharmonic()
 
     def name(self):
         raise NotImplementedError
