@@ -781,16 +781,7 @@ class Enharmonic(AbstractBase):
         super().__init__(value=value, is_pitch=is_pitch, is_class=is_class, **kwargs)
 
     def convert_to_logfreq(self):
-        if self.is_pitch:
-            if self.is_class:
-                return LogFreqPitchClass(self.freq(), is_freq=True)
-            else:
-                return LogFreqPitch(self.freq(), is_freq=True)
-        else:
-            if self.is_class:
-                return LogFreqIntervalClass(self.freq(), is_ratio=True)
-            else:
-                return LogFreqInterval(self.freq(), is_ratio=True)
+        raise NotImplementedError
 
     def __int__(self):
         return self.value
@@ -800,12 +791,6 @@ class Enharmonic(AbstractBase):
 
     def name(self, *args, **kwargs):
         raise NotImplementedError
-
-    def octave(self):
-        return self.value // 12 - 1
-
-    def freq(self):
-        return 2 ** ((self.value - 69) / 12) * 440
 
 
 @Enharmonic.link_pitch_type()
@@ -823,6 +808,15 @@ class EnharmonicPitch(Enharmonic):
             return str(self.value)
         return self.pitch_class_name_from_midi(self.value, flat_sharp=flat_sharp) + str(self.octave())
 
+    def octave(self):
+        return self.value // 12 - 1
+
+    def freq(self):
+        return 2 ** ((self.value - 69) / 12) * 440
+
+    def convert_to_logfreq(self):
+        return LogFreqPitch(self.freq(), is_freq=True)
+
     @property
     def midi(self):
         return self.value
@@ -837,6 +831,12 @@ class EnharmonicInterval(Enharmonic):
         sign = "-" if self.value < 0 else ""
         return sign + str(abs(self.value))
 
+    def octave(self):
+        return self.value // 12
+
+    def convert_to_logfreq(self):
+        return LogFreqInterval(2 ** (self.value / 12), is_ratio=True)
+
 
 @Enharmonic.link_pitch_class_type()
 class EnharmonicPitchClass(Enharmonic):
@@ -850,12 +850,18 @@ class EnharmonicPitchClass(Enharmonic):
             return str(self.value)
         return self.pitch_class_name_from_midi(self.value, flat_sharp=flat_sharp)
 
+    def convert_to_logfreq(self):
+        return LogFreqPitchClass(2 ** ((self.value - 69) / 12) * 440, is_freq=True)
+
 
 @Enharmonic.link_interval_class_type()
 class EnharmonicIntervalClass(Enharmonic):
     def name(self):
         sign = "-" if self.value < 0 else ""
         return sign + str(abs(self.value))
+
+    def convert_to_logfreq(self):
+        return LogFreqIntervalClass(2 ** (self.value / 12), is_ratio=True)
 
 
 class LogFreq(AbstractBase):
