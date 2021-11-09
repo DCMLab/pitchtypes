@@ -364,7 +364,11 @@ class HarmonicIntervalClass(Harmonic):
 class Spelled(AbstractBase):
 
     _pitch_regex = re.compile("^(?P<class>[A-G])(?P<modifiers>(b*)|(#*))(?P<octave>(-?[0-9]+)?)$")
-    _interval_regex = re.compile("^(?P<sign>[-+])?(?P<quality>(a+)|(M)|(p)|(m)|(d+))(?P<generic>[1-7])(?P<octave>(:[0-9]+)?)$")
+    _interval_regex = re.compile("^(?P<sign>[-+])?("
+                                 "(?P<quality0>p)(?P<generic0>[145])|"          # perfect intervals
+                                 "(?P<quality1>|(M)|(m))(?P<generic1>[2367])|"  # imperfect intervals
+                                 "(?P<quality2>(a+)|(d+))(?P<generic2>[1-7])"   # augmeted/diminished intervals
+                                 ")(?P<octave>(:[0-9]+)?)$")
 
     @staticmethod
     def parse_pitch(s):
@@ -409,23 +413,36 @@ class Spelled(AbstractBase):
         interval_match = Spelled._interval_regex.match(s)
         if interval_match is None:
             raise ValueError(f"could not match '{s}' with regex: '{Spelled._interval_regex.pattern}'")
+        # get quality and generic interval (first corresponding group that is not None)
+        for i in range(3):
+            g = interval_match[f"generic{i}"]
+            q = interval_match[f"quality{i}"]
+            if g is not None and q is not None:
+                generic = int(g)
+                quality = q
+                break
+        else:
+            raise RuntimeError(f"Could not match generic interval and quality, this is a bug in the regex ("
+                               f"{[interval_match[f'generic{i}'] for i in range(3)]}, "
+                               f"{[interval_match[f'quality{i}'] for i in range(3)]}"
+                               f")")
         # initialise value with generic interval classes
-        fifth_steps = Spelled.fifths_from_generic_interval_class(int(interval_match['generic']))
+        fifth_steps = Spelled.fifths_from_generic_interval_class(generic)
         # add modifiers
-        if interval_match['quality'] in ["p", "M"]:
+        if quality in ["p", "M"]:
             pass
-        elif interval_match['quality'] == "m":
+        elif quality == "m":
             fifth_steps -= 7
-        elif "a" in interval_match['quality']:
-            fifth_steps += 7 * len(interval_match['quality'])
-        elif "d" in interval_match['quality']:
-            if interval_match['generic'] in ["4", "1", "5"]:
-                fifth_steps -= 7 * len(interval_match['quality'])
+        elif "a" in quality:
+            fifth_steps += 7 * len(quality)
+        elif "d" in quality:
+            if generic in [4, 1, 5]:
+                fifth_steps -= 7 * len(quality)
             else:
-                fifth_steps -= 7 * (len(interval_match['quality']) + 1)
+                fifth_steps -= 7 * (len(quality) + 1)
         else:
             raise RuntimeError(f"Initialization from string failed: "
-                               f"Unexpected interval quality '{interval_match['quality']}'. This is a bug and "
+                               f"Unexpected interval quality '{quality}'. This is a bug and "
                                f"means that either the used regex is bad or the handling code.")
         # get octave
         if interval_match['octave'][1:] == "":

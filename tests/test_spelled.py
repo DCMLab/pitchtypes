@@ -115,6 +115,12 @@ class TestSpelled(TestCase):
                     self.assertEqual(inverse_interval_class_str, inverse_interval.name(inverse=True))
                 self.assertEqual(interval.fifth_steps(), idx - 26)
 
+    def test_bad_regex(self):
+        self.assertRaises(ValueError, lambda: SpelledInterval("xyz"))      # not meaningful at all
+        self.assertRaises(ValueError, lambda: SpelledIntervalClass("p3"))  # there is no perfect third
+        self.assertRaises(ValueError, lambda: SpelledIntervalClass("m5"))  # there is no major fifth
+        self.assertRaises(ValueError, lambda: SpelledIntervalClass("M5"))  # there is no minor fifth
+
     def test_arithmetics(self):
         for p, i in zip(self.line_of_fifths, self.line_of_intervals):
             p = SpelledPitchClass(p)
@@ -155,8 +161,16 @@ class TestSpelled(TestCase):
         self.assertRaises(ValueError, lambda: Spelled.parse_interval("yyy"))
         # temporally introduce a bug by changing regex
         old_regex = Spelled._interval_regex
-        Spelled._interval_regex = re.compile("^(?P<generic>[1-7])(?P<quality>[a-z])$")
+        # test for bad interval quality
+        Spelled._interval_regex = re.compile("^(?P<generic0>[1-7])(?P<quality0>[a-z])$")
         self.assertRaises(RuntimeError, lambda: Spelled.parse_interval("1x"))
+        # test for bad quality/generic matching (mixing up indices)
+        Spelled._interval_regex = re.compile("^("
+                                             "(?P<generic0>1)(?P<quality1>a)|"
+                                             "(?P<generic1>2)(?P<quality0>b)|"
+                                             "(?P<generic2>3)(?P<quality2>c)"
+                                             ")$")
+        self.assertRaises(RuntimeError, lambda: Spelled.parse_interval("1a"))
         # change back to not mess up other tests
         Spelled._interval_regex = old_regex
 
