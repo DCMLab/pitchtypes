@@ -88,6 +88,6 @@ pitch and interval types generally implement basic functions such as
 - printing in standard notation
 
 Note that the ordering of pitches is generally not unique,
-so `isless` uses an appropriate convention for each interval type.
+so comparison uses an appropriate convention for each interval type.
 If you need musically valid comparisons,
 use semantic methods such as `direction()` as appropriate to your use case.
