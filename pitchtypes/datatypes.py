@@ -325,11 +325,11 @@ class Harmonic(AbstractBase):
             if not (exponents_.startswith("[") and exponents_.endswith("]")):
                 raise ValueError(f"'exponents' has to start and end with '[' and ']', respectively")
             try:
-                exponents = np.array(exponents_[1:-1].split(','), dtype=np.int)
+                exponents = np.array(exponents_[1:-1].split(','), dtype=int)
             except ValueError as e:
                 raise ValueError(f"Could not interpret {exponents} as array of integers: {e}")
         else:
-            exponents = np.array(exponents, dtype=np.int)
+            exponents = np.array(exponents, dtype=int)
         return exponents
 
     def __init__(self, *args, **kwargs):
@@ -364,7 +364,11 @@ class HarmonicIntervalClass(Harmonic):
 class Spelled(AbstractBase):
 
     _pitch_regex = re.compile("^(?P<class>[A-G])(?P<modifiers>(b*)|(#*))(?P<octave>(-?[0-9]+)?)$")
-    _interval_regex = re.compile("^(?P<sign>[-+])?(?P<quality>(a+)|(M)|(p)|(m)|(d+))(?P<generic>[1-7])(?P<octave>(:[0-9]+)?)$")
+    _interval_regex = re.compile("^(?P<sign>[-+])?("
+                                 "(?P<quality0>P)(?P<generic0>[145])|"          # perfect intervals
+                                 "(?P<quality1>|(M)|(m))(?P<generic1>[2367])|"  # imperfect intervals
+                                 "(?P<quality2>(a+)|(d+))(?P<generic2>[1-7])"   # augmeted/diminished intervals
+                                 ")(?P<octave>(:[0-9]+)?)$")
 
     @staticmethod
     def parse_pitch(s):
@@ -377,6 +381,10 @@ class Spelled(AbstractBase):
         """
         if not isinstance(s, str):
             raise TypeError(f"expected string as input, got {s}")
+        # convert unicode flats and sharps (♭ -> b and ♯ -> #)
+        s = s.replace("♭", "b")
+        s = s.replace("♯", "#")
+        # match with regex
         pitch_match = Spelled._pitch_regex.match(s)
         if pitch_match is None:
             raise ValueError(f"could not match '{s}' with regex: '{Spelled._pitch_regex.pattern}'")
@@ -409,23 +417,36 @@ class Spelled(AbstractBase):
         interval_match = Spelled._interval_regex.match(s)
         if interval_match is None:
             raise ValueError(f"could not match '{s}' with regex: '{Spelled._interval_regex.pattern}'")
+        # get quality and generic interval (first corresponding group that is not None)
+        for i in range(3):
+            g = interval_match[f"generic{i}"]
+            q = interval_match[f"quality{i}"]
+            if g is not None and q is not None:
+                generic = int(g)
+                quality = q
+                break
+        else:
+            raise RuntimeError(f"Could not match generic interval and quality, this is a bug in the regex ("
+                               f"{[interval_match[f'generic{i}'] for i in range(3)]}, "
+                               f"{[interval_match[f'quality{i}'] for i in range(3)]}"
+                               f")")
         # initialise value with generic interval classes
-        fifth_steps = Spelled.fifths_from_generic_interval_class(int(interval_match['generic']))
+        fifth_steps = Spelled.fifths_from_generic_interval_class(generic)
         # add modifiers
-        if interval_match['quality'] in ["p", "M"]:
+        if quality in ["P", "M"]:
             pass
-        elif interval_match['quality'] == "m":
+        elif quality == "m":
             fifth_steps -= 7
-        elif "a" in interval_match['quality']:
-            fifth_steps += 7 * len(interval_match['quality'])
-        elif "d" in interval_match['quality']:
-            if interval_match['generic'] in ["4", "1", "5"]:
-                fifth_steps -= 7 * len(interval_match['quality'])
+        elif "a" in quality:
+            fifth_steps += 7 * len(quality)
+        elif "d" in quality:
+            if generic in [4, 1, 5]:
+                fifth_steps -= 7 * len(quality)
             else:
-                fifth_steps -= 7 * (len(interval_match['quality']) + 1)
+                fifth_steps -= 7 * (len(quality) + 1)
         else:
             raise RuntimeError(f"Initialization from string failed: "
-                               f"Unexpected interval quality '{interval_match['quality']}'. This is a bug and "
+                               f"Unexpected interval quality '{quality}'. This is a bug and "
                                f"means that either the used regex is bad or the handling code.")
         # get octave
         if interval_match['octave'][1:] == "":
@@ -459,7 +480,7 @@ class Spelled(AbstractBase):
         :return: interval quality (M, m, p, a, d, aa, dd, aaa, ddd etc)
         """
         if -5 <= fifth_steps <= 5:
-            quality = ['m', 'm', 'm', 'm', 'p', 'p', 'p', 'M', 'M', 'M', 'M'][fifth_steps + 5]
+            quality = ['m', 'm', 'm', 'm', 'P', 'P', 'P', 'M', 'M', 'M', 'M'][fifth_steps + 5]
         elif fifth_steps > 5:
             quality = 'a' * ((fifth_steps + 1) // 7)
         else:
@@ -536,22 +557,26 @@ class Spelled(AbstractBase):
         return self.name()
 
     def convert_to_enharmonic(self):
-        fifth_steps_from_f = self.fifths() + 1
-        # get the base pitch in 0,...,11
-        base_pitch = ((fifth_steps_from_f % 7 - 1) * 7) % 12
-        # get the accidental, i.e. chromatic semitone steps to add to base pitch
-        # (floor-divide (//) rounds down, for negative numbers that is equal to the remainder of division minus one)
-        accidentals = fifth_steps_from_f // 7
         if self.is_pitch:
+            fifth_steps_from_f = self.fifths() + 1
+            # get the base pitch in 0,...,11
+            base_pitch = ((fifth_steps_from_f % 7 - 1) * 7) % 12
+            # get the accidental, i.e. chromatic semitone steps to add to base pitch
+            # (floor-divide (//) rounds down, for negative numbers that is equal to the remainder of division minus one)
+            accidentals = fifth_steps_from_f // 7
             if self.is_class:
                 return EnharmonicPitchClass(value=base_pitch + accidentals)
             else:
                 return EnharmonicPitch(value=12 * (self.octaves() + 1) + base_pitch + accidentals)
         else:
+            # convert intervals by going via reference pitches
             if self.is_class:
-                return EnharmonicIntervalClass(value=base_pitch + accidentals)
+                spelled_ref_point = SpelledPitchClass("C")
+                enharmonic_ref_point = EnharmonicPitchClass("C")
             else:
-                return EnharmonicInterval(value=12 * (self.octaves() + 1) + base_pitch + accidentals)
+                spelled_ref_point = SpelledPitch("C4")
+                enharmonic_ref_point = EnharmonicPitch("C4")
+            return enharmonic_ref_point - (spelled_ref_point - self).convert_to_enharmonic()
 
     def name(self):
         raise NotImplementedError
@@ -855,16 +880,7 @@ class Enharmonic(AbstractBase):
         super().__init__(value=value, is_pitch=is_pitch, is_class=is_class, **kwargs)
 
     def convert_to_logfreq(self):
-        if self.is_pitch:
-            if self.is_class:
-                return LogFreqPitchClass(self.freq(), is_freq=True)
-            else:
-                return LogFreqPitch(self.freq(), is_freq=True)
-        else:
-            if self.is_class:
-                return LogFreqIntervalClass(self.freq(), is_ratio=True)
-            else:
-                return LogFreqInterval(self.freq(), is_ratio=True)
+        raise NotImplementedError
 
     def __int__(self):
         return self.value
@@ -897,6 +913,15 @@ class EnharmonicPitch(Enharmonic):
             return str(self.value)
         return self.pitch_class_name_from_midi(self.value, flat_sharp=flat_sharp) + str(self.octaves())
 
+    def octave(self):
+        return self.value // 12 - 1
+
+    def freq(self):
+        return 2 ** ((self.value - 69) / 12) * 440
+
+    def convert_to_logfreq(self):
+        return LogFreqPitch(self.freq(), is_freq=True)
+
     @property
     def midi(self):
         return self.value
@@ -911,6 +936,12 @@ class EnharmonicInterval(Enharmonic):
         sign = "-" if self.value < 0 else ""
         return sign + str(abs(self.value))
 
+    def octave(self):
+        return self.value // 12
+
+    def convert_to_logfreq(self):
+        return LogFreqInterval(2 ** (self.value / 12), is_ratio=True)
+
 
 @Enharmonic.link_pitch_class_type()
 class EnharmonicPitchClass(Enharmonic):
@@ -924,12 +955,18 @@ class EnharmonicPitchClass(Enharmonic):
             return str(self.value)
         return self.pitch_class_name_from_midi(self.value, flat_sharp=flat_sharp)
 
+    def convert_to_logfreq(self):
+        return LogFreqPitchClass(2 ** ((self.value - 69) / 12) * 440, is_freq=True)
+
 
 @Enharmonic.link_interval_class_type()
 class EnharmonicIntervalClass(Enharmonic):
     def name(self):
         sign = "-" if self.value < 0 else ""
         return sign + str(abs(self.value))
+
+    def convert_to_logfreq(self):
+        return LogFreqIntervalClass(2 ** (self.value / 12), is_ratio=True)
 
 
 class LogFreq(AbstractBase):

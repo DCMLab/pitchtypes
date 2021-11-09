@@ -15,12 +15,23 @@ class TestSpelled(TestCase):
         "F###", "C###", "G###", "D###", "A###", "E###", "B###",
     ]
 
+    line_of_fifths_unicode = [
+        "D♭♭♭♭", "A♭♭♭♭", "E♭♭♭♭", "B♭♭♭♭",
+        "F♭♭♭", "C♭♭♭", "G♭♭♭", "D♭♭♭", "A♭♭♭", "E♭♭♭", "B♭♭♭",
+        "F♭♭", "C♭♭", "G♭♭", "D♭♭", "A♭♭", "E♭♭", "B♭♭",
+        "F♭", "C♭", "G♭", "D♭", "A♭", "E♭", "B♭",
+        "F", "C", "G", "D", "A", "E", "B",
+        "F♯", "C♯", "G♯", "D♯", "A♯", "E♯", "B♯",
+        "F♯♯", "C♯♯", "G♯♯", "D♯♯", "A♯♯", "E♯♯", "B♯♯",
+        "F♯♯♯", "C♯♯♯", "G♯♯♯", "D♯♯♯", "A♯♯♯", "E♯♯♯", "B♯♯♯",
+    ]
+
     line_of_intervals = [
         "ddd2", "ddd6", "ddd3", "ddd7",
         "ddd4", "ddd1", "ddd5", "dd2", "dd6", "dd3", "dd7",
         "dd4", "dd1", "dd5", "d2", "d6", "d3", "d7",
         "d4", "d1", "d5", "m2", "m6", "m3", "m7",
-        "p4", "p1", "p5", "M2", "M6", "M3", "M7",
+        "P4", "P1", "P5", "M2", "M6", "M3", "M7",
         "a4", "a1", "a5", "a2", "a6", "a3", "a7",
         "aa4", "aa1", "aa5", "aa2", "aa6", "aa3", "aa7",
         "aaa4", "aaa1", "aaa5", "aaa2", "aaa6", "aaa3", "aaa7"
@@ -109,31 +120,38 @@ class TestSpelled(TestCase):
                     # so they also print the same
                     self.assertEqual(interval_class_str, inverse_interval.name())
                     # and subtracting gives a perfect unison p1
-                    self.assertEqual(SpelledIntervalClass("p1"), interval - inverse_interval)
+                    self.assertEqual(SpelledIntervalClass("P1"), interval - inverse_interval)
                     # the inverse name corresponds to the inverse input
                     self.assertEqual(inverse_interval_class_str, interval.name(inverse=True))
                     self.assertEqual(inverse_interval_class_str, inverse_interval.name(inverse=True))
                 self.assertEqual(interval.fifths(), idx - 26)
 
+    def test_bad_regex(self):
+        self.assertRaises(ValueError, lambda: SpelledInterval("xyz"))      # not meaningful at all
+        self.assertRaises(ValueError, lambda: SpelledIntervalClass("p3"))  # there is no perfect third
+        self.assertRaises(ValueError, lambda: SpelledIntervalClass("m5"))  # there is no major fifth
+        self.assertRaises(ValueError, lambda: SpelledIntervalClass("M5"))  # there is no minor fifth
+
     def test_arithmetics(self):
-        for p, i in zip(self.line_of_fifths, self.line_of_intervals):
+        for p, p_unicode, i in zip(self.line_of_fifths, self.line_of_fifths_unicode, self.line_of_intervals):
             p = SpelledPitchClass(p)
+            self.assertEqual(p, SpelledPitchClass(p_unicode))
             i = SpelledIntervalClass("+" + i)
             ref = SpelledPitchClass("C")
             delta = p - ref
             self.assertEqual(delta, i)
             self.assertEqual(ref + delta, p)
-            p1 = SpelledPitch("C#4")
-            p2 = SpelledPitch("Gb5")
-            self.assertRaises(TypeError, lambda: p1 + p2)
-            self.assertRaises(TypeError, lambda: SpelledPitchClass("G") - SpelledPitch("G4"))
+        p1 = SpelledPitch("C#4")
+        p2 = SpelledPitch("Gb5")
+        self.assertRaises(TypeError, lambda: p1 + p2)
+        self.assertRaises(TypeError, lambda: SpelledPitchClass("G") - SpelledPitch("G4"))
 
     def test_from_fifths_functions(self):
         print(SpelledInterval("ddd2:4"))
         print(SpelledInterval("-aaa7:4"))
-        for fifths, diatonic, interval_class, inverse_interval_class in [(-1, -4, 'p4', 'p5'),
-                                                                         (0, 0, 'p1', 'p1'),
-                                                                         (1, 4, 'p5', 'p4'),
+        for fifths, diatonic, interval_class, inverse_interval_class in [(-1, -4, 'P4', 'P5'),
+                                                                         (0, 0, 'P1', 'P1'),
+                                                                         (1, 4, 'P5', 'P4'),
                                                                          (2, 8, 'M2', 'm7'),
                                                                          (3, 12, 'M6', 'm3'),
                                                                          (4, 16, 'M3', 'm6'),
@@ -155,8 +173,16 @@ class TestSpelled(TestCase):
         self.assertRaises(ValueError, lambda: Spelled.parse_interval("yyy"))
         # temporally introduce a bug by changing regex
         old_regex = Spelled._interval_regex
-        Spelled._interval_regex = re.compile("^(?P<generic>[1-7])(?P<quality>[a-z])$")
+        # test for bad interval quality
+        Spelled._interval_regex = re.compile("^(?P<generic0>[1-7])(?P<quality0>[a-z])$")
         self.assertRaises(RuntimeError, lambda: Spelled.parse_interval("1x"))
+        # test for bad quality/generic matching (mixing up indices)
+        Spelled._interval_regex = re.compile("^("
+                                             "(?P<generic0>1)(?P<quality1>a)|"
+                                             "(?P<generic1>2)(?P<quality0>b)|"
+                                             "(?P<generic2>3)(?P<quality2>c)"
+                                             ")$")
+        self.assertRaises(RuntimeError, lambda: Spelled.parse_interval("1a"))
         # change back to not mess up other tests
         Spelled._interval_regex = old_regex
 
