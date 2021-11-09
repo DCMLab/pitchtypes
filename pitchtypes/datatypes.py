@@ -536,7 +536,7 @@ class Spelled(AbstractBase):
         return self.name()
 
     def convert_to_enharmonic(self):
-        fifth_steps_from_f = self.fifth_steps() + 1
+        fifth_steps_from_f = self.fifths() + 1
         # get the base pitch in 0,...,11
         base_pitch = ((fifth_steps_from_f % 7 - 1) * 7) % 12
         # get the accidental, i.e. chromatic semitone steps to add to base pitch
@@ -546,17 +546,72 @@ class Spelled(AbstractBase):
             if self.is_class:
                 return EnharmonicPitchClass(value=base_pitch + accidentals)
             else:
-                return EnharmonicPitch(value=12 * (self.octave() + 1) + base_pitch + accidentals)
+                return EnharmonicPitch(value=12 * (self.octaves() + 1) + base_pitch + accidentals)
         else:
             if self.is_class:
                 return EnharmonicIntervalClass(value=base_pitch + accidentals)
             else:
-                return EnharmonicInterval(value=12 * (self.octave() + 1) + base_pitch + accidentals)
+                return EnharmonicInterval(value=12 * (self.octaves() + 1) + base_pitch + accidentals)
 
     def name(self):
         raise NotImplementedError
 
-    def fifth_steps(self):
+    # Spelled interface:
+    
+    def fifths(self):
+        """
+        Return the position of the interval on the line of fiths.
+        """
+        raise NotImplementedError
+
+    def octaves(self):
+        """
+        For intervals, return the number of octaves the interval spans.
+        Negative intervals start with -1, decreasing.
+        For pitches, return the absolute octave of the pitch.
+        """
+        raise NotImplementedError
+
+    def internal_octaves(self):
+        """
+        Return the internal octave representation of a pitch,
+        which is dependent on the fifths.
+
+        Only use this if you know what you are doing.
+        """
+        raise NotImplementedError
+
+    def degree(self):
+        """
+        Return the "relative scale degree" (0-6) to which the interval points
+        (unison=0, 2nd=1, octave=0, 2nd down=6, etc.).
+        For pitches, return the integer that corresponds to the letter (C=0, D=1, ...).
+        """
+        raise NotImplementedError
+
+    def generic(self):
+        """
+        Return the generic interval, i.e. the number of diatonic steps modulo octave.
+        Unlike degree(), the result respects the sign of the interval
+        (unison=0, 2nd up=1, 2nd down=-1).
+        For pitches, use degree().
+        """
+        raise NotImplementedError
+
+    def diatonic_steps(self):
+        """
+        Return the diatonic steps of the interval (unison=0, 2nd=1, ..., octave=7).
+        Respects both direction and octaves.
+        """
+        raise NotImplementedError
+
+    def alteration(self):
+        """
+        Return the number of semitones by which the interval is altered from its the perfect or major variant.
+        Positive alteration always indicates augmentation,
+        negative alteration indicates diminution (minor or smaller) of the interval.
+        For pitches, return the accidentals (positive=sharps, negative=flats, 0=natural).
+        """
         raise NotImplementedError
 
 
@@ -579,17 +634,22 @@ class SpelledPitch(Spelled):
         assert isinstance(octaves, numbers.Integral)
         super().__init__(value=value, is_pitch=True, is_class=False)
 
-    def octave(self):
-        return self.value[0] + self.diatonic_steps_from_fifths(self.fifth_steps()) // 7
-
-    def fifth_steps(self):
-        return self.value[1]
-
     def to_class(self):
-        return self.PitchClass(self.fifth_steps())
+        return self.PitchClass(self.fifths())
 
     def name(self):
-        return f"{self.pitch_class_from_fifths(self.fifth_steps())}{self.octave()}"
+        return f"{self.pitch_class_from_fifths(self.fifths())}{self.octaves()}"
+
+    # spelled interface
+    
+    def fifths(self):
+        return self.value[1]
+
+    def octaves(self):
+        return self.value[0] + self.diatonic_steps_from_fifths(self.fifths()) // 7
+
+    def internal_octaves(self):
+        return self.value[0]
 
 
 @Spelled.link_interval_type()
@@ -615,20 +675,11 @@ class SpelledInterval(Spelled):
             value = np.array([octaves, fifths])
         super().__init__(value=value, is_pitch=False, is_class=False)
 
-    def diatonic_steps(self):
-        return self.diatonic_steps_from_fifths(self.fifth_steps())
-
-    def octave(self):
-        return self.value[0] + self.diatonic_steps() // 7
-
-    def fifth_steps(self):
-        return self.value[1]
-
     def sign(self):
-        if self.octave() < 0:
+        if self.octaves() < 0:
             # if the octave is strictly positive the sign is positive
             return -1
-        elif self.octave() > 0:
+        elif self.octaves() > 0:
             # if the octave is strictly negative the sign is negative
             return 1
         else:
@@ -637,10 +688,10 @@ class SpelledInterval(Spelled):
                 # for anything other than unisons the sign is positive
                 return 1
             else:
-                if self.fifth_steps() == 0:
+                if self.fifths() == 0:
                     # for a perfect unison the sign is zero (neutral element of addition)
                     return 0
-                elif self.fifth_steps() < 0:
+                elif self.fifths() < 0:
                     # for diminished unisons the sign is negative
                     return -1
                 else:
@@ -651,7 +702,7 @@ class SpelledInterval(Spelled):
         return self.IntervalClass(self.value[1])
 
     def name(self):
-        octave = abs(self.octave())
+        octave = abs(self.octaves())
         if self.sign() == -1:
             # negative intervals are to be printed with "-" sign
             sign = "-"
@@ -667,7 +718,21 @@ class SpelledInterval(Spelled):
         else:
             sign = ""
             inverse = False
-        return sign + self.interval_class_from_fifths(self.fifth_steps(), inverse=inverse) + f":{octave}"
+        return sign + self.interval_class_from_fifths(self.fifths(), inverse=inverse) + f":{octave}"
+
+    # spelled interface
+    
+    def fifths(self):
+        return self.value[1]
+
+    def octaves(self):
+        return self.value[0] + self.diatonic_steps() // 7
+
+    def internal_octaves(self):
+        return self.value[0]
+
+    def diatonic_steps(self):
+        return self.diatonic_steps_from_fifths(self.fifths())
 
 
 @Spelled.link_pitch_class_type()
@@ -681,11 +746,19 @@ class SpelledPitchClass(Spelled):
         assert isinstance(fifths, numbers.Integral)
         super().__init__(value=fifths, is_pitch=True, is_class=True)
 
-    def fifth_steps(self):
+    def name(self):
+        return self.pitch_class_from_fifths(self.fifths())
+
+    # spelled interface
+    
+    def fifths(self):
         return self.value
 
-    def name(self):
-        return self.pitch_class_from_fifths(self.fifth_steps())
+    def octaves(self):
+        return 0
+
+    def internal_octaves(self):
+        return 0
 
 
 @Spelled.link_interval_class_type()
@@ -703,16 +776,21 @@ class SpelledIntervalClass(Spelled):
         assert isinstance(fifths, numbers.Integral)
         super().__init__(value=fifths, is_pitch=False, is_class=True)
 
-    def fifth_steps(self):
-        return self.value
-
     def name(self, inverse=False):
         if inverse:
             sign = "-"
         else:
             sign = ""
-        return sign + self.interval_class_from_fifths(self.fifth_steps(), inverse=inverse)
+        return sign + self.interval_class_from_fifths(self.fifths(), inverse=inverse)
 
+    def fifths(self):
+        return self.value
+
+    def octaves(self):
+        return 0
+
+    def internal_octaves(self):
+        return 0
 
 class Enharmonic(AbstractBase):
 
@@ -797,7 +875,7 @@ class Enharmonic(AbstractBase):
     def name(self, *args, **kwargs):
         raise NotImplementedError
 
-    def octave(self):
+    def octaves(self):
         return self.value // 12 - 1
 
     def freq(self):
@@ -817,7 +895,7 @@ class EnharmonicPitch(Enharmonic):
             flat_sharp = self._print_flat_sharp
         if as_int:
             return str(self.value)
-        return self.pitch_class_name_from_midi(self.value, flat_sharp=flat_sharp) + str(self.octave())
+        return self.pitch_class_name_from_midi(self.value, flat_sharp=flat_sharp) + str(self.octaves())
 
     @property
     def midi(self):

@@ -64,7 +64,7 @@ class TestSpelled(TestCase):
                 # check string representation is correct
                 self.assertEqual(str(pp), p)
                 # check fifths steps are corrects
-                self.assertEqual(pp.fifth_steps(), idx - 26)
+                self.assertEqual(pp.fifths(), idx - 26)
             # create interval (class) objects
             for idx, (interval_class_str,
                       inverse_interval_class_str) in enumerate(zip(self.line_of_intervals,
@@ -113,7 +113,7 @@ class TestSpelled(TestCase):
                     # the inverse name corresponds to the inverse input
                     self.assertEqual(inverse_interval_class_str, interval.name(inverse=True))
                     self.assertEqual(inverse_interval_class_str, inverse_interval.name(inverse=True))
-                self.assertEqual(interval.fifth_steps(), idx - 26)
+                self.assertEqual(interval.fifths(), idx - 26)
 
     def test_arithmetics(self):
         for p, i in zip(self.line_of_fifths, self.line_of_intervals):
@@ -167,4 +167,4 @@ class TestSpelled(TestCase):
         # name and fifths not implemented in base class
         s = Spelled("x", True, True)
         self.assertRaises(NotImplementedError, lambda: s.name())
-        self.assertRaises(NotImplementedError, lambda: s.fifth_steps())
+        self.assertRaises(NotImplementedError, lambda: s.fifths())
