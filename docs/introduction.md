@@ -30,17 +30,17 @@ They can be added, subtracted, negated, and multiplied with integers.
 Pitches, on the other hand, can be seen as points in this space and are represented as intervals
 in relation to an (implicit) origin.
 
-Interval types (here denoted as `I`) define the following operations:
+Intervals. (here denoted as `i`) support the following operations:
 
-- `I + I`
-- `I - I`
-- `-I`
-- `I * Integer`
-- `Integer * I`
-- `sign(I)`
-- `abs(I)`
+- `i + i`
+- `i - i`
+- `-i`
+- `i * int`
+- `int * i`
+- `i.direction()`
+- `i.abs()`
 
-The sign indicates the logical direction of the interval by musical convention
+`direction` indicates the logical direction of the interval by musical convention
 (upward = positive, downward = negative),
 even if the interval space is multi-dimensional.
 Consequently, `abs` ensures that an interval is neutral or upward-directed.
@@ -48,45 +48,46 @@ For interval classes (which are generally undirected),
 the sign indicates the direction of the "shortest" class member:
 
 ```
-julia> sign(i"P4")
+>>> SpelledIntervalClass("P4").direction()
 1
 
-julia> sign(i"P5") # == -i"P4"
+julia> SpelledIntervalClass("P5") # == -"P4"
 -1
 ```
 
 In addition to arithmetic operations, some special intervals are defined:
 
-- `unison(Type{I})` / `zero(Type{I})`
-- `octave(Type{I})`
-- `chromsemi(Type{I})` (a chromatic semitone, optional)
-- `isstep(I)` (optional, a predicate that test whether the interval is considered a "step")
+- `I.unison()`
+- `I.octave()`
+- `I.chromatic_semitone()` (a chromatic semitone, optional)
+- `i.is_step()` (optional, a predicate that test whether the interval is considered a "step")
 
 Finally, some operations specify the relationship between intervals and interval classes:
 
-- `ic(I)`: Returns the corresponding interval class.
-- `embed(IC [, octs::Int])`: Returns a canonical embedding of an interval class into interval space.
-- `intervaltype(Type{IC}) = I`
-- `intervalclasstype(Type{I}) = IC`
+- `i.ic()`: Returns the corresponding interval class.
+- `i.embed()`: Returns a canonical embedding of an interval class into interval space.
 
 Pitch operations generally interact with intervals
 (and can be derived from the interval operations):
 
-- `P + I -> P`
-- `I + P -> P`
-- `P - I -> P`
-- `P - P -> I`
-- `pc(P) -> PC`
-- `embed(PC [, octaves]) -> P`
+- `p + i -> p`
+- `i + p -> p`
+- `p - i -> p`
+- `p - p -> i`
+- `p.pc() -> pc`
+- `pc.embed() -> p`
 
 Besides the specific functions of the interface,
 pitch and interval types generally implement basic functions such as
 
-- `isless`
-- `isequal`
-- `hash`
-- `show` (usually also specialized for `Pitch{I}`)
+**TODO: pythonify**
+
+- equality
+- comparison
+- hashing
+- printing in standard notation
 
 Note that the ordering of pitches is generally not unique,
 so `isless` uses an appropriate convention for each interval type.
-
+If you need musically valid comparisons,
+use semantic methods such as `direction()` as appropriate to your use case.
