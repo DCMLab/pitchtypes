@@ -84,7 +84,7 @@ class TestEnharmonic(TestCase):
             pitch = EnharmonicPitch(f"C{i}")
             self.assertEqual(pitch.octave(), i)
             interval = pitch - EnharmonicPitch("C4")
-            self.assertEqual(interval.octave(), i - 4)
+            self.assertEqual(interval.octaves(), i - 4)
 
     def test_convert_to_logfreq(self):
         self.assertRaises(NotImplementedError, lambda: Enharmonic("C", True, True).convert_to_logfreq())
