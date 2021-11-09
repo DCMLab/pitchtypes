@@ -636,7 +636,7 @@ class Spelled(AbstractBase):
         Return the diatonic steps of the interval (unison=0, 2nd=1, ..., octave=7, ...).
         Respects both direction and octaves.
         """
-        return self.fifths() * 4 + self.octaves() * 7
+        return NotImplementedError
 
     def alteration(self):
         """
@@ -688,8 +688,14 @@ class SpelledPitch(Spelled):
         else:
             return self.degree()
 
+    def diatonic_steps(self):
+        return (self.fifths() * 4) + (self.internal_octaves() * 7)
+
     def alteration(self):
         return (self.fifths() + 1) // 7
+
+    def letter(self):
+        return chr(ord('A') + (self.degree() + 2) % 7)
 
 
 @Spelled.link_interval_type()
@@ -715,29 +721,41 @@ class SpelledInterval(Spelled):
             value = np.array([octaves, fifths])
         super().__init__(value=value, is_pitch=False, is_class=False)
 
-    #TODO: fix this
     def sign(self):
-        if self.octaves() < 0:
-            # if the octave is strictly positive the sign is positive
+        ds = self.diatonic_steps()
+        if ds == 0:
+            return 0
+        elif ds < 0:
             return -1
-        elif self.octaves() > 0:
-            # if the octave is strictly negative the sign is negative
-            return 1
         else:
-            # if the octave is zero the sign depends on the fifth steps
-            if self.diatonic_steps() % 7 != 0:
-                # for anything other than unisons the sign is positive
-                return 1
-            else:
-                if self.fifths() == 0:
-                    # for a perfect unison the sign is zero (neutral element of addition)
-                    return 0
-                elif self.fifths() < 0:
-                    # for diminished unisons the sign is negative
-                    return -1
-                else:
-                    # for augmented unisons the sign is positive
-                    return 1
+            return 1
+        # if self.octaves() < 0:
+        #     # if the octave is strictly positive the sign is positive
+        #     return -1
+        # elif self.octaves() > 0:
+        #     # if the octave is strictly negative the sign is negative
+        #     return 1
+        # else:
+        #     # if the octave is zero the sign depends on the fifth steps
+        #     if self.diatonic_steps() % 7 != 0:
+        #         # for anything other than unisons the sign is positive
+        #         return 1
+        #     else:
+        #         if self.fifths() == 0:
+        #             # for a perfect unison the sign is zero (neutral element of addition)
+        #             return 0
+        #         elif self.fifths() < 0:
+        #             # for diminished unisons the sign is negative
+        #             return -1
+        #         else:
+        #             # for augmented unisons the sign is positive
+        #             return 1
+
+    def abs(self):
+        if self.sign() < 0:
+            return -self
+        else:
+            return self
 
     def to_class(self):
         return self.IntervalClass(self.value[1])
@@ -778,6 +796,9 @@ class SpelledInterval(Spelled):
         else:
             return self.degree()
 
+    def diatonic_steps(self):
+        return (self.fifths() * 4) + (self.internal_octaves() * 7)
+
     def alteration(self):
         return (self.abs().fifths() + 1) // 7
 
@@ -795,6 +816,22 @@ class SpelledPitchClass(Spelled):
     def name(self):
         return self.pitch_class_from_fifths(self.fifths())
 
+
+    def sign(self):
+        ds = self.diatonic_steps()
+        if ds == 0:
+            return 0
+        elif ds > 4:
+            return -1
+        else:
+            return 1
+
+    def abs(self):
+        if self.sign() < 0:
+            return -self
+        else:
+            return self
+    
     # spelled interface
     
     def fifths(self):
@@ -809,8 +846,14 @@ class SpelledPitchClass(Spelled):
     def generic(self):
         return self.degree()
 
+    def diatonic_steps(self):
+        return self.degree()
+
     def alteration(self):
         return (self.fifths() + 1) // 7
+
+    def letter(self):
+        return chr(ord('A') + (self.degree() + 2) % 7)
 
 
 @Spelled.link_interval_class_type()
@@ -845,6 +888,9 @@ class SpelledIntervalClass(Spelled):
         return 0
 
     def generic(self):
+        return self.degree()
+
+    def diatonic_steps(self):
         return self.degree()
 
     def alteration(self):
