@@ -82,7 +82,7 @@ class TestEnharmonic(TestCase):
     def test_octave_and_freq(self):
         for i in range(-3, 10):
             pitch = EnharmonicPitch(f"C{i}")
-            self.assertEqual(pitch.octave(), i)
+            self.assertEqual(pitch.octaves(), i)
             interval = pitch - EnharmonicPitch("C4")
             self.assertEqual(interval.octaves(), i - 4)
 

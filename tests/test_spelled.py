@@ -58,9 +58,6 @@ class TestSpelled(TestCase):
                     # check conversion to enharmonic
                     self.assertEqual(pp.convert_to_enharmonic(), Enharmonic.PitchClass(p))
                     self.assertEqual(pp.convert_to(Enharmonic.PitchClass), Enharmonic.PitchClass(p))
-                    # check octaves / internal octaves
-                    self.assertRaises(AttributeError, lambda: pp.octaves())
-                    self.assertRaises(AttributeError, lambda: pp.internal_octaves())
                 else:
                     p += "4"
                     pp = SpelledPitch(p)
@@ -68,8 +65,8 @@ class TestSpelled(TestCase):
                     self.assertEqual(pp.convert_to_enharmonic(), Enharmonic.Pitch(p))
                     self.assertEqual(pp.convert_to(Enharmonic.Pitch), Enharmonic.Pitch(p))
                     # check octaves / internal octaves
-                    self.assertEqual(pp.octave(), pp.value[0] + pp.diatonic_steps() // 7)
-                    self.assertEqual(pp.internal_octave(), pp.value[0])
+                    self.assertEqual(pp.octaves(), pp.value[0] + (pp.fifths() * 4) // 7)
+                    self.assertEqual(pp.internal_octaves(), pp.value[0])
                 # check base type is set on object
                 self.assertEqual(pp._base_type, Spelled)
                 # check class property is correct
@@ -96,9 +93,6 @@ class TestSpelled(TestCase):
                                      Enharmonic.IntervalClass(interval_class_str))
                     self.assertEqual(interval.convert_to(Enharmonic.IntervalClass),
                                      Enharmonic.IntervalClass(interval_class_str))
-                    # check octaves / internal octaves
-                    self.assertRaises(AttributeError, lambda: interval.octaves())
-                    self.assertRaises(AttributeError, lambda: interval.internal_octaves())
                 else:
                     # add octave for non-class
                     interval_class_str += ":4"
@@ -207,7 +201,7 @@ class TestSpelled(TestCase):
         s = Spelled("x", True, True)
         self.assertRaises(NotImplementedError, lambda: s.name())
         self.assertRaises(NotImplementedError, lambda: s.fifths())
-        self.assertRaises(NotImplementedError, lambda: s.degree())
-        self.assertRaises(NotImplementedError, lambda: s.diatonic_steps())
-        self.assertRaises(NotImplementedError, lambda: s.alteration())
+        self.assertRaises(NotImplementedError, lambda: s.octaves())
+        self.assertRaises(NotImplementedError, lambda: s.internal_octaves())
         self.assertRaises(NotImplementedError, lambda: s.generic())
+        self.assertRaises(NotImplementedError, lambda: s.alteration())
