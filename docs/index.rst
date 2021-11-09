@@ -26,37 +26,38 @@ For other (and mostly compatible) implementations see:
 
 This library defines types for musical intervals and pitches
 as well as a generic interface for writing algorithms
-that work with different pitch and interval types::
+that work with different pitch and interval types:
 
-  import pitchtypes as pt
-  
-  # write a generic function
-  
-  def transposeby(pitches, interval):
-      return [pitch + interval for pitch in pitches]
-  
-  # use it with different pitch types
-  
-  # spelled pitches correspond to written notes in Western notation
-  spelled_pitches = [pt.SpelledPitch(p)
-                     for p in ["C4", "Eb4", "G#4"]]
-  print(transposeby(spelled_pitches, pt.SpelledInterval("m3:0"))
-  
-  # spelled pitch classes work the same but they ignore octaves
-  spelled_pitch_classes = [pt.SpelledPitchClass(p)
-                           for p in ["C", "Eb", "G#"]]
-  print(transposeby(spelled_pitches, pt.SpelledIntervalClass("m3"))
-  
-  # enharmonic pitches correspond to keys on the piano
-  enharmonic_pitches = [pt.EnharmonicPitch(p)
-                        for p in [60, 63, 68]]
-  print(transposeby(spelled_pitches, pt.EnharmonicInterval(3))
+.. testcode::
 
-Output::
+   import pitchtypes as pt
 
-  [Eb4, Gb4, B4]
-  [Eb, Gb, B]
-  [D#4, F#4, B4]
+   # write a generic function
+
+   def transposeby(pitches, interval):
+     return [pitch + interval for pitch in pitches]
+
+   # use it with different pitch types
+
+   # spelled pitches correspond to written notes in Western notation
+   spelled_pitches = [pt.SpelledPitch(p) for p in ["C4", "Eb4", "G#4"]]
+   print(transposeby(spelled_pitches, pt.SpelledInterval("m3:0")))
+
+   # spelled pitch classes work the same but they ignore octaves
+   spelled_pitch_classes = [pt.SpelledPitchClass(p) for p in ["C", "Eb", "G#"]]
+   print(transposeby(spelled_pitch_classes, pt.SpelledIntervalClass("m3")))
+
+   # enharmonic pitches correspond to keys on the piano
+   enharmonic_pitches = [pt.EnharmonicPitch(p) for p in [60, 63, 68]]
+   print(transposeby(enharmonic_pitches, pt.EnharmonicInterval(3)))
+
+Output:
+
+.. testoutput::
+
+   [Eb4, Gb4, B4]
+   [Eb, Gb, B]
+   [D#4, F#4, B4]
 
 To get started, install this library via pip::
 
