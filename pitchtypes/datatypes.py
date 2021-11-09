@@ -365,7 +365,7 @@ class Spelled(AbstractBase):
 
     _pitch_regex = re.compile("^(?P<class>[A-G])(?P<modifiers>(b*)|(#*))(?P<octave>(-?[0-9]+)?)$")
     _interval_regex = re.compile("^(?P<sign>[-+])?("
-                                 "(?P<quality0>p)(?P<generic0>[145])|"          # perfect intervals
+                                 "(?P<quality0>P)(?P<generic0>[145])|"          # perfect intervals
                                  "(?P<quality1>|(M)|(m))(?P<generic1>[2367])|"  # imperfect intervals
                                  "(?P<quality2>(a+)|(d+))(?P<generic2>[1-7])"   # augmeted/diminished intervals
                                  ")(?P<octave>(:[0-9]+)?)$")
@@ -429,7 +429,7 @@ class Spelled(AbstractBase):
         # initialise value with generic interval classes
         fifth_steps = Spelled.fifths_from_generic_interval_class(generic)
         # add modifiers
-        if quality in ["p", "M"]:
+        if quality in ["P", "M"]:
             pass
         elif quality == "m":
             fifth_steps -= 7
@@ -476,7 +476,7 @@ class Spelled(AbstractBase):
         :return: interval quality (M, m, p, a, d, aa, dd, aaa, ddd etc)
         """
         if -5 <= fifth_steps <= 5:
-            quality = ['m', 'm', 'm', 'm', 'p', 'p', 'p', 'M', 'M', 'M', 'M'][fifth_steps + 5]
+            quality = ['m', 'm', 'm', 'm', 'P', 'P', 'P', 'M', 'M', 'M', 'M'][fifth_steps + 5]
         elif fifth_steps > 5:
             quality = 'a' * ((fifth_steps + 1) // 7)
         else:

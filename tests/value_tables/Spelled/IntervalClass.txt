@@ -23,9 +23,9 @@ m2	m2	M7
 m6	m6	M3
 m3	m3	M6
 m7	m7	M2
-p4	p4	p5
-p1	p1	p1
-p5	p5	p4
+P4	P4	P5
+P1	P1	P1
+P5	P5	P4
 M2	M2	m7
 M6	M6	m3
 M3	M3	m6
@@ -76,9 +76,9 @@ aaa7	aaa7	ddd2
 -m6	M3	m6
 -m3	M6	m3
 -m7	M2	m7
--p4	p5	p4
--p1	p1	p1
--p5	p4	p5
+-P4	P5	P4
+-P1	P1	P1
+-P5	P4	P5
 -M2	m7	M2
 -M6	m3	M6
 -M3	m6	M3

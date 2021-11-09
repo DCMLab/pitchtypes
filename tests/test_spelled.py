@@ -20,7 +20,7 @@ class TestSpelled(TestCase):
         "ddd4", "ddd1", "ddd5", "dd2", "dd6", "dd3", "dd7",
         "dd4", "dd1", "dd5", "d2", "d6", "d3", "d7",
         "d4", "d1", "d5", "m2", "m6", "m3", "m7",
-        "p4", "p1", "p5", "M2", "M6", "M3", "M7",
+        "P4", "P1", "P5", "M2", "M6", "M3", "M7",
         "a4", "a1", "a5", "a2", "a6", "a3", "a7",
         "aa4", "aa1", "aa5", "aa2", "aa6", "aa3", "aa7",
         "aaa4", "aaa1", "aaa5", "aaa2", "aaa6", "aaa3", "aaa7"
@@ -109,7 +109,7 @@ class TestSpelled(TestCase):
                     # so they also print the same
                     self.assertEqual(interval_class_str, inverse_interval.name())
                     # and subtracting gives a perfect unison p1
-                    self.assertEqual(SpelledIntervalClass("p1"), interval - inverse_interval)
+                    self.assertEqual(SpelledIntervalClass("P1"), interval - inverse_interval)
                     # the inverse name corresponds to the inverse input
                     self.assertEqual(inverse_interval_class_str, interval.name(inverse=True))
                     self.assertEqual(inverse_interval_class_str, inverse_interval.name(inverse=True))
@@ -137,9 +137,9 @@ class TestSpelled(TestCase):
     def test_from_fifths_functions(self):
         print(SpelledInterval("ddd2:4"))
         print(SpelledInterval("-aaa7:4"))
-        for fifths, diatonic, interval_class, inverse_interval_class in [(-1, -4, 'p4', 'p5'),
-                                                                         (0, 0, 'p1', 'p1'),
-                                                                         (1, 4, 'p5', 'p4'),
+        for fifths, diatonic, interval_class, inverse_interval_class in [(-1, -4, 'P4', 'P5'),
+                                                                         (0, 0, 'P1', 'P1'),
+                                                                         (1, 4, 'P5', 'P4'),
                                                                          (2, 8, 'M2', 'm7'),
                                                                          (3, 12, 'M6', 'm3'),
                                                                          (4, 16, 'M3', 'm6'),
