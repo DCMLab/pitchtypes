@@ -381,6 +381,10 @@ class Spelled(AbstractBase):
         """
         if not isinstance(s, str):
             raise TypeError(f"expected string as input, got {s}")
+        # convert unicode flats and sharps (♭ -> b and ♯ -> #)
+        s = s.replace("♭", "b")
+        s = s.replace("♯", "#")
+        # match with regex
         pitch_match = Spelled._pitch_regex.match(s)
         if pitch_match is None:
             raise ValueError(f"could not match '{s}' with regex: '{Spelled._pitch_regex.pattern}'")

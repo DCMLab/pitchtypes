@@ -15,6 +15,17 @@ class TestSpelled(TestCase):
         "F###", "C###", "G###", "D###", "A###", "E###", "B###",
     ]
 
+    line_of_fifths_unicode = [
+        "D♭♭♭♭", "A♭♭♭♭", "E♭♭♭♭", "B♭♭♭♭",
+        "F♭♭♭", "C♭♭♭", "G♭♭♭", "D♭♭♭", "A♭♭♭", "E♭♭♭", "B♭♭♭",
+        "F♭♭", "C♭♭", "G♭♭", "D♭♭", "A♭♭", "E♭♭", "B♭♭",
+        "F♭", "C♭", "G♭", "D♭", "A♭", "E♭", "B♭",
+        "F", "C", "G", "D", "A", "E", "B",
+        "F♯", "C♯", "G♯", "D♯", "A♯", "E♯", "B♯",
+        "F♯♯", "C♯♯", "G♯♯", "D♯♯", "A♯♯", "E♯♯", "B♯♯",
+        "F♯♯♯", "C♯♯♯", "G♯♯♯", "D♯♯♯", "A♯♯♯", "E♯♯♯", "B♯♯♯",
+    ]
+
     line_of_intervals = [
         "ddd2", "ddd6", "ddd3", "ddd7",
         "ddd4", "ddd1", "ddd5", "dd2", "dd6", "dd3", "dd7",
@@ -122,17 +133,18 @@ class TestSpelled(TestCase):
         self.assertRaises(ValueError, lambda: SpelledIntervalClass("M5"))  # there is no minor fifth
 
     def test_arithmetics(self):
-        for p, i in zip(self.line_of_fifths, self.line_of_intervals):
+        for p, p_unicode, i in zip(self.line_of_fifths, self.line_of_fifths_unicode, self.line_of_intervals):
             p = SpelledPitchClass(p)
+            self.assertEqual(p, SpelledPitchClass(p_unicode))
             i = SpelledIntervalClass("+" + i)
             ref = SpelledPitchClass("C")
             delta = p - ref
             self.assertEqual(delta, i)
             self.assertEqual(ref + delta, p)
-            p1 = SpelledPitch("C#4")
-            p2 = SpelledPitch("Gb5")
-            self.assertRaises(TypeError, lambda: p1 + p2)
-            self.assertRaises(TypeError, lambda: SpelledPitchClass("G") - SpelledPitch("G4"))
+        p1 = SpelledPitch("C#4")
+        p2 = SpelledPitch("Gb5")
+        self.assertRaises(TypeError, lambda: p1 + p2)
+        self.assertRaises(TypeError, lambda: SpelledPitchClass("G") - SpelledPitch("G4"))
 
     def test_from_fifths_functions(self):
         print(SpelledInterval("ddd2:4"))
