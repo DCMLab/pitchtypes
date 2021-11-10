@@ -233,12 +233,16 @@ class TestSpelled(TestCase):
         self.assertEqual(SpelledPitch("Ebb5").octaves(),  5)
         self.assertEqual(SpelledPitch("Ebb5").fifths(),  -10)
         self.assertEqual(SpelledPitch("Ebb5").degree(),  2)
+        self.assertEqual(SpelledPitch("Ebb5").generic(),  2)
+        self.assertEqual(SpelledPitch("Ebb5").diatonic_steps(), 37)
         self.assertEqual(SpelledPitch("Ebb5").alteration(),  -2)
         self.assertEqual(SpelledPitch("Ebb5").letter(),  'E')
         
         self.assertEqual(SpelledPitchClass("F#").octaves(), 0)
         self.assertEqual(SpelledPitchClass("F#").fifths(), 6)
         self.assertEqual(SpelledPitchClass("F#").degree(), 3)
+        self.assertEqual(SpelledPitchClass("F#").generic(), 3)
+        self.assertEqual(SpelledPitchClass("F#").diatonic_steps(), 3)
         self.assertEqual(SpelledPitchClass("F#").alteration(), 1)
         self.assertEqual(SpelledPitchClass("F#").letter(), 'F')
         
@@ -257,3 +261,4 @@ class TestSpelled(TestCase):
         self.assertEqual(SpelledPitchClass("B").alteration(),  0)
         self.assertEqual(SpelledPitch("Cb-1").alteration(), -1)
         self.assertEqual(SpelledPitch("C#-1").alteration(), 1)
+        self.assertEqual(SpelledPitch("D-1").degree(), 1)
