@@ -64,8 +64,9 @@ class TestSpelled(TestCase):
                     self.assertEqual(pp, pp.pc())
                     # test string representation
                     self.assertEqual(str(pp), p)
-                    # test embed()
+                    # test embed(), internal_octaves()
                     self.assertEqual(str(pp) + "0", str(pp.embed()))
+                    self.assertEqual(pp.internal_octaves(), 0)
                 else:
                     for oct in range(-3, 10):
                         p_oct = p + str(oct)
@@ -114,10 +115,11 @@ class TestSpelled(TestCase):
                                      Enharmonic.IntervalClass(interval_class_str))
                     # test class conversion
                     self.assertEqual(interval, interval.ic())
-                    # test unison(), octave(), embed()
-                    self.assertEqual(SpelledInterval.unison(), SpelledInterval("P1:0"))
-                    self.assertEqual(SpelledInterval.octave(), SpelledInterval("P1:1"))
+                    # test unison(), octave(), embed(), internal_octaves(), direction(), abs()
+                    self.assertEqual(SpelledIntervalClass.unison(), SpelledIntervalClass("P1"))
+                    self.assertEqual(SpelledIntervalClass.octave(), SpelledIntervalClass("P1"))
                     self.assertEqual(str(interval) + ":0", str(interval.embed()))
+                    self.assertEqual(interval.internal_octaves(), 0)
                     # test print output
                     self.assertEqual(interval_class_str, str(interval))
                     self.assertEqual(interval_class_str, interval.name())
@@ -143,7 +145,9 @@ class TestSpelled(TestCase):
                         # test class conversion
                         self.assertEqual(interval.to_class(), SpelledIntervalClass(interval_class_str))
                         self.assertEqual(interval.ic(), SpelledIntervalClass(interval_class_str))
-                        # test embed()
+                        # test unison(), octave(), embed()
+                        self.assertEqual(SpelledInterval.unison(), SpelledInterval("P1:0"))
+                        self.assertEqual(SpelledInterval.octave(), SpelledInterval("P1:1"))
                         self.assertEqual(interval, interval.embed())
                         # test print output
                         self.assertEqual(interval_str, str(interval))
