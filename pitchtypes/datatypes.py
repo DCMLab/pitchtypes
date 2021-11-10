@@ -819,10 +819,7 @@ class SpelledPitch(Spelled, Pitch):
         return self.value[0]
 
     def generic(self):
-        if self.direction() < 0:
-            return -(-self).degree()
-        else:
-            return self.degree()
+        return self.degree()
 
     def diatonic_steps(self):
         return (self.fifths() * 4) + (self.internal_octaves() * 7)
