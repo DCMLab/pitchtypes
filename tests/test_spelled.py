@@ -275,7 +275,9 @@ class TestSpelled(TestCase):
         self.assertEqual(SpelledIntervalClass("P1").direction(), 0)
         self.assertEqual(SpelledIntervalClass("d1").direction(), 0)
         self.assertEqual(SpelledIntervalClass("a1").direction(), 0)
-        self.assertEqual(SpelledIntervalClass("-m3").direction(), -1)
+        self.assertEqual(SpelledIntervalClass("d1").direction(), 0)
+        self.assertEqual(SpelledIntervalClass("aaaaa4").direction(), 1)
+        self.assertEqual(SpelledIntervalClass("ddddd5").direction(), -1)
         self.assertEqual(SpelledIntervalClass("-m3").abs(), SpelledIntervalClass("m3"))
         self.assertEqual(SpelledIntervalClass("m3").abs(), SpelledIntervalClass("m3"))
 
