@@ -137,7 +137,7 @@ Spelled Interval and Pitch
 .. autoclass:: pitchtypes.SpelledInterval(string)
    :members: from_fifths_and_octaves,
              direction, abs,
-             unison, chromatic_semitone, is_step,
+             unison, octave, chromatic_semitone, is_step,
              fifths, octaves, internal_octaves,
              degree, generic, diatonic_steps, alteration,
              ic, embed
@@ -154,7 +154,7 @@ Spelled Interval and Pitch Class
 .. autoclass:: pitchtypes.SpelledIntervalClass(string)
    :members: from_fifths,
              direction, abs,
-             unison, chromatic_semitone, is_step,
+             unison, octave, chromatic_semitone, is_step,
              fifths, octaves, internal_octaves,
              degree, generic, diatonic_steps, alteration,
              ic, embed
