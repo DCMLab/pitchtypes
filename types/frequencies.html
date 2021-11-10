@@ -1,95 +1,43 @@
-
 <!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
-    <title>Log-Frequency Pitch &#8212; pitchtypes  documentation</title>
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/doctools.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Log-Frequency Pitch &mdash; pitchtypes  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="prev" title="Enharmonic Pitch" href="enharmonic.html" />
-   
-  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+    <link rel="next" title="Harmonic Pitch" href="harmonic.html" />
+    <link rel="prev" title="Enharmonic Pitch" href="enharmonic.html" /> 
+</head>
 
-  </head><body>
-  
-
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          
-
-          <div class="body" role="main">
-            
-  <section id="log-frequency-pitch">
-<h1>Log-Frequency Pitch<a class="headerlink" href="#log-frequency-pitch" title="Permalink to this headline">¶</a></h1>
-<p><strong>TODO: adapt to python</strong></p>
-<section id="overview">
-<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
-<p>Pitches and intervals can also be expressed
-as physical frequencies and freqency ratios, respectively.
-We provide wrappers around <cite>Float64</cite> that represent log frequencies and log freqency ratios,
-and perform arithmetic with and without octave equivalence.
-There are two versions of each constructor depending on whether you provide log or non-log values.
-All values are printed as non-log.
-Pitch and interval classes are printed in brackets to indicate that they are representatives of an equivalence class.</p>
-<p><a href="#id1"><span class="problematic" id="id2">``</span></a>`
-julia&gt; freqi(3/2)
-fr1.5</p>
-<p>julia&gt; logfreqi(log(3/2))
-fr1.5</p>
-<p>julia&gt; freqic(3/2)
-fr[1.5]</p>
-<p>julia&gt; freqp(441)
-441.0Hz</p>
-<p>julia&gt; freqpc(441)
-[1.7226562500000004]Hz
-<a href="#id3"><span class="problematic" id="id4">``</span></a><a href="#id5"><span class="problematic" id="id6">`</span></a></p>
-<p>Because of the use of floats, rounding errors can occur:</p>
-<p><code class="docutils literal notranslate"><span class="pre">`</span>
-<span class="pre">julia&gt;</span> <span class="pre">freqp(440)</span>
-<span class="pre">439.99999999999983Hz</span>
-<span class="pre">`</span></code></p>
-<p>You can use Julia’s builtin method <cite>isapprox</cite>/<cite>≈</cite> to test for approximate equality:</p>
-<p><code class="docutils literal notranslate"><span class="pre">`</span>
-<span class="pre">julia&gt;</span> <span class="pre">freqp(220)</span> <span class="pre">+</span> <span class="pre">freqi(2)</span> <span class="pre">≈</span> <span class="pre">freqp(440)</span>
-<span class="pre">true</span>
-<span class="pre">`</span></code></p>
-</section>
-<section id="reference">
-<h2>Reference<a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h2>
-</section>
-</section>
-
-
-          </div>
-          
-        </div>
-      </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="../index.html">pitchtypes</a></h1>
-
-
-
-
-
-
-
-
-<h3>Navigation</h3>
-<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> pitchtypes
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../introduction.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="spelled.html">Spelled Pitch</a></li>
@@ -99,52 +47,155 @@ fr[1.5]</p>
 <li class="toctree-l2"><a class="reference internal" href="#reference">Reference</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="harmonic.html">Harmonic Pitch</a></li>
 </ul>
-
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="../index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="enharmonic.html" title="previous chapter">Enharmonic Pitch</a></li>
-  </ul></li>
-</ul>
-</div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script>$('#searchbox').show(0);</script>
-
-
-
-
-
-
-
 
         </div>
       </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      &copy;2021, Robert Lieck, Christoph Finkensiep, DCML.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.2.0</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
-      
-      |
-      <a href="../_sources/types/frequencies.rst.txt"
-          rel="nofollow">Page source</a>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pitchtypes</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Log-Frequency Pitch</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/types/frequencies.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="log-frequency-pitch">
+<h1>Log-Frequency Pitch<a class="headerlink" href="#log-frequency-pitch" title="Permalink to this headline"></a></h1>
+<p><strong>Note: This type is functional and tested, but it does not yet conform to
+the general API and the documentation is still incomplete.</strong></p>
+<p><strong>TODO: examples from Julia implementation, adapt to python</strong></p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline"></a></h2>
+<p>Pitches and intervals can also be expressed
+as physical frequencies and freqency ratios, respectively.
+We provide wrappers around <cite>Float64</cite> that represent log frequencies and log freqency ratios,
+and perform arithmetic with and without octave equivalence.
+There are two versions of each constructor depending on whether you provide log or non-log values.
+All values are printed as non-log.
+Pitch and interval classes are printed in brackets to indicate that they are representatives of an equivalence class.</p>
+<blockquote>
+<div><p>julia&gt; freqi(3/2)
+fr1.5</p>
+<p>julia&gt; logfreqi(log(3/2))
+fr1.5</p>
+<p>julia&gt; freqic(3/2)
+fr[1.5]</p>
+<p>julia&gt; freqp(441)
+441.0Hz</p>
+<p>julia&gt; freqpc(441)
+[1.7226562500000004]Hz</p>
+</div></blockquote>
+<p>Because of the use of floats, rounding errors can occur:</p>
+<blockquote>
+<div><p>julia&gt; freqp(440)
+439.99999999999983Hz</p>
+</div></blockquote>
+<p>You can use Julia’s builtin method <cite>isapprox</cite>/<cite>≈</cite> to test for approximate equality:</p>
+<blockquote>
+<div><p>julia&gt; freqp(220) + freqi(2) ≈ freqp(440)
+true</p>
+</div></blockquote>
+</section>
+<section id="reference">
+<h2>Reference<a class="headerlink" href="#reference" title="Permalink to this headline"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pitchtypes.LogFreq">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pitchtypes.</span></span><span class="sig-name descname"><span class="pre">LogFreq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_pitch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_class</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_log</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.LogFreq" title="Permalink to this definition"></a></dt>
+<dd><p>Represents a pitches and intervals in continuous frequency space with the frequency value stored in log
+representation.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pitchtypes.LogFreq.Interval">
+<span class="sig-name descname"><span class="pre">Interval</span></span><a class="headerlink" href="#pitchtypes.LogFreq.Interval" title="Permalink to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="#pitchtypes.LogFreqInterval" title="pitchtypes.datatypes.LogFreqInterval"><code class="xref py py-class docutils literal notranslate"><span class="pre">pitchtypes.datatypes.LogFreqInterval</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pitchtypes.LogFreq.IntervalClass">
+<span class="sig-name descname"><span class="pre">IntervalClass</span></span><a class="headerlink" href="#pitchtypes.LogFreq.IntervalClass" title="Permalink to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="#pitchtypes.LogFreqIntervalClass" title="pitchtypes.datatypes.LogFreqIntervalClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">pitchtypes.datatypes.LogFreqIntervalClass</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pitchtypes.LogFreq.Pitch">
+<span class="sig-name descname"><span class="pre">Pitch</span></span><a class="headerlink" href="#pitchtypes.LogFreq.Pitch" title="Permalink to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="#pitchtypes.LogFreqPitch" title="pitchtypes.datatypes.LogFreqPitch"><code class="xref py py-class docutils literal notranslate"><span class="pre">pitchtypes.datatypes.LogFreqPitch</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pitchtypes.LogFreq.PitchClass">
+<span class="sig-name descname"><span class="pre">PitchClass</span></span><a class="headerlink" href="#pitchtypes.LogFreq.PitchClass" title="Permalink to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="#pitchtypes.LogFreqPitchClass" title="pitchtypes.datatypes.LogFreqPitchClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">pitchtypes.datatypes.LogFreqPitchClass</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pitchtypes.LogFreqPitch">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pitchtypes.</span></span><span class="sig-name descname"><span class="pre">LogFreqPitch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_freq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.LogFreqPitch" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pitchtypes.LogFreqInterval">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pitchtypes.</span></span><span class="sig-name descname"><span class="pre">LogFreqInterval</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_ratio</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.LogFreqInterval" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pitchtypes.LogFreqPitchClass">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pitchtypes.</span></span><span class="sig-name descname"><span class="pre">LogFreqPitchClass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_freq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.LogFreqPitchClass" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pitchtypes.LogFreqIntervalClass">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pitchtypes.</span></span><span class="sig-name descname"><span class="pre">LogFreqIntervalClass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_ratio</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.LogFreqIntervalClass" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="enharmonic.html" class="btn btn-neutral float-left" title="Enharmonic Pitch" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="harmonic.html" class="btn btn-neutral float-right" title="Harmonic Pitch" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
-    
+  <hr/>
 
-    
-  </body>
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Robert Lieck, Christoph Finkensiep, DCML.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
 </html>

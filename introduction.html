@@ -1,102 +1,145 @@
-
 <!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
-    <title>Overview &#8212; pitchtypes  documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
-    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/doctools.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Overview &mdash; pitchtypes  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Spelled Pitch" href="types/spelled.html" />
-    <link rel="prev" title="Welcome to pitchtypes’s documentation!" href="index.html" />
-   
-  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+    <link rel="prev" title="Welcome to pitchtypes’s documentation!" href="index.html" /> 
+</head>
 
-  </head><body>
-  
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> pitchtypes
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#generic-operations">Generic Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#reference">Reference</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#intervals">Intervals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pitches">Pitches</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="types/spelled.html">Spelled Pitch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="types/enharmonic.html">Enharmonic Pitch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="types/frequencies.html">Log-Frequency Pitch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="types/harmonic.html">Harmonic Pitch</a></li>
+</ul>
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          
+        </div>
+      </div>
+    </nav>
 
-          <div class="body" role="main">
-            
-  <section class="tex2jax_ignore mathjax_ignore" id="overview">
-<h1>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h1>
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pitchtypes</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Overview</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/introduction.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="overview">
+<h1>Overview<a class="headerlink" href="#overview" title="Permalink to this headline"></a></h1>
 <p>The idea behind this library is that the central object is the <em>interval</em>.
 Pitches are derived from intervals by interpreting them with respect to a reference point.
 This is much like the relation between vectors (= intervals) and points (= pitches).
 For example, the pitch <code class="docutils literal notranslate"><span class="pre">E♭4</span></code> can be represented as an interval (e.g. a minor third, <code class="docutils literal notranslate"><span class="pre">m3:0</span></code>)
 above a reference pitch such as Middle C (<code class="docutils literal notranslate"><span class="pre">C4</span></code>).
-Intervals and Pitches come in families of four variants:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">*Interval</span></code> represents a normal interval</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">*Pitch</span></code> represents a normal pitch</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">*IntervalClass</span></code> represents an interval with octave equivalence</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">*PitchClass</span></code> represents a pitch with octave equivalence</p></li>
-</ul>
+Intervals and Pitches come in families of four variants:
+* <code class="docutils literal notranslate"><span class="pre">*Interval</span></code> represents a normal interval
+* <code class="docutils literal notranslate"><span class="pre">*Pitch</span></code> represents a normal pitch
+* <code class="docutils literal notranslate"><span class="pre">*IntervalClass</span></code> represents an interval with octave equivalence
+* <code class="docutils literal notranslate"><span class="pre">*PitchClass</span></code> represents a pitch with octave equivalence</p>
 <p>Similar to vectors and points, intervals and pitches support a number of operations
 such as addition and scalar multiplication.</p>
 <p>The following representations of intervals and pitches are implemented so far:</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="types/spelled.html"><span class="doc std std-doc">spelled</span></a>: based on Western notation</p></li>
-<li><p><a class="reference internal" href="types/enharmonic.html"><span class="doc std std-doc">enharmonic</span></a>: based on the chromatic 12-tone system</p></li>
-<li><p><a class="reference internal" href="types/frequencies.html"><span class="doc std std-doc">frequency</span></a>: based on the frequency of a sound wave</p></li>
+<li><p>[spelled](types/spelled): based on Western notation</p></li>
+<li><p>[enharmonic](types/enharmonic): based on the chromatic 12-tone system</p></li>
+<li><p>[frequency](types/frequencies): based on the frequency of a sound wave</p></li>
 </ul>
 <section id="generic-operations">
-<h2>Generic Operations<a class="headerlink" href="#generic-operations" title="Permalink to this headline">¶</a></h2>
-<p><strong>TODO: check that implementation is complete and fix names!</strong></p>
+<h2>Generic Operations<a class="headerlink" href="#generic-operations" title="Permalink to this headline"></a></h2>
 <p>The operations of the generic interface are based on intervals as the fundamental elements.
 Intervals can be thought of as vectors in a vector space (or more precisely: a module over integers).
 They can be added, subtracted, negated, and multiplied with integers.
 Pitches, on the other hand, can be seen as points in this space and are represented as intervals
 in relation to an (implicit) origin.</p>
-<p>Intervals. (here denoted as <code class="docutils literal notranslate"><span class="pre">i</span></code>) support the following operations:</p>
+<p>Intervals. (here denoted as <cite>i</cite>) support the following operations:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">i</span> <span class="pre">+</span> <span class="pre">i</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">i</span> <span class="pre">-</span> <span class="pre">i</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">-i</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">i</span> <span class="pre">*</span> <span class="pre">int</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">*</span> <span class="pre">i</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">i.direction()</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">i.abs()</span></code></p></li>
+<li><p><a class="reference internal" href="#pitchtypes.Interval.direction" title="pitchtypes.Interval.direction"><code class="xref py py-meth docutils literal notranslate"><span class="pre">i.direction()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#pitchtypes.Interval.abs" title="pitchtypes.Interval.abs"><code class="xref py py-meth docutils literal notranslate"><span class="pre">i.abs()</span></code></a></p></li>
 </ul>
-<p><code class="docutils literal notranslate"><span class="pre">direction</span></code> indicates the logical direction of the interval by musical convention
+<p><a class="reference internal" href="#pitchtypes.Interval.direction" title="pitchtypes.Interval.direction"><code class="xref py py-meth docutils literal notranslate"><span class="pre">i.direction()</span></code></a>
+indicates the logical direction of the interval by musical convention
 (upward = positive, downward = negative),
 even if the interval space is multi-dimensional.
-Consequently, <code class="docutils literal notranslate"><span class="pre">abs</span></code> ensures that an interval is neutral or upward-directed.
+Consequently, <a class="reference internal" href="#pitchtypes.Interval.abs" title="pitchtypes.Interval.abs"><code class="xref py py-meth docutils literal notranslate"><span class="pre">i.abs()</span></code></a>
+ensures that an interval is neutral or upward-directed.
 For interval classes (which are generally undirected),
 the sign indicates the direction of the “shortest” class member:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">SpelledIntervalClass</span><span class="p">(</span><span class="s2">&quot;P4&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">direction</span><span class="p">()</span>
+<div class="highlight-pycon3 notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">SpelledIntervalClass</span><span class="p">(</span><span class="s2">&quot;P4&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">direction</span><span class="p">()</span>
 <span class="go">1</span>
-
-<span class="go">julia&gt; SpelledIntervalClass(&quot;P5&quot;) # == -&quot;P4&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">SpelledIntervalClass</span><span class="p">(</span><span class="s2">&quot;P5&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">direction</span><span class="p">()</span> <span class="c1"># == -&quot;P4&quot;</span>
 <span class="go">-1</span>
 </pre></div>
 </div>
 <p>In addition to arithmetic operations, some special intervals are defined:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">I.unison()</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">I.octave()</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">I.chromatic_semitone()</span></code> (a chromatic semitone, optional)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">i.is_step()</span></code> (optional, a predicate that test whether the interval is considered a “step”)</p></li>
+<li><p><a class="reference internal" href="#pitchtypes.Interval.unison" title="pitchtypes.Interval.unison"><code class="xref py py-meth docutils literal notranslate"><span class="pre">I.unison()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#pitchtypes.Interval.octave" title="pitchtypes.Interval.octave"><code class="xref py py-meth docutils literal notranslate"><span class="pre">I.octave()</span></code></a></p></li>
+<li><p><a class="reference internal" href="#pitchtypes.Chromatic.chromatic_semitone" title="pitchtypes.Chromatic.chromatic_semitone"><code class="xref py py-meth docutils literal notranslate"><span class="pre">I.chromatic_semitone()</span></code></a> (a chromatic semitone, optional)</p></li>
+<li><p><a class="reference internal" href="#pitchtypes.Diatonic.is_step" title="pitchtypes.Diatonic.is_step"><code class="xref py py-meth docutils literal notranslate"><span class="pre">i.is_step()</span></code></a> (optional, a predicate that test whether the interval is considered a “step”)</p></li>
 </ul>
 <p>Finally, some operations specify the relationship between intervals and interval classes:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">i.ic()</span></code>: Returns the corresponding interval class.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">i.embed()</span></code>: Returns a canonical embedding of an interval class into interval space.</p></li>
+<li><p><a class="reference internal" href="#pitchtypes.Interval.unison" title="pitchtypes.Interval.unison"><code class="xref py py-meth docutils literal notranslate"><span class="pre">i.ic()</span></code></a>: Returns the corresponding interval class.</p></li>
+<li><p><a class="reference internal" href="#pitchtypes.Interval.embed" title="pitchtypes.Interval.embed"><code class="xref py py-meth docutils literal notranslate"><span class="pre">i.embed()</span></code></a>: Returns a canonical embedding of an interval class into interval space.</p></li>
 </ul>
 <p>Pitch operations generally interact with intervals
 (and can be derived from the interval operations):</p>
@@ -105,12 +148,11 @@ the sign indicates the direction of the “shortest” class member:</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">i</span> <span class="pre">+</span> <span class="pre">p</span> <span class="pre">-&gt;</span> <span class="pre">p</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">p</span> <span class="pre">-</span> <span class="pre">i</span> <span class="pre">-&gt;</span> <span class="pre">p</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">p</span> <span class="pre">-</span> <span class="pre">p</span> <span class="pre">-&gt;</span> <span class="pre">i</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">p.pc()</span> <span class="pre">-&gt;</span> <span class="pre">pc</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">pc.embed()</span> <span class="pre">-&gt;</span> <span class="pre">p</span></code></p></li>
+<li><p><a class="reference internal" href="#pitchtypes.Pitch.pc" title="pitchtypes.Pitch.pc"><code class="xref py py-meth docutils literal notranslate"><span class="pre">p.pc()</span> <span class="pre">-&gt;</span> <span class="pre">pc</span></code></a></p></li>
+<li><p><a class="reference internal" href="#pitchtypes.Pitch.embed" title="pitchtypes.Pitch.embed"><code class="xref py py-meth docutils literal notranslate"><span class="pre">pc.embed()</span> <span class="pre">-&gt;</span> <span class="pre">p</span></code></a></p></li>
 </ul>
 <p>Besides the specific functions of the interface,
 pitch and interval types generally implement basic functions such as</p>
-<p><strong>TODO: pythonify</strong></p>
 <ul class="simple">
 <li><p>equality</p></li>
 <li><p>comparison</p></li>
@@ -120,83 +162,150 @@ pitch and interval types generally implement basic functions such as</p>
 <p>Note that the ordering of pitches is generally not unique,
 so comparison uses an appropriate convention for each interval type.
 If you need musically valid comparisons,
-use semantic methods such as <code class="docutils literal notranslate"><span class="pre">direction()</span></code> as appropriate to your use case.</p>
+use semantic methods such as <a class="reference internal" href="#pitchtypes.Interval.direction" title="pitchtypes.Interval.direction"><code class="xref py py-meth docutils literal notranslate"><span class="pre">direction()</span></code></a> as appropriate to your use case.</p>
+</section>
+<section id="reference">
+<h2>Reference<a class="headerlink" href="#reference" title="Permalink to this headline"></a></h2>
+<section id="intervals">
+<h3>Intervals<a class="headerlink" href="#intervals" title="Permalink to this headline"></a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="pitchtypes.Interval">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pitchtypes.</span></span><span class="sig-name descname"><span class="pre">Interval</span></span><a class="headerlink" href="#pitchtypes.Interval" title="Permalink to this definition"></a></dt>
+<dd><p>The basic interface implemented by every interval (and interval class) type.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.Interval.abs">
+<span class="sig-name descname"><span class="pre">abs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.Interval.abs" title="Permalink to this definition"></a></dt>
+<dd><p>For downward intervals, return their upward counterpart, otherwise just return the interval itself.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.Interval.direction">
+<span class="sig-name descname"><span class="pre">direction</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.Interval.direction" title="Permalink to this definition"></a></dt>
+<dd><p>Return the direction of the interval:
+1 for up, -1 for down and 0 for neutral.
+Different types may have different conventions for the direction of an interval.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.Interval.embed">
+<span class="sig-name descname"><span class="pre">embed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.Interval.embed" title="Permalink to this definition"></a></dt>
+<dd><p>For interval classes, return an embedding into the interval space in a (type-dependent) default octave.
+For non-class intervals, return the interval itself.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.Interval.ic">
+<span class="sig-name descname"><span class="pre">ic</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.Interval.ic" title="Permalink to this definition"></a></dt>
+<dd><p>Return the interval class that corresponds to this interval.
+If the interval is already an interval class, it is returned itself.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.Interval.octave">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">octave</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.Interval.octave" title="Permalink to this definition"></a></dt>
+<dd><p>Return the octave interval of this type.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.Interval.to_class">
+<span class="sig-name descname"><span class="pre">to_class</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.Interval.to_class" title="Permalink to this definition"></a></dt>
+<dd><p>Alias for ic(), but also supported by pitch types.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.Interval.unison">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">unison</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.Interval.unison" title="Permalink to this definition"></a></dt>
+<dd><p>Return the unison interval of this type.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pitchtypes.Chromatic">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pitchtypes.</span></span><span class="sig-name descname"><span class="pre">Chromatic</span></span><a class="headerlink" href="#pitchtypes.Chromatic" title="Permalink to this definition"></a></dt>
+<dd><p>Some intervals have the notion of a chromatic semitone and implement this interface.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.Chromatic.chromatic_semitone">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">chromatic_semitone</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.Chromatic.chromatic_semitone" title="Permalink to this definition"></a></dt>
+<dd><p>Return a chromatic semitone (augmented unison) of this type.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pitchtypes.Diatonic">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pitchtypes.</span></span><span class="sig-name descname"><span class="pre">Diatonic</span></span><a class="headerlink" href="#pitchtypes.Diatonic" title="Permalink to this definition"></a></dt>
+<dd><p>Some intervals have a notion of a diatonic step and implement this interface.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.Diatonic.is_step">
+<span class="sig-name descname"><span class="pre">is_step</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.Diatonic.is_step" title="Permalink to this definition"></a></dt>
+<dd><p>Return True if the interval is considered a step, False otherwise.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="pitches">
+<h3>Pitches<a class="headerlink" href="#pitches" title="Permalink to this headline"></a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="pitchtypes.Pitch">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pitchtypes.</span></span><span class="sig-name descname"><span class="pre">Pitch</span></span><a class="headerlink" href="#pitchtypes.Pitch" title="Permalink to this definition"></a></dt>
+<dd><p>The basic interface that is implemented by every pitch (and pitch class) type.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.Pitch.embed">
+<span class="sig-name descname"><span class="pre">embed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.Pitch.embed" title="Permalink to this definition"></a></dt>
+<dd><p>For a pitch class, returns the corresponding pitch in a (type-dependent) default octave.
+For non-class pitches, returns the pitch itself.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.Pitch.pc">
+<span class="sig-name descname"><span class="pre">pc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.Pitch.pc" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the pitch class corresponding to the pitch.
+For pitch classes, it returns the pitch class itself.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.Pitch.to_class">
+<span class="sig-name descname"><span class="pre">to_class</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.Pitch.to_class" title="Permalink to this definition"></a></dt>
+<dd><p>Alias for pc(), but also supported by interval types.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
 </section>
 </section>
 
 
+           </div>
           </div>
-          
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to pitchtypes’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="types/spelled.html" class="btn btn-neutral float-right" title="Spelled Pitch" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Robert Lieck, Christoph Finkensiep, DCML.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="index.html">pitchtypes</a></h1>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
 
-
-
-
-
-
-
-
-<h3>Navigation</h3>
-<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Overview</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#generic-operations">Generic Operations</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="types/spelled.html">Spelled Pitch</a></li>
-<li class="toctree-l1"><a class="reference internal" href="types/enharmonic.html">Enharmonic Pitch</a></li>
-<li class="toctree-l1"><a class="reference internal" href="types/frequencies.html">Log-Frequency Pitch</a></li>
-</ul>
-
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="index.html" title="previous chapter">Welcome to pitchtypes’s documentation!</a></li>
-      <li>Next: <a href="types/spelled.html" title="next chapter">Spelled Pitch</a></li>
-  </ul></li>
-</ul>
-</div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script>$('#searchbox').show(0);</script>
-
-
-
-
-
-
-
-
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      &copy;2021, Robert Lieck, Christoph Finkensiep, DCML.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.2.0</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
-      
-      |
-      <a href="_sources/introduction.md.txt"
-          rel="nofollow">Page source</a>
-    </div>
-
-    
-
-    
-  </body>
+</body>
 </html>

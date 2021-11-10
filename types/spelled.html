@@ -1,43 +1,93 @@
-
 <!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
-    <title>Spelled Pitch &#8212; pitchtypes  documentation</title>
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/doctools.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Spelled Pitch &mdash; pitchtypes  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Enharmonic Pitch" href="enharmonic.html" />
-    <link rel="prev" title="Overview" href="../introduction.html" />
-   
-  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+    <link rel="prev" title="Overview" href="../introduction.html" /> 
+</head>
 
-  </head><body>
-  
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> pitchtypes
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Overview</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Spelled Pitch</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#working-with-spelled-intervals">Working with Spelled Intervals</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#fifths-and-octaves">Fifths and Octaves</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#diatonic-steps-and-alterations">Diatonic Steps and Alterations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#reference">Reference</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#general-interface">General Interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#spelled-interval-and-pitch">Spelled Interval and Pitch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#spelled-interval-and-pitch-class">Spelled Interval and Pitch Class</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="enharmonic.html">Enharmonic Pitch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="frequencies.html">Log-Frequency Pitch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="harmonic.html">Harmonic Pitch</a></li>
+</ul>
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          
+        </div>
+      </div>
+    </nav>
 
-          <div class="body" role="main">
-            
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pitchtypes</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Spelled Pitch</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/types/spelled.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
   <section id="spelled-pitch">
-<h1>Spelled Pitch<a class="headerlink" href="#spelled-pitch" title="Permalink to this headline">¶</a></h1>
-<p><strong>TODO: adapt to python version</strong></p>
+<h1>Spelled Pitch<a class="headerlink" href="#spelled-pitch" title="Permalink to this headline"></a></h1>
 <section id="overview">
-<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline"></a></h2>
 <p>Spelled pitches and intervals are the standard types of the Western music notation system.
 Unlike MIDI pitches, spelled pitches distinguish between enharmonically equivalent pitches
 such as <code class="docutils literal notranslate"><span class="pre">E♭</span></code> and <code class="docutils literal notranslate"><span class="pre">D♯</span></code>.
@@ -49,7 +99,8 @@ on a string representation of a pitch or interval.
 Spelled pitch classes are represented by an uppercase letter followed by zero or more accidentals,
 which can be either written as <code class="docutils literal notranslate"><span class="pre">b/#</span></code> or as <code class="docutils literal notranslate"><span class="pre">♭/♯</span></code>.
 Spelled pitches take an additional octave number after the letter and the accidentals.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">SpelledPitchClass</span><span class="p">(</span><span class="s2">&quot;Eb&quot;</span><span class="p">)</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pitchtypes</span> <span class="k">import</span> <span class="o">*</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">SpelledPitchClass</span><span class="p">(</span><span class="s2">&quot;Eb&quot;</span><span class="p">)</span>
 <span class="go">Eb</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">SpelledPitch</span><span class="p">(</span><span class="s2">&quot;Eb4&quot;</span><span class="p">)</span>
 <span class="go">Eb4</span>
@@ -106,9 +157,9 @@ so a downward interval is represented by its complementary upward interval:</p>
 </div>
 </section>
 <section id="working-with-spelled-intervals">
-<h2>Working with Spelled Intervals<a class="headerlink" href="#working-with-spelled-intervals" title="Permalink to this headline">¶</a></h2>
+<h2>Working with Spelled Intervals<a class="headerlink" href="#working-with-spelled-intervals" title="Permalink to this headline"></a></h2>
 <section id="fifths-and-octaves">
-<h3>Fifths and Octaves<a class="headerlink" href="#fifths-and-octaves" title="Permalink to this headline">¶</a></h3>
+<h3>Fifths and Octaves<a class="headerlink" href="#fifths-and-octaves" title="Permalink to this headline"></a></h3>
 <p>Internally, spelled intervals are represented by, 5ths and octaves.
 Both dimensions are logically dependent:
 a major 2nd up is represented by going two 5ths up and one octave down.</p>
@@ -123,28 +174,30 @@ does <em>not</em> correspond to the internal octaves of the interval (-1 in this
 In the notation, the interval class (<code class="docutils literal notranslate"><span class="pre">M2</span></code>) and the octave (<code class="docutils literal notranslate"><span class="pre">:0</span></code>) are <em>independent</em>.</p>
 <p>Interpreting the “internal” (or dependent) octave dimension of the interval
 does not make much sense without looking at the fifths.
-Therefore, the function <code class="xref py py-meth docutils literal notranslate"><span class="pre">octaves</span></code> returns the “external” (or independent) octaves
+Therefore, the function <a class="reference internal" href="#pitchtypes.Spelled.octaves" title="pitchtypes.Spelled.octaves"><code class="xref py py-meth docutils literal notranslate"><span class="pre">octaves</span></code></a> returns the “external” (or independent) octaves
 as used in the string representation, e.g.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">SpelledInterval</span><span class="p">(</span><span class="s2">&quot;M2:0&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">octaves</span><span class="p">()</span>
 <span class="go">0</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">SpelledInterval</span><span class="p">(</span><span class="s2">&quot;M2:1&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">octaves</span><span class="p">()</span>
 <span class="go">1</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">SpelledInterva</span><span class="p">(</span><span class="s2">&quot;M2:-1&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">octaves</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">SpelledInterval</span><span class="p">(</span><span class="s2">&quot;-M2:0&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">octaves</span><span class="p">()</span>
 <span class="go">-1</span>
 </pre></div>
 </div>
-<p>If you want to look at the internal octaves, use <code class="xref py py-meth docutils literal notranslate"><span class="pre">internal_octaves</span></code>.</p>
+<p>If you want to look at the internal octaves, use <code class="xref py py-meth docutils literal notranslate"><span class="pre">internal_octave</span></code>
+or <a class="reference internal" href="#pitchtypes.SpelledInterval.internal_octaves" title="pitchtypes.SpelledInterval.internal_octaves"><code class="xref py py-meth docutils literal notranslate"><span class="pre">internal_octaves</span></code></a> for <a class="reference internal" href="#pitchtypes.SpelledPitch" title="pitchtypes.SpelledPitch"><code class="xref py py-class docutils literal notranslate"><span class="pre">SpelledPitch</span></code></a> and
+<a class="reference internal" href="#pitchtypes.SpelledInterval" title="pitchtypes.SpelledInterval"><code class="xref py py-class docutils literal notranslate"><span class="pre">SpelledInterval</span></code></a>, respectively.</p>
 </section>
 <section id="diatonic-steps-and-alterations">
-<h3>Diatonic Steps and Alterations<a class="headerlink" href="#diatonic-steps-and-alterations" title="Permalink to this headline">¶</a></h3>
+<h3>Diatonic Steps and Alterations<a class="headerlink" href="#diatonic-steps-and-alterations" title="Permalink to this headline"></a></h3>
 <p>We provide a number of convenience functions to derive other properties from this representation.
-The generic interval (i.e. the number of diatonic steps) can be obtained using <code class="xref py py-meth docutils literal notranslate"><span class="pre">generic</span></code>.
+The generic interval (i.e. the number of diatonic steps) can be obtained using <a class="reference internal" href="#pitchtypes.Spelled.generic" title="pitchtypes.Spelled.generic"><code class="xref py py-meth docutils literal notranslate"><span class="pre">generic</span></code></a>.
 <code class="docutils literal notranslate"><span class="pre">generic</span></code> respects the direction of the interval but is limitied to a single octave (0 to ±6).
-If you need the total number of diatonic steps, including octaves, use <code class="xref py py-meth docutils literal notranslate"><span class="pre">diatonic_steps</span></code>.
-The method <code class="xref py py-meth docutils literal notranslate"><span class="pre">degree</span></code> returns the scale degree implied by the interval relative to some root.
+If you need the total number of diatonic steps, including octaves, use <a class="reference internal" href="#pitchtypes.Spelled.diatonic_steps" title="pitchtypes.Spelled.diatonic_steps"><code class="xref py py-meth docutils literal notranslate"><span class="pre">diatonic_steps</span></code></a>.
+The method <a class="reference internal" href="#pitchtypes.Spelled.degree" title="pitchtypes.Spelled.degree"><code class="xref py py-meth docutils literal notranslate"><span class="pre">degree</span></code></a> returns the scale degree implied by the interval relative to some root.
 Since scale degrees are always above the root,
 <code class="docutils literal notranslate"><span class="pre">degree</span></code> treats negative intervals like their positive complements:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">SpelledInterva</span><span class="p">(</span><span class="s2">&quot;-M3:1&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">generic</span><span class="p">()</span> <span class="c1"># some kind of 3rd down</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">SpelledInterval</span><span class="p">(</span><span class="s2">&quot;-M3:1&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">generic</span><span class="p">()</span> <span class="c1"># some kind of 3rd down</span>
 <span class="go">-2</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">SpelledInterval</span><span class="p">(</span><span class="s2">&quot;-M3:1&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">diatonic_steps</span><span class="p">()</span> <span class="c1"># a 10th down</span>
 <span class="go">-9</span>
@@ -155,111 +208,477 @@ Since scale degrees are always above the root,
 <p>For interval classes, all three functions are equivalent.
 Note that all three count from 0 (for unison/I), not 1.</p>
 <p>Complementary to the generic interval methods,
-<code class="xref py py-meth docutils literal notranslate"><span class="pre">alteration</span></code> returns the specific quality of the interval.
+<a class="reference internal" href="#pitchtypes.Spelled.alteration" title="pitchtypes.Spelled.alteration"><code class="xref py py-meth docutils literal notranslate"><span class="pre">alteration</span></code></a> returns the specific quality of the interval.
 For perfect or major intervals, it returns <code class="docutils literal notranslate"><span class="pre">0</span></code>.
 Larger absolute intervals return positive values,
 smaller intervals return negative values.</p>
-<p><code class="xref py py-meth docutils literal notranslate"><span class="pre">degree</span></code> and <code class="xref py py-meth docutils literal notranslate"><span class="pre">alteration</span></code> also work on pitches.
+<p><a class="reference internal" href="#pitchtypes.Spelled.degree" title="pitchtypes.Spelled.degree"><code class="xref py py-meth docutils literal notranslate"><span class="pre">degree</span></code></a> and <a class="reference internal" href="#pitchtypes.Spelled.alteration" title="pitchtypes.Spelled.alteration"><code class="xref py py-meth docutils literal notranslate"><span class="pre">alteration</span></code></a> also work on pitches.
 <code class="docutils literal notranslate"><span class="pre">degree(p)</span></code> returns an integer corresponding to the letter (C=0, D=1, …),
 while <code class="docutils literal notranslate"><span class="pre">alteration(p)</span></code> provides the accidentals (natural=0, sharps -&gt; positive, flats -&gt; negative).
 For convenience, <code class="xref py py-meth docutils literal notranslate"><span class="pre">letter</span></code> returns the letter as an uppercase character.</p>
 </section>
 </section>
 <section id="reference">
-<h2>Reference<a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h2>
+<h2>Reference<a class="headerlink" href="#reference" title="Permalink to this headline"></a></h2>
+<section id="general-interface">
+<h3>General Interface<a class="headerlink" href="#general-interface" title="Permalink to this headline"></a></h3>
 <dl class="py class">
 <dt class="sig sig-object py" id="pitchtypes.Spelled">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pitchtypes.</span></span><span class="sig-name descname"><span class="pre">Spelled</span></span><a class="headerlink" href="#pitchtypes.Spelled" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pitchtypes.</span></span><span class="sig-name descname"><span class="pre">Spelled</span></span><a class="headerlink" href="#pitchtypes.Spelled" title="Permalink to this definition"></a></dt>
+<dd><p>A common base class for spelled pitch and interval types.
+See below for a set of common operations.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.Spelled.alteration">
+<span class="sig-name descname"><span class="pre">alteration</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.Spelled.alteration" title="Permalink to this definition"></a></dt>
+<dd><p>Return the number of semitones by which the interval is altered from its the perfect or major variant.
+Positive alteration always indicates augmentation,
+negative alteration indicates diminution (minor or smaller) of the interval.
+For pitches, return the accidentals (positive=sharps, negative=flats, 0=natural).</p>
+</dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.Spelled.degree">
+<span class="sig-name descname"><span class="pre">degree</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.Spelled.degree" title="Permalink to this definition"></a></dt>
+<dd><p>Return the “relative scale degree” (0-6) to which the interval points
+(unison=0, 2nd=1, octave=0, 2nd down=6, etc.).
+For pitches, return the integer that corresponds to the letter (C=0, D=1, …).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.Spelled.diatonic_steps">
+<span class="sig-name descname"><span class="pre">diatonic_steps</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.Spelled.diatonic_steps" title="Permalink to this definition"></a></dt>
+<dd><p>Return the diatonic steps of the interval (unison=0, 2nd=1, …, octave=7, …).
+Respects both direction and octaves.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.Spelled.fifths">
+<span class="sig-name descname"><span class="pre">fifths</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.Spelled.fifths" title="Permalink to this definition"></a></dt>
+<dd><p>Return the position of the interval on the line of fifths.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.Spelled.generic">
+<span class="sig-name descname"><span class="pre">generic</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.Spelled.generic" title="Permalink to this definition"></a></dt>
+<dd><p>Return the generic interval, i.e. the number of diatonic steps modulo octave.
+Unlike degree(), the result respects the sign of the interval
+(unison=0, 2nd up=1, 2nd down=-1).
+For pitches, use degree().</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.Spelled.internal_octaves">
+<span class="sig-name descname"><span class="pre">internal_octaves</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.Spelled.internal_octaves" title="Permalink to this definition"></a></dt>
+<dd><p>Return the internal octave representation of a pitch,
+which is dependent on the fifths.</p>
+<p>Only use this if you know what you are doing.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.Spelled.octaves">
+<span class="sig-name descname"><span class="pre">octaves</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.Spelled.octaves" title="Permalink to this definition"></a></dt>
+<dd><p>For intervals, return the number of octaves the interval spans.
+Negative intervals start with -1, decreasing.
+For pitches, return the absolute octave of the pitch.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="spelled-interval-and-pitch">
+<h3>Spelled Interval and Pitch<a class="headerlink" href="#spelled-interval-and-pitch" title="Permalink to this headline"></a></h3>
 <dl class="py class">
 <dt class="sig sig-object py" id="pitchtypes.SpelledInterval">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pitchtypes.</span></span><span class="sig-name descname"><span class="pre">SpelledInterval</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledInterval" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pitchtypes.</span></span><span class="sig-name descname"><span class="pre">SpelledInterval</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledInterval" title="Permalink to this definition"></a></dt>
+<dd><p>Represents a spelled interval.</p>
+<p>The constructor takes a string consisting of the form
+-?&lt;quality&gt;&lt;generic-size&gt;:&lt;octaves&gt;,
+e.g. “M6:0”, “-m3:0”, or “aa2:1”,
+which stand for a major sixth, a minor third down, and a double-augmented ninth, respectively.
+possible qualities are d (diminished), m (minor), M (major), P (perfect), and a (augmented),
+where d and a can be repeated.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.SpelledInterval.abs">
+<span class="sig-name descname"><span class="pre">abs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledInterval.abs" title="Permalink to this definition"></a></dt>
+<dd><p>For downward intervals, return their upward counterpart, otherwise just return the interval itself.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.SpelledInterval.alteration">
+<span class="sig-name descname"><span class="pre">alteration</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledInterval.alteration" title="Permalink to this definition"></a></dt>
+<dd><p>Return the number of semitones by which the interval is altered from its the perfect or major variant.
+Positive alteration always indicates augmentation,
+negative alteration indicates diminution (minor or smaller) of the interval.
+For pitches, return the accidentals (positive=sharps, negative=flats, 0=natural).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.SpelledInterval.chromatic_semitone">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">chromatic_semitone</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledInterval.chromatic_semitone" title="Permalink to this definition"></a></dt>
+<dd><p>Return a chromatic semitone (augmented unison) of this type.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.SpelledInterval.degree">
+<span class="sig-name descname"><span class="pre">degree</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledInterval.degree" title="Permalink to this definition"></a></dt>
+<dd><p>Return the “relative scale degree” (0-6) to which the interval points
+(unison=0, 2nd=1, octave=0, 2nd down=6, etc.).
+For pitches, return the integer that corresponds to the letter (C=0, D=1, …).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.SpelledInterval.diatonic_steps">
+<span class="sig-name descname"><span class="pre">diatonic_steps</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledInterval.diatonic_steps" title="Permalink to this definition"></a></dt>
+<dd><p>Return the diatonic steps of the interval (unison=0, 2nd=1, …, octave=7, …).
+Respects both direction and octaves.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.SpelledInterval.direction">
+<span class="sig-name descname"><span class="pre">direction</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledInterval.direction" title="Permalink to this definition"></a></dt>
+<dd><p>Return the direction of the interval (1=up / 0=neutral / -1=down).
+All unisons are considered neutral (including augmented and diminished unisons).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.SpelledInterval.embed">
+<span class="sig-name descname"><span class="pre">embed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledInterval.embed" title="Permalink to this definition"></a></dt>
+<dd><p>For interval classes, return an embedding into the interval space in a (type-dependent) default octave.
+For non-class intervals, return the interval itself.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.SpelledInterval.fifths">
+<span class="sig-name descname"><span class="pre">fifths</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledInterval.fifths" title="Permalink to this definition"></a></dt>
+<dd><p>Return the position of the interval on the line of fifths.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.SpelledInterval.from_fifths_and_octaves">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_fifths_and_octaves</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fifths</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">octaves</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledInterval.from_fifths_and_octaves" title="Permalink to this definition"></a></dt>
+<dd><p>Create an interval by directly providing its internal fifths and octaves.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.SpelledInterval.generic">
+<span class="sig-name descname"><span class="pre">generic</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledInterval.generic" title="Permalink to this definition"></a></dt>
+<dd><p>Return the generic interval, i.e. the number of diatonic steps modulo octave.
+Unlike degree(), the result respects the sign of the interval
+(unison=0, 2nd up=1, 2nd down=-1).
+For pitches, use degree().</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.SpelledInterval.ic">
+<span class="sig-name descname"><span class="pre">ic</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledInterval.ic" title="Permalink to this definition"></a></dt>
+<dd><p>Return the interval class that corresponds to this interval.
+If the interval is already an interval class, it is returned itself.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.SpelledInterval.internal_octaves">
+<span class="sig-name descname"><span class="pre">internal_octaves</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledInterval.internal_octaves" title="Permalink to this definition"></a></dt>
+<dd><p>Return the internal octave representation of a pitch,
+which is dependent on the fifths.</p>
+<p>Only use this if you know what you are doing.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.SpelledInterval.is_step">
+<span class="sig-name descname"><span class="pre">is_step</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledInterval.is_step" title="Permalink to this definition"></a></dt>
+<dd><p>Return True if the interval is considered a step, False otherwise.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.SpelledInterval.octaves">
+<span class="sig-name descname"><span class="pre">octaves</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledInterval.octaves" title="Permalink to this definition"></a></dt>
+<dd><p>For intervals, return the number of octaves the interval spans.
+Negative intervals start with -1, decreasing.
+For pitches, return the absolute octave of the pitch.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.SpelledInterval.unison">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">unison</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledInterval.unison" title="Permalink to this definition"></a></dt>
+<dd><p>Return a perfect unison (P1:0).</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pitchtypes.SpelledPitch">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pitchtypes.</span></span><span class="sig-name descname"><span class="pre">SpelledPitch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledPitch" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pitchtypes.</span></span><span class="sig-name descname"><span class="pre">SpelledPitch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledPitch" title="Permalink to this definition"></a></dt>
+<dd><p>Represents a spelled pitch.</p>
+<p>The constructor takes a string consisting of the form
+&lt;letter&gt;&lt;accidentals?&gt;&lt;octave&gt;, e.g. “C#4”, “E5”, or “Db-2”.
+Accidentals may be written as ASCII symbols (#/b)
+or with unicode symbols (♯/♭), but not mixed within the same note.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.SpelledPitch.alteration">
+<span class="sig-name descname"><span class="pre">alteration</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledPitch.alteration" title="Permalink to this definition"></a></dt>
+<dd><p>Return the number of semitones by which the interval is altered from its the perfect or major variant.
+Positive alteration always indicates augmentation,
+negative alteration indicates diminution (minor or smaller) of the interval.
+For pitches, return the accidentals (positive=sharps, negative=flats, 0=natural).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.SpelledPitch.degree">
+<span class="sig-name descname"><span class="pre">degree</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledPitch.degree" title="Permalink to this definition"></a></dt>
+<dd><p>Return the “relative scale degree” (0-6) to which the interval points
+(unison=0, 2nd=1, octave=0, 2nd down=6, etc.).
+For pitches, return the integer that corresponds to the letter (C=0, D=1, …).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.SpelledPitch.diatonic_steps">
+<span class="sig-name descname"><span class="pre">diatonic_steps</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledPitch.diatonic_steps" title="Permalink to this definition"></a></dt>
+<dd><p>Return the diatonic steps of the interval (unison=0, 2nd=1, …, octave=7, …).
+Respects both direction and octaves.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.SpelledPitch.embed">
+<span class="sig-name descname"><span class="pre">embed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledPitch.embed" title="Permalink to this definition"></a></dt>
+<dd><p>For a pitch class, returns the corresponding pitch in a (type-dependent) default octave.
+For non-class pitches, returns the pitch itself.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.SpelledPitch.fifths">
+<span class="sig-name descname"><span class="pre">fifths</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledPitch.fifths" title="Permalink to this definition"></a></dt>
+<dd><p>Return the position of the interval on the line of fifths.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.SpelledPitch.from_fifths_and_octaves">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_fifths_and_octaves</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fifths</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">octaves</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledPitch.from_fifths_and_octaves" title="Permalink to this definition"></a></dt>
+<dd><p>Create a pitch by directly providing its internal fifths and octaves.</p>
+<p>Each pitch is represented relative to C0
+by moving the specified number of fifths and octaves upwards
+(or downwards for negative values).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.SpelledPitch.generic">
+<span class="sig-name descname"><span class="pre">generic</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledPitch.generic" title="Permalink to this definition"></a></dt>
+<dd><p>Return the generic interval, i.e. the number of diatonic steps modulo octave.
+Unlike degree(), the result respects the sign of the interval
+(unison=0, 2nd up=1, 2nd down=-1).
+For pitches, use degree().</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.SpelledPitch.internal_octaves">
+<span class="sig-name descname"><span class="pre">internal_octaves</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledPitch.internal_octaves" title="Permalink to this definition"></a></dt>
+<dd><p>Return the internal octave representation of a pitch,
+which is dependent on the fifths.</p>
+<p>Only use this if you know what you are doing.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.SpelledPitch.octaves">
+<span class="sig-name descname"><span class="pre">octaves</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledPitch.octaves" title="Permalink to this definition"></a></dt>
+<dd><p>For intervals, return the number of octaves the interval spans.
+Negative intervals start with -1, decreasing.
+For pitches, return the absolute octave of the pitch.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.SpelledPitch.pc">
+<span class="sig-name descname"><span class="pre">pc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledPitch.pc" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the pitch class corresponding to the pitch.
+For pitch classes, it returns the pitch class itself.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="spelled-interval-and-pitch-class">
+<h3>Spelled Interval and Pitch Class<a class="headerlink" href="#spelled-interval-and-pitch-class" title="Permalink to this headline"></a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="pitchtypes.SpelledIntervalClass">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pitchtypes.</span></span><span class="sig-name descname"><span class="pre">SpelledIntervalClass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledIntervalClass" title="Permalink to this definition"></a></dt>
+<dd><p>Represents a spelled interval class, i.e. an interval without octave information.</p>
+<p>The constructor takes a string consisting of the form
+-?&lt;quality&gt;&lt;generic-size&gt;,
+e.g. “M6”, “-m3”, or “aa2”,
+which stand for a major sixth, a minor third down (= major sixth up), and a double-augmented second, respectively.
+possible qualities are d (diminished), m (minor), M (major), P (perfect), and a (augmented),
+where d and a can be repeated.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.SpelledIntervalClass.alteration">
+<span class="sig-name descname"><span class="pre">alteration</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledIntervalClass.alteration" title="Permalink to this definition"></a></dt>
+<dd><p>Return the number of semitones by which the interval is altered from its the perfect or major variant.
+Positive alteration always indicates augmentation,
+negative alteration indicates diminution (minor or smaller) of the interval.
+For pitches, return the accidentals (positive=sharps, negative=flats, 0=natural).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.SpelledIntervalClass.degree">
+<span class="sig-name descname"><span class="pre">degree</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledIntervalClass.degree" title="Permalink to this definition"></a></dt>
+<dd><p>Return the “relative scale degree” (0-6) to which the interval points
+(unison=0, 2nd=1, octave=0, 2nd down=6, etc.).
+For pitches, return the integer that corresponds to the letter (C=0, D=1, …).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.SpelledIntervalClass.diatonic_steps">
+<span class="sig-name descname"><span class="pre">diatonic_steps</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledIntervalClass.diatonic_steps" title="Permalink to this definition"></a></dt>
+<dd><p>Return the diatonic steps of the interval (unison=0, 2nd=1, …, octave=7, …).
+Respects both direction and octaves.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.SpelledIntervalClass.fifths">
+<span class="sig-name descname"><span class="pre">fifths</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledIntervalClass.fifths" title="Permalink to this definition"></a></dt>
+<dd><p>Return the position of the interval on the line of fifths.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.SpelledIntervalClass.from_fifths">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_fifths</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fifths</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledIntervalClass.from_fifths" title="Permalink to this definition"></a></dt>
+<dd><p>Create an interval class by directly providing its internal fifths.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.SpelledIntervalClass.generic">
+<span class="sig-name descname"><span class="pre">generic</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledIntervalClass.generic" title="Permalink to this definition"></a></dt>
+<dd><p>Return the generic interval, i.e. the number of diatonic steps modulo octave.
+Unlike degree(), the result respects the sign of the interval
+(unison=0, 2nd up=1, 2nd down=-1).
+For pitches, use degree().</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.SpelledIntervalClass.internal_octaves">
+<span class="sig-name descname"><span class="pre">internal_octaves</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledIntervalClass.internal_octaves" title="Permalink to this definition"></a></dt>
+<dd><p>Return the internal octave representation of a pitch,
+which is dependent on the fifths.</p>
+<p>Only use this if you know what you are doing.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.SpelledIntervalClass.octaves">
+<span class="sig-name descname"><span class="pre">octaves</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledIntervalClass.octaves" title="Permalink to this definition"></a></dt>
+<dd><p>For intervals, return the number of octaves the interval spans.
+Negative intervals start with -1, decreasing.
+For pitches, return the absolute octave of the pitch.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.SpelledIntervalClass.unison">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">unison</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledIntervalClass.unison" title="Permalink to this definition"></a></dt>
+<dd><p>Return a perfect unison (P1).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pitchtypes.SpelledPitchClass">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pitchtypes.</span></span><span class="sig-name descname"><span class="pre">SpelledPitchClass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledPitchClass" title="Permalink to this definition"></a></dt>
+<dd><p>Represents a spelled pitch class, i.e. a pitch without octave information.</p>
+<p>The constructor takes a string consisting of the form
+&lt;letter&gt;&lt;accidentals?&gt;, e.g. “C#”, “E”, or “Dbb”.
+Accidentals may be written as ASCII symbols (#/b)
+or with unicode symbols (♯/♭), but not mixed within the same note.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.SpelledPitchClass.alteration">
+<span class="sig-name descname"><span class="pre">alteration</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledPitchClass.alteration" title="Permalink to this definition"></a></dt>
+<dd><p>Return the number of semitones by which the interval is altered from its the perfect or major variant.
+Positive alteration always indicates augmentation,
+negative alteration indicates diminution (minor or smaller) of the interval.
+For pitches, return the accidentals (positive=sharps, negative=flats, 0=natural).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.SpelledPitchClass.degree">
+<span class="sig-name descname"><span class="pre">degree</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledPitchClass.degree" title="Permalink to this definition"></a></dt>
+<dd><p>Return the “relative scale degree” (0-6) to which the interval points
+(unison=0, 2nd=1, octave=0, 2nd down=6, etc.).
+For pitches, return the integer that corresponds to the letter (C=0, D=1, …).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.SpelledPitchClass.diatonic_steps">
+<span class="sig-name descname"><span class="pre">diatonic_steps</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledPitchClass.diatonic_steps" title="Permalink to this definition"></a></dt>
+<dd><p>Return the diatonic steps of the interval (unison=0, 2nd=1, …, octave=7, …).
+Respects both direction and octaves.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.SpelledPitchClass.fifths">
+<span class="sig-name descname"><span class="pre">fifths</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledPitchClass.fifths" title="Permalink to this definition"></a></dt>
+<dd><p>Return the position of the interval on the line of fifths.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.SpelledPitchClass.from_fifths">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_fifths</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fifths</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledPitchClass.from_fifths" title="Permalink to this definition"></a></dt>
+<dd><p>Create a pitch class by directly providing its position on the line of fifths (C=0, G=1, D=2, …).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.SpelledPitchClass.generic">
+<span class="sig-name descname"><span class="pre">generic</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledPitchClass.generic" title="Permalink to this definition"></a></dt>
+<dd><p>Return the generic interval, i.e. the number of diatonic steps modulo octave.
+Unlike degree(), the result respects the sign of the interval
+(unison=0, 2nd up=1, 2nd down=-1).
+For pitches, use degree().</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.SpelledPitchClass.internal_octaves">
+<span class="sig-name descname"><span class="pre">internal_octaves</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledPitchClass.internal_octaves" title="Permalink to this definition"></a></dt>
+<dd><p>Return the internal octave representation of a pitch,
+which is dependent on the fifths.</p>
+<p>Only use this if you know what you are doing.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.SpelledPitchClass.octaves">
+<span class="sig-name descname"><span class="pre">octaves</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledPitchClass.octaves" title="Permalink to this definition"></a></dt>
+<dd><p>For intervals, return the number of octaves the interval spans.
+Negative intervals start with -1, decreasing.
+For pitches, return the absolute octave of the pitch.</p>
+</dd></dl>
+
+</dd></dl>
 
 </section>
 </section>
+</section>
 
 
+           </div>
           </div>
-          
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../introduction.html" class="btn btn-neutral float-left" title="Overview" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="enharmonic.html" class="btn btn-neutral float-right" title="Enharmonic Pitch" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Robert Lieck, Christoph Finkensiep, DCML.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="../index.html">pitchtypes</a></h1>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
 
-
-
-
-
-
-
-
-<h3>Navigation</h3>
-<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Overview</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Spelled Pitch</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#working-with-spelled-intervals">Working with Spelled Intervals</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#reference">Reference</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="enharmonic.html">Enharmonic Pitch</a></li>
-<li class="toctree-l1"><a class="reference internal" href="frequencies.html">Log-Frequency Pitch</a></li>
-</ul>
-
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="../index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="../introduction.html" title="previous chapter">Overview</a></li>
-      <li>Next: <a href="enharmonic.html" title="next chapter">Enharmonic Pitch</a></li>
-  </ul></li>
-</ul>
-</div>
-<div id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</div>
-<script>$('#searchbox').show(0);</script>
-
-
-
-
-
-
-
-
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      &copy;2021, Robert Lieck, Christoph Finkensiep, DCML.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.2.0</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
-      
-      |
-      <a href="../_sources/types/spelled.rst.txt"
-          rel="nofollow">Page source</a>
-    </div>
-
-    
-
-    
-  </body>
+</body>
 </html>
