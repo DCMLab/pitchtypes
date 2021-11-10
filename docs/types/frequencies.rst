@@ -1,7 +1,10 @@
 Log-Frequency Pitch
 ===================
 
-**TODO: adapt to python**
+**Note: This type is functional and tested, but it does not yet conform to
+the general API and the documentation is still incomplete.**
+
+**TODO: examples from Julia implementation, adapt to python**
 
 Overview
 --------

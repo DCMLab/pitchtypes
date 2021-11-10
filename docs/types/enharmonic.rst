@@ -1,10 +1,11 @@
 Enharmonic Pitch
 ================
 
+**Note: This type is functional and tested, but it does not yet conform to
+the general API and the documentation is still incomplete.**
+
 Overview
 --------
-
-**TODO: fix notation**
 
 Enharmonic pitches and intervals are specified in 12-TET semitones, with 60 as Middle C, as in the MIDI standard.
 Both enharmonic pitches and intervals can be represented by integers,
