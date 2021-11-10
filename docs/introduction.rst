@@ -49,9 +49,15 @@ ensures that an interval is neutral or upward-directed.
 For interval classes (which are generally undirected),
 the sign indicates the direction of the "shortest" class member:
 
+.. testsetup::
+
+  from pitchtypes import SpelledIntervalClass
+
+.. doctest::
+
   >>> SpelledIntervalClass("P4").direction()
   1
-  >>> SpelledIntervalClass("P5") # == -"P4"
+  >>> SpelledIntervalClass("P5").direction() # == -"P4"
   -1
 
 In addition to arithmetic operations, some special intervals are defined:

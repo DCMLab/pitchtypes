@@ -1077,7 +1077,7 @@ class SpelledIntervalClass(Spelled):
         ds = self.diatonic_steps()
         if ds == 0:
             return 0
-        elif ds > 4:
+        elif ds > 3:
             return -1
         else:
             return 1

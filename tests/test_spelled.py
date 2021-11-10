@@ -4,6 +4,7 @@ from pitchtypes import Spelled, SpelledPitch, SpelledInterval, SpelledPitchClass
 
 
 class TestSpelled(TestCase):
+
     line_of_fifths = [
         "Dbbbb", "Abbbb", "Ebbbb", "Bbbbb",
         "Fbbb", "Cbbb", "Gbbb", "Dbbb", "Abbb", "Ebbb", "Bbbb",
@@ -49,6 +50,15 @@ class TestSpelled(TestCase):
         self.assertEqual(SpelledIntervalClass._base_type, Spelled)
 
     def test_init(self):
+
+        def sign(n):
+            if n == 0:
+                return 0
+            if n > 0:
+                return 1
+            else:
+                return -1
+
         # create class and non-class objects
         for is_class in [True, False]:
             # create pitch (class) objects
@@ -120,6 +130,7 @@ class TestSpelled(TestCase):
                     self.assertEqual(SpelledIntervalClass.octave(), SpelledIntervalClass("P1"))
                     self.assertEqual(str(interval) + ":0", str(interval.embed()))
                     self.assertEqual(interval.internal_octaves(), 0)
+                    self.assertEqual(interval.direction(), sign((float(interval_class_str[-1]) + 2) % 7 - 3))
                     # test print output
                     self.assertEqual(interval_class_str, str(interval))
                     self.assertEqual(interval_class_str, interval.name())
