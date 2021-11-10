@@ -1,8 +1,6 @@
 Spelled Pitch
 =============
 
-**TODO: adapt to python version**
-
 Overview
 --------
 
