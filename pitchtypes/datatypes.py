@@ -1062,6 +1062,13 @@ class LogFreq(AbstractBase):
             cls._print_precision = precision
         return cls._print_precision
 
+    @classmethod
+    def _convert_freq_str(cls, s):
+        if s.endswith("Hz"):
+            return float(s[:-2])
+        else:
+            raise ValueError(f"String values have to be floats followed by 'Hz', but got '{s}'")
+
     def __init__(self, value, is_pitch, is_class, is_log=True, **kwargs):
         """
         Initialise from frequency or log-frequency value.
@@ -1080,7 +1087,10 @@ class LogFreq(AbstractBase):
 
 @LogFreq.link_pitch_type()
 class LogFreqPitch(LogFreq):
-    def __init__(self, value, is_freq=True, **kwargs):
+    def __init__(self, value, is_freq=False, **kwargs):
+        if isinstance(value, str):
+            value = self._convert_freq_str(value)
+            is_freq = True
         super().__init__(value, is_pitch=True, is_class=False, is_log=not is_freq, **kwargs)
 
     def __repr__(self):
@@ -1095,7 +1105,10 @@ class LogFreqPitch(LogFreq):
 
 @LogFreq.link_interval_type()
 class LogFreqInterval(LogFreq):
-    def __init__(self, value, is_ratio=True, **kwargs):
+    def __init__(self, value, is_ratio=False, **kwargs):
+        if isinstance(value, str):
+            value = float(value)
+            is_ratio = True
         super().__init__(value, is_pitch=False, is_class=False, is_log=not is_ratio, **kwargs)
 
     def __repr__(self):
@@ -1110,7 +1123,10 @@ class LogFreqInterval(LogFreq):
 
 @LogFreq.link_pitch_class_type()
 class LogFreqPitchClass(LogFreq):
-    def __init__(self, value, is_freq=True, **kwargs):
+    def __init__(self, value, is_freq=False, **kwargs):
+        if isinstance(value, str):
+            value = self._convert_freq_str(value)
+            is_freq = True
         if is_freq:
             value = np.log(value)
         else:
@@ -1127,7 +1143,10 @@ class LogFreqPitchClass(LogFreq):
 
 @LogFreq.link_interval_class_type()
 class LogFreqIntervalClass(LogFreq):
-    def __init__(self, value, is_ratio=True, **kwargs):
+    def __init__(self, value, is_ratio=False, **kwargs):
+        if isinstance(value, str):
+            value = float(value)
+            is_ratio = True
         if is_ratio:
             value = np.log(value)
         else:
