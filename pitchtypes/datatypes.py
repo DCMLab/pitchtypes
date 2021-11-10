@@ -907,7 +907,7 @@ class SpelledInterval(Spelled, Interval, Diatonic, Chromatic):
         """
         Return a perfect octave (P1:1).
         """
-        return cls.from_fifths_and_octaves(0,0)
+        return cls.from_fifths_and_octaves(0,1)
 
     def direction(self):
         """
