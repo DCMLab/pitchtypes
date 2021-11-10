@@ -639,7 +639,7 @@ class Spelled(AbstractBase):
         Return the diatonic steps of the interval (unison=0, 2nd=1, ..., octave=7, ...).
         Respects both direction and octaves.
         """
-        return NotImplementedError
+        raise NotImplementedError
 
     def alteration(self):
         """
