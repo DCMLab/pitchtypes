@@ -757,7 +757,7 @@ class Spelled(AbstractBase):
 
 
 @Spelled.link_pitch_type()
-class SpelledPitch(Spelled):
+class SpelledPitch(Spelled, Pitch):
     """
     Represents a spelled pitch.
 
@@ -800,6 +800,15 @@ class SpelledPitch(Spelled):
     def name(self):
         return f"{self.pitch_class_from_fifths(self.fifths())}{self.octaves()}"
 
+    # Pitch interface
+    def pc(self):
+        return self.to_class()
+
+    def embed(self):
+        return self
+    
+    # Spelled interface
+    
     def fifths(self):
         return self.value[1]
 
@@ -826,7 +835,7 @@ class SpelledPitch(Spelled):
 
 
 @Spelled.link_interval_type()
-class SpelledInterval(Spelled):
+class SpelledInterval(Spelled, Interval, Diatonic, Chromatic):
     """
     Represents a spelled interval.
 
@@ -865,45 +874,6 @@ class SpelledInterval(Spelled):
         """
         return SpelledInterval((octaves, fifths))
         
-    def direction(self):
-        ds = self.diatonic_steps()
-        if ds == 0:
-            return 0
-        elif ds < 0:
-            return -1
-        else:
-            return 1
-        # if self.octaves() < 0:
-        #     # if the octave is strictly positive the sign is positive
-        #     return -1
-        # elif self.octaves() > 0:
-        #     # if the octave is strictly negative the sign is negative
-        #     return 1
-        # else:
-        #     # if the octave is zero the sign depends on the fifth steps
-        #     if self.diatonic_steps() % 7 != 0:
-        #         # for anything other than unisons the sign is positive
-        #         return 1
-        #     else:
-        #         if self.fifths() == 0:
-        #             # for a perfect unison the sign is zero (neutral element of addition)
-        #             return 0
-        #         elif self.fifths() < 0:
-        #             # for diminished unisons the sign is negative
-        #             return -1
-        #         else:
-        #             # for augmented unisons the sign is positive
-        #             return 1
-
-    def abs(self):
-        if self.direction() < 0:
-            return -self
-        else:
-            return self
-
-    def to_class(self):
-        return self.IntervalClass(self.value[1])
-
     def name(self):
         octave = abs(self.octaves())
         if self.direction() == -1:
@@ -922,6 +892,50 @@ class SpelledInterval(Spelled):
             sign = ""
             inverse = False
         return sign + self.interval_class_from_fifths(self.fifths(), inverse=inverse) + f":{octave}"
+
+    def to_class(self):
+        return self.IntervalClass(self.value[1])
+
+    # interval interface
+
+    @classmethod
+    def unison(cls):
+        """
+        Return a perfect unison (P1:0).
+        """
+        return cls.from_fifths_and_octaves(0,0)
+
+    @classmethod
+    def octave(cls):
+        """
+        Return a perfect octave (P1:1).
+        """
+        return cls.from_fifths_and_octaves(0,0)
+
+    def direction(self):
+        """
+        Return the direction of the interval (1=up / 0=neutral / -1=down).
+        All unisons are considered neutral (including augmented and diminished unisons).
+        """
+        ds = self.diatonic_steps()
+        if ds == 0:
+            return 0
+        elif ds < 0:
+            return -1
+        else:
+            return 1
+
+    def abs(self):
+        if self.direction() < 0:
+            return -self
+        else:
+            return self
+
+    def ic(self):
+        return self.to_class()
+
+    def embed(self):
+        return self
 
     # spelled interface
     
@@ -975,20 +989,13 @@ class SpelledPitchClass(Spelled):
     def name(self):
         return self.pitch_class_from_fifths(self.fifths())
 
-    def direction(self):
-        ds = self.diatonic_steps()
-        if ds == 0:
-            return 0
-        elif ds > 4:
-            return -1
-        else:
-            return 1
+    # pitch interface
 
-    def abs(self):
-        if self.direction() < 0:
-            return -self
-        else:
-            return self
+    def pc(self):
+        return self
+
+    def embed(self):
+        return SpelledPitch.from_fifths_and_octaves(self.fifths(), -((self.fifths() * 4) // 7))
     
     # spelled interface
     
@@ -1053,6 +1060,45 @@ class SpelledIntervalClass(Spelled):
             sign = ""
         return sign + self.interval_class_from_fifths(self.fifths(), inverse=inverse)
 
+    # interval interface
+
+    @classmethod
+    def unison(cls):
+        """
+        Return a perfect unison (P1).
+        """
+        return cls.from_fifths(0)
+
+    @classmethod
+    def octave(cls):
+        """
+        Return a perfect unison (P1), which is the same as an octave for interval classes.
+        """
+        return cls.from_fifths(0)
+    
+    def direction(self):
+        ds = self.diatonic_steps()
+        if ds == 0:
+            return 0
+        elif ds > 4:
+            return -1
+        else:
+            return 1
+
+    def abs(self):
+        if self.direction() < 0:
+            return -self
+        else:
+            return self
+        
+    def ic(self):
+        return self
+
+    def embed(self):
+        return SpelledInterval.from_fifths_and_octaves(self.fifths(), -((self.fifths() * 4) // 7))
+
+    # spelled interface
+        
     def fifths(self):
         return self.value
 

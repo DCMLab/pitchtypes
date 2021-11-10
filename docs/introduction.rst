@@ -7,10 +7,10 @@ This is much like the relation between vectors (= intervals) and points (= pitch
 For example, the pitch ``E♭4`` can be represented as an interval (e.g. a minor third, ``m3:0``)
 above a reference pitch such as Middle C (``C4``).
 Intervals and Pitches come in families of four variants:
-* `*Interval` represents a normal interval
-* `*Pitch` represents a normal pitch
-* `*IntervalClass` represents an interval with octave equivalence
-* `*PitchClass` represents a pitch with octave equivalence
+* ``*Interval`` represents a normal interval
+* ``*Pitch`` represents a normal pitch
+* ``*IntervalClass`` represents an interval with octave equivalence
+* ``*PitchClass`` represents a pitch with octave equivalence
 
 Similar to vectors and points, intervals and pitches support a number of operations
 such as addition and scalar multiplication.
@@ -23,8 +23,6 @@ The following representations of intervals and pitches are implemented so far:
 
 Generic Operations
 ------------------
-
-**TODO: check that implementation is complete and fix names!**
 
 The operations of the generic interface are based on intervals as the fundamental elements.
 Intervals can be thought of as vectors in a vector space (or more precisely: a module over integers).
