@@ -257,6 +257,27 @@ class TestSpelled(TestCase):
         self.assertRaises(NotImplementedError, lambda: s.generic())
         self.assertRaises(NotImplementedError, lambda: s.alteration())
         self.assertRaises(NotImplementedError, lambda: s.diatonic_steps())
+ 
+    def test_general_interface(self):
+        self.assertEqual(SpelledInterval.unison(), SpelledInterval("P1:0"))
+        self.assertEqual(SpelledIntervalClass.unison(), SpelledIntervalClass("P1"))
+        self.assertEqual(SpelledInterval.octave(), SpelledInterval("P1:1"))
+        self.assertEqual(SpelledIntervalClass.octave(), SpelledIntervalClass("P1"))
+        
+        self.assertEqual(SpelledInterval("m2:0").direction(), 1)
+        self.assertEqual(SpelledInterval("P1:0").direction(), 0)
+        self.assertEqual(SpelledInterval("d1:0").direction(), 0)
+        self.assertEqual(SpelledInterval("a1:0").direction(), 0)
+        self.assertEqual(SpelledInterval("-m3:0").direction(), -1)
+        self.assertEqual(SpelledInterval("-m3:0").abs(), SpelledInterval("m3:0"))
+        self.assertEqual(SpelledInterval("m3:0").abs(), SpelledInterval("m3:0"))
+        self.assertEqual(SpelledIntervalClass("m2").direction(), 1)
+        self.assertEqual(SpelledIntervalClass("P1").direction(), 0)
+        self.assertEqual(SpelledIntervalClass("d1").direction(), 0)
+        self.assertEqual(SpelledIntervalClass("a1").direction(), 0)
+        self.assertEqual(SpelledIntervalClass("-m3").direction(), -1)
+        self.assertEqual(SpelledIntervalClass("-m3").abs(), SpelledIntervalClass("m3"))
+        self.assertEqual(SpelledIntervalClass("m3").abs(), SpelledIntervalClass("m3"))
 
     def test_spelled_accessors(self):
         self.assertEqual(SpelledInterval("M3:1").octaves(),  1)
