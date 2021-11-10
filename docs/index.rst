@@ -14,9 +14,10 @@ Welcome to pitchtypes's documentation!
    types/spelled
    types/enharmonic
    types/frequencies
+   types/harmonic
 
 
-A library for handling musical pitches and intervals in a systematic way.
+A library for **handling musical pitches and intervals in a systematic way**.
 For other (and mostly compatible) implementations see:
 
 - `Pitches.js <https://github.com/DCMLab/Pitches.jl>`_ (Julia)
@@ -24,42 +25,90 @@ For other (and mostly compatible) implementations see:
 - `purescript-pitches <https://github.com/DCMLab/purescript-pitches>`_ (Purescript)
 - `pitches.rs <https://github.com/DCMLab/rust-pitches/blob/main/README.md>`_ (Rust)
 
-This library defines types for musical intervals and pitches
-as well as a generic interface for writing algorithms
-that work with different pitch and interval types:
+Arithmetics
+-----------
 
-.. testcode::
+You can, for instance, compute the interval class between a B♭ and an F♯,
+which is an augmented fifth
 
-   import pitchtypes as pt
+.. doctest::
 
-   # write a generic function
+   >>> import pitchtypes as pt
+   >>> pt.SpelledPitchClass("F#") - pt.SpelledPitchClass("Bb")
+   a5
 
-   def transposeby(pitches, interval):
-     return [pitch + interval for pitch in pitches]
+and do all the standard arithmetic operations.
 
-   # use it with different pitch types
+Generic Interface
+-----------------
 
-   # spelled pitches correspond to written notes in Western notation
-   spelled_pitches = [pt.SpelledPitch(p) for p in ["C4", "Eb4", "G#4"]]
-   print(transposeby(spelled_pitches, pt.SpelledInterval("m3:0")))
+More generally, the library defines **different types of musical intervals and pitches**
+as well as a **generic interface** for writing algorithms that work with different
+pitch and interval types. This allows you to write generic functions
 
-   # spelled pitch classes work the same but they ignore octaves
-   spelled_pitch_classes = [pt.SpelledPitchClass(p) for p in ["C", "Eb", "G#"]]
-   print(transposeby(spelled_pitch_classes, pt.SpelledIntervalClass("m3")))
+.. doctest::
 
-   # enharmonic pitches correspond to keys on the piano
-   enharmonic_pitches = [pt.EnharmonicPitch(p) for p in [60, 63, 68]]
-   print(transposeby(enharmonic_pitches, pt.EnharmonicInterval(3)))
+   >>> def transposeby(pitches, interval):
+   ...     return [pitch + interval for pitch in pitches]
 
-Output:
+and use them with different pitch types, including :class:`~pitchtypes.SpelledPitch`
+(corresponding to written notes in Western notation)
 
-.. testoutput::
+.. doctest::
 
+   >>> transposeby([pt.SpelledPitch("C4"), pt.SpelledPitch("Eb4"), pt.SpelledPitch("G#4")],
+   ...             pt.SpelledInterval("m3:0"))
    [Eb4, Gb4, B4]
+
+:class:`~pitchtypes.SpelledPitchClass` (which work the same but ignore octaves)
+
+.. doctest::
+
+   >>> transposeby([pt.SpelledPitchClass("C"), pt.SpelledPitchClass("Eb"), pt.SpelledPitchClass("G#")],
+   ...             pt.SpelledIntervalClass("m3"))
    [Eb, Gb, B]
+
+:class:`~pitchtypes.EnharmonicPitch` (corresponding to keys on the piano)
+
+.. doctest::
+
+   >>> transposeby([pt.EnharmonicPitch(60), pt.EnharmonicPitch(63), pt.EnharmonicPitch(68)],
+   ...             pt.EnharmonicInterval(3))
    [D#4, F#4, B4]
 
-To get started, install this library via pip::
+:class:`~pitchtypes.LogFreqPitch` (i.e. **frequencies** with intervals corresponding to **frequency ratios**)
+
+.. doctest::
+
+   >>> transposeby([pt.LogFreqPitch("261.63Hz"), pt.LogFreqPitch("311.13Hz"), pt.LogFreqPitch("415.30Hz")],
+   ...             pt.LogFreqInterval("1.19"))
+   [311.34Hz, 370.24Hz, 494.21Hz]
+
+and more.
+
+Type Conversion
+---------------
+
+The library also provides **type conversions**, if they are reasonably well defined. For instance,
+from :class:`~pitchtypes.SpelledPitch` to :class:`~pitchtypes.EnharmonicPitch`
+
+.. doctest::
+
+   >>> pt.SpelledPitch("F##4").convert_to(pt.EnharmonicPitch)
+   G4
+
+or from :class:`~pitchtypes.EnharmonicPitch` to :class:`~pitchtypes.LogFreqPitch`
+(assuming twelve-tone equal temperament)
+
+.. doctest::
+
+   >>> pt.EnharmonicPitch("A4").convert_to(pt.LogFreqPitch)
+   440.Hz
+
+Installation
+------------
+
+To get started, install via pip::
 
   pip install pitchtypes
 
