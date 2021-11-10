@@ -362,7 +362,10 @@ class HarmonicIntervalClass(Harmonic):
 
 
 class Spelled(AbstractBase):
-
+    """
+    A common base class for spelled pitch and interval types.
+    See below for a set of common operations.
+    """
     _pitch_regex = re.compile("^(?P<class>[A-G])(?P<modifiers>(b*)|(#*))(?P<octave>(-?[0-9]+)?)$")
     _interval_regex = re.compile("^(?P<sign>[-+])?("
                                  "(?P<quality0>P)(?P<generic0>[145])|"          # perfect intervals
@@ -650,6 +653,14 @@ class Spelled(AbstractBase):
 
 @Spelled.link_pitch_type()
 class SpelledPitch(Spelled):
+    """
+    Represents a spelled pitch.
+
+    The constructor takes a string consisting of the form
+    <letter><accidentals?><octave>, e.g. "C#4", "E5", or "Db-2".
+    Accidentals may be written as ASCII symbols (#/b)
+    or with unicode symbols (♯/♭), but not mixed within the same note.
+    """
     def __init__(self, value):
         if isinstance(value, str):
             octaves, fifths = self.parse_pitch(value)
@@ -666,6 +677,17 @@ class SpelledPitch(Spelled):
         assert isinstance(fifths, numbers.Integral)
         assert isinstance(octaves, numbers.Integral)
         super().__init__(value=value, is_pitch=True, is_class=False)
+
+    @staticmethod
+    def from_fifths_and_octaves(fifths, octaves):
+        """
+        Create a pitch by directly providing its internal fifths and octaves.
+        
+        Each pitch is represented relative to C0
+        by moving the specified number of fifths and octaves upwards
+        (or downwards for negative values).
+        """
+        return SpelledPitch((octaves, fifths))
 
     def to_class(self):
         return self.PitchClass(self.fifths())
@@ -700,6 +722,16 @@ class SpelledPitch(Spelled):
 
 @Spelled.link_interval_type()
 class SpelledInterval(Spelled):
+    """
+    Represents a spelled interval.
+
+    The constructor takes a string consisting of the form
+    -?<quality><generic-size>:<octaves>,
+    e.g. "M6:0", "-m3:0", or "aa2:1",
+    which stand for a major sixth, a minor third down, and a double-augmented ninth, respectively.
+    possible qualities are d (diminished), m (minor), M (major), P (perfect), and a (augmented),
+    where d and a can be repeated.
+    """
     def __init__(self, value):
         if isinstance(value, str):
             sign, octaves, fifths = self.parse_interval(value)
@@ -721,6 +753,13 @@ class SpelledInterval(Spelled):
             value = np.array([octaves, fifths])
         super().__init__(value=value, is_pitch=False, is_class=False)
 
+    @staticmethod
+    def from_fifths_and_octaves(fifths, octaves):
+        """
+        Create an interval by directly providing its internal fifths and octaves.
+        """
+        return SpelledInterval((octaves, fifths))
+        
     def sign(self):
         ds = self.diatonic_steps()
         if ds == 0:
@@ -804,6 +843,14 @@ class SpelledInterval(Spelled):
 
 @Spelled.link_pitch_class_type()
 class SpelledPitchClass(Spelled):
+    """
+    Represents a spelled pitch class, i.e. a pitch without octave information.
+
+    The constructor takes a string consisting of the form
+    <letter><accidentals?>, e.g. "C#", "E", or "Dbb".
+    Accidentals may be written as ASCII symbols (#/b)
+    or with unicode symbols (♯/♭), but not mixed within the same note.
+    """
     def __init__(self, value):
         if isinstance(value, str):
             octaves, fifths = self.parse_pitch(value)
@@ -813,6 +860,13 @@ class SpelledPitchClass(Spelled):
         assert isinstance(fifths, numbers.Integral)
         super().__init__(value=fifths, is_pitch=True, is_class=True)
 
+    @staticmethod
+    def from_fifths(fifths):
+        """
+        Create a pitch class by directly providing its position on the line of fifths (C=0, G=1, D=2, ...).
+        """
+        return SpelledPitchClass(fifths)
+        
     def name(self):
         return self.pitch_class_from_fifths(self.fifths())
 
@@ -858,6 +912,16 @@ class SpelledPitchClass(Spelled):
 
 @Spelled.link_interval_class_type()
 class SpelledIntervalClass(Spelled):
+    """
+    Represents a spelled interval class, i.e. an interval without octave information.
+
+    The constructor takes a string consisting of the form
+    -?<quality><generic-size>,
+    e.g. "M6", "-m3", or "aa2",
+    which stand for a major sixth, a minor third down (= major sixth up), and a double-augmented second, respectively.
+    possible qualities are d (diminished), m (minor), M (major), P (perfect), and a (augmented),
+    where d and a can be repeated.
+    """
     def __init__(self, value):
         if isinstance(value, str):
             sign, octaves, fifths = self.parse_interval(value)
@@ -870,6 +934,13 @@ class SpelledIntervalClass(Spelled):
             fifths = value
         assert isinstance(fifths, numbers.Integral)
         super().__init__(value=fifths, is_pitch=False, is_class=True)
+
+    @staticmethod
+    def from_fifths(fifths):
+        """
+        Create an interval class by directly providing its internal fifths.
+        """
+        return SpelledIntervalClass(fifths)
 
     def name(self, inverse=False):
         if inverse:

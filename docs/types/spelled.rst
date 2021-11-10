@@ -19,6 +19,7 @@ Spelled pitch classes are represented by an uppercase letter followed by zero or
 which can be either written as ``b/#`` or as ``♭/♯``.
 Spelled pitches take an additional octave number after the letter and the accidentals.
 
+  >>> from pitchtypes import *
   >>> SpelledPitchClass("Eb")
   Eb
   >>> SpelledPitch("Eb4")
@@ -80,7 +81,7 @@ as used in the string representation, e.g.
    0
    >>> SpelledInterval("M2:1").octaves()
    1
-   >>> SpelledInterva("M2:-1").octaves()
+   >>> SpelledInterval("-M2:0").octaves()
    -1
 
 If you want to look at the internal octaves, use :py:meth:`internal_octave <pitchtypes.SpelledPitch.internal_octave>`
@@ -98,7 +99,7 @@ The method :py:meth:`degree <pitchtypes.Spelled.degree>` returns the scale degre
 Since scale degrees are always above the root,
 ``degree`` treats negative intervals like their positive complements:
 
-  >>> SpelledInterva("-M3:1").generic() # some kind of 3rd down
+  >>> SpelledInterval("-M3:1").generic() # some kind of 3rd down
   -2
   >>> SpelledInterval("-M3:1").diatonic_steps() # a 10th down
   -9
@@ -119,20 +120,47 @@ smaller intervals return negative values.
 while ``alteration(p)`` provides the accidentals (natural=0, sharps -> positive, flats -> negative).
 For convenience, :py:meth:`letter <pitchtypes.SpelledPitch.letter>` returns the letter as an uppercase character.
 
+
 Reference
 ---------
 
-.. autoclass:: pitchtypes.Spelled
-   :members:
+General Interface
+^^^^^^^^^^^^^^^^^
 
-.. autoclass:: pitchtypes.SpelledPitch
-   :members:
+.. autoclass:: pitchtypes.Spelled()
+   :members: fifths, octaves, internal_octaves,
+             degree, generic, diatonic_steps, alteration
 
-.. autoclass:: pitchtypes.SpelledInterval
-   :members:
+Spelled Interval and Pitch
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+             
+.. autoclass:: pitchtypes.SpelledInterval(string)
+   :members: from_fifths_and_octaves,
+             direction, abs,
+             unison, chromatic_semitone, is_step,
+             fifths, octaves, internal_octaves,
+             degree, generic, diatonic_steps, alteration,
+             ic, embed
 
-.. autoclass:: pitchtypes.SpelledPitchClass
-   :members:
+.. autoclass:: pitchtypes.SpelledPitch(string)
+   :members: from_fifths_and_octaves,
+             pc, embed, letter,
+             fifths, octaves, internal_octaves,
+             degree, generic, diatonic_steps, alteration
 
-.. autoclass:: pitchtypes.SpelledIntervalClass
-   :members:
+Spelled Interval and Pitch Class
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+             
+.. autoclass:: pitchtypes.SpelledIntervalClass(string)
+   :members: from_fifths,
+             direction, abs,
+             unison, chromatic_semitone, is_step,
+             fifths, octaves, internal_octaves,
+             degree, generic, diatonic_steps, alteration,
+             ic, embed
+
+.. autoclass:: pitchtypes.SpelledPitchClass(string)
+   :members: from_fifths,
+             pc, embed, letter,
+             degree, generic, diatonic_steps, alteration,
+             fifths, octaves, internal_octaves
