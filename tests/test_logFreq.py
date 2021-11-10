@@ -1,6 +1,6 @@
 from unittest import TestCase
 import numpy as np
-from pitchtypes import LogFreq, LogFreqPitch, EnharmonicPitch
+from pitchtypes import LogFreq, LogFreqPitch, LogFreqInterval, LogFreqPitchClass, LogFreqIntervalClass, EnharmonicPitch
 
 
 class TestLogFreq(TestCase):
@@ -13,7 +13,7 @@ class TestLogFreq(TestCase):
         # this corresponds to 0 to log(2) in log representation
         for f in np.random.uniform(1, 100, 100):
             # make sure pitch is set up correctly
-            p = LogFreq.Pitch(f)
+            p = LogFreq.Pitch(str(f) + "Hz")
             self.assertEqual(np.log(f), float(p))
             # get the pitch class
             pc = p.to_class()
@@ -30,7 +30,7 @@ class TestLogFreq(TestCase):
         # this corresponds to 0 to log(2) in log representation
         for r in np.random.uniform(1, 100, 100):
             # make sure pitch is set up correctly
-            i = LogFreq.Interval(r)
+            i = LogFreq.Interval(str(r))
             self.assertEqual(np.log(r), float(i))
             # get the pitch class
             ic = i.to_class()
@@ -44,10 +44,10 @@ class TestLogFreq(TestCase):
             self.assertEqual(np.log(r) % np.log(2), float(ic))
 
     def test_print_precision(self):
-        p = LogFreq.Pitch(123.456)
-        pc = LogFreq.PitchClass(1.111)
-        i = LogFreq.Interval(2.345)
-        ic = LogFreq.IntervalClass(1.234)
+        p = LogFreq.Pitch("123.456Hz")
+        pc = LogFreq.PitchClass("1.111Hz")
+        i = LogFreq.Interval("2.345")
+        ic = LogFreq.IntervalClass("1.234")
         # bad input raises ValueError
         self.assertRaises(ValueError, lambda: LogFreq.print_precision("x"))
         # default is 2
@@ -95,6 +95,51 @@ class TestLogFreq(TestCase):
         # reset
         LogFreq.print_precision(2)
 
+    def test_init(self):
+        self.assertRaises(ValueError, lambda: LogFreqPitch("not good"))
+        self.assertRaises(ValueError, lambda: LogFreqPitchClass("not good"))
+        for freq in np.random.uniform(10, 1000, 100):
+            self.assertEqual(LogFreqPitch(str(freq) + "Hz"), LogFreqPitch(freq, is_freq=True))
+            self.assertEqual(LogFreqPitch(str(freq) + "Hz"), LogFreqPitch(np.log(freq), is_freq=False))
+            self.assertEqual(LogFreqPitchClass(str(freq) + "Hz"), LogFreqPitchClass(freq, is_freq=True))
+            self.assertEqual(LogFreqPitchClass(str(freq) + "Hz"), LogFreqPitchClass(np.log(freq), is_freq=False))
+        self.assertRaises(ValueError, lambda: LogFreqInterval("not good"))
+        self.assertRaises(ValueError, lambda: LogFreqIntervalClass("not good"))
+        for ratio in np.random.uniform(1e-5, 100, 100):
+            self.assertEqual(LogFreqInterval(str(ratio)), LogFreqInterval(ratio, is_ratio=True))
+            self.assertEqual(LogFreqInterval(str(ratio)), LogFreqInterval(np.log(ratio), is_ratio=False))
+            self.assertEqual(LogFreqIntervalClass(str(ratio)), LogFreqIntervalClass(ratio, is_ratio=True))
+            self.assertEqual(LogFreqIntervalClass(str(ratio)), LogFreqIntervalClass(np.log(ratio), is_ratio=False))
+
+    def test_arithmetics(self):
+        for freq1, freq2 in np.random.uniform(10, 1000, (10, 2)):
+            ratio1, ratio2 = np.random.uniform(0.1, 2, 2)
+            # non-class types
+            self.assertAlmostEqual((LogFreqInterval(str(ratio1)) + LogFreqInterval(str(ratio2))).ratio(),
+                                   ratio1 * ratio2)
+            self.assertAlmostEqual((LogFreqInterval(str(ratio1)) - LogFreqInterval(str(ratio2))).ratio(),
+                                   ratio1 / ratio2)
+            self.assertAlmostEqual((LogFreqPitch(str(freq1) + "Hz") - LogFreqPitch(str(freq2) + "Hz")).ratio(),
+                                   freq1 / freq2)
+            self.assertAlmostEqual((LogFreqPitch(str(freq1) + "Hz") + LogFreqInterval(str(ratio1))).freq(),
+                                   freq1 * ratio1)
+            self.assertAlmostEqual((LogFreqPitch(str(freq1) + "Hz") - LogFreqInterval(str(ratio1))).freq(),
+                                   freq1 / ratio1)
+
+            # class types
+            def log_mod(r):
+                return np.exp(np.log(r) % np.log(2))
+
+            self.assertAlmostEqual((LogFreqIntervalClass(str(ratio1)) + LogFreqIntervalClass(str(ratio2))).ratio(),
+                                   log_mod(ratio1 * ratio2))
+            self.assertAlmostEqual((LogFreqIntervalClass(str(ratio1)) - LogFreqIntervalClass(str(ratio2))).ratio(),
+                                   log_mod(ratio1 / ratio2))
+            self.assertAlmostEqual((LogFreqPitchClass(str(freq1) + "Hz") - LogFreqPitchClass(str(freq2) + "Hz")).ratio(),
+                                   log_mod(freq1 / freq2))
+            self.assertAlmostEqual((LogFreqPitchClass(str(freq1) + "Hz") + LogFreqIntervalClass(str(ratio1))).freq(),
+                                   log_mod(freq1 * ratio1))
+            self.assertAlmostEqual((LogFreqPitchClass(str(freq1) + "Hz") - LogFreqIntervalClass(str(ratio1))).freq(),
+                                   log_mod(freq1 / ratio1))
 
     # def test_convert_from_midi_pitch(self):
     #     self.fail()

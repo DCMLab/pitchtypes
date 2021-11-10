@@ -79,9 +79,20 @@ class TestEnharmonic(TestCase):
         e = Enharmonic(1, is_pitch=True, is_class=True)
         self.assertRaises(NotImplementedError, lambda: e.name())
 
+    def test_octave_and_freq(self):
+        for i in range(-3, 10):
+            pitch = EnharmonicPitch(f"C{i}")
+            self.assertEqual(pitch.octaves(), i)
+            interval = pitch - EnharmonicPitch("C4")
+            self.assertEqual(interval.octaves(), i - 4)
+
     def test_convert_to_logfreq(self):
+        self.assertRaises(NotImplementedError, lambda: Enharmonic("C", True, True).convert_to_logfreq())
         for x in [EnharmonicPitch("C4"), EnharmonicPitchClass("C"), EnharmonicInterval(1), EnharmonicIntervalClass(1)]:
             x.convert_to_logfreq()
+            if not x.is_class:
+                self.assertAlmostEqual(float(x.to_class().convert_to_logfreq()),
+                                       float(x.convert_to_logfreq().to_class()))
 
     def test_print_options(self):
         # bad input raises

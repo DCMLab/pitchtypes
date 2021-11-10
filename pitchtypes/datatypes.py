@@ -314,6 +314,111 @@ class AbstractBase(Object):
         return Converters.convert(self, other_type)
 
 
+class Interval:
+    """
+    The basic interface implemented by every interval (and interval class) type.
+    """
+
+    @classmethod
+    def unison(cls):
+        """
+        Return the unison interval of this type.
+        """
+        raise NotImplementedError
+
+    @classmethod
+    def octave(cls):
+        """
+        Return the octave interval of this type.
+        """
+        raise NotImplementedError
+
+    def direction(self):
+        """
+        Return the direction of the interval:
+        1 for up, -1 for down and 0 for neutral.
+        Different types may have different conventions for the direction of an interval.
+        """
+        raise NotImplementedError
+
+    def abs(self):
+        """
+        For downward intervals, return their upward counterpart, otherwise just return the interval itself.
+        """
+        raise NotImplementedError
+
+    def ic(self):
+        """
+        Return the interval class that corresponds to this interval.
+        If the interval is already an interval class, it is returned itself.
+        """
+        raise NotImplementedError
+
+    def to_class(self):
+        """
+        Alias for ic(), but also supported by pitch types.
+        """
+        return self.ic()
+
+    def embed(self):
+        """
+        For interval classes, return an embedding into the interval space in a (type-dependent) default octave.
+        For non-class intervals, return the interval itself.
+        """
+        raise NotImplementedError
+
+
+class Chromatic:
+    """
+    Some intervals have the notion of a chromatic semitone and implement this interface.
+    """
+
+    @classmethod
+    def chromatic_semitone(cls):
+        """
+        Return a chromatic semitone (augmented unison) of this type.
+        """
+        raise NotImplementedError
+
+
+class Diatonic:
+    """
+    Some intervals have a notion of a diatonic step and implement this interface.
+    """
+
+    def is_step(self):
+        """
+        Return True if the interval is considered a step, False otherwise.
+        """
+        raise NotImplementedError
+
+
+class Pitch:
+    """
+    The basic interface that is implemented by every pitch (and pitch class) type.
+    """
+
+    def pc(self):
+        """
+        Returns the pitch class corresponding to the pitch.
+        For pitch classes, it returns the pitch class itself.
+        """
+        raise NotImplementedError
+
+    def to_class(self):
+        """
+        Alias for pc(), but also supported by interval types.
+        """
+        return self.pc()
+
+    def embed(self):
+        """
+        For a pitch class, returns the corresponding pitch in a (type-dependent) default octave.
+        For non-class pitches, returns the pitch itself.
+        """
+        raise NotImplementedError
+
+
 class Harmonic(AbstractBase):
 
     @staticmethod
@@ -325,11 +430,11 @@ class Harmonic(AbstractBase):
             if not (exponents_.startswith("[") and exponents_.endswith("]")):
                 raise ValueError(f"'exponents' has to start and end with '[' and ']', respectively")
             try:
-                exponents = np.array(exponents_[1:-1].split(','), dtype=np.int)
+                exponents = np.array(exponents_[1:-1].split(','), dtype=int)
             except ValueError as e:
                 raise ValueError(f"Could not interpret {exponents} as array of integers: {e}")
         else:
-            exponents = np.array(exponents, dtype=np.int)
+            exponents = np.array(exponents, dtype=int)
         return exponents
 
     def __init__(self, *args, **kwargs):
@@ -362,9 +467,16 @@ class HarmonicIntervalClass(Harmonic):
 
 
 class Spelled(AbstractBase):
-
+    """
+    A common base class for spelled pitch and interval types.
+    See below for a set of common operations.
+    """
     _pitch_regex = re.compile("^(?P<class>[A-G])(?P<modifiers>(b*)|(#*))(?P<octave>(-?[0-9]+)?)$")
-    _interval_regex = re.compile("^(?P<sign>[-+])?(?P<quality>(a+)|(M)|(p)|(m)|(d+))(?P<generic>[1-7])(?P<octave>(:[0-9]+)?)$")
+    _interval_regex = re.compile("^(?P<sign>[-+])?("
+                                 "(?P<quality0>P)(?P<generic0>[145])|"          # perfect intervals
+                                 "(?P<quality1>|(M)|(m))(?P<generic1>[2367])|"  # imperfect intervals
+                                 "(?P<quality2>(a+)|(d+))(?P<generic2>[1-7])"   # augmeted/diminished intervals
+                                 ")(?P<octave>(:[0-9]+)?)$")
 
     @staticmethod
     def parse_pitch(s):
@@ -377,6 +489,10 @@ class Spelled(AbstractBase):
         """
         if not isinstance(s, str):
             raise TypeError(f"expected string as input, got {s}")
+        # convert unicode flats and sharps (♭ -> b and ♯ -> #)
+        s = s.replace("♭", "b")
+        s = s.replace("♯", "#")
+        # match with regex
         pitch_match = Spelled._pitch_regex.match(s)
         if pitch_match is None:
             raise ValueError(f"could not match '{s}' with regex: '{Spelled._pitch_regex.pattern}'")
@@ -409,23 +525,36 @@ class Spelled(AbstractBase):
         interval_match = Spelled._interval_regex.match(s)
         if interval_match is None:
             raise ValueError(f"could not match '{s}' with regex: '{Spelled._interval_regex.pattern}'")
+        # get quality and generic interval (first corresponding group that is not None)
+        for i in range(3):
+            g = interval_match[f"generic{i}"]
+            q = interval_match[f"quality{i}"]
+            if g is not None and q is not None:
+                generic = int(g)
+                quality = q
+                break
+        else:
+            raise RuntimeError(f"Could not match generic interval and quality, this is a bug in the regex ("
+                               f"{[interval_match[f'generic{i}'] for i in range(3)]}, "
+                               f"{[interval_match[f'quality{i}'] for i in range(3)]}"
+                               f")")
         # initialise value with generic interval classes
-        fifth_steps = Spelled.fifths_from_generic_interval_class(int(interval_match['generic']))
+        fifth_steps = Spelled.fifths_from_generic_interval_class(generic)
         # add modifiers
-        if interval_match['quality'] in ["p", "M"]:
+        if quality in ["P", "M"]:
             pass
-        elif interval_match['quality'] == "m":
+        elif quality == "m":
             fifth_steps -= 7
-        elif "a" in interval_match['quality']:
-            fifth_steps += 7 * len(interval_match['quality'])
-        elif "d" in interval_match['quality']:
-            if interval_match['generic'] in ["4", "1", "5"]:
-                fifth_steps -= 7 * len(interval_match['quality'])
+        elif "a" in quality:
+            fifth_steps += 7 * len(quality)
+        elif "d" in quality:
+            if generic in [4, 1, 5]:
+                fifth_steps -= 7 * len(quality)
             else:
-                fifth_steps -= 7 * (len(interval_match['quality']) + 1)
+                fifth_steps -= 7 * (len(quality) + 1)
         else:
             raise RuntimeError(f"Initialization from string failed: "
-                               f"Unexpected interval quality '{interval_match['quality']}'. This is a bug and "
+                               f"Unexpected interval quality '{quality}'. This is a bug and "
                                f"means that either the used regex is bad or the handling code.")
         # get octave
         if interval_match['octave'][1:] == "":
@@ -459,7 +588,7 @@ class Spelled(AbstractBase):
         :return: interval quality (M, m, p, a, d, aa, dd, aaa, ddd etc)
         """
         if -5 <= fifth_steps <= 5:
-            quality = ['m', 'm', 'm', 'm', 'p', 'p', 'p', 'M', 'M', 'M', 'M'][fifth_steps + 5]
+            quality = ['m', 'm', 'm', 'm', 'P', 'P', 'P', 'M', 'M', 'M', 'M'][fifth_steps + 5]
         elif fifth_steps > 5:
             quality = 'a' * ((fifth_steps + 1) // 7)
         else:
@@ -503,6 +632,14 @@ class Spelled(AbstractBase):
                f"{Spelled.generic_interval_class_from_fifths(fifths)}"
 
     @staticmethod
+    def _degree_from_fifths_(fifths):
+        """
+        Return the scale degree of a pitch/interval based on its fifths.
+        Helper function for degree()
+        """
+        return (fifths*4) % 7
+    
+    @staticmethod
     def fifths_from_diatonic_pitch_class(pitch_class):
         """
         Return the number of steps along the line of fifths corresponding to a diatonic pitch class.
@@ -536,32 +673,99 @@ class Spelled(AbstractBase):
         return self.name()
 
     def convert_to_enharmonic(self):
-        fifth_steps_from_f = self.fifth_steps() + 1
-        # get the base pitch in 0,...,11
-        base_pitch = ((fifth_steps_from_f % 7 - 1) * 7) % 12
-        # get the accidental, i.e. chromatic semitone steps to add to base pitch
-        # (floor-divide (//) rounds down, for negative numbers that is equal to the remainder of division minus one)
-        accidentals = fifth_steps_from_f // 7
         if self.is_pitch:
+            fifth_steps_from_f = self.fifths() + 1
+            # get the base pitch in 0,...,11
+            base_pitch = ((fifth_steps_from_f % 7 - 1) * 7) % 12
+            # get the accidental, i.e. chromatic semitone steps to add to base pitch
+            # (floor-divide (//) rounds down, for negative numbers that is equal to the remainder of division minus one)
+            accidentals = fifth_steps_from_f // 7
             if self.is_class:
                 return EnharmonicPitchClass(value=base_pitch + accidentals)
             else:
-                return EnharmonicPitch(value=12 * (self.octave() + 1) + base_pitch + accidentals)
+                return EnharmonicPitch(value=12 * (self.octaves() + 1) + base_pitch + accidentals)
         else:
+            # convert intervals by going via reference pitches
             if self.is_class:
-                return EnharmonicIntervalClass(value=base_pitch + accidentals)
+                spelled_ref_point = SpelledPitchClass("C")
+                enharmonic_ref_point = EnharmonicPitchClass("C")
             else:
-                return EnharmonicInterval(value=12 * (self.octave() + 1) + base_pitch + accidentals)
+                spelled_ref_point = SpelledPitch("C4")
+                enharmonic_ref_point = EnharmonicPitch("C4")
+            return enharmonic_ref_point - (spelled_ref_point - self).convert_to_enharmonic()
 
     def name(self):
         raise NotImplementedError
 
-    def fifth_steps(self):
+    # Spelled interface:
+    
+    def fifths(self):
+        """
+        Return the position of the interval on the line of fifths.
+        """
+        raise NotImplementedError
+
+    def octaves(self):
+        """
+        For intervals, return the number of octaves the interval spans.
+        Negative intervals start with -1, decreasing.
+        For pitches, return the absolute octave of the pitch.
+        """
+        raise NotImplementedError
+
+    def internal_octaves(self):
+        """
+        Return the internal octave representation of a pitch,
+        which is dependent on the fifths.
+
+        Only use this if you know what you are doing.
+        """
+        raise NotImplementedError
+
+    def degree(self):
+        """
+        Return the "relative scale degree" (0-6) to which the interval points
+        (unison=0, 2nd=1, octave=0, 2nd down=6, etc.).
+        For pitches, return the integer that corresponds to the letter (C=0, D=1, ...).
+        """
+        return self._degree_from_fifths_(self.fifths())
+
+    def generic(self):
+        """
+        Return the generic interval, i.e. the number of diatonic steps modulo octave.
+        Unlike degree(), the result respects the sign of the interval
+        (unison=0, 2nd up=1, 2nd down=-1).
+        For pitches, use degree().
+        """
+        raise NotImplementedError
+
+    def diatonic_steps(self):
+        """
+        Return the diatonic steps of the interval (unison=0, 2nd=1, ..., octave=7, ...).
+        Respects both direction and octaves.
+        """
+        raise NotImplementedError
+
+    def alteration(self):
+        """
+        Return the number of semitones by which the interval is altered from its the perfect or major variant.
+        Positive alteration always indicates augmentation,
+        negative alteration indicates diminution (minor or smaller) of the interval.
+        For pitches, return the accidentals (positive=sharps, negative=flats, 0=natural).
+        """
         raise NotImplementedError
 
 
 @Spelled.link_pitch_type()
-class SpelledPitch(Spelled):
+class SpelledPitch(Spelled, Pitch):
+    """
+    Represents a spelled pitch.
+
+    The constructor takes a string consisting of the form
+    <letter><accidentals?><octave>, e.g. "C#4", "E5", or "Db-2".
+    Accidentals may be written as ASCII symbols (#/b)
+    or with unicode symbols (♯/♭), but not mixed within the same note.
+    """
     def __init__(self, value):
         if isinstance(value, str):
             octaves, fifths = self.parse_pitch(value)
@@ -579,21 +783,66 @@ class SpelledPitch(Spelled):
         assert isinstance(octaves, numbers.Integral)
         super().__init__(value=value, is_pitch=True, is_class=False)
 
-    def octave(self):
-        return self.value[0] + self.diatonic_steps_from_fifths(self.fifth_steps()) // 7
-
-    def fifth_steps(self):
-        return self.value[1]
+    @staticmethod
+    def from_fifths_and_octaves(fifths, octaves):
+        """
+        Create a pitch by directly providing its internal fifths and octaves.
+        
+        Each pitch is represented relative to C0
+        by moving the specified number of fifths and octaves upwards
+        (or downwards for negative values).
+        """
+        return SpelledPitch((octaves, fifths))
 
     def to_class(self):
-        return self.PitchClass(self.fifth_steps())
+        return self.PitchClass(self.fifths())
 
     def name(self):
-        return f"{self.pitch_class_from_fifths(self.fifth_steps())}{self.octave()}"
+        return f"{self.pitch_class_from_fifths(self.fifths())}{self.octaves()}"
+
+    # Pitch interface
+    def pc(self):
+        return self.to_class()
+
+    def embed(self):
+        return self
+    
+    # Spelled interface
+    
+    def fifths(self):
+        return self.value[1]
+
+    def octaves(self):
+        return self.value[0] + self.diatonic_steps_from_fifths(self.fifths()) // 7
+
+    def internal_octaves(self):
+        return self.value[0]
+
+    def generic(self):
+        return self.degree()
+
+    def diatonic_steps(self):
+        return (self.fifths() * 4) + (self.internal_octaves() * 7)
+
+    def alteration(self):
+        return (self.fifths() + 1) // 7
+
+    def letter(self):
+        return chr(ord('A') + (self.degree() + 2) % 7)
 
 
 @Spelled.link_interval_type()
-class SpelledInterval(Spelled):
+class SpelledInterval(Spelled, Interval, Diatonic, Chromatic):
+    """
+    Represents a spelled interval.
+
+    The constructor takes a string consisting of the form
+    -?<quality><generic-size>:<octaves>,
+    e.g. "M6:0", "-m3:0", or "aa2:1",
+    which stand for a major sixth, a minor third down, and a double-augmented ninth, respectively.
+    possible qualities are d (diminished), m (minor), M (major), P (perfect), and a (augmented),
+    where d and a can be repeated.
+    """
     def __init__(self, value):
         if isinstance(value, str):
             sign, octaves, fifths = self.parse_interval(value)
@@ -615,44 +864,16 @@ class SpelledInterval(Spelled):
             value = np.array([octaves, fifths])
         super().__init__(value=value, is_pitch=False, is_class=False)
 
-    def diatonic_steps(self):
-        return self.diatonic_steps_from_fifths(self.fifth_steps())
-
-    def octave(self):
-        return self.value[0] + self.diatonic_steps() // 7
-
-    def fifth_steps(self):
-        return self.value[1]
-
-    def sign(self):
-        if self.octave() < 0:
-            # if the octave is strictly positive the sign is positive
-            return -1
-        elif self.octave() > 0:
-            # if the octave is strictly negative the sign is negative
-            return 1
-        else:
-            # if the octave is zero the sign depends on the fifth steps
-            if self.diatonic_steps() % 7 != 0:
-                # for anything other than unisons the sign is positive
-                return 1
-            else:
-                if self.fifth_steps() == 0:
-                    # for a perfect unison the sign is zero (neutral element of addition)
-                    return 0
-                elif self.fifth_steps() < 0:
-                    # for diminished unisons the sign is negative
-                    return -1
-                else:
-                    # for augmented unisons the sign is positive
-                    return 1
-
-    def to_class(self):
-        return self.IntervalClass(self.value[1])
-
+    @staticmethod
+    def from_fifths_and_octaves(fifths, octaves):
+        """
+        Create an interval by directly providing its internal fifths and octaves.
+        """
+        return SpelledInterval((octaves, fifths))
+        
     def name(self):
-        octave = abs(self.octave())
-        if self.sign() == -1:
+        octave = abs(self.octaves())
+        if self.direction() == -1:
             # negative intervals are to be printed with "-" sign
             sign = "-"
             # in return we have to invert the interval class
@@ -667,11 +888,85 @@ class SpelledInterval(Spelled):
         else:
             sign = ""
             inverse = False
-        return sign + self.interval_class_from_fifths(self.fifth_steps(), inverse=inverse) + f":{octave}"
+        return sign + self.interval_class_from_fifths(self.fifths(), inverse=inverse) + f":{octave}"
 
+    def to_class(self):
+        return self.IntervalClass(self.value[1])
+
+    # interval interface
+
+    @classmethod
+    def unison(cls):
+        """
+        Return a perfect unison (P1:0).
+        """
+        return cls.from_fifths_and_octaves(0,0)
+
+    @classmethod
+    def octave(cls):
+        """
+        Return a perfect octave (P1:1).
+        """
+        return cls.from_fifths_and_octaves(0,1)
+
+    def direction(self):
+        """
+        Return the direction of the interval (1=up / 0=neutral / -1=down).
+        All unisons are considered neutral (including augmented and diminished unisons).
+        """
+        ds = self.diatonic_steps()
+        if ds == 0:
+            return 0
+        elif ds < 0:
+            return -1
+        else:
+            return 1
+
+    def abs(self):
+        if self.direction() < 0:
+            return -self
+        else:
+            return self
+
+    def ic(self):
+        return self.to_class()
+
+    def embed(self):
+        return self
+
+    # spelled interface
+    
+    def fifths(self):
+        return self.value[1]
+
+    def octaves(self):
+        return self.value[0] + (self.fifths() * 4) // 7
+
+    def internal_octaves(self):
+        return self.value[0]
+
+    def generic(self):
+        if self.direction() < 0:
+            return -(-self).degree()
+        else:
+            return self.degree()
+
+    def diatonic_steps(self):
+        return (self.fifths() * 4) + (self.internal_octaves() * 7)
+
+    def alteration(self):
+        return (self.abs().fifths() + 1) // 7
 
 @Spelled.link_pitch_class_type()
 class SpelledPitchClass(Spelled):
+    """
+    Represents a spelled pitch class, i.e. a pitch without octave information.
+
+    The constructor takes a string consisting of the form
+    <letter><accidentals?>, e.g. "C#", "E", or "Dbb".
+    Accidentals may be written as ASCII symbols (#/b)
+    or with unicode symbols (♯/♭), but not mixed within the same note.
+    """
     def __init__(self, value):
         if isinstance(value, str):
             octaves, fifths = self.parse_pitch(value)
@@ -681,15 +976,60 @@ class SpelledPitchClass(Spelled):
         assert isinstance(fifths, numbers.Integral)
         super().__init__(value=fifths, is_pitch=True, is_class=True)
 
-    def fifth_steps(self):
+    @staticmethod
+    def from_fifths(fifths):
+        """
+        Create a pitch class by directly providing its position on the line of fifths (C=0, G=1, D=2, ...).
+        """
+        return SpelledPitchClass(fifths)
+        
+    def name(self):
+        return self.pitch_class_from_fifths(self.fifths())
+
+    # pitch interface
+
+    def pc(self):
+        return self
+
+    def embed(self):
+        return SpelledPitch.from_fifths_and_octaves(self.fifths(), -((self.fifths() * 4) // 7))
+    
+    # spelled interface
+    
+    def fifths(self):
         return self.value
 
-    def name(self):
-        return self.pitch_class_from_fifths(self.fifth_steps())
+    def octaves(self):
+        return 0
+
+    def internal_octaves(self):
+        return 0
+
+    def generic(self):
+        return self.degree()
+
+    def diatonic_steps(self):
+        return self.degree()
+
+    def alteration(self):
+        return (self.fifths() + 1) // 7
+
+    def letter(self):
+        return chr(ord('A') + (self.degree() + 2) % 7)
 
 
 @Spelled.link_interval_class_type()
 class SpelledIntervalClass(Spelled):
+    """
+    Represents a spelled interval class, i.e. an interval without octave information.
+
+    The constructor takes a string consisting of the form
+    -?<quality><generic-size>,
+    e.g. "M6", "-m3", or "aa2",
+    which stand for a major sixth, a minor third down (= major sixth up), and a double-augmented second, respectively.
+    possible qualities are d (diminished), m (minor), M (major), P (perfect), and a (augmented),
+    where d and a can be repeated.
+    """
     def __init__(self, value):
         if isinstance(value, str):
             sign, octaves, fifths = self.parse_interval(value)
@@ -703,15 +1043,76 @@ class SpelledIntervalClass(Spelled):
         assert isinstance(fifths, numbers.Integral)
         super().__init__(value=fifths, is_pitch=False, is_class=True)
 
-    def fifth_steps(self):
-        return self.value
+    @staticmethod
+    def from_fifths(fifths):
+        """
+        Create an interval class by directly providing its internal fifths.
+        """
+        return SpelledIntervalClass(fifths)
 
     def name(self, inverse=False):
         if inverse:
             sign = "-"
         else:
             sign = ""
-        return sign + self.interval_class_from_fifths(self.fifth_steps(), inverse=inverse)
+        return sign + self.interval_class_from_fifths(self.fifths(), inverse=inverse)
+
+    # interval interface
+
+    @classmethod
+    def unison(cls):
+        """
+        Return a perfect unison (P1).
+        """
+        return cls.from_fifths(0)
+
+    @classmethod
+    def octave(cls):
+        """
+        Return a perfect unison (P1), which is the same as an octave for interval classes.
+        """
+        return cls.from_fifths(0)
+    
+    def direction(self):
+        ds = self.diatonic_steps()
+        if ds == 0:
+            return 0
+        elif ds > 3:
+            return -1
+        else:
+            return 1
+
+    def abs(self):
+        if self.direction() < 0:
+            return -self
+        else:
+            return self
+        
+    def ic(self):
+        return self
+
+    def embed(self):
+        return SpelledInterval.from_fifths_and_octaves(self.fifths(), -((self.fifths() * 4) // 7))
+
+    # spelled interface
+        
+    def fifths(self):
+        return self.value
+
+    def octaves(self):
+        return 0
+
+    def internal_octaves(self):
+        return 0
+
+    def generic(self):
+        return self.degree()
+
+    def diatonic_steps(self):
+        return self.degree()
+
+    def alteration(self):
+        return (self.fifths() + 1) // 7
 
 
 class Enharmonic(AbstractBase):
@@ -777,16 +1178,7 @@ class Enharmonic(AbstractBase):
         super().__init__(value=value, is_pitch=is_pitch, is_class=is_class, **kwargs)
 
     def convert_to_logfreq(self):
-        if self.is_pitch:
-            if self.is_class:
-                return LogFreqPitchClass(self.freq(), is_freq=True)
-            else:
-                return LogFreqPitch(self.freq(), is_freq=True)
-        else:
-            if self.is_class:
-                return LogFreqIntervalClass(self.freq(), is_ratio=True)
-            else:
-                return LogFreqInterval(self.freq(), is_ratio=True)
+        raise NotImplementedError
 
     def __int__(self):
         return self.value
@@ -796,12 +1188,6 @@ class Enharmonic(AbstractBase):
 
     def name(self, *args, **kwargs):
         raise NotImplementedError
-
-    def octave(self):
-        return self.value // 12 - 1
-
-    def freq(self):
-        return 2 ** ((self.value - 69) / 12) * 440
 
 
 @Enharmonic.link_pitch_type()
@@ -817,7 +1203,16 @@ class EnharmonicPitch(Enharmonic):
             flat_sharp = self._print_flat_sharp
         if as_int:
             return str(self.value)
-        return self.pitch_class_name_from_midi(self.value, flat_sharp=flat_sharp) + str(self.octave())
+        return self.pitch_class_name_from_midi(self.value, flat_sharp=flat_sharp) + str(self.octaves())
+
+    def octaves(self):
+        return self.value // 12 - 1
+
+    def freq(self):
+        return 2 ** ((self.value - 69) / 12) * 440
+
+    def convert_to_logfreq(self):
+        return LogFreqPitch(self.freq(), is_freq=True)
 
     @property
     def midi(self):
@@ -833,6 +1228,12 @@ class EnharmonicInterval(Enharmonic):
         sign = "-" if self.value < 0 else ""
         return sign + str(abs(self.value))
 
+    def octaves(self):
+        return self.value // 12
+
+    def convert_to_logfreq(self):
+        return LogFreqInterval(2 ** (self.value / 12), is_ratio=True)
+
 
 @Enharmonic.link_pitch_class_type()
 class EnharmonicPitchClass(Enharmonic):
@@ -846,12 +1247,18 @@ class EnharmonicPitchClass(Enharmonic):
             return str(self.value)
         return self.pitch_class_name_from_midi(self.value, flat_sharp=flat_sharp)
 
+    def convert_to_logfreq(self):
+        return LogFreqPitchClass(2 ** ((self.value - 69) / 12) * 440, is_freq=True)
+
 
 @Enharmonic.link_interval_class_type()
 class EnharmonicIntervalClass(Enharmonic):
     def name(self):
         sign = "-" if self.value < 0 else ""
         return sign + str(abs(self.value))
+
+    def convert_to_logfreq(self):
+        return LogFreqIntervalClass(2 ** (self.value / 12), is_ratio=True)
 
 
 class LogFreq(AbstractBase):
@@ -873,6 +1280,13 @@ class LogFreq(AbstractBase):
             cls._print_precision = precision
         return cls._print_precision
 
+    @classmethod
+    def _convert_freq_str(cls, s):
+        if s.endswith("Hz"):
+            return float(s[:-2])
+        else:
+            raise ValueError(f"String values have to be floats followed by 'Hz', but got '{s}'")
+
     def __init__(self, value, is_pitch, is_class, is_log=True, **kwargs):
         """
         Initialise from frequency or log-frequency value.
@@ -891,7 +1305,10 @@ class LogFreq(AbstractBase):
 
 @LogFreq.link_pitch_type()
 class LogFreqPitch(LogFreq):
-    def __init__(self, value, is_freq=True, **kwargs):
+    def __init__(self, value, is_freq=False, **kwargs):
+        if isinstance(value, str):
+            value = self._convert_freq_str(value)
+            is_freq = True
         super().__init__(value, is_pitch=True, is_class=False, is_log=not is_freq, **kwargs)
 
     def __repr__(self):
@@ -906,7 +1323,10 @@ class LogFreqPitch(LogFreq):
 
 @LogFreq.link_interval_type()
 class LogFreqInterval(LogFreq):
-    def __init__(self, value, is_ratio=True, **kwargs):
+    def __init__(self, value, is_ratio=False, **kwargs):
+        if isinstance(value, str):
+            value = float(value)
+            is_ratio = True
         super().__init__(value, is_pitch=False, is_class=False, is_log=not is_ratio, **kwargs)
 
     def __repr__(self):
@@ -921,7 +1341,10 @@ class LogFreqInterval(LogFreq):
 
 @LogFreq.link_pitch_class_type()
 class LogFreqPitchClass(LogFreq):
-    def __init__(self, value, is_freq=True, **kwargs):
+    def __init__(self, value, is_freq=False, **kwargs):
+        if isinstance(value, str):
+            value = self._convert_freq_str(value)
+            is_freq = True
         if is_freq:
             value = np.log(value)
         else:
@@ -938,7 +1361,10 @@ class LogFreqPitchClass(LogFreq):
 
 @LogFreq.link_interval_class_type()
 class LogFreqIntervalClass(LogFreq):
-    def __init__(self, value, is_ratio=True, **kwargs):
+    def __init__(self, value, is_ratio=False, **kwargs):
+        if isinstance(value, str):
+            value = float(value)
+            is_ratio = True
         if is_ratio:
             value = np.log(value)
         else:
