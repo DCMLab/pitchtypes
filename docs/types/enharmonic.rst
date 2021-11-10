@@ -21,5 +21,21 @@ Enharmonic pitches can be easily created using the `Enharmonic*` constructors, a
 | ``EnharmonicPitchClass(60)``    | ``pc0``                  |
 +---------------------------------+--------------------------+
 
-Refecence
+
+Reference
 ---------
+
+.. autoclass:: pitchtypes.Enharmonic
+   :members:
+
+.. autoclass:: pitchtypes.EnharmonicPitch
+   :members:
+
+.. autoclass:: pitchtypes.EnharmonicInterval
+   :members:
+
+.. autoclass:: pitchtypes.EnharmonicPitchClass
+   :members:
+
+.. autoclass:: pitchtypes.EnharmonicIntervalClass
+   :members:

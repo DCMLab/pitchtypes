@@ -45,5 +45,21 @@ julia> freqp(220) + freqi(2) ≈ freqp(440)
 true
 ```
 
+
 Reference
 ---------
+
+.. autoclass:: pitchtypes.LogFreq
+   :members:
+
+.. autoclass:: pitchtypes.LogFreqPitch
+   :members:
+
+.. autoclass:: pitchtypes.LogFreqInterval
+   :members:
+
+.. autoclass:: pitchtypes.LogFreqPitchClass
+   :members:
+
+.. autoclass:: pitchtypes.LogFreqIntervalClass
+   :members:
