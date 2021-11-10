@@ -313,7 +313,6 @@ class AbstractBase(Object):
     def convert_to(self, other_type):
         return Converters.convert(self, other_type)
 
-
 class Harmonic(AbstractBase):
 
     @staticmethod
@@ -705,7 +704,7 @@ class SpelledPitch(Spelled):
         return self.value[0]
 
     def generic(self):
-        if self.sign() < 0:
+        if self.direction() < 0:
             return -(-self).degree()
         else:
             return self.degree()
@@ -760,7 +759,7 @@ class SpelledInterval(Spelled):
         """
         return SpelledInterval((octaves, fifths))
         
-    def sign(self):
+    def direction(self):
         ds = self.diatonic_steps()
         if ds == 0:
             return 0
@@ -791,7 +790,7 @@ class SpelledInterval(Spelled):
         #             return 1
 
     def abs(self):
-        if self.sign() < 0:
+        if self.direction() < 0:
             return -self
         else:
             return self
@@ -801,7 +800,7 @@ class SpelledInterval(Spelled):
 
     def name(self):
         octave = abs(self.octaves())
-        if self.sign() == -1:
+        if self.direction() == -1:
             # negative intervals are to be printed with "-" sign
             sign = "-"
             # in return we have to invert the interval class
@@ -830,7 +829,7 @@ class SpelledInterval(Spelled):
         return self.value[0]
 
     def generic(self):
-        if self.sign() < 0:
+        if self.direction() < 0:
             return -(-self).degree()
         else:
             return self.degree()
@@ -871,7 +870,7 @@ class SpelledPitchClass(Spelled):
         return self.pitch_class_from_fifths(self.fifths())
 
 
-    def sign(self):
+    def direction(self):
         ds = self.diatonic_steps()
         if ds == 0:
             return 0
@@ -881,7 +880,7 @@ class SpelledPitchClass(Spelled):
             return 1
 
     def abs(self):
-        if self.sign() < 0:
+        if self.direction() < 0:
             return -self
         else:
             return self
