@@ -353,12 +353,6 @@ class Interval:
         """
         pass
 
-    def to_class(self):
-        """
-        Alias for ic(), but also supported by pitch types.
-        """
-        return self.ic()
-
     def embed(self):
         """
         For interval classes, return an embedding into the interval space in a (type-dependent) default octave.
@@ -400,12 +394,6 @@ class Pitch:
         For pitch classes, it returns the pitch class itself.
         """
         pass
-
-    def to_class(self):
-        """
-        Alias for pc(), but also supported by interval types.
-        """
-        return self.pc()
 
     def embed(self):
         """
