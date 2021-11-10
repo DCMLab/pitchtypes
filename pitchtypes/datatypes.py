@@ -313,24 +313,25 @@ class AbstractBase(Object):
     def convert_to(self, other_type):
         return Converters.convert(self, other_type)
 
+
 class Interval:
     """
     The basic interface implemented by every interval (and interval class) type.
     """
 
-    @staticmethod
-    def unison():
+    @classmethod
+    def unison(cls):
         """
         Return the unison interval of this type.
         """
-        pass
+        raise NotImplementedError
 
-    @staticmethod
-    def octave():
+    @classmethod
+    def octave(cls):
         """
         Return the octave interval of this type.
         """
-        pass
+        raise NotImplementedError
 
     def direction(self):
         """
@@ -338,20 +339,20 @@ class Interval:
         1 for up, -1 for down and 0 for neutral.
         Different types may have different conventions for the direction of an interval.
         """
-        pass
+        raise NotImplementedError
 
     def abs(self):
         """
         For downward intervals, return their upward counterpart, otherwise just return the interval itself.
         """
-        pass
+        raise NotImplementedError
 
     def ic(self):
         """
         Return the interval class that corresponds to this interval.
         If the interval is already an interval class, it is returned itself.
         """
-        pass
+        raise NotImplementedError
 
     def to_class(self):
         """
@@ -364,19 +365,21 @@ class Interval:
         For interval classes, return an embedding into the interval space in a (type-dependent) default octave.
         For non-class intervals, return the interval itself.
         """
-        pass
+        raise NotImplementedError
+
 
 class Chromatic:
     """
     Some intervals have the notion of a chromatic semitone and implement this interface.
     """
 
-    @staticmethod
-    def chromatic_semitone():
+    @classmethod
+    def chromatic_semitone(cls):
         """
         Return a chromatic semitone (augmented unison) of this type.
         """
-        pass
+        raise NotImplementedError
+
 
 class Diatonic:
     """
@@ -387,7 +390,8 @@ class Diatonic:
         """
         Return True if the interval is considered a step, False otherwise.
         """
-        pass
+        raise NotImplementedError
+
 
 class Pitch:
     """
@@ -399,7 +403,7 @@ class Pitch:
         Returns the pitch class corresponding to the pitch.
         For pitch classes, it returns the pitch class itself.
         """
-        pass
+        raise NotImplementedError
 
     def to_class(self):
         """
@@ -412,7 +416,8 @@ class Pitch:
         For a pitch class, returns the corresponding pitch in a (type-dependent) default octave.
         For non-class pitches, returns the pitch itself.
         """
-        pass
+        raise NotImplementedError
+
 
 class Harmonic(AbstractBase):
 
@@ -969,7 +974,6 @@ class SpelledPitchClass(Spelled):
         
     def name(self):
         return self.pitch_class_from_fifths(self.fifths())
-
 
     def direction(self):
         ds = self.diatonic_steps()

@@ -55,12 +55,17 @@ class TestSpelled(TestCase):
             for idx, p in enumerate(self.line_of_fifths):
                 if is_class:
                     pp = SpelledPitchClass(p)
+                    # test factory functions
+                    self.assertEqual(pp, SpelledPitchClass.from_fifths(fifths=pp.fifths()))
                     # check conversion to enharmonic
                     self.assertEqual(pp.convert_to_enharmonic(), Enharmonic.PitchClass(p))
                     self.assertEqual(pp.convert_to(Enharmonic.PitchClass), Enharmonic.PitchClass(p))
                 else:
                     p += "4"
                     pp = SpelledPitch(p)
+                    # test factory functions
+                    self.assertEqual(pp, SpelledPitch.from_fifths_and_octaves(fifths=pp.fifths(),
+                                                                              octaves=pp.internal_octaves()))
                     # check conversion to enharmonic
                     self.assertEqual(pp.convert_to_enharmonic(), Enharmonic.Pitch(p))
                     self.assertEqual(pp.convert_to(Enharmonic.Pitch), Enharmonic.Pitch(p))
@@ -88,6 +93,8 @@ class TestSpelled(TestCase):
                     # create objects
                     interval = SpelledIntervalClass(interval_class_str)
                     inverse_interval = SpelledIntervalClass(inverse_interval_class_str)
+                    # test factory functions
+                    self.assertEqual(interval, SpelledIntervalClass.from_fifths(fifths=interval.fifths()))
                     # check conversion to enharmonic
                     self.assertEqual(interval.convert_to_enharmonic(),
                                      Enharmonic.IntervalClass(interval_class_str))
@@ -104,6 +111,10 @@ class TestSpelled(TestCase):
                     self.assertEqual(interval.octaves(),
                                      interval.value[0] + interval.diatonic_steps_from_fifths(interval.fifths()) // 7)
                     self.assertEqual(interval.internal_octaves(), interval.value[0])
+                    # test factory functions
+                    self.assertEqual(interval,
+                                     SpelledInterval.from_fifths_and_octaves(fifths=interval.fifths(),
+                                                                             octaves=interval.internal_octaves()))
                     # check conversion to enharmonic
                     self.assertEqual(interval.convert_to_enharmonic(),
                                      Enharmonic.Interval(interval_class_str))
@@ -205,6 +216,7 @@ class TestSpelled(TestCase):
         self.assertRaises(NotImplementedError, lambda: s.internal_octaves())
         self.assertRaises(NotImplementedError, lambda: s.generic())
         self.assertRaises(NotImplementedError, lambda: s.alteration())
+        self.assertRaises(NotImplementedError, lambda: s.diatonic_steps())
 
     def test_spelled_accessors(self):
         self.assertEqual(SpelledInterval("M3:1").octaves(),  1)
