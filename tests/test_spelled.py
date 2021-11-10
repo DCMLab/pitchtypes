@@ -67,24 +67,25 @@ class TestSpelled(TestCase):
                     # test embed()
                     self.assertEqual(str(pp) + "0", str(pp.embed()))
                 else:
-                    p_oct = p + "4"
-                    pp = SpelledPitch(p_oct)
-                    # test factory functions
-                    self.assertEqual(pp, SpelledPitch.from_fifths_and_octaves(fifths=pp.fifths(),
-                                                                              octaves=pp.internal_octaves()))
-                    # check conversion to enharmonic
-                    self.assertEqual(pp.convert_to_enharmonic(), Enharmonic.Pitch(p_oct))
-                    self.assertEqual(pp.convert_to(Enharmonic.Pitch), Enharmonic.Pitch(p_oct))
-                    # check octaves / internal octaves
-                    self.assertEqual(pp.octaves(), pp.value[0] + (pp.fifths() * 4) // 7)
-                    self.assertEqual(pp.internal_octaves(), pp.value[0])
-                    # test class conversion
-                    self.assertEqual(pp.to_class(), SpelledPitchClass(p))
-                    self.assertEqual(pp.pc(), SpelledPitchClass(p))
-                    # test string representation
-                    self.assertEqual(str(pp), p_oct)
-                    # test embed()
-                    self.assertEqual(pp, pp.embed())
+                    for oct in range(-3, 10):
+                        p_oct = p + str(oct)
+                        pp = SpelledPitch(p_oct)
+                        # test factory functions
+                        self.assertEqual(pp, SpelledPitch.from_fifths_and_octaves(fifths=pp.fifths(),
+                                                                                  octaves=pp.internal_octaves()))
+                        # check conversion to enharmonic
+                        self.assertEqual(pp.convert_to_enharmonic(), Enharmonic.Pitch(p_oct))
+                        self.assertEqual(pp.convert_to(Enharmonic.Pitch), Enharmonic.Pitch(p_oct))
+                        # check octaves / internal octaves
+                        self.assertEqual(pp.octaves(), pp.value[0] + (pp.fifths() * 4) // 7)
+                        self.assertEqual(pp.internal_octaves(), pp.value[0])
+                        # test class conversion
+                        self.assertEqual(pp.to_class(), SpelledPitchClass(p))
+                        self.assertEqual(pp.pc(), SpelledPitchClass(p))
+                        # test string representation
+                        self.assertEqual(str(pp), p_oct)
+                        # test embed()
+                        self.assertEqual(pp, pp.embed())
                 # check base type is set on object
                 self.assertEqual(pp._base_type, Spelled)
                 # check class property is correct
@@ -121,31 +122,32 @@ class TestSpelled(TestCase):
                     self.assertEqual(interval_class_str, str(interval))
                     self.assertEqual(interval_class_str, interval.name())
                 else:
-                    # add octave for non-class
-                    interval_str = interval_class_str + ":4"
-                    inverse_interval_str = inverse_interval_class_str + ":4"
-                    # create objects
-                    interval = SpelledInterval(interval_str)
-                    inverse_interval = SpelledInterval(inverse_interval_str)
-                    # check octaves / internal octaves
-                    self.assertEqual(interval.octaves(),
-                                     interval.value[0] + interval.diatonic_steps_from_fifths(interval.fifths()) // 7)
-                    self.assertEqual(interval.internal_octaves(), interval.value[0])
-                    # test factory functions
-                    self.assertEqual(interval,
-                                     SpelledInterval.from_fifths_and_octaves(fifths=interval.fifths(),
-                                                                             octaves=interval.internal_octaves()))
-                    # check conversion to enharmonic
-                    self.assertEqual(interval.convert_to_enharmonic(), Enharmonic.Interval(interval_str))
-                    self.assertEqual(interval.convert_to(Enharmonic.Interval), Enharmonic.Interval(interval_str))
-                    # test class conversion
-                    self.assertEqual(interval.to_class(), SpelledIntervalClass(interval_class_str))
-                    self.assertEqual(interval.ic(), SpelledIntervalClass(interval_class_str))
-                    # test embed()
-                    self.assertEqual(interval, interval.embed())
-                    # test print output
-                    self.assertEqual(interval_class_str + ":4", str(interval))
-                    self.assertEqual(interval_class_str + ":4", interval.name())
+                    for oct in range(0, 10):
+                        # add octave for non-class
+                        interval_str = interval_class_str + f":{oct}"
+                        inverse_interval_str = inverse_interval_class_str + f":{oct}"
+                        # create objects
+                        interval = SpelledInterval(interval_str)
+                        inverse_interval = SpelledInterval(inverse_interval_str)
+                        # check octaves / internal octaves
+                        self.assertEqual(interval.octaves(),
+                                         interval.value[0] + interval.diatonic_steps_from_fifths(interval.fifths()) // 7)
+                        self.assertEqual(interval.internal_octaves(), interval.value[0])
+                        # test factory functions
+                        self.assertEqual(interval,
+                                         SpelledInterval.from_fifths_and_octaves(fifths=interval.fifths(),
+                                                                                 octaves=interval.internal_octaves()))
+                        # check conversion to enharmonic
+                        self.assertEqual(interval.convert_to_enharmonic(), Enharmonic.Interval(interval_str))
+                        self.assertEqual(interval.convert_to(Enharmonic.Interval), Enharmonic.Interval(interval_str))
+                        # test class conversion
+                        self.assertEqual(interval.to_class(), SpelledIntervalClass(interval_class_str))
+                        self.assertEqual(interval.ic(), SpelledIntervalClass(interval_class_str))
+                        # test embed()
+                        self.assertEqual(interval, interval.embed())
+                        # test print output
+                        self.assertEqual(interval_str, str(interval))
+                        self.assertEqual(interval_str, interval.name())
                 # check link to base type
                 self.assertEqual(interval._base_type, Spelled)
                 self.assertEqual(inverse_interval._base_type, Spelled)
