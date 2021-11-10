@@ -313,6 +313,106 @@ class AbstractBase(Object):
     def convert_to(self, other_type):
         return Converters.convert(self, other_type)
 
+class Interval:
+    """
+    The basic interface implemented by every interval (and interval class) type.
+    """
+
+    @staticmethod
+    def unison():
+        """
+        Return the unison interval of this type.
+        """
+        pass
+
+    @staticmethod
+    def octave():
+        """
+        Return the octave interval of this type.
+        """
+        pass
+
+    def direction(self):
+        """
+        Return the direction of the interval:
+        1 for up, -1 for down and 0 for neutral.
+        Different types may have different conventions for the direction of an interval.
+        """
+        pass
+
+    def abs(self):
+        """
+        For downward intervals, return their upward counterpart, otherwise just return the interval itself.
+        """
+        pass
+
+    def ic(self):
+        """
+        Return the interval class that corresponds to this interval.
+        If the interval is already an interval class, it is returned itself.
+        """
+        pass
+
+    def to_class(self):
+        """
+        Alias for ic(), but also supported by pitch types.
+        """
+        return self.ic()
+
+    def embed(self):
+        """
+        For interval classes, return an embedding into the interval space in a (type-dependent) default octave.
+        For non-class intervals, return the interval itself.
+        """
+        pass
+
+class Chromatic:
+    """
+    Some intervals have the notion of a chromatic semitone and implement this interface.
+    """
+
+    @staticmethod
+    def chromatic_semitone():
+        """
+        Return a chromatic semitone (augmented unison) of this type.
+        """
+        pass
+
+class Diatonic:
+    """
+    Some intervals have a notion of a diatonic step and implement this interface.
+    """
+
+    def is_step(self):
+        """
+        Return True if the interval is considered a step, False otherwise.
+        """
+        pass
+
+class Pitch:
+    """
+    The basic interface that is implemented by every pitch (and pitch class) type.
+    """
+
+    def pc(self):
+        """
+        Returns the pitch class corresponding to the pitch.
+        For pitch classes, it returns the pitch class itself.
+        """
+        pass
+
+    def to_class(self):
+        """
+        Alias for pc(), but also supported by interval types.
+        """
+        return self.pc()
+
+    def embed(self):
+        """
+        For a pitch class, returns the corresponding pitch in a (type-dependent) default octave.
+        For non-class pitches, returns the pitch itself.
+        """
+        pass
 
 class Harmonic(AbstractBase):
 
@@ -705,7 +805,7 @@ class SpelledPitch(Spelled):
         return self.value[0]
 
     def generic(self):
-        if self.sign() < 0:
+        if self.direction() < 0:
             return -(-self).degree()
         else:
             return self.degree()
@@ -760,7 +860,7 @@ class SpelledInterval(Spelled):
         """
         return SpelledInterval((octaves, fifths))
         
-    def sign(self):
+    def direction(self):
         ds = self.diatonic_steps()
         if ds == 0:
             return 0
@@ -791,7 +891,7 @@ class SpelledInterval(Spelled):
         #             return 1
 
     def abs(self):
-        if self.sign() < 0:
+        if self.direction() < 0:
             return -self
         else:
             return self
@@ -801,7 +901,7 @@ class SpelledInterval(Spelled):
 
     def name(self):
         octave = abs(self.octaves())
-        if self.sign() == -1:
+        if self.direction() == -1:
             # negative intervals are to be printed with "-" sign
             sign = "-"
             # in return we have to invert the interval class
@@ -830,7 +930,7 @@ class SpelledInterval(Spelled):
         return self.value[0]
 
     def generic(self):
-        if self.sign() < 0:
+        if self.direction() < 0:
             return -(-self).degree()
         else:
             return self.degree()
@@ -871,7 +971,7 @@ class SpelledPitchClass(Spelled):
         return self.pitch_class_from_fifths(self.fifths())
 
 
-    def sign(self):
+    def direction(self):
         ds = self.diatonic_steps()
         if ds == 0:
             return 0
@@ -881,7 +981,7 @@ class SpelledPitchClass(Spelled):
             return 1
 
     def abs(self):
-        if self.sign() < 0:
+        if self.direction() < 0:
             return -self
         else:
             return self
