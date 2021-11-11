@@ -1,7 +1,6 @@
 #  Copyright (c) 2020 Robert Lieck
 
 import numpy as np
-from typing import Any
 
 
 class AbstractBase:
@@ -251,21 +250,22 @@ class AbstractBase:
             return cls
         return decorator
 
-    # type hints for class attributes set below
-    is_pitch: bool
-    is_interval: bool
-    is_class: bool
-    value: Any
-
     def __init__(self, value, is_pitch, is_class, **kwargs):
         # call __init__ on super to be cooperative in multi-inheritance,
         # otherwise this should just call object.__init__ and **kwargs should be empty
         super().__init__(**kwargs)
-        # initialise values (use Object's __setattr__ because the class is frozen)
-        self.setattr('is_pitch', is_pitch)
-        self.setattr('is_interval', not is_pitch)
-        self.setattr('is_class', is_class)
-        self.setattr('value', value)
+        # the class is frozen if __isfrozen__ == True
+        # __setattr__ will check for that and raise an error
+        # to set __isfrozen__ for the first time, we need to bypass __setattr__ via super
+        # otherwise it would try to check on the not (yet) existing attribute
+        super().__setattr__('__isfrozen__', False)
+        # we can now set attributes normally (better than dynamically setting, because IDE's can autocomplete)
+        self.is_pitch = is_pitch
+        self.is_interval = not is_pitch
+        self.is_class = is_class
+        self.value = value
+        # we now freeze the class so attributes cannot be changed anymore
+        self.__isfrozen__ = True
 
     def setattr(self, name, value):
         """
@@ -278,7 +278,10 @@ class AbstractBase:
         super(AbstractBase, self).__setattr__(name, value)
 
     def __setattr__(self, key, value):
-        raise AttributeError("Class is frozen, attributes cannot be set")
+        if self.__isfrozen__:
+            raise AttributeError("Class is frozen, attributes cannot be set")
+        else:
+            super().__setattr__(key, value)
 
     def __repr__(self):
         return f"{self.__class__.__name__}({self.value})"
