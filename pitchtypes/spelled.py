@@ -486,7 +486,7 @@ class SpelledInterval(Spelled, Interval, Diatonic, Chromatic):
 
 
 @Spelled.link_pitch_class_type()
-class SpelledPitchClass(Spelled):
+class SpelledPitchClass(Spelled, Pitch):
     """
     Represents a spelled pitch class, i.e. a pitch without octave information.
 
@@ -547,7 +547,7 @@ class SpelledPitchClass(Spelled):
 
 
 @Spelled.link_interval_class_type()
-class SpelledIntervalClass(Spelled):
+class SpelledIntervalClass(Spelled, Interval, Diatonic, Chromatic):
     """
     Represents a spelled interval class, i.e. an interval without octave information.
 
