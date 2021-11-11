@@ -15,6 +15,7 @@ Welcome to pitchtypes's documentation!
    types/enharmonic
    types/frequencies
    types/harmonic
+   api_summary
 
 
 A library for **handling musical pitches and intervals in a systematic way**.
