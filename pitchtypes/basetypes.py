@@ -1,18 +1,55 @@
 #  Copyright (c) 2020 Robert Lieck
+from typing import Iterable, Union, Any, Callable, Optional
 
 import numpy as np
 
 
 class AbstractBase:
+    """
+    This is the abstract base class for all pitch and interval types of the library.
+    It provides some shared functionality and properties. See :doc:`/types/abstractbase` for
+    more detailed explanations.
+    """
 
     @staticmethod
-    def set_func_attr(sub_type, flags, names, funcs):
+    def set_func_attr(sub_type: Any,
+                      flags: Iterable[Union[bool,None]],
+                      names: Iterable[str],
+                      funcs: Iterable[Callable]):
+        """
+        Add functions ``funcs`` as methods with ``names`` to class ``sub_type``, controlled by ``flags``.
+        This is used by the decorators
+        :meth:`link_pitch_type`, :meth:`link_interval_type`,
+        :meth:`link_pitch_class_type` and :meth:`link_interval_class_type`.
+
+        :param sub_type: class to add the methods to
+        :param flags: Iterable of flags that control whether a particular method is added or not:
+         if `True`, add the method, even if it already exists (i.e. overwrite existing methods);
+         if `False`, don't add the method, even if it does not exist;
+         if `None`, add the method if does not exist, otherwise do not add it
+         (i.e. try to add but don't overwrite existing methods)
+        :param names: name of the methods; if added, they will be accessible as via `*.name`
+        :param funcs: callables (i.e. implementations of the methods)
+        """
         for flag, name, func in zip(flags, names, funcs):
             if flag or flag is None and name not in vars(sub_type):
                 setattr(sub_type, name, func)
 
     @staticmethod
-    def name_check(cls, sub_type, suffix, skip_name_check):
+    def name_check(cls: Any, sub_type: Any, suffix: str, skip_name_check: bool):
+        """
+        Check if ``sub_type`` follows the standard naming convention. The `Pitch`, `Interval`, `PitchClass` and
+        `IntervalClass` sub-type of a `Basetype` should be called `BasetypePitch`, `BasetypeInterval`,
+        `BasetypePitchClass` and `BasetypeIntervalClass`. This is used by the decorators
+        :meth:`link_pitch_type`, :meth:`link_interval_type`,
+        :meth:`link_pitch_class_type` and :meth:`link_interval_class_type`.
+
+        :param cls: base type
+        :param sub_type: sub-type
+        :param suffix: expected suffix (`Pitch`, `Interval`, `PitchClass`, or `IntervalClass`)
+        :param skip_name_check: skip the check and don't raise
+        :raises TypeError: if `sub_type.__name__` does not match `cls.__name__ + suffix`
+        """
         if not skip_name_check:
             got_name = sub_type.__name__
             expected_name = cls.__name__ + suffix
@@ -22,11 +59,14 @@ class AbstractBase:
 
     @classmethod
     def link_pitch_type(cls,
-                        skip_name_check=False,
-                        create_init=None,
-                        create_add=None,
-                        create_sub=None,
-                        create_to_class=None):
+                        skip_name_check: bool = False,
+                        create_init: Optional[bool] = None,
+                        create_add: Optional[bool] = None,
+                        create_sub: Optional[bool] = None,
+                        create_to_class: Optional[bool] = None):
+        """
+        A decorator to link a pitch type to its base type.
+        """
         def decorator(sub_type):
             # link types
             cls.Pitch = sub_type
@@ -65,14 +105,17 @@ class AbstractBase:
 
     @classmethod
     def link_interval_type(cls,
-                           skip_name_check=False,
-                           create_init=None,
-                           create_add=None,
-                           create_sub=None,
-                           create_mul=None,
-                           create_div=None,
-                           create_neg=None,
-                           create_to_class=None):
+                           skip_name_check: bool = False,
+                           create_init: Optional[bool] = None,
+                           create_add: Optional[bool] = None,
+                           create_sub: Optional[bool] = None,
+                           create_mul: Optional[bool] = None,
+                           create_div: Optional[bool] = None,
+                           create_neg: Optional[bool] = None,
+                           create_to_class: Optional[bool] = None):
+        """
+        A decorator to link an interval type to its base type.
+        """
         def decorator(sub_type):
             # link types
             cls.Interval = sub_type
@@ -123,10 +166,13 @@ class AbstractBase:
 
     @classmethod
     def link_pitch_class_type(cls,
-                              skip_name_check=False,
-                              create_init=None,
-                              create_add=None,
-                              create_sub=None):
+                              skip_name_check: bool = False,
+                              create_init: Optional[bool] = None,
+                              create_add: Optional[bool] = None,
+                              create_sub: Optional[bool] = None):
+        """
+        A decorator to link a pitch class type to its base type.
+        """
         def decorator(sub_type):
             # link types
             cls.PitchClass = sub_type
@@ -162,13 +208,16 @@ class AbstractBase:
 
     @classmethod
     def link_interval_class_type(cls,
-                                 skip_name_check=False,
-                                 create_init=None,
-                                 create_add=None,
-                                 create_sub=None,
-                                 create_mul=None,
-                                 create_div=None,
-                                 create_neg=None):
+                                 skip_name_check: bool = False,
+                                 create_init: Optional[bool] = None,
+                                 create_add: Optional[bool] = None,
+                                 create_sub: Optional[bool] = None,
+                                 create_mul: Optional[bool] = None,
+                                 create_div: Optional[bool] = None,
+                                 create_neg: Optional[bool] = None):
+        """
+        A decorator to link an interval class type to its base type.
+        """
         def decorator(sub_type):
             # link types
             cls.IntervalClass = sub_type
