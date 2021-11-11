@@ -453,6 +453,13 @@ class SpelledInterval(Spelled, Interval, Diatonic, Chromatic):
 
     def embed(self):
         return self
+    
+    @classmethod
+    def chromatic_semitone(cls):
+        return SpelledInterval.from_fifths_and_octaves(7,-4)
+
+    def is_step(self):
+        return abs(self.diatonic_steps()) <= 1
 
     # spelled interface
 
@@ -479,7 +486,7 @@ class SpelledInterval(Spelled, Interval, Diatonic, Chromatic):
 
 
 @Spelled.link_pitch_class_type()
-class SpelledPitchClass(Spelled):
+class SpelledPitchClass(Spelled, Pitch):
     """
     Represents a spelled pitch class, i.e. a pitch without octave information.
 
@@ -540,7 +547,7 @@ class SpelledPitchClass(Spelled):
 
 
 @Spelled.link_interval_class_type()
-class SpelledIntervalClass(Spelled):
+class SpelledIntervalClass(Spelled, Interval, Diatonic, Chromatic):
     """
     Represents a spelled interval class, i.e. an interval without octave information.
 
@@ -614,6 +621,13 @@ class SpelledIntervalClass(Spelled):
 
     def embed(self):
         return SpelledInterval.from_fifths_and_octaves(self.fifths(), -((self.fifths() * 4) // 7))
+
+    @classmethod
+    def chromatic_semitone(cls):
+        return SpelledIntervalClass.from_fifths(7)
+
+    def is_step(self):
+        return self.degree() in [0,1,6]
 
     # spelled interface
 

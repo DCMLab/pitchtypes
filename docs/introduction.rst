@@ -7,6 +7,7 @@ This is much like the relation between vectors (= intervals) and points (= pitch
 For example, the pitch ``E♭4`` can be represented as an interval (e.g. a minor third, ``m3:0``)
 above a reference pitch such as Middle C (``C4``).
 Intervals and Pitches come in families of four variants:
+
 * ``*Interval`` represents a normal interval
 * ``*Pitch`` represents a normal pitch
 * ``*IntervalClass`` represents an interval with octave equivalence
@@ -17,9 +18,10 @@ such as addition and scalar multiplication.
 
 The following representations of intervals and pitches are implemented so far:
 
-* [spelled](types/spelled): based on Western notation
-* [enharmonic](types/enharmonic): based on the chromatic 12-tone system
-* [frequency](types/frequencies): based on the frequency of a sound wave
+* :doc:`spelled <types/spelled>`: based on Western notation
+* :doc:`enharmonic <types/enharmonic>`: based on the chromatic 12-tone system (WIP)
+* :doc:`frequency <types/frequencies>`: based on the frequencies and frequency ratios (WIP)
+* :doc:`harmonic <types/harmonic>`: based prime-factorized just intervals (very WIP)
 
 Generic Operations
 ------------------
