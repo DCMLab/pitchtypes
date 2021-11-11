@@ -1,5 +1,6 @@
 import re
 from unittest import TestCase
+
 from pitchtypes import Spelled, SpelledPitch, SpelledInterval, SpelledPitchClass, SpelledIntervalClass, Enharmonic
 
 
@@ -68,7 +69,6 @@ class TestSpelled(TestCase):
                     # test factory functions
                     self.assertEqual(pp, SpelledPitchClass.from_fifths(fifths=pp.fifths()))
                     # check conversion to enharmonic
-                    self.assertEqual(pp.convert_to_enharmonic(), Enharmonic.PitchClass(p))
                     self.assertEqual(pp.convert_to(Enharmonic.PitchClass), Enharmonic.PitchClass(p))
                     # test class conversion
                     self.assertEqual(pp, pp.pc())
@@ -85,7 +85,6 @@ class TestSpelled(TestCase):
                         self.assertEqual(pp, SpelledPitch.from_fifths_and_octaves(fifths=pp.fifths(),
                                                                                   octaves=pp.internal_octaves()))
                         # check conversion to enharmonic
-                        self.assertEqual(pp.convert_to_enharmonic(), Enharmonic.Pitch(p_oct))
                         self.assertEqual(pp.convert_to(Enharmonic.Pitch), Enharmonic.Pitch(p_oct))
                         # check octaves / internal octaves
                         self.assertEqual(pp.octaves(), pp.value[0] + (pp.fifths() * 4) // 7)
@@ -119,8 +118,6 @@ class TestSpelled(TestCase):
                     # test factory functions
                     self.assertEqual(interval, SpelledIntervalClass.from_fifths(fifths=interval.fifths()))
                     # check conversion to enharmonic
-                    self.assertEqual(interval.convert_to_enharmonic(),
-                                     Enharmonic.IntervalClass(interval_class_str))
                     self.assertEqual(interval.convert_to(Enharmonic.IntervalClass),
                                      Enharmonic.IntervalClass(interval_class_str))
                     # test class conversion
@@ -151,7 +148,6 @@ class TestSpelled(TestCase):
                                          SpelledInterval.from_fifths_and_octaves(fifths=interval.fifths(),
                                                                                  octaves=interval.internal_octaves()))
                         # check conversion to enharmonic
-                        self.assertEqual(interval.convert_to_enharmonic(), Enharmonic.Interval(interval_str))
                         self.assertEqual(interval.convert_to(Enharmonic.Interval), Enharmonic.Interval(interval_str))
                         # test class conversion
                         self.assertEqual(interval.to_class(), SpelledIntervalClass(interval_class_str))

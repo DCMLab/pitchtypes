@@ -1,8 +1,9 @@
 from unittest import TestCase
-from pitchtypes import AbstractBase
-import numpy as np
 from itertools import product
 
+import numpy as np
+
+from pitchtypes import AbstractBase
 
 class TestAbstractPitch(TestCase):
 
