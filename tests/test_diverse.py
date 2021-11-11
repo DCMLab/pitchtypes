@@ -1,5 +1,6 @@
 from unittest import TestCase
-from pitchtypes import AbstractBase, Enharmonic, Converters
+
+from pitchtypes import AbstractBase
 
 
 class TestConverters(TestCase):

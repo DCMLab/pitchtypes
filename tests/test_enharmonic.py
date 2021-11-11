@@ -1,7 +1,8 @@
-from unittest import TestCase
-from pitchtypes import Enharmonic, EnharmonicPitch, EnharmonicInterval, EnharmonicPitchClass, EnharmonicIntervalClass
 import io
 import sys
+from unittest import TestCase
+
+from pitchtypes import Enharmonic, EnharmonicPitch, EnharmonicInterval, EnharmonicPitchClass, EnharmonicIntervalClass
 
 
 class TestEnharmonic(TestCase):

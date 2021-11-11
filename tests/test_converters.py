@@ -1,5 +1,6 @@
 #  Copyright (c) 2020 Robert Lieck
 from unittest import TestCase
+
 from pitchtypes import AbstractBase, Converters
 
 
