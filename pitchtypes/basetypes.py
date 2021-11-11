@@ -4,15 +4,7 @@ import numpy as np
 from typing import Any
 
 
-class Object:
-    """
-    This class provides an intermediate layer between 'object' and AbstractBase class to allow for freezing
-    AbstractBase but still set attributes in the __init__ method.
-    """
-    pass
-
-
-class AbstractBase(Object):
+class AbstractBase:
 
     @staticmethod
     def set_func_attr(sub_type, flags, names, funcs):
@@ -283,7 +275,7 @@ class AbstractBase(Object):
         :param name: name of the attribute
         :param value: value of the attribute
         """
-        super(Object, self).__setattr__(name, value)
+        super(AbstractBase, self).__setattr__(name, value)
 
     def __setattr__(self, key, value):
         raise AttributeError("Class is frozen, attributes cannot be set")
