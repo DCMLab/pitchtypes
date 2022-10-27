@@ -15,6 +15,7 @@ Welcome to pitchtypes's documentation!
    types/enharmonic
    types/frequencies
    types/harmonic
+   types/abstractbase
    api_summary
 
 

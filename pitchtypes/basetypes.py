@@ -1,27 +1,55 @@
 #  Copyright (c) 2020 Robert Lieck
+from typing import Iterable, Union, Any, Callable, Optional
 
 import numpy as np
-from typing import Any
 import abc
 
-class Object:
+class AbstractBase:
     """
-    This class provides an intermediate layer between 'object' and AbstractBase class to allow for freezing
-    AbstractBase but still set attributes in the __init__ method.
+    This is the abstract base class for all pitch and interval types of the library.
+    It provides some shared functionality and properties. See :doc:`/types/abstractbase` for
+    more detailed explanations.
     """
-    pass
-
-
-class AbstractBase(Object):
 
     @staticmethod
-    def set_func_attr(sub_type, flags, names, funcs):
+    def set_func_attr(sub_type: Any,
+                      flags: Iterable[Union[bool,None]],
+                      names: Iterable[str],
+                      funcs: Iterable[Callable]):
+        """
+        Add functions ``funcs`` as methods with ``names`` to class ``sub_type``, controlled by ``flags``.
+        This is used by the decorators
+        :meth:`link_pitch_type`, :meth:`link_interval_type`,
+        :meth:`link_pitch_class_type` and :meth:`link_interval_class_type`.
+
+        :param sub_type: class to add the methods to
+        :param flags: Iterable of flags that control whether a particular method is added or not:
+         if `True`, add the method, even if it already exists (i.e. overwrite existing methods);
+         if `False`, don't add the method, even if it does not exist;
+         if `None`, add the method if does not exist, otherwise do not add it
+         (i.e. try to add but don't overwrite existing methods)
+        :param names: name of the methods; if added, they will be accessible as via `*.name`
+        :param funcs: callables (i.e. implementations of the methods)
+        """
         for flag, name, func in zip(flags, names, funcs):
             if flag or flag is None and name not in vars(sub_type):
                 setattr(sub_type, name, func)
 
     @staticmethod
-    def name_check(cls, sub_type, suffix, skip_name_check):
+    def name_check(cls: Any, sub_type: Any, suffix: str, skip_name_check: bool):
+        """
+        Check if ``sub_type`` follows the standard naming convention. The `Pitch`, `Interval`, `PitchClass` and
+        `IntervalClass` sub-type of a `Basetype` should be called `BasetypePitch`, `BasetypeInterval`,
+        `BasetypePitchClass` and `BasetypeIntervalClass`. This is used by the decorators
+        :meth:`link_pitch_type`, :meth:`link_interval_type`,
+        :meth:`link_pitch_class_type` and :meth:`link_interval_class_type`.
+
+        :param cls: base type
+        :param sub_type: sub-type
+        :param suffix: expected suffix (`Pitch`, `Interval`, `PitchClass`, or `IntervalClass`)
+        :param skip_name_check: skip the check and don't raise
+        :raises TypeError: if `sub_type.__name__` does not match `cls.__name__ + suffix`
+        """
         if not skip_name_check:
             got_name = sub_type.__name__
             expected_name = cls.__name__ + suffix
@@ -31,11 +59,14 @@ class AbstractBase(Object):
 
     @classmethod
     def link_pitch_type(cls,
-                        skip_name_check=False,
-                        create_init=None,
-                        create_add=None,
-                        create_sub=None,
-                        create_to_class=None):
+                        skip_name_check: bool = False,
+                        create_init: Optional[bool] = None,
+                        create_add: Optional[bool] = None,
+                        create_sub: Optional[bool] = None,
+                        create_to_class: Optional[bool] = None):
+        """
+        A decorator to link a pitch type to its base type.
+        """
         def decorator(sub_type):
             # link types
             cls.Pitch = sub_type
@@ -74,14 +105,17 @@ class AbstractBase(Object):
 
     @classmethod
     def link_interval_type(cls,
-                           skip_name_check=False,
-                           create_init=None,
-                           create_add=None,
-                           create_sub=None,
-                           create_mul=None,
-                           create_div=None,
-                           create_neg=None,
-                           create_to_class=None):
+                           skip_name_check: bool = False,
+                           create_init: Optional[bool] = None,
+                           create_add: Optional[bool] = None,
+                           create_sub: Optional[bool] = None,
+                           create_mul: Optional[bool] = None,
+                           create_div: Optional[bool] = None,
+                           create_neg: Optional[bool] = None,
+                           create_to_class: Optional[bool] = None):
+        """
+        A decorator to link an interval type to its base type.
+        """
         def decorator(sub_type):
             # link types
             cls.Interval = sub_type
@@ -132,10 +166,13 @@ class AbstractBase(Object):
 
     @classmethod
     def link_pitch_class_type(cls,
-                              skip_name_check=False,
-                              create_init=None,
-                              create_add=None,
-                              create_sub=None):
+                              skip_name_check: bool = False,
+                              create_init: Optional[bool] = None,
+                              create_add: Optional[bool] = None,
+                              create_sub: Optional[bool] = None):
+        """
+        A decorator to link a pitch class type to its base type.
+        """
         def decorator(sub_type):
             # link types
             cls.PitchClass = sub_type
@@ -171,13 +208,16 @@ class AbstractBase(Object):
 
     @classmethod
     def link_interval_class_type(cls,
-                                 skip_name_check=False,
-                                 create_init=None,
-                                 create_add=None,
-                                 create_sub=None,
-                                 create_mul=None,
-                                 create_div=None,
-                                 create_neg=None):
+                                 skip_name_check: bool = False,
+                                 create_init: Optional[bool] = None,
+                                 create_add: Optional[bool] = None,
+                                 create_sub: Optional[bool] = None,
+                                 create_mul: Optional[bool] = None,
+                                 create_div: Optional[bool] = None,
+                                 create_neg: Optional[bool] = None):
+        """
+        A decorator to link an interval class type to its base type.
+        """
         def decorator(sub_type):
             # link types
             cls.IntervalClass = sub_type
@@ -259,21 +299,22 @@ class AbstractBase(Object):
             return cls
         return decorator
 
-    # type hints for class attributes set below
-    is_pitch: bool
-    is_interval: bool
-    is_class: bool
-    value: Any
-
     def __init__(self, value, is_pitch, is_class, **kwargs):
         # call __init__ on super to be cooperative in multi-inheritance,
         # otherwise this should just call object.__init__ and **kwargs should be empty
         super().__init__(**kwargs)
-        # initialise values (use Object's __setattr__ because the class is frozen)
-        self.setattr('is_pitch', is_pitch)
-        self.setattr('is_interval', not is_pitch)
-        self.setattr('is_class', is_class)
-        self.setattr('value', value)
+        # the class is frozen if __isfrozen__ == True
+        # __setattr__ will check for that and raise an error
+        # to set __isfrozen__ for the first time, we need to bypass __setattr__ via super
+        # otherwise it would try to check on the not (yet) existing attribute
+        super().__setattr__('__isfrozen__', False)
+        # we can now set attributes normally (better than dynamically setting, because IDE's can autocomplete)
+        self.is_pitch = is_pitch
+        self.is_interval = not is_pitch
+        self.is_class = is_class
+        self.value = value
+        # we now freeze the class so attributes cannot be changed anymore
+        self.__isfrozen__ = True
 
     def setattr(self, name, value):
         """
@@ -283,10 +324,13 @@ class AbstractBase(Object):
         :param name: name of the attribute
         :param value: value of the attribute
         """
-        super(Object, self).__setattr__(name, value)
+        super(AbstractBase, self).__setattr__(name, value)
 
     def __setattr__(self, key, value):
-        raise AttributeError("Class is frozen, attributes cannot be set")
+        if self.__isfrozen__:
+            raise AttributeError("Class is frozen, attributes cannot be set")
+        else:
+            super().__setattr__(key, value)
 
     def __repr__(self):
         return f"{self.__class__.__name__}({self.value})"
