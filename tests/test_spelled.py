@@ -199,6 +199,10 @@ class TestSpelled(TestCase):
         p2 = SpelledPitch("Gb5")
         self.assertRaises(TypeError, lambda: p1 + p2)
         self.assertRaises(TypeError, lambda: SpelledPitchClass("G") - SpelledPitch("G4"))
+        self.assertEqual(SpelledPitch("G4").interval_from(SpelledPitch("C#4")), SpelledInterval("d5:0"))
+        self.assertEqual(SpelledPitch("G4").interval_to(SpelledPitch("C#4")), SpelledInterval("-d5:0"))
+        self.assertEqual(SpelledPitchClass("G").interval_from(SpelledPitchClass("C#")), SpelledIntervalClass("d5"))
+        self.assertEqual(SpelledPitchClass("G").interval_to(SpelledPitchClass("C#")), SpelledIntervalClass("-d5"))
 
     def test_from_fifths_functions(self):
         print(SpelledInterval("ddd2:4"))

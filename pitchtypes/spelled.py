@@ -314,6 +314,14 @@ class SpelledPitch(Spelled, Pitch):
         """
         return SpelledPitch((octaves, fifths))
 
+    def interval_from(self, other):
+        if type(other) == SpelledPitch:
+            octaves1, fifths1 = self.value
+            octaves2, fifths2 = other.value
+            return SpelledInterval.from_fifths_and_octaves(fifths1-fifths2, octaves1-octaves2)
+        else:
+            return NotImplemented
+    
     def to_class(self):
         return self.PitchClass(self.fifths())
 
@@ -514,6 +522,12 @@ class SpelledPitchClass(Spelled, Pitch):
     def name(self):
         return self.pitch_class_from_fifths(self.fifths())
 
+    def interval_from(self, other):
+        if type(other) == SpelledPitchClass:
+            return SpelledIntervalClass.from_fifths(self.value-other.value)
+        else:
+            return NotImplemented
+    
     # pitch interface
 
     def pc(self):
