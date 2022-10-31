@@ -10,6 +10,7 @@ from pitchtypes.spelled import Spelled, SpelledInterval, SpelledIntervalClass, S
 # TODO: indexing into arrays
 # TODO: element-wise comparison
 # TODO: to/from list
+# TODO: docs
 
 class SpelledArray(abc.ABC):
     """
