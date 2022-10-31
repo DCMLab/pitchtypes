@@ -320,7 +320,7 @@ class SpelledPitch(Spelled, Pitch):
             octaves2, fifths2 = other.value
             return SpelledInterval.from_fifths_and_octaves(fifths1-fifths2, octaves1-octaves2)
         else:
-            return NotImplemented
+            raise TypeError(f"Cannot take interval between SpelledPitch and {type(other)}.")
     
     def to_class(self):
         return self.PitchClass(self.fifths())
@@ -528,7 +528,7 @@ class SpelledPitchClass(Spelled, Pitch):
         if type(other) == SpelledPitchClass:
             return SpelledIntervalClass.from_fifths(self.value-other.value)
         else:
-            return NotImplemented
+            raise TypeError(f"Cannot take interval between SpelledPitchClass and {type(other)}.")
     
     # pitch interface
 
