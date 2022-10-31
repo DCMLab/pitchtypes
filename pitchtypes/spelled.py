@@ -347,10 +347,12 @@ class SpelledPitch(Spelled, Pitch):
         return self.value[0]
 
     def generic(self):
-        return self.degree()
+        # return self.degree()
+        raise NotImplementedError
 
     def diatonic_steps(self):
-        return (self.fifths() * 4) + (self.internal_octaves() * 7)
+        # return (self.fifths() * 4) + (self.internal_octaves() * 7)
+        raise NotImplementedError
 
     def alteration(self):
         return (self.fifths() + 1) // 7
@@ -548,10 +550,12 @@ class SpelledPitchClass(Spelled, Pitch):
         return 0
 
     def generic(self):
-        return self.degree()
+        # return self.degree()
+        raise NotImplementedError
 
     def diatonic_steps(self):
-        return self.degree()
+        # return self.degree()
+        raise NotImplementedError
 
     def alteration(self):
         return (self.fifths() + 1) // 7
