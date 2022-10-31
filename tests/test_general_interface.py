@@ -13,6 +13,7 @@ class TestGeneralInterface(TestCase):
         self.assertRaises(NotImplementedError, lambda: Interval.octave())
         self.assertRaises(NotImplementedError, lambda: Interval().direction())
         self.assertRaises(NotImplementedError, lambda: Interval().abs())
+        self.assertRaises(NotImplementedError, lambda: abs(Interval()))
         self.assertRaises(NotImplementedError, lambda: Interval().ic())
         self.assertRaises(NotImplementedError, lambda: Interval().to_class())
         self.assertRaises(NotImplementedError, lambda: Interval().embed())

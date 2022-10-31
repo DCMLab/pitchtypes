@@ -452,7 +452,7 @@ class SpelledInterval(Spelled, Interval, Diatonic, Chromatic):
         else:
             return 1
 
-    def abs(self):
+    def __abs__(self):
         if self.direction() < 0:
             return -self
         else:
@@ -492,7 +492,7 @@ class SpelledInterval(Spelled, Interval, Diatonic, Chromatic):
         return (self.fifths() * 4) + (self.internal_octaves() * 7)
 
     def alteration(self):
-        return (self.abs().fifths() + 1) // 7
+        return (abs(self).fifths() + 1) // 7
 
 
 @Spelled.link_pitch_class_type()
@@ -628,7 +628,7 @@ class SpelledIntervalClass(Spelled, Interval, Diatonic, Chromatic):
         else:
             return 1
 
-    def abs(self):
+    def __abs__(self):
         if self.direction() < 0:
             return -self
         else:

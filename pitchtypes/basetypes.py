@@ -380,18 +380,25 @@ class Interval(abc.ABC):
 
     # operators
 
+    # @abc.abstractmethod
+    def __eq__(self, other):
+        raise NotImplementedError
+
+    # @abc.abstractmethod
     def __add__(self, other):
         """
         Returns the sum of two intervals.
         """
         raise NotImplementedError
 
+    # @abc.abstractmethod
     def __sub__(self, other):
         """
         Returns the difference of two intervals.
         """
         raise NotImplementedError
     
+    # @abc.abstractmethod
     def __mul__(self, other):
         """
         Returns an integer multiple of the interval.
@@ -404,12 +411,21 @@ class Interval(abc.ABC):
         """
         return self.__mul__(other)
     
+    # @abc.abstractmethod
     def __neg__(self):
         """
         Returns the inversion of the interval (same size in the other direction).
         """
         raise NotImplementedError
 
+    @abc.abstractmethod
+    def __abs__(self):
+        """
+        For downward intervals, return their upward counterpart, otherwise just return the interval itself.
+        """
+        raise NotImplementedError
+
+    
     # other interface methods
     
     @abc.abstractmethod
@@ -421,13 +437,12 @@ class Interval(abc.ABC):
         """
         raise NotImplementedError
 
-    @abc.abstractmethod
     def abs(self):
         """
         For downward intervals, return their upward counterpart, otherwise just return the interval itself.
         """
-        raise NotImplementedError
-
+        return abs(self)
+    
     @abc.abstractmethod
     def ic(self):
         """
@@ -485,6 +500,11 @@ class Pitch(abc.ABC):
 
     # arithmetic operations
 
+    # @abc.abstractmethod
+    def __eq__(self, other):
+        raise NotImplementedError
+
+    # @abc.abstractmethod
     def __add__(self, other):
         """
         Returns the pitch transposed by an interval
@@ -497,7 +517,10 @@ class Pitch(abc.ABC):
         When subtracting an interval (p - i), transpose the pitch by the inverse interval (p + -i).
         """
         if isinstance(other, Pitch):
-            return self.interval_from(other)
+            try:
+                return self.interval_from(other)
+            except:
+                return NotImplemented
         elif isinstance(other, Interval):
             return self + (-other)
         else:
