@@ -18,7 +18,7 @@ class Spelled(AbstractBase):
                                  "(?P<quality0>P)(?P<generic0>[145])|"          # perfect intervals
                                  "(?P<quality1>|(M)|(m))(?P<generic1>[2367])|"  # imperfect intervals
                                  "(?P<quality2>(a+)|(d+))(?P<generic2>[1-7])"   # augmeted/diminished intervals
-                                 ")(?P<octave>(:[0-9]+)?)$")
+                                 ")(?P<octave>(:-?[0-9]+)?)$")
 
     @staticmethod
     def parse_pitch(s):
