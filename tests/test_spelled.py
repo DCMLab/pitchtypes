@@ -205,6 +205,8 @@ class TestSpelled(TestCase):
         self.assertEqual(SpelledPitch("G4").interval_to(SpelledPitch("C#4")), SpelledInterval("-d5:0"))
         self.assertEqual(SpelledPitchClass("G").interval_from(SpelledPitchClass("C#")), SpelledIntervalClass("d5"))
         self.assertEqual(SpelledPitchClass("G").interval_to(SpelledPitchClass("C#")), SpelledIntervalClass("-d5"))
+        self.assertEqual(4 * SpelledInterval("M2:0"), SpelledInterval("a5:0"))
+        self.assertEqual(4 * SpelledIntervalClass("M2"), SpelledIntervalClass("a5"))
 
     def test_from_fifths_functions(self):
         print(SpelledInterval("ddd2:4"))
