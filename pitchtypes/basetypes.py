@@ -316,16 +316,6 @@ class AbstractBase:
         # we now freeze the class so attributes cannot be changed anymore
         self.__isfrozen__ = True
 
-    def setattr(self, name, value):
-        """
-        Set an attribute to the frozen class. This should only be used in the __init__ method. As the attributes are
-        set indirectly via Object, you should additionally provide type hints in the class definition to let type
-        checkers and IDE know of these attributes.
-        :param name: name of the attribute
-        :param value: value of the attribute
-        """
-        super(AbstractBase, self).__setattr__(name, value)
-
     def __setattr__(self, key, value):
         if self.__isfrozen__:
             raise AttributeError("Class is frozen, attributes cannot be set")
