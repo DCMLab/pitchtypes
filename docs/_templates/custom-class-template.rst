@@ -6,6 +6,8 @@
    :members:
    :show-inheritance:
    :inherited-members:
+   :special-members:
+   :exclude-members: __init__
 
    {% block methods %}
    .. automethod:: __init__

@@ -19,6 +19,7 @@ such as addition and scalar multiplication.
 The following representations of intervals and pitches are implemented so far:
 
 * :doc:`spelled <types/spelled>`: based on Western notation
+* :doc:`spelled <types/spelled_array>`: based on Western notation
 * :doc:`enharmonic <types/enharmonic>`: based on the chromatic 12-tone system (WIP)
 * :doc:`frequency <types/frequencies>`: based on the frequencies and frequency ratios (WIP)
 * :doc:`harmonic <types/harmonic>`: based prime-factorized just intervals (very WIP)

@@ -30,6 +30,10 @@ class SpelledArray(abc.ABC):
 
     @abc.abstractmethod
     def name(self):
+        """
+        Returns the names of the objects in the array
+        as an array of strings of the same shape.
+        """
         raise NotImplementedError
 
     @abc.abstractmethod
@@ -99,16 +103,21 @@ class SpelledArray(abc.ABC):
 class SpelledIntervalArray(SpelledArray, Interval, Diatonic, Chromatic):
     """
     Represents an array of spelled intervals.
-
-    The constructor takes two arrays,
-    one for fifths and one for internal/dependent octaves.
     """
+    
     def __init__(self, fifths, octaves):
+        """        
+        Takes two numpy arrays,
+        one for fifths and one for internal/dependent octaves,
+        both as integers.
+        """
+        if fifths.shape != octaves.shape:
+            raise ValueError(f"Cannot create SpelledIntervalArray from arrays of different sizes ({fifths.shape} and {octaves.shape}).")
         self._fifths = fifths
         self._octaves = octaves
 
     @staticmethod
-    def from_fifths_and_independent_octaves(fifths, octaves):
+    def from_independent(fifths, octaves):
         """
         Create an interval array from fifths (pitch class) and independent/external octaves.
         """
@@ -142,6 +151,13 @@ class SpelledIntervalArray(SpelledArray, Interval, Diatonic, Chromatic):
         Return an array of the given shape filled with perfect octaves (P1:1).
         """
         return cls(np.full(shape, 0, dtype=np.int_),np.full(shape, 1, dtype=np.int_))
+
+    @classmethod
+    def chromatic_semitone(cls, shape):
+        """
+        Returns an array of the given size filled with chromatic semitones (a1:0).
+        """
+        return SpelledIntervalArray(np.full(shape, 7, dtype=np.int_), np.full(shape, -4, dtype=np.int_))
 
     def __eq__(self, other):
         if type(other) == SpelledInterval or type(other) == SpelledIntervalArray:
@@ -197,13 +213,6 @@ class SpelledIntervalArray(SpelledArray, Interval, Diatonic, Chromatic):
     def embed(self):
         return self
     
-    @classmethod
-    def chromatic_semitone(cls, shape):
-        """
-        Returns an array of the given size filled with chromatic semitones (a1:0).
-        """
-        return SpelledIntervalArray(np.full(shape, 7, dtype=np.int_), np.full(shape, -4, dtype=np.int_))
-
     def is_step(self):
         return abs(self.diatonic_steps()) <= 1
 
@@ -241,15 +250,12 @@ class SpelledIntervalArray(SpelledArray, Interval, Diatonic, Chromatic):
 class SpelledIntervalClassArray(SpelledArray, Interval, Diatonic, Chromatic):
     """
     Represents a spelled interval class, i.e. an interval without octave information.
-
-    The constructor takes a string consisting of the form
-    -?<quality><generic-size>,
-    e.g. "M6", "-m3", or "aa2",
-    which stand for a major sixth, a minor third down (= major sixth up), and a double-augmented second, respectively.
-    possible qualities are d (diminished), m (minor), M (major), P (perfect), and a (augmented),
-    where d and a can be repeated.
     """
+    
     def __init__(self, fifths):
+        """
+        Takes a numpy array of fifths as integers.
+        """
         self._fifths = fifths
 
     @staticmethod
@@ -285,6 +291,10 @@ class SpelledIntervalClassArray(SpelledArray, Interval, Diatonic, Chromatic):
         Same as unison() since octaves are equivalent to unisons in interval class space.
         """
         return cls.unison(shape)
+
+    @classmethod
+    def chromatic_semitone(cls, shape):
+        return cls(np.full(shape, 7, dtype=np.int_))
 
     def __eq__(self, other):
         if type(other) == SpelledIntervalClass or type(other) == SpelledIntervalClassArray:
@@ -331,11 +341,7 @@ class SpelledIntervalClassArray(SpelledArray, Interval, Diatonic, Chromatic):
         return self
 
     def embed(self):
-        return SpelledIntervalArray.from_fifths_and_independent_octaves(self.fifths(), np.zeros_like(self.fifths()))
-
-    @classmethod
-    def chromatic_semitone(cls, shape):
-        return cls(np.full(shape, 7, dtype=np.int_))
+        return SpelledIntervalArray.from_independent(self.fifths(), np.zeros_like(self.fifths()))
 
     def is_step(self):
         return np.isin(self.degree(), [0,1,6])
@@ -363,22 +369,25 @@ class SpelledIntervalClassArray(SpelledArray, Interval, Diatonic, Chromatic):
 class SpelledPitchArray(SpelledArray, Pitch):
     """
     Represents a vector spelled pitch.
-
-    The constructor takes two numpy arrays,
-    one for fifths and one for (internal/dependent) octaves,
-    both as integers.
     """
 
     # constructors
     
     def __init__(self, fifths, octaves):
+        """
+        Takes two numpy arrays,
+        one for fifths and one for (internal/dependent) octaves,
+        both as integers.
+        """
         # assert fifths.dtype == np.int_
         # assert octaves.dtype == np.int_
+        if fifths.shape != octaves.shape:
+            raise ValueError(f"Cannot create SpelledPitchArray from arrays of different sizes ({fifths.shape} and {octaves.shape}).")
         self._fifths = fifths
         self._octaves = octaves
 
     @staticmethod
-    def from_fifths_and_independent_octaves(fifths, octaves):
+    def from_independent(fifths, octaves):
         """
         Create a pitch array from fifths and indenpendent octaves.
         The fifths indicate the names of the pitches
@@ -398,7 +407,7 @@ class SpelledPitchArray(SpelledArray, Pitch):
                 raise ValueError(f"Missing octave specifier in pitch '{string}'.")
             return octave, fifth
         octaves, fifths = np.vectorize(parse_pitch, otypes=[np.int_, np.int_])(strings)
-        return SpelledPitchArray.from_fifths_and_independent_octaves(fifths, octaves)
+        return SpelledPitchArray.from_independent(fifths, octaves)
 
     # Pitch interface
 
@@ -461,10 +470,12 @@ class SpelledPitchArray(SpelledArray, Pitch):
 class SpelledPitchClassArray(SpelledArray, Pitch):
     """
     Represents a spelled pitch class, i.e. a pitch without octave information.
-
-    The constructure takes an array of fifths.
     """
+
     def __init__(self, fifths):
+        """
+        Takes a numpy array of fifths as integers.
+        """
         self._fifths = fifths
 
     @staticmethod
@@ -509,7 +520,7 @@ class SpelledPitchClassArray(SpelledArray, Pitch):
         return self
 
     def embed(self):
-        return SpelledPitchArray.from_fifths_and_independent_octaves(self.fifths(), np.zeros_like(self.fifths()))
+        return SpelledPitchArray.from_independent(self.fifths(), np.zeros_like(self.fifths()))
 
     # spelled interface
 
@@ -538,7 +549,7 @@ class SpelledPitchClassArray(SpelledArray, Pitch):
 
 # shorthand constructors
 
-def aspelled(things, things2=None):
+def asi(things, things2=None):
     """
     A quick way to construct a spelled-interval array.
     Takes either an array-like of strings or two array-likes of integers
@@ -561,7 +572,7 @@ def asic(things):
     else:
         return SpelledIntervalClassArray(input)
 
-def aspelledp(things, things2=None):
+def asp(things, things2=None):
     """
     A quick way to construct a spelled-pitch array.
     Takes either an array-like of strings or two array-likes of integers

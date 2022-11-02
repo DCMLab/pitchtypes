@@ -2,6 +2,7 @@
 
 from .basetypes import *
 from .spelled import *
+from .spelled_array import *
 from .enharmonic import *
 from .logfreq import *
 from .harmonic import *

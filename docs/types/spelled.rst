@@ -82,9 +82,7 @@ as used in the string representation, e.g.
    >>> SpelledInterval("-M2:0").octaves()
    -1
 
-If you want to look at the internal octaves, use :py:meth:`internal_octave <pitchtypes.SpelledPitch.internal_octave>`
-or :py:meth:`internal_octaves <pitchtypes.SpelledInterval.internal_octaves>` for :class:`~pitchtypes.SpelledPitch` and
-:class:`~pitchtypes.SpelledInterval`, respectively.
+If you want to look at the internal octaves, use  :py:meth:`internal_octaves <pitchtypes.SpelledInterval.internal_octaves>`.
 
 Diatonic Steps and Alterations
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

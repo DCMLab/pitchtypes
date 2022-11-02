@@ -12,10 +12,10 @@ Welcome to pitchtypes's documentation!
 
    introduction
    types/spelled
+   types/spelled_array
    types/enharmonic
    types/frequencies
    types/harmonic
-   types/abstractbase
    api_summary
 
 
@@ -31,7 +31,7 @@ Arithmetics
 -----------
 
 You can, for instance, compute the interval class between a B♭ and an F♯,
-which is an augmented fifth
+which is an augmented fifth:
 
 .. doctest::
 
@@ -39,7 +39,7 @@ which is an augmented fifth
    >>> pt.SpelledPitchClass("F#") - pt.SpelledPitchClass("Bb")
    a5
 
-and do all the standard arithmetic operations.
+You can also perform all sensible arithmetic operations on intervals and pitches.
 
 Generic Interface
 -----------------

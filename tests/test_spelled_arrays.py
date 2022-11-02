@@ -12,22 +12,27 @@ class TestSpelledArray(TestCase):
 
     def test_constructors(self):
         self.assertEqual(SpelledIntervalArray(np.arange(5)-2, np.arange(5)-2),
-                         aspelled(["-M2:3", "-P5:1", "P1:0", "P5:1", "M2:3"]))
+                         asi(["-M2:3", "-P5:1", "P1:0", "P5:1", "M2:3"]))
         self.assertEqual(SpelledIntervalClassArray(np.arange(5)),
                          asic(["P1", "P5", "M2", "M6", "M3"]))
         self.assertEqual(SpelledPitchArray(np.arange(5)-2, 4-np.arange(5)),
-                         aspelledp(["Bb2", "F2", "C2", "G1", "D1"]))
+                         asp(["Bb2", "F2", "C2", "G1", "D1"]))
         self.assertEqual(SpelledPitchClassArray(np.arange(5)-2),
                          aspc(["Bb", "F", "C", "G", "D"]))
+        
+        self.assertEqual(SpelledIntervalArray.from_independent(np.arange(5)-2, np.zeros(5, dtype=np.int_)),
+                         asi(["m7:0", "P4:0", "P1:0", "P5:0", "M2:0"]))
+        self.assertEqual(SpelledPitchArray.from_independent(np.arange(5)-2, 4-np.arange(5)),
+                         asp(["Bb4", "F3", "C2", "G1", "D0"]))
 
     def test_parsing(self):
-        self.assertEqual(aspelled(["M3:1", "-M3:0"]), aspelled([4, -4], [-1, 2]))
+        self.assertEqual(asi(["M3:1", "-M3:0"]), asi([4, -4], [-1, 2]))
         self.assertEqual(asic(["m3", "-m3"]), asic([-3, 3]))
-        self.assertEqual(aspelledp(["C♭4", "Cb4"]), aspelledp([-7,-7], [8,8]))
+        self.assertEqual(asp(["C♭4", "Cb4"]), asp([-7,-7], [8,8]))
         self.assertEqual(aspc(["C#", "C♯"]), aspc([7,7]))
 
     def test_accessors(self):
-        i = aspelled(["M3:1", "-M3:1"])
+        i = asi(["M3:1", "-M3:1"])
         self.arrayEqual(i.octaves(), [1, -2])
         self.arrayEqual(i.internal_octaves(), [-1, 1])
         self.arrayEqual(i.fifths(), [4, -4])
@@ -35,9 +40,9 @@ class TestSpelledArray(TestCase):
         self.arrayEqual(i.generic(), [2, -2])
         self.arrayEqual(i.diatonic_steps(), [9, -9])
         manyis = ["M3:1", "-M3:1", "-P4:0", "-M7:0", "a4:0", "m7:0", "-a4:0", "-m7:0"]
-        self.arrayEqual(aspelled(manyis).alteration(),
+        self.arrayEqual(asi(manyis).alteration(),
                         [0, 0, 0, 0, 1, -1, 1, -1])
-        self.arrayEqual(aspelled(manyis).name(), manyis)
+        self.arrayEqual(asi(manyis).name(), manyis)
 
         ic = asic(["a5", "d4"])
         self.arrayEqual(ic.octaves(), [0, 0])
@@ -51,7 +56,7 @@ class TestSpelledArray(TestCase):
                         [1, -1, 0, 0, 1, -1])
         self.arrayEqual(asic(manyics).name(), manyics)
 
-        p = aspelledp(["Ebb5", "D#-1"])
+        p = asp(["Ebb5", "D#-1"])
         self.arrayEqual(p.octaves(), [5, -1])
         self.arrayEqual(p.internal_octaves(), [11, -6])
         self.arrayEqual(p.fifths(), [-10, 9])
@@ -59,10 +64,10 @@ class TestSpelledArray(TestCase):
         self.assertRaises(NotImplementedError, p.generic)
         self.assertRaises(NotImplementedError, p.diatonic_steps)
         manyps = ["Ebb5", "D#-1", "F4", "B3", "F#4", "Bb3"]
-        self.arrayEqual(aspelledp(manyps).alteration(),
+        self.arrayEqual(asp(manyps).alteration(),
                         [-2, 1, 0, 0, 1, -1])
-        self.arrayEqual(aspelledp(manyps).name(), manyps)
-        self.arrayEqual(aspelledp(manyps).letter(), ['E', 'D', 'F', 'B', 'F', 'B'])
+        self.arrayEqual(asp(manyps).name(), manyps)
+        self.arrayEqual(asp(manyps).letter(), ['E', 'D', 'F', 'B', 'F', 'B'])
 
         pc = aspc(["Ebb", "D#"])
         self.arrayEqual(pc.octaves(), [0, 0])
@@ -78,9 +83,9 @@ class TestSpelledArray(TestCase):
         self.arrayEqual(aspc(manypcs).letter(), ['E', 'D', 'F', 'B', 'F', 'B'])
 
     def test_printing(self):
-        self.assertEqual(str(aspelled(["m3:1", "-m7:0"])), "[m3:1 -m7:0]")
+        self.assertEqual(str(asi(["m3:1", "-m7:0"])), "[m3:1 -m7:0]")
         self.assertEqual(str(asic(["m3", "-m7"])), "[m3 M2]")
-        self.assertEqual(str(aspelledp(["Eb4", "D##-1"])), "[Eb4 D##-1]")
+        self.assertEqual(str(asp(["Eb4", "D##-1"])), "[Eb4 D##-1]")
         self.assertEqual(str(aspc(["Eb", "D##"])), "[Eb D##]")
         
     def test_intervals(self):
@@ -88,35 +93,35 @@ class TestSpelledArray(TestCase):
         zs = np.zeros((3,5), dtype=np.int_)
         os = zs + 1
 
-        self.assertEqual(aspelled(["m3:0", "m3:0", "P5:0", "-m3:0", "m3:0"]) +
-                         aspelled(["M3:0", "M7:0", "P5:0", "M3:0", "-M3:0"]),
-                         aspelled(["P5:0", "M2:1", "M2:1", "a1:0", "-a1:0"]))
-        self.assertEqual(aspelled(["m3:0", "m3:0"]) - aspelled(["M3:0", "M6:0"]),
-                         aspelled(["-a1:0", "-a4:0"]))
-        self.assertEqual(-aspelled(["P4:0", "P4:0", "P5:0"]),
-                         aspelled(["-P4:0", "P5:-1", "-P5:0"]))
+        self.assertEqual(asi(["m3:0", "m3:0", "P5:0", "-m3:0", "m3:0"]) +
+                         asi(["M3:0", "M7:0", "P5:0", "M3:0", "-M3:0"]),
+                         asi(["P5:0", "M2:1", "M2:1", "a1:0", "-a1:0"]))
+        self.assertEqual(asi(["m3:0", "m3:0"]) - asi(["M3:0", "M6:0"]),
+                         asi(["-a1:0", "-a4:0"]))
+        self.assertEqual(-asi(["P4:0", "P4:0", "P5:0"]),
+                         asi(["-P4:0", "P5:-1", "-P5:0"]))
 
-        self.assertEqual(SpelledIntervalArray.unison((3,5)), aspelled(zs, zs))
-        self.assertEqual(SpelledIntervalArray.octave((3,5)), aspelled(zs, os))
-        self.assertEqual(SpelledIntervalArray.chromatic_semitone((3,5)), aspelled(os * 7, os * -4))
+        self.assertEqual(SpelledIntervalArray.unison((3,5)), asi(zs, zs))
+        self.assertEqual(SpelledIntervalArray.octave((3,5)), asi(zs, os))
+        self.assertEqual(SpelledIntervalArray.chromatic_semitone((3,5)), asi(os * 7, os * -4))
 
-        self.assertEqual(aspelled(["P5:0", "M2:0", "-m3:0", "M3:0", "M2:0", "-M3:0"]) *
+        self.assertEqual(asi(["P5:0", "M2:0", "-m3:0", "M3:0", "M2:0", "-M3:0"]) *
                          np.array([2, 4, 4, -3, 4, 4]),
-                         aspelled(["M2:1", "a5:0", "-d2:1", "-a7:0", "a5:0", "-aa2:1"]))
-        self.assertEqual(5 * aspelled(["M3:0"]), aspelled(["aaa4:1"]))
+                         asi(["M2:1", "a5:0", "-d2:1", "-a7:0", "a5:0", "-aa2:1"]))
+        self.assertEqual(5 * asi(["M3:0"]), asi(["aaa4:1"]))
 
-        self.arrayEqual(aspelled(["m2:0", "P1:0", "d1:0", "a1:0", "-m3:0"]).direction(),
+        self.arrayEqual(asi(["m2:0", "P1:0", "d1:0", "a1:0", "-m3:0"]).direction(),
                         [1, 0, 0, 0, -1])
-        self.arrayEqual(aspelled(["m2:0", "P1:0", "d1:0", "a1:0", "-m3:0"]).abs(),
-                        aspelled(["m2:0", "P1:0", "d1:0", "a1:0", "m3:0"]))
+        self.arrayEqual(asi(["m2:0", "P1:0", "d1:0", "a1:0", "-m3:0"]).abs(),
+                        asi(["m2:0", "P1:0", "d1:0", "a1:0", "m3:0"]))
 
-        self.arrayEqual(aspelled(["M3:3", "-M3:1"]).to_class(), asic(["M3", "m6"]))
-        self.arrayEqual(aspelled(["M3:3", "-M3:1"]).ic(), asic(["M3", "m6"]))
-        self.arrayEqual(aspelled(["M3:3", "-M3:1"]).embed(), aspelled(["M3:3", "-M3:1"]))
+        self.arrayEqual(asi(["M3:3", "-M3:1"]).to_class(), asic(["M3", "m6"]))
+        self.arrayEqual(asi(["M3:3", "-M3:1"]).ic(), asic(["M3", "m6"]))
+        self.arrayEqual(asi(["M3:3", "-M3:1"]).embed(), asi(["M3:3", "-M3:1"]))
 
-        self.assertTrue(aspelled(["d1:0","P1:0","a1:0","d2:0","m2:0","M2:0",
+        self.assertTrue(asi(["d1:0","P1:0","a1:0","d2:0","m2:0","M2:0",
                                   "a2:0","-d2:0","-m2:0","-M2:0","-a2:0"]).is_step().all())
-        self.assertFalse(aspelled(["d3:0", "-d3:0", "M7:0", "-M7:0",
+        self.assertFalse(asi(["d3:0", "-d3:0", "M7:0", "-M7:0",
                                    "P1:1", "-P1:1", "m2:1", "-m2:1"]).is_step().any())
 
     def test_ics(self):
@@ -148,26 +153,26 @@ class TestSpelledArray(TestCase):
 
         self.arrayEqual(asic(["M3", "-M3"]).to_class(), asic(["M3", "m6"]))
         self.arrayEqual(asic(["M3", "-M3"]).ic(), asic(["M3", "m6"]))
-        self.arrayEqual(asic(["M3", "-M3"]).embed(), aspelled(["M3:0", "m6:0"]))
+        self.arrayEqual(asic(["M3", "-M3"]).embed(), asi(["M3:0", "m6:0"]))
 
         self.assertTrue(asic(["d1","P1","a1","d2","m2","M2",
                               "a2","-d2","-m2","-M2","-a2", "M7", "-M7"]).is_step().all())
         self.assertFalse(asic(["d3", "-d3"]).is_step().any())
 
     def test_pitches(self):
-        self.assertEqual(aspelledp(["Eb4", "Eb4"]) + aspelled(["P5:0", "-m3:0"]),
-                         aspelledp(["Bb4", "C4"]))
-        self.assertEqual(aspelledp(["Eb4", "Eb4"]) - aspelled(["P5:0", "-m3:0"]),
-                         aspelledp(["Ab3", "Gb4"]))
-        self.assertEqual(aspelledp(["G4", "Eb4"]) - aspelledp(["C#4", "G4"]),
-                         aspelled(["d5:0", "-M3:0"]))
+        self.assertEqual(asp(["Eb4", "Eb4"]) + asi(["P5:0", "-m3:0"]),
+                         asp(["Bb4", "C4"]))
+        self.assertEqual(asp(["Eb4", "Eb4"]) - asi(["P5:0", "-m3:0"]),
+                         asp(["Ab3", "Gb4"]))
+        self.assertEqual(asp(["G4", "Eb4"]) - asp(["C#4", "G4"]),
+                         asi(["d5:0", "-M3:0"]))
 
-        self.arrayEqual(aspelledp(["Ab-1", "A#-1"]).alteration(), [-1, 1])
+        self.arrayEqual(asp(["Ab-1", "A#-1"]).alteration(), [-1, 1])
 
-        self.assertEqual(aspelledp(["Ab-1", "Eb4", "D##100"]).to_class(), aspc(["Ab", "Eb", "D##"]))
-        self.assertEqual(aspelledp(["Ab-1", "Eb4", "D##100"]).pc(), aspc(["Ab", "Eb", "D##"]))
-        self.assertEqual(aspelledp(["Ab-1", "Eb4", "D##100"]).embed(),
-                         aspelledp(["Ab-1", "Eb4", "D##100"]))
+        self.assertEqual(asp(["Ab-1", "Eb4", "D##100"]).to_class(), aspc(["Ab", "Eb", "D##"]))
+        self.assertEqual(asp(["Ab-1", "Eb4", "D##100"]).pc(), aspc(["Ab", "Eb", "D##"]))
+        self.assertEqual(asp(["Ab-1", "Eb4", "D##100"]).embed(),
+                         asp(["Ab-1", "Eb4", "D##100"]))
 
     def test_pcs(self):
         self.assertEqual(aspc(["Eb", "Eb"]) + asic(["P5", "-m3"]),
@@ -182,7 +187,7 @@ class TestSpelledArray(TestCase):
         self.assertEqual(aspc(["Ab", "Eb", "D##"]).to_class(), aspc(["Ab", "Eb", "D##"]))
         self.assertEqual(aspc(["Ab", "Eb", "D##"]).pc(), aspc(["Ab", "Eb", "D##"]))
         self.assertEqual(aspc(["Ab", "Eb", "D##"]).embed(),
-                         aspelledp(["Ab0", "Eb0", "D##0"]))
+                         asp(["Ab0", "Eb0", "D##0"]))
 
     @patch.multiple(SpelledArray, __abstractmethods__=set())
     def test_notimplemented(self):
@@ -194,28 +199,28 @@ class TestSpelledArray(TestCase):
         self.assertRaises(NotImplementedError, SpelledArray().diatonic_steps)
         self.assertRaises(NotImplementedError, SpelledArray().alteration)
 
-        self.assertFalse(aspelled("M3:0") == 1)
+        self.assertFalse(asi("M3:0") == 1)
         self.assertFalse(asic("M3") == 1)
-        self.assertFalse(aspelledp("Ebb4") == 1)
+        self.assertFalse(asp("Ebb4") == 1)
         self.assertFalse(aspc("Ebb") == 1)
 
-        self.assertRaises(TypeError, lambda: aspelled("M3:0") + 1)
+        self.assertRaises(TypeError, lambda: asi("M3:0") + 1)
         self.assertRaises(TypeError, lambda: asic("M3") + 1)
-        self.assertRaises(TypeError, lambda: aspelledp("Ebb4") + 1)
+        self.assertRaises(TypeError, lambda: asp("Ebb4") + 1)
         self.assertRaises(TypeError, lambda: aspc("Ebb") + 1)
 
-        self.assertRaises(TypeError, lambda: aspelled("M3:0") - 1)
+        self.assertRaises(TypeError, lambda: asi("M3:0") - 1)
         self.assertRaises(TypeError, lambda: asic("M3") - 1)
-        self.assertRaises(TypeError, lambda: aspelledp("Ebb4") - 1)
+        self.assertRaises(TypeError, lambda: asp("Ebb4") - 1)
         self.assertRaises(TypeError, lambda: aspc("Ebb") - 1)
-        self.assertRaises(TypeError, lambda: aspelledp("Ebb4").interval_from(1))
+        self.assertRaises(TypeError, lambda: asp("Ebb4").interval_from(1))
         self.assertRaises(TypeError, lambda: aspc("Ebb").interval_from(1))
 
-        self.assertRaises(TypeError, lambda: aspelled("M3:0") * "a")
+        self.assertRaises(TypeError, lambda: asi("M3:0") * "a")
         self.assertRaises(TypeError, lambda: asic("M3") * "a")
         
     def test_exceptions(self):
-        self.assertRaises(ValueError, lambda: aspelled(["M3"]))
+        self.assertRaises(ValueError, lambda: asi(["M3"]))
         self.assertRaises(ValueError, lambda: asic(["M3:0"]))
-        self.assertRaises(ValueError, lambda: aspelledp(["Ebb"]))
+        self.assertRaises(ValueError, lambda: asp(["Ebb"]))
         self.assertRaises(ValueError, lambda: aspc(["Ebb4"]))
