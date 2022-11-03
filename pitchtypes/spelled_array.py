@@ -3,6 +3,7 @@
 import abc
 import numbers
 import numpy as np
+import copy
 
 from pitchtypes.basetypes import Pitch, Interval, Diatonic, Chromatic
 from pitchtypes.spelled import Spelled, SpelledInterval, SpelledIntervalClass, SpelledPitch, SpelledPitchClass
@@ -29,6 +30,27 @@ class SpelledArray(abc.ABC):
     # mandatory array methods
 
     @abc.abstractmethod
+    def __copy__(self):
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def __deepcopy__(self, memo):
+        raise NotImplementedError
+
+    def copy(self):
+        """
+        Returns a shallow copy of the array.
+        This also creates copies of the underlying numpy arrays.
+        """
+        return copy.copy(self)
+
+    def deepcopy(self):
+        """
+        Returns a deep copy of the array.
+        """
+        return copy.deepcopy(self)
+
+    @abc.abstractmethod
     def __getitem__(self, index):
         """
         Returns an item or a subarray of the spelled array
@@ -41,7 +63,7 @@ class SpelledArray(abc.ABC):
         Returns an item or a subarray of the spelled array
         """
         raise NotImplementedError
-
+    
     # spelled interface
 
     @abc.abstractmethod
@@ -153,6 +175,12 @@ class SpelledIntervalArray(SpelledArray, Interval, Diatonic, Chromatic):
         return SpelledIntervalArray(fifths * sign, (octaves - (fifths * 4) // 7) * sign)
 
     # collection interface
+
+    def __copy__(self):
+        return SpelledIntervalArray(copy.copy(self.fifths()), copy.copy(self.internal_octaves()))
+
+    def __deepcopy__(self, memo):
+        return SpelledIntervalArray(copy.deepcopy(self.fifths(), memo), copy.deepcopy(self.internal_octaves(), memo))
     
     def __getitem__(self, index):
         f = self._fifths[index]
@@ -309,6 +337,12 @@ class SpelledIntervalClassArray(SpelledArray, Interval, Diatonic, Chromatic):
         return np.vectorize(intervalclass_name, otypes=[np.str_])(self.fifths())
 
     # collection interface
+
+    def __copy__(self):
+        return SpelledIntervalClassArray(copy.copy(self.fifths()))
+
+    def __deepcopy__(self, memo):
+        return SpelledIntervalClassArray(copy.deepcopy(self.fifths(), memo))
     
     def __getitem__(self, index):
         f = self._fifths[index]
@@ -457,6 +491,12 @@ class SpelledPitchArray(SpelledArray, Pitch):
         return SpelledPitchArray.from_independent(fifths, octaves)
 
     # collection interface
+
+    def __copy__(self):
+        return SpelledPitchArray(copy.copy(self.fifths()), copy.copy(self.internal_octaves()))
+
+    def __deepcopy__(self, memo):
+        return SpelledPitchArray(copy.deepcopy(self.fifths(), memo), copy.deepcopy(self.internal_octaves(), memo))
     
     def __getitem__(self, index):
         f = self._fifths[index]
@@ -561,6 +601,12 @@ class SpelledPitchClassArray(SpelledArray, Pitch):
         return np.vectorize(pitchclass_name, otypes=[np.str_])(self.fifths())
 
     # collection interface
+
+    def __copy__(self):
+        return SpelledPitchClassArray(copy.copy(self.fifths()))
+
+    def __deepcopy__(self, memo):
+        return SpelledPitchClassArray(copy.deepcopy(self.fifths(), memo))
 
     def __getitem__(self, index):
         f = self._fifths[index]

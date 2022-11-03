@@ -188,7 +188,7 @@ class TestSpelledArray(TestCase):
         self.assertEqual(aspc(["Ab", "Eb", "D##"]).pc(), aspc(["Ab", "Eb", "D##"]))
         self.assertEqual(aspc(["Ab", "Eb", "D##"]).embed(),
                          asp(["Ab0", "Eb0", "D##0"]))
-
+        
     def test_indexing(self):
         # helper for testing exceptions
         def try_assign(a, b):
@@ -245,7 +245,48 @@ class TestSpelledArray(TestCase):
         pc[[0,1]] = SpelledPitchClass("C")
         self.assertEqual(pc, aspc(["C", "C", "G"]))
         self.assertRaises(TypeError, lambda: try_assign(pc, SpelledIntervalClass("M2")))
+
+    def test_copy(self):
+        i = asi(["P1:0", "M2:0"])
+        i2 = i.copy()
+        i3 = i.deepcopy()
+        self.assertEqual(i, i2)
+        self.assertEqual(i, i3)
+        i2[0] = SpelledInterval("a1:0")
+        i3[0] = SpelledInterval("a1:0")
+        self.assertNotEqual(i, i2)
+        self.assertNotEqual(i, i3)
         
+        ic = asic(["P1", "M2"])
+        ic2 = ic.copy()
+        ic3 = ic.deepcopy()
+        self.assertEqual(ic, ic2)
+        self.assertEqual(ic, ic3)
+        ic2[0] = SpelledIntervalClass("a1")
+        ic3[0] = SpelledIntervalClass("a1")
+        self.assertNotEqual(ic, ic2)
+        self.assertNotEqual(ic, ic3)
+        
+        p = asp(["E4", "B4"])
+        p2 = p.copy()
+        p3 = p.deepcopy()
+        self.assertEqual(p, p2)
+        self.assertEqual(p, p3)
+        p2[0] = SpelledPitch("C4")
+        p3[0] = SpelledPitch("C4")
+        self.assertNotEqual(p, p2)
+        self.assertNotEqual(p, p3)
+        
+        pc = aspc(["E", "B"])
+        pc2 = pc.copy()
+        pc3 = pc.deepcopy()
+        self.assertEqual(pc, pc2)
+        self.assertEqual(pc, pc3)
+        pc2[0] = SpelledPitchClass("C")
+        pc3[0] = SpelledPitchClass("C")
+        self.assertNotEqual(pc, pc2)
+        self.assertNotEqual(pc, pc3)
+    
     @patch.multiple(SpelledArray, __abstractmethods__=set())
     def test_notimplemented(self):
         self.assertRaises(NotImplementedError, SpelledArray().name)
@@ -255,6 +296,8 @@ class TestSpelledArray(TestCase):
         self.assertRaises(NotImplementedError, SpelledArray().generic)
         self.assertRaises(NotImplementedError, SpelledArray().diatonic_steps)
         self.assertRaises(NotImplementedError, SpelledArray().alteration)
+        self.assertRaises(NotImplementedError, SpelledArray().copy)
+        self.assertRaises(NotImplementedError, SpelledArray().deepcopy)
         self.assertRaises(NotImplementedError, lambda: SpelledArray()[0])
         def test_setitem():
             SpelledArray()[0] = 1
