@@ -189,6 +189,63 @@ class TestSpelledArray(TestCase):
         self.assertEqual(aspc(["Ab", "Eb", "D##"]).embed(),
                          asp(["Ab0", "Eb0", "D##0"]))
 
+    def test_indexing(self):
+        # helper for testing exceptions
+        def try_assign(a, b):
+            a[0] = b
+        
+        i = asi(["m6:0", "m7:8", "dd1:3"])
+        self.assertEqual(i[0], SpelledInterval("m6:0"))
+        self.assertEqual(i[[1,2]], asi(["m7:8", "dd1:3"]))
+        self.assertEqual(i[[1,2,1,2]], asi(["m7:8", "dd1:3", "m7:8", "dd1:3"]))
+        self.assertEqual(i[[True, False, True]], asi(["m6:0", "dd1:3"]))
+        i[0] = SpelledInterval("M6:0")
+        self.assertEqual(i, asi(["M6:0", "m7:8", "dd1:3"]))
+        i[[1,2]] = asi(["m7:0", "dd1:0"])
+        self.assertEqual(i, asi(["M6:0", "m7:0", "dd1:0"]))
+        i[[0,1]] = SpelledInterval("P1:0")
+        self.assertEqual(i, asi(["P1:0", "P1:0", "dd1:0"]))
+        self.assertRaises(TypeError, lambda: try_assign(i, SpelledPitch("C4")))
+
+        ic = asic(["m6", "m7", "dd1"])
+        self.assertEqual(ic[0], SpelledIntervalClass("m6"))
+        self.assertEqual(ic[[1,2]], asic(["m7", "dd1"]))
+        self.assertEqual(ic[[1,2,1,2]], asic(["m7", "dd1", "m7", "dd1"]))
+        self.assertEqual(ic[[True, False, True]], asic(["m6", "dd1"]))
+        ic[0] = SpelledIntervalClass("M6")
+        self.assertEqual(ic, asic(["M6", "m7", "dd1"]))
+        ic[[1,2]] = asic(["m7", "dd1"])
+        self.assertEqual(ic, asic(["M6", "m7", "dd1"]))
+        ic[[0,1]] = SpelledIntervalClass("P1")
+        self.assertEqual(ic, asic(["P1", "P1", "dd1"]))
+        self.assertRaises(TypeError, lambda: try_assign(ic, SpelledPitchClass("C")))
+
+        p = asp(["A4", "Gb9", "E###3"])
+        self.assertEqual(p[0], SpelledPitch("A4"))
+        self.assertEqual(p[[1,2]], asp(["Gb9", "E###3"]))
+        self.assertEqual(p[[1,2,1,2]], asp(["Gb9", "E###3", "Gb9", "E###3"]))
+        self.assertEqual(p[[True, False, True]], asp(["A4", "E###3"]))
+        p[0] = SpelledPitch("Ab4")
+        self.assertEqual(p, asp(["Ab4", "Gb9", "E###3"]))
+        p[[1,2]] = asp(["G3", "G4"])
+        self.assertEqual(p, asp(["Ab4", "G3", "G4"]))
+        p[[0,1]] = SpelledPitch("C3")
+        self.assertEqual(p, asp(["C3", "C3", "G4"]))
+        self.assertRaises(TypeError, lambda: try_assign(p, SpelledInterval("M2:0")))
+
+        pc = aspc(["A", "Gb", "E###"])
+        self.assertEqual(pc[0], SpelledPitchClass("A"))
+        self.assertEqual(pc[[1,2]], aspc(["Gb", "E###"]))
+        self.assertEqual(pc[[1,2,1,2]], aspc(["Gb", "E###", "Gb", "E###"]))
+        self.assertEqual(pc[[True, False, True]], aspc(["A", "E###"]))
+        pc[0] = SpelledPitchClass("Ab")
+        self.assertEqual(pc, aspc(["Ab", "Gb", "E###"]))
+        pc[[1,2]] = aspc(["G", "G"])
+        self.assertEqual(pc, aspc(["Ab", "G", "G"]))
+        pc[[0,1]] = SpelledPitchClass("C")
+        self.assertEqual(pc, aspc(["C", "C", "G"]))
+        self.assertRaises(TypeError, lambda: try_assign(pc, SpelledIntervalClass("M2")))
+        
     @patch.multiple(SpelledArray, __abstractmethods__=set())
     def test_notimplemented(self):
         self.assertRaises(NotImplementedError, SpelledArray().name)
@@ -198,6 +255,10 @@ class TestSpelledArray(TestCase):
         self.assertRaises(NotImplementedError, SpelledArray().generic)
         self.assertRaises(NotImplementedError, SpelledArray().diatonic_steps)
         self.assertRaises(NotImplementedError, SpelledArray().alteration)
+        self.assertRaises(NotImplementedError, lambda: SpelledArray()[0])
+        def test_setitem():
+            SpelledArray()[0] = 1
+        self.assertRaises(NotImplementedError, test_setitem)
 
         self.assertFalse(asi("M3:0") == 1)
         self.assertFalse(asic("M3") == 1)
@@ -224,3 +285,6 @@ class TestSpelledArray(TestCase):
         self.assertRaises(ValueError, lambda: asic(["M3:0"]))
         self.assertRaises(ValueError, lambda: asp(["Ebb"]))
         self.assertRaises(ValueError, lambda: aspc(["Ebb4"]))
+
+        self.assertRaises(ValueError, lambda: asi([0, 0], [0]))
+        self.assertRaises(ValueError, lambda: asp([0, 0], [0]))

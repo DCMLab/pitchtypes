@@ -26,6 +26,22 @@ class SpelledArray(abc.ABC):
         with np.printoptions(formatter={'all': lambda x: str(x)}):
             return str(self.name())
 
+    # mandatory array methods
+
+    @abc.abstractmethod
+    def __getitem__(self, index):
+        """
+        Returns an item or a subarray of the spelled array
+        """
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def __setitem__(self, index, item):
+        """
+        Returns an item or a subarray of the spelled array
+        """
+        raise NotImplementedError
+
     # spelled interface
 
     @abc.abstractmethod
@@ -136,6 +152,23 @@ class SpelledIntervalArray(SpelledArray, Interval, Diatonic, Chromatic):
         sign, octaves, fifths = np.vectorize(parse_interval, otypes=[np.int_, np.int_, np.int_])(strings)
         return SpelledIntervalArray(fifths * sign, (octaves - (fifths * 4) // 7) * sign)
 
+    # collection interface
+    
+    def __getitem__(self, index):
+        f = self._fifths[index]
+        o = self._octaves[index]
+        if isinstance(f, numbers.Integral):
+            return SpelledInterval.from_fifths_and_octaves(f, o)
+        else:
+            return SpelledIntervalArray(f, o)
+
+    def __setitem__(self, index, item):
+        if isinstance(item, SpelledInterval) or isinstance(item, SpelledIntervalArray):
+            self._fifths[index] = item.fifths()
+            self._octaves[index] = item.internal_octaves()
+        else:
+            raise TypeError(f"Cannot set elements of SpelledIntervalArray to {type(item)}.")
+    
     # interval interface
 
     @classmethod
@@ -199,7 +232,6 @@ class SpelledIntervalArray(SpelledArray, Interval, Diatonic, Chromatic):
         abs_octs[downs] = -abs_octs[downs]
         return SpelledIntervalArray(abs_fifths, abs_octs)
 
-    
     def direction(self):
         """
         Return the direction of the interval (1=up / 0=neutral / -1=down).
@@ -276,6 +308,21 @@ class SpelledIntervalClassArray(SpelledArray, Interval, Diatonic, Chromatic):
             return Spelled.interval_class_from_fifths(fifths)
         return np.vectorize(intervalclass_name, otypes=[np.str_])(self.fifths())
 
+    # collection interface
+    
+    def __getitem__(self, index):
+        f = self._fifths[index]
+        if isinstance(f, numbers.Integral):
+            return SpelledIntervalClass.from_fifths(f)
+        else:
+            return SpelledIntervalClassArray(f)
+
+    def __setitem__(self, index, item):
+        if isinstance(item, SpelledIntervalClass) or isinstance(item, SpelledIntervalClassArray):
+            self._fifths[index] = item.fifths()
+        else:
+            raise TypeError(f"Cannot set elements of SpelledIntervalClassArray to {type(item)}.")
+    
     # interval interface
 
     @classmethod
@@ -329,7 +376,7 @@ class SpelledIntervalClassArray(SpelledArray, Interval, Diatonic, Chromatic):
         # manually invert the intervals that point downwards
         abs_fifths[downs] = -abs_fifths[downs]
         return SpelledIntervalClassArray(abs_fifths)
-    
+
     def direction(self):
         ds = self.diatonic_steps()
         out = np.ones_like(ds, dtype=np.int_)
@@ -409,6 +456,23 @@ class SpelledPitchArray(SpelledArray, Pitch):
         octaves, fifths = np.vectorize(parse_pitch, otypes=[np.int_, np.int_])(strings)
         return SpelledPitchArray.from_independent(fifths, octaves)
 
+    # collection interface
+    
+    def __getitem__(self, index):
+        f = self._fifths[index]
+        o = self._octaves[index]
+        if isinstance(f, numbers.Integral):
+            return SpelledPitch.from_fifths_and_octaves(f, o)
+        else:
+            return SpelledPitchArray(f, o)
+
+    def __setitem__(self, index, item):
+        if isinstance(item, SpelledPitch) or isinstance(item, SpelledPitchArray):
+            self._fifths[index] = item.fifths()
+            self._octaves[index] = item.internal_octaves()
+        else:
+            raise TypeError(f"Cannot set elements of SpelledPitchArray to {type(item)}.")
+    
     # Pitch interface
 
     def __eq__(self, other):
@@ -496,6 +560,21 @@ class SpelledPitchClassArray(SpelledArray, Pitch):
             return Spelled.pitch_class_from_fifths(fifths)
         return np.vectorize(pitchclass_name, otypes=[np.str_])(self.fifths())
 
+    # collection interface
+
+    def __getitem__(self, index):
+        f = self._fifths[index]
+        if isinstance(f, numbers.Integral):
+            return SpelledPitchClass.from_fifths(f)
+        else:
+            return SpelledPitchClassArray(f)
+
+    def __setitem__(self, index, item):
+        if isinstance(item, SpelledPitchClass) or isinstance(item, SpelledPitchClassArray):
+            self._fifths[index] = item.fifths()
+        else:
+            raise TypeError(f"Cannot set elements of SpelledPitchClassArray to {type(item)}.")
+    
     # pitch interface
 
     def __eq__(self, other):
