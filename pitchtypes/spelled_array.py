@@ -23,8 +23,12 @@ class SpelledArray(abc.ABC):
     def __repr__(self):
         # For vectorized types, name() returns an array of names,
         # so we convert it to a string here:
-        with np.printoptions(formatter={'all': lambda x: str(x)}):
-            return str(self.name())
+        return f"{self._print_name}({np.array2string(self.name(), separator=', ')})"
+
+    def __str__(self):
+        # with np.printoptions(formatter={'all': lambda x: str(x)}):
+        #     return f"{self._print_name}{self.name()}"
+        return np.array2string(self.name(), formatter={'all': lambda x: str(x)})
 
     # mandatory array methods
 
@@ -150,6 +154,8 @@ class SpelledIntervalArray(SpelledArray, Interval, Diatonic, Chromatic):
     """
     Represents an array of spelled intervals.
     """
+
+    _print_name = "asi"
     
     def __init__(self, fifths, octaves):
         """        
@@ -326,6 +332,8 @@ class SpelledIntervalClassArray(SpelledArray, Interval, Diatonic, Chromatic):
     """
     Represents a spelled interval class, i.e. an interval without octave information.
     """
+
+    _print_name = "asic"
     
     def __init__(self, fifths):
         """
@@ -473,6 +481,8 @@ class SpelledPitchArray(SpelledArray, Pitch):
     Represents a vector spelled pitch.
     """
 
+    _print_name = "asp"
+
     # constructors
     
     def __init__(self, fifths, octaves):
@@ -603,6 +613,8 @@ class SpelledPitchClassArray(SpelledArray, Pitch):
     """
     Represents a spelled pitch class, i.e. a pitch without octave information.
     """
+
+    _print_name = "aspc"
 
     def __init__(self, fifths):
         """

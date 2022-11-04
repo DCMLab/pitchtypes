@@ -33,15 +33,15 @@ or something that supports the same interface such as a pandas series.
     >>> from pitchtypes import *
     >>> import numpy as np
     >>> SpelledIntervalClassArray(np.array([1,2,3]))
-    [P5 M2 M6]
+    asic(['P5', 'M2', 'M6'])
     >>> SpelledPitchClassArray(np.arange(3))
-    [C G D]
+    aspc(['C', 'G', 'D'])
     >>> SpelledIntervalArray(np.arange(1,4), np.array([0,-1,-1]))
-    [P5:0 M2:0 M6:0]
+    asi(['P5:0', 'M2:0', 'M6:0'])
     >>> import pandas as pd
     >>> df = pd.DataFrame({'fifths': [1,2,3], 'octaves':[4,3,3]})
     >>> SpelledPitchArray(df.fifths, df.octaves)
-    [G4 D4 A4]
+    asp(['G4', 'D4', 'A4'])
 
 If the data is given using *independent* octaves
 (e.g., derived from the name and octave of a pitch),
@@ -50,9 +50,9 @@ the class method ``from_independent(fifths, octaves)``.
 This is usually more natural for pitches than for intervals
 
     >>> SpelledPitchArray.from_independent(np.array([1,2,3]), np.array([4,4,4]))
-    [G4 D4 A4]
+    asp(['G4', 'D4', 'A4'])
     >>> SpelledIntervalArray.from_independent(np.array([-2,-1,0,1,2]), np.array([0,0,0,0,0]))
-    [m7:0 P4:0 P1:0 P5:0 M2:0]
+    asi(['m7:0', 'P4:0', 'P1:0', 'P5:0', 'M2:0'])
 
 From String Arrays
 ^^^^^^^^^^^^^^^^^^
@@ -61,10 +61,10 @@ Spelled arrays can also be created from arrays of strings using the ``from_strin
 Note that the parsing is done entirely in Python and thus can be slow on large datasets.
 
     >>> SpelledIntervalArray.from_strings(["M2:0", "-P4:1"])
-    [M2:0 -P4:1]
+    asi(['M2:0', '-P4:1'])
     >>> SpelledPitchClassArray.from_strings([["Db", "D", "D#"], ["Eb", "E", "E#"]])
-    [[Db D D#]
-     [Eb E E#]]
+    aspc([['Db', 'D', 'D#'],
+     ['Eb', 'E', 'E#']])
 
 Shorthands
 ^^^^^^^^^^
@@ -77,21 +77,21 @@ there are shortcut functions that accept arrays or nested lists
 of both strings and numeric fifths/octaves values.
 
     >>> asi(["aaa1:1"])
-    [aaa1:1]
+    asi(['aaa1:1'])
     >>> asi([21], [-11])
-    [aaa1:1]
+    asi(['aaa1:1'])
     >>> asic(["aaa1"])
-    [aaa1]
+    asic(['aaa1'])
     >>> asic([21])
-    [aaa1]
+    asic(['aaa1'])
     >>> asp(["A##4", "C5"])
-    [A##4 C5]
+    asp(['A##4', 'C5'])
     >>> asp([17, 0], [-5, 5])
-    [A##4 C5]
+    asp(['A##4', 'C5'])
     >>> aspc(["A##", "C"])
-    [A## C]
+    aspc(['A##', 'C'])
     >>> aspc([17, 0])
-    [A## C]
+    aspc(['A##', 'C'])
 
 Working with Spelled Arrays
 ---------------------------
@@ -105,7 +105,7 @@ or a numeric array:
     >>> asi(["P1:0", "M3:0", "-m2:1"]).direction()
     array([ 0,  1, -1])
     >>> abs(asi(["P1:0", "M3:0", "-m2:1"]))
-    [P1:0 M3:0 m2:1]
+    asi(['P1:0', 'M3:0', 'm2:1'])
     >>> cs = aspc(["C", "C#", "C##", "Cb"])
     >>> cs.alteration()
     array([ 0,  1,  2, -1])
@@ -115,7 +115,7 @@ or a numeric array:
     array(['C', 'C', 'C', 'C'], dtype='<U1')
 
 Regular spelled types can be converted to a string representation using :py:func:`str`.
-Calling :py:func:`str` on spelled arrays also works
+Calling :py:func:`str` or `py:func:`repr` on spelled arrays also works
 but returns one string for the full array.
 If you want instead to get an array of strings
 (one for each pitch or interval in the original array),
@@ -123,6 +123,10 @@ you can use the method :py:func:`name() <pitchtypes.SpelledArray.name>`.
 
     >>> unisons = asi([0, 7, 14, 21], [0, -4, -8, -12])
     >>> unisons
+    asi(['P1:0', 'a1:0', 'aa1:0', 'aaa1:0'])
+    >>> str(unisons)
+    '[P1:0 a1:0 aa1:0 aaa1:0]'
+    >>> print(unisons)
     [P1:0 a1:0 aa1:0 aaa1:0]
     >>> unisons.name()
     array(['P1:0', 'a1:0', 'aa1:0', 'aaa1:0'], dtype='<U6')
@@ -135,9 +139,9 @@ For special intervals such as :py:func:`unison() <pitchtypes.Interval.unison>`,
 and :py:func:`chromatic_semitone() <pitchtypes.Chromatic.chromatic_semitone>`,
 you now have to provide a shape:
 
-    >>> SpelledIntervalArray.unison(12)
+    >>> print(SpelledIntervalArray.unison(12))
     [P1:0 P1:0 P1:0 P1:0 P1:0 P1:0 P1:0 P1:0 P1:0 P1:0 P1:0 P1:0]
-    >>> SpelledIntervalClassArray.chromatic_semitone((3,5))
+    >>> print(SpelledIntervalClassArray.chromatic_semitone((3,5)))
     [[a1 a1 a1 a1 a1]
      [a1 a1 a1 a1 a1]
      [a1 a1 a1 a1 a1]]
