@@ -206,6 +206,9 @@ class TestSpelledArray(TestCase):
         i[[0,1]] = SpelledInterval("P1:0")
         self.assertEqual(i, asi(["P1:0", "P1:0", "dd1:0"]))
         self.assertRaises(TypeError, lambda: try_assign(i, SpelledPitch("C4")))
+        self.assertTrue(SpelledInterval("dd1:0") in i)
+        self.assertFalse(SpelledInterval("d1:0") in i)
+        self.assertFalse("x" in i)
 
         ic = asic(["m6", "m7", "dd1"])
         self.assertEqual(ic[0], SpelledIntervalClass("m6"))
@@ -219,6 +222,9 @@ class TestSpelledArray(TestCase):
         ic[[0,1]] = SpelledIntervalClass("P1")
         self.assertEqual(ic, asic(["P1", "P1", "dd1"]))
         self.assertRaises(TypeError, lambda: try_assign(ic, SpelledPitchClass("C")))
+        self.assertTrue(SpelledIntervalClass("dd1") in ic)
+        self.assertFalse(SpelledIntervalClass("d1") in ic)
+        self.assertFalse("x" in ic)
 
         p = asp(["A4", "Gb9", "E###3"])
         self.assertEqual(p[0], SpelledPitch("A4"))
@@ -232,6 +238,9 @@ class TestSpelledArray(TestCase):
         p[[0,1]] = SpelledPitch("C3")
         self.assertEqual(p, asp(["C3", "C3", "G4"]))
         self.assertRaises(TypeError, lambda: try_assign(p, SpelledInterval("M2:0")))
+        self.assertTrue(SpelledPitch("G4") in p)
+        self.assertFalse(SpelledPitch("D4") in p)
+        self.assertFalse("x" in p)
 
         pc = aspc(["A", "Gb", "E###"])
         self.assertEqual(pc[0], SpelledPitchClass("A"))
@@ -245,6 +254,9 @@ class TestSpelledArray(TestCase):
         pc[[0,1]] = SpelledPitchClass("C")
         self.assertEqual(pc, aspc(["C", "C", "G"]))
         self.assertRaises(TypeError, lambda: try_assign(pc, SpelledIntervalClass("M2")))
+        self.assertTrue(SpelledPitchClass("G") in pc)
+        self.assertFalse(SpelledPitchClass("D") in pc)
+        self.assertFalse("x" in pc)
 
     def test_copy(self):
         i = asi(["P1:0", "M2:0"])
@@ -302,6 +314,7 @@ class TestSpelledArray(TestCase):
         def test_setitem():
             SpelledArray()[0] = 1
         self.assertRaises(NotImplementedError, test_setitem)
+        self.assertRaises(NotImplementedError, lambda: 1 in SpelledArray())
 
         self.assertFalse(asi("M3:0") == 1)
         self.assertFalse(asic("M3") == 1)

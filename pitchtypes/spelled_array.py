@@ -8,7 +8,6 @@ import copy
 from pitchtypes.basetypes import Pitch, Interval, Diatonic, Chromatic
 from pitchtypes.spelled import Spelled, SpelledInterval, SpelledIntervalClass, SpelledPitch, SpelledPitchClass
 
-# TODO: indexing into arrays
 # TODO: element-wise comparison
 # TODO: to/from list
 # TODO: docs
@@ -53,14 +52,23 @@ class SpelledArray(abc.ABC):
     @abc.abstractmethod
     def __getitem__(self, index):
         """
-        Returns an item or a subarray of the spelled array
+        Returns an item or a subarray of the spelled array.
+        Supports advanced indexing as on numpy arrays.
         """
         raise NotImplementedError
 
     @abc.abstractmethod
     def __setitem__(self, index, item):
         """
-        Returns an item or a subarray of the spelled array
+        Sets the given indices to the given item(s).
+        Supports advanced indexing as on numpy arrays.
+        """
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def __contains__(self, item):
+        """
+        Returns true if the array contains the given interval/pitch.
         """
         raise NotImplementedError
     
@@ -196,6 +204,13 @@ class SpelledIntervalArray(SpelledArray, Interval, Diatonic, Chromatic):
             self._octaves[index] = item.internal_octaves()
         else:
             raise TypeError(f"Cannot set elements of SpelledIntervalArray to {type(item)}.")
+
+    def __contains__(self, item):
+        if isinstance(item, SpelledInterval):
+            return ((self.fifths() == item.fifths()) &
+                    (self.internal_octaves() == item.internal_octaves())).any()
+        else:
+            return False
     
     # interval interface
 
@@ -356,7 +371,13 @@ class SpelledIntervalClassArray(SpelledArray, Interval, Diatonic, Chromatic):
             self._fifths[index] = item.fifths()
         else:
             raise TypeError(f"Cannot set elements of SpelledIntervalClassArray to {type(item)}.")
-    
+
+    def __contains__(self, item):
+        if isinstance(item, SpelledIntervalClass):
+            return item.fifths() in self.fifths()
+        else:
+            return False
+        
     # interval interface
 
     @classmethod
@@ -512,6 +533,13 @@ class SpelledPitchArray(SpelledArray, Pitch):
             self._octaves[index] = item.internal_octaves()
         else:
             raise TypeError(f"Cannot set elements of SpelledPitchArray to {type(item)}.")
+
+    def __contains__(self, item):
+        if isinstance(item, SpelledPitch):
+            return ((self.fifths() == item.fifths()) &
+                    (self.internal_octaves() == item.internal_octaves())).any()
+        else:
+            return False
     
     # Pitch interface
 
@@ -620,6 +648,12 @@ class SpelledPitchClassArray(SpelledArray, Pitch):
             self._fifths[index] = item.fifths()
         else:
             raise TypeError(f"Cannot set elements of SpelledPitchClassArray to {type(item)}.")
+
+    def __contains__(self, item):
+        if isinstance(item, SpelledPitchClass):
+            return item.fifths() in self.fifths()
+        else:
+            return False
     
     # pitch interface
 
