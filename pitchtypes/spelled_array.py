@@ -77,6 +77,13 @@ class SpelledArray(abc.ABC):
         raise NotImplementedError
 
     @abc.abstractmethod
+    def __len__(self):
+        """
+        Returns the length of the array (first dimension, as in numpy).
+        """
+        raise NotImplementedError
+
+    @abc.abstractmethod
     def __iter__(self):
         raise NotImplementedError
 
@@ -231,6 +238,9 @@ class SpelledIntervalArray(SpelledArray, Interval, Diatonic, Chromatic):
                     (self.internal_octaves() == item.internal_octaves())).any()
         else:
             return False
+
+    def __len__(self):
+        return len(self.fifths())
 
     class SpelledIntervalArrayIter:
         def __init__(self, array):
@@ -423,6 +433,9 @@ class SpelledIntervalClassArray(SpelledArray, Interval, Diatonic, Chromatic):
             return item.fifths() in self.fifths()
         else:
             return False
+
+    def __len__(self):
+        return len(self.fifths())
         
     class SpelledIntervalClassArrayIter:
         def __init__(self, array):
@@ -612,6 +625,9 @@ class SpelledPitchArray(SpelledArray, Pitch):
                     (self.internal_octaves() == item.internal_octaves())).any()
         else:
             return False
+
+    def __len__(self):
+        return len(self.fifths())
     
     class SpelledPitchArrayIter:
         def __init__(self, array):
@@ -752,6 +768,9 @@ class SpelledPitchClassArray(SpelledArray, Pitch):
             return item.fifths() in self.fifths()
         else:
             return False
+
+    def __len__(self):
+        return len(self.fifths())
     
     class SpelledPitchClassArrayIter:
         def __init__(self, array):
@@ -823,8 +842,8 @@ class SpelledPitchClassArray(SpelledArray, Pitch):
 def asi(things, things2=None):
     """
     A quick way to construct a spelled-interval array.
-    Takes either an array-like of strings or two array-likes of integers
-    (fifths and internal/dependent octaves).
+    Takes an array-like of strings or spelled intervals,
+    or two array-likes of integers (fifths and internal/dependent octaves).
     """
     input = np.array(things)
     if input.dtype.type is np.str_ or input.dtype.type is np.string_:
@@ -837,7 +856,8 @@ def asi(things, things2=None):
 def asic(things):
     """
     A quick way to construct a spelled-interval-class array.
-    Takes either an array-like of strings or an array-like of integers (fifths).
+    Takes either an array-like of strings or spelled interval classes,
+    or an array-like of integers (fifths).
     """
     input = np.array(things)
     if input.dtype.type is np.str_ or input.dtype.type is np.string_:
@@ -850,8 +870,8 @@ def asic(things):
 def asp(things, things2=None):
     """
     A quick way to construct a spelled-pitch array.
-    Takes either an array-like of strings or two array-likes of integers
-    (fifths and internal/dependent octaves).
+    Takes either an array-like of strings or spelled pitches,
+    or two array-likes of integers (fifths and internal/dependent octaves).
     """
     input = np.array(things)
     if input.dtype.type is np.str_ or input.dtype.type is np.string_:
@@ -864,7 +884,8 @@ def asp(things, things2=None):
 def aspc(things):
     """
     A quick way to construct a spelled-pitch-class array.
-    Takes either an array-like of strings or an array-like of integers (fifths).
+    Takes either an array-like of strings or spelled pitch classes,
+    or an array-like of integers (fifths).
     """
     input = np.array(things)
     if input.dtype.type is np.str_ or input.dtype.type is np.string_:

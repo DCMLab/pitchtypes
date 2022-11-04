@@ -116,12 +116,12 @@ class TestSpelledArray(TestCase):
 
         self.arrayEqual(asi(["m2:0", "P1:0", "d1:0", "a1:0", "-m3:0"]).direction(),
                         [1, 0, 0, 0, -1])
-        self.arrayEqual(asi(["m2:0", "P1:0", "d1:0", "a1:0", "-m3:0"]).abs(),
-                        asi(["m2:0", "P1:0", "d1:0", "a1:0", "m3:0"]))
+        self.assertEqual(asi(["m2:0", "P1:0", "d1:0", "a1:0", "-m3:0"]).abs(),
+                         asi(["m2:0", "P1:0", "d1:0", "a1:0", "m3:0"]))
 
-        self.arrayEqual(asi(["M3:3", "-M3:1"]).to_class(), asic(["M3", "m6"]))
-        self.arrayEqual(asi(["M3:3", "-M3:1"]).ic(), asic(["M3", "m6"]))
-        self.arrayEqual(asi(["M3:3", "-M3:1"]).embed(), asi(["M3:3", "-M3:1"]))
+        self.assertEqual(asi(["M3:3", "-M3:1"]).to_class(), asic(["M3", "m6"]))
+        self.assertEqual(asi(["M3:3", "-M3:1"]).ic(), asic(["M3", "m6"]))
+        self.assertEqual(asi(["M3:3", "-M3:1"]).embed(), asi(["M3:3", "-M3:1"]))
 
         self.assertTrue(asi(["d1:0","P1:0","a1:0","d2:0","m2:0","M2:0",
                                   "a2:0","-d2:0","-m2:0","-M2:0","-a2:0"]).is_step().all())
@@ -152,12 +152,12 @@ class TestSpelledArray(TestCase):
 
         self.arrayEqual(asic(["m2", "P1", "d1", "a1", "-m3"]).direction(),
                         [1, 0, 0, 0, -1])
-        self.arrayEqual(asic(["m2", "P1", "d1", "a1", "-m3"]).abs(),
+        self.assertEqual(asic(["m2", "P1", "d1", "a1", "-m3"]).abs(),
                         asic(["m2", "P1", "d1", "a1", "m3"]))
 
-        self.arrayEqual(asic(["M3", "-M3"]).to_class(), asic(["M3", "m6"]))
-        self.arrayEqual(asic(["M3", "-M3"]).ic(), asic(["M3", "m6"]))
-        self.arrayEqual(asic(["M3", "-M3"]).embed(), asi(["M3:0", "m6:0"]))
+        self.assertEqual(asic(["M3", "-M3"]).to_class(), asic(["M3", "m6"]))
+        self.assertEqual(asic(["M3", "-M3"]).ic(), asic(["M3", "m6"]))
+        self.assertEqual(asic(["M3", "-M3"]).embed(), asi(["M3:0", "m6:0"]))
 
         self.assertTrue(asic(["d1","P1","a1","d2","m2","M2",
                               "a2","-d2","-m2","-M2","-a2", "M7", "-M7"]).is_step().all())
@@ -348,6 +348,7 @@ class TestSpelledArray(TestCase):
         self.assertRaises(NotImplementedError, test_setitem)
         self.assertRaises(NotImplementedError, lambda: 1 in SpelledArray())
         self.assertRaises(NotImplementedError, lambda: list(SpelledArray()))
+        self.assertRaises(NotImplementedError, lambda: len(SpelledArray()))
 
         self.assertFalse(asi("M3:0") == 1)
         self.assertFalse(asic("M3") == 1)
