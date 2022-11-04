@@ -87,6 +87,10 @@ class TestSpelledArray(TestCase):
         self.assertEqual(str(asic(["m3", "-m7"])), "[m3 M2]")
         self.assertEqual(str(asp(["Eb4", "D##-1"])), "[Eb4 D##-1]")
         self.assertEqual(str(aspc(["Eb", "D##"])), "[Eb D##]")
+        self.assertEqual(repr(asi(["m3:1", "-m7:0"])), "asi(['m3:1', '-m7:0'])")
+        self.assertEqual(repr(asic(["m3", "-m7"])), "asic(['m3', 'M2'])")
+        self.assertEqual(repr(asp(["Eb4", "D##-1"])), "asp(['Eb4', 'D##-1'])")
+        self.assertEqual(repr(aspc(["Eb", "D##"])), "aspc(['Eb', 'D##'])")
         
     def test_intervals(self):
         # for checking constants
@@ -298,6 +302,34 @@ class TestSpelledArray(TestCase):
         pc3[0] = SpelledPitchClass("C")
         self.assertNotEqual(pc, pc2)
         self.assertNotEqual(pc, pc3)
+
+    def test_conversion(self):
+        def wrap(things):
+            return list(map(lambda x: [x], things))
+            
+        i = [SpelledInterval("P1:0"), SpelledInterval("M2:1")]
+        i2 = ["P1:0", "M2:1"]
+        self.assertEqual(asi(i), asi(i2))
+        self.assertEqual(list(asi(i2)), i)
+        self.assertEqual(list(asi(wrap(i))), list(map(asi, wrap(i2))))
+        
+        ic = [SpelledIntervalClass("P1"), SpelledIntervalClass("M2")]
+        ic2 = ["P1", "M2"]
+        self.assertEqual(asic(ic), asic(ic2))
+        self.assertEqual(list(asic(ic2)), ic)
+        self.assertEqual(list(asic(wrap(ic))), list(map(asic, wrap(ic2))))
+        
+        p = [SpelledPitch("C4"), SpelledPitch("D5")]
+        p2 = ["C4", "D5"]
+        self.assertEqual(asp(p), asp(p2))
+        self.assertEqual(list(asp(p2)), p)
+        self.assertEqual(list(asp(wrap(p))), list(map(asp, wrap(p2))))
+        
+        pc = [SpelledPitchClass("C"), SpelledPitchClass("D")]
+        pc2 = ["C", "D"]
+        self.assertEqual(aspc(pc), aspc(pc2))
+        self.assertEqual(list(aspc(pc2)), pc)
+        self.assertEqual(list(aspc(wrap(pc))), list(map(aspc, wrap(pc2))))
     
     @patch.multiple(SpelledArray, __abstractmethods__=set())
     def test_notimplemented(self):
@@ -315,6 +347,7 @@ class TestSpelledArray(TestCase):
             SpelledArray()[0] = 1
         self.assertRaises(NotImplementedError, test_setitem)
         self.assertRaises(NotImplementedError, lambda: 1 in SpelledArray())
+        self.assertRaises(NotImplementedError, lambda: list(SpelledArray()))
 
         self.assertFalse(asi("M3:0") == 1)
         self.assertFalse(asic("M3") == 1)

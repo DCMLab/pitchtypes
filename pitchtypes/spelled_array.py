@@ -75,7 +75,11 @@ class SpelledArray(abc.ABC):
         Returns true if the array contains the given interval/pitch.
         """
         raise NotImplementedError
-    
+
+    @abc.abstractmethod
+    def __iter__(self):
+        raise NotImplementedError
+
     # spelled interface
 
     @abc.abstractmethod
@@ -188,6 +192,16 @@ class SpelledIntervalArray(SpelledArray, Interval, Diatonic, Chromatic):
         sign, octaves, fifths = np.vectorize(parse_interval, otypes=[np.int_, np.int_, np.int_])(strings)
         return SpelledIntervalArray(fifths * sign, (octaves - (fifths * 4) // 7) * sign)
 
+    @staticmethod
+    def from_array(intervals):
+        """
+        Create an interval array from an array of intervals.
+        """
+        def from_interval(interval):
+            return interval.fifths(), interval.internal_octaves()
+        fifths, octaves = np.vectorize(from_interval, otypes=[np.int_, np.int_])(intervals)
+        return SpelledIntervalArray(fifths, octaves)
+
     # collection interface
 
     def __copy__(self):
@@ -217,7 +231,23 @@ class SpelledIntervalArray(SpelledArray, Interval, Diatonic, Chromatic):
                     (self.internal_octaves() == item.internal_octaves())).any()
         else:
             return False
-    
+
+    class SpelledIntervalArrayIter:
+        def __init__(self, array):
+            self._fifths_iter = array.fifths().__iter__()
+            self._octaves_iter = array.internal_octaves().__iter__()
+
+        def __next__(self):
+            f = self._fifths_iter.__next__()
+            o = self._octaves_iter.__next__()
+            if isinstance(f, numbers.Integral):
+                return SpelledInterval.from_fifths_and_octaves(f, o)
+            else:
+                return SpelledIntervalArray(f, o)
+        
+    def __iter__(self):
+        return self.SpelledIntervalArrayIter(self)
+        
     # interval interface
 
     @classmethod
@@ -354,6 +384,14 @@ class SpelledIntervalClassArray(SpelledArray, Interval, Diatonic, Chromatic):
         sign, fifths = np.vectorize(parse_ic, otypes=[np.int_, np.int_])(strings)
         return SpelledIntervalClassArray(fifths * sign)
 
+    @staticmethod
+    def from_array(intervals):
+        """
+        Create an interval class array from an array of interval classes.
+        """
+        fifths = np.vectorize(lambda i: i.fifths(), otypes=[np.int_])(intervals)
+        return SpelledIntervalClassArray(fifths)
+
     def name(self):
         def intervalclass_name(fifths):
             return Spelled.interval_class_from_fifths(fifths)
@@ -385,6 +423,20 @@ class SpelledIntervalClassArray(SpelledArray, Interval, Diatonic, Chromatic):
             return item.fifths() in self.fifths()
         else:
             return False
+        
+    class SpelledIntervalClassArrayIter:
+        def __init__(self, array):
+            self._fifths_iter = array.fifths().__iter__()
+            
+        def __next__(self):
+            f = self._fifths_iter.__next__()
+            if isinstance(f, numbers.Integral):
+                return SpelledIntervalClass.from_fifths(f)
+            else:
+                return SpelledIntervalClassArray(f)
+        
+    def __iter__(self):
+        return self.SpelledIntervalClassArrayIter(self)
         
     # interval interface
 
@@ -521,6 +573,16 @@ class SpelledPitchArray(SpelledArray, Pitch):
         octaves, fifths = np.vectorize(parse_pitch, otypes=[np.int_, np.int_])(strings)
         return SpelledPitchArray.from_independent(fifths, octaves)
 
+    @staticmethod
+    def from_array(pitches):
+        """
+        Create a pitch array from an array of pitches.
+        """
+        def from_pitch(pitch):
+            return pitch.fifths(), pitch.internal_octaves()
+        fifths, octaves = np.vectorize(from_pitch, otypes=[np.int_, np.int_])(pitches)
+        return SpelledPitchArray(fifths, octaves)
+
     # collection interface
 
     def __copy__(self):
@@ -551,6 +613,22 @@ class SpelledPitchArray(SpelledArray, Pitch):
         else:
             return False
     
+    class SpelledPitchArrayIter:
+        def __init__(self, array):
+            self._fifths_iter = array.fifths().__iter__()
+            self._octaves_iter = array.internal_octaves().__iter__()
+
+        def __next__(self):
+            f = self._fifths_iter.__next__()
+            o = self._octaves_iter.__next__()
+            if isinstance(f, numbers.Integral):
+                return SpelledPitch.from_fifths_and_octaves(f, o)
+            else:
+                return SpelledPitchArray(f, o)
+        
+    def __iter__(self):
+        return self.SpelledPitchArrayIter(self)
+        
     # Pitch interface
 
     def __eq__(self, other):
@@ -635,6 +713,14 @@ class SpelledPitchClassArray(SpelledArray, Pitch):
         fifths = np.vectorize(parse_pc, otypes=[np.int_])(strings)
         return SpelledPitchClassArray(fifths)
 
+    @staticmethod
+    def from_array(pitches):
+        """
+        Create an pitch class array from an array of pitch classes.
+        """
+        fifths = np.vectorize(lambda i: i.fifths(), otypes=[np.int_])(pitches)
+        return SpelledPitchClassArray(fifths)
+
     def name(self):
         def pitchclass_name(fifths):
             return Spelled.pitch_class_from_fifths(fifths)
@@ -667,6 +753,20 @@ class SpelledPitchClassArray(SpelledArray, Pitch):
         else:
             return False
     
+    class SpelledPitchClassArrayIter:
+        def __init__(self, array):
+            self._fifths_iter = array.fifths().__iter__()
+            
+        def __next__(self):
+            f = self._fifths_iter.__next__()
+            if isinstance(f, numbers.Integral):
+                return SpelledPitchClass.from_fifths(f)
+            else:
+                return SpelledPitchClassArray(f)
+        
+    def __iter__(self):
+        return self.SpelledPitchClassArrayIter(self)
+        
     # pitch interface
 
     def __eq__(self, other):
@@ -729,6 +829,8 @@ def asi(things, things2=None):
     input = np.array(things)
     if input.dtype.type is np.str_ or input.dtype.type is np.string_:
         return SpelledIntervalArray.from_strings(input)
+    if isinstance(input.flat[0], SpelledInterval):
+        return SpelledIntervalArray.from_array(input)
     else:
         return SpelledIntervalArray(input, np.array(things2))
 
@@ -740,6 +842,8 @@ def asic(things):
     input = np.array(things)
     if input.dtype.type is np.str_ or input.dtype.type is np.string_:
         return SpelledIntervalClassArray.from_strings(input)
+    if isinstance(input.flat[0], SpelledIntervalClass):
+        return SpelledIntervalClassArray.from_array(input)
     else:
         return SpelledIntervalClassArray(input)
 
@@ -752,6 +856,8 @@ def asp(things, things2=None):
     input = np.array(things)
     if input.dtype.type is np.str_ or input.dtype.type is np.string_:
         return SpelledPitchArray.from_strings(input)
+    if isinstance(input.flat[0], SpelledPitch):
+        return SpelledPitchArray.from_array(input)
     else:
         return SpelledPitchArray(input, np.array(things2))
 
@@ -763,5 +869,7 @@ def aspc(things):
     input = np.array(things)
     if input.dtype.type is np.str_ or input.dtype.type is np.string_:
         return SpelledPitchClassArray.from_strings(input)
+    if isinstance(input.flat[0], SpelledPitchClass):
+        return SpelledPitchClassArray.from_array(input)
     else:
         return SpelledPitchClassArray(input)
