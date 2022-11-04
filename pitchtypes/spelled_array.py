@@ -9,7 +9,6 @@ from pitchtypes.basetypes import Pitch, Interval, Diatonic, Chromatic
 from pitchtypes.spelled import Spelled, SpelledInterval, SpelledIntervalClass, SpelledPitch, SpelledPitchClass
 
 # TODO: element-wise comparison
-# TODO: to/from list
 # TODO: docs
 
 class SpelledArray(abc.ABC):

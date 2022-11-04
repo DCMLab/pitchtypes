@@ -26,7 +26,7 @@ Array Creation
 From Numeric Arrays
 ^^^^^^^^^^^^^^^^^^^
 
-The default way to construct a spelled array is by directly providing its underlying arrays
+The most direct way to construct a spelled array is by providing its underlying arrays
 of fifths and (dependent) octaves as a numpy array
 or something that supports the same interface such as a pandas series.
 
@@ -66,6 +66,20 @@ Note that the parsing is done entirely in Python and thus can be slow on large d
     aspc([['Db', 'D', 'D#'],
      ['Eb', 'E', 'E#']])
 
+From Arrays of Pitches / Intervals
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Arrays (or lists) containing pitches or intervals can be converted to the corresponding spelled arrays
+using the ``from_array`` class method:
+
+    >>> intervals = np.array([SpelledInterval("P1:0"), SpelledInterval("P1:1")])
+    >>> intervals
+    array([P1:0, P1:1], dtype=object)
+    >>> SpelledIntervalArray.from_array(intervals)
+    asi(['P1:0', 'P1:1'])
+    >>> SpelledPitchArray.from_array([SpelledPitch("C4"), SpelledPitch("C5")])
+    asp(['C4', 'C5'])
+     
 Shorthands
 ^^^^^^^^^^
 
@@ -74,21 +88,32 @@ you should generally use one of the above methods for creating spelled arrays,
 as they make the intention of the code clear.
 However, for quickly testing or trying something in an interactive way,
 there are shortcut functions that accept arrays or nested lists
-of both strings and numeric fifths/octaves values.
+of strings, scalar spelled types, and numeric fifths/octaves values.
 
     >>> asi(["aaa1:1"])
     asi(['aaa1:1'])
+    >>> asi([SpelledInterval("aaa1:1")])
+    asi(['aaa1:1'])
     >>> asi([21], [-11])
     asi(['aaa1:1'])
+
+    >>> asic([SpelledIntervalClass("aaa1")])
+    asic(['aaa1'])
     >>> asic(["aaa1"])
     asic(['aaa1'])
     >>> asic([21])
     asic(['aaa1'])
+
     >>> asp(["A##4", "C5"])
+    asp(['A##4', 'C5'])
+    >>> asp([SpelledPitch("A##4"), SpelledPitch("C5")])
     asp(['A##4', 'C5'])
     >>> asp([17, 0], [-5, 5])
     asp(['A##4', 'C5'])
+    
     >>> aspc(["A##", "C"])
+    aspc(['A##', 'C'])
+    >>> aspc([SpelledPitchClass("A##"), SpelledPitchClass("C")])
     aspc(['A##', 'C'])
     >>> aspc([17, 0])
     aspc(['A##', 'C'])
@@ -114,6 +139,9 @@ or a numeric array:
     >>> cs.letter()
     array(['C', 'C', 'C', 'C'], dtype='<U1')
 
+Names and Strings
+^^^^^^^^^^^^^^^^^
+    
 Regular spelled types can be converted to a string representation using :py:func:`str`.
 Calling :py:func:`str` or `py:func:`repr` on spelled arrays also works
 but returns one string for the full array.
@@ -146,6 +174,38 @@ you now have to provide a shape:
      [a1 a1 a1 a1 a1]
      [a1 a1 a1 a1 a1]]
 
+Array Interface
+^^^^^^^^^^^^^^^
+
+Spelled arrays support indexing as in `numpy`.
+
+    >>> intervals = asi(["m6:0", "m7:8", "dd1:3"])
+    >>> intervals[0]
+    m6:0
+    >>> intervals[[1,2]]
+    asi(['m7:8', 'dd1:3'])
+    >>> intervals[[1,2,1,2]]
+    asi(['m7:8', 'dd1:3', 'm7:8', 'dd1:3'])
+    >>> intervals[[True, False, True]]
+    asi(['m6:0', 'dd1:3'])
+
+Besides indexing, spelled arrays also support common collection methods
+such as :py:func:`len`, ``in``, or iteration:
+
+    >>> len(intervals)
+    3
+    >>> SpelledInterval("m7:8") in intervals
+    True
+    >>> for i in intervals:
+    ...     print(f"Interval {i} corresponds to interval class {i.ic()}.")
+    ... 
+    Interval m6:0 corresponds to interval class m6.
+    Interval m7:8 corresponds to interval class m7.
+    Interval dd1:3 corresponds to interval class dd1.
+    >>> list(intervals)
+    [m6:0, m7:8, dd1:3]
+    
+    
 Reference
 ---------
 
