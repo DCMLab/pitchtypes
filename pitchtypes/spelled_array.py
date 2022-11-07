@@ -17,7 +17,7 @@ class SpelledArray(abc.ABC):
     Uses the same interface as the Spelled types.
     """
 
-    # some common methods:
+    # printing:
     
     def __repr__(self):
         # For vectorized types, name() returns an array of names,
@@ -85,6 +85,65 @@ class SpelledArray(abc.ABC):
     @abc.abstractmethod
     def __iter__(self):
         raise NotImplementedError
+
+    def array_equal(self, other):
+        """
+        Returns True if self and other are the equal,
+        False otherwise.
+        """
+        try:
+            return (self == other).all()
+        except TypeError:
+            return False
+
+    # element-wise comparison
+    
+    @abc.abstractmethod
+    def compare(self, other):
+        """
+        Element-wise comparison between two spelled arrays.
+
+        Returns 0 where the elements are equal,
+        1 where the first element is greater,
+        and -1 where the second element is greater.
+        """
+        raise NotImplementedError
+    
+    def __lt__(self, other):
+        """
+        Element-wise ``<`` between two spelled arrays.
+        """
+        return self.compare(other) == -1
+
+    def __le__(self, other):
+        """
+        Element-wise ``<=`` between two spelled arrays.
+        """
+        return self.compare(other) != 1
+
+    def __gt__(self, other):
+        """
+        Element-wise ``>`` between two spelled arrays.
+        """
+        return self.compare(other) == 1
+
+    def __ge__(self, other):
+        """
+        Element-wise ``>=`` between two spelled arrays.
+        """
+        return self.compare(other) != -1
+
+    def __eq__(self, other):
+        """
+        Element-wise ``<=`` between two spelled arrays.
+        """
+        return self.compare(other) == 0
+
+    def __ne__(self, other):
+        """
+        Element-wise ``<=`` between two spelled arrays.
+        """
+        return self.compare(other) != 0
 
     # spelled interface
 
@@ -233,7 +292,7 @@ class SpelledIntervalArray(SpelledArray, Interval, Diatonic, Chromatic):
 
     def __contains__(self, item):
         if isinstance(item, SpelledInterval):
-            return ((self.fifths() == item.fifths()) &
+            return ((self.fifths() == item.fifths()) & \
                     (self.internal_octaves() == item.internal_octaves())).any()
         else:
             return False
@@ -280,13 +339,6 @@ class SpelledIntervalArray(SpelledArray, Interval, Diatonic, Chromatic):
         """
         return SpelledIntervalArray(np.full(shape, 7, dtype=np.int_), np.full(shape, -4, dtype=np.int_))
 
-    def __eq__(self, other):
-        if type(other) == SpelledInterval or type(other) == SpelledIntervalArray:
-            return (self.fifths() == other.fifths()).all() and \
-                (self.internal_octaves() == other.internal_octaves()).all()
-        else:
-            return False
-
     def __add__(self, other):
         if type(other) == SpelledInterval or type(other) == SpelledIntervalArray:
             return SpelledIntervalArray(self.fifths() + other.fifths(),
@@ -325,7 +377,10 @@ class SpelledIntervalArray(SpelledArray, Interval, Diatonic, Chromatic):
         Return the direction of the interval (1=up / 0=neutral / -1=down).
         All unisons are considered neutral (including augmented and diminished unisons).
         """
-        return np.sign(self.diatonic_steps())
+        dia = np.sign(self.diatonic_steps())
+        mask = dia == 0
+        dia[mask] = np.sign((self.fifths()[mask] + 1) // 7)
+        return dia
 
     def ic(self):
         return SpelledIntervalClassArray(self.fifths())
@@ -345,6 +400,12 @@ class SpelledIntervalArray(SpelledArray, Interval, Diatonic, Chromatic):
             else:
                 return Spelled.interval_class_from_fifths(fifths) + ":" + str(octaves)
         return np.vectorize(interval_name, otypes=[np.str_])(self.fifths(), abs(self).octaves(), self.direction())
+
+    def compare(self, other):
+        if isinstance(other, SpelledInterval) or isinstance(other, SpelledIntervalArray):
+            return (self - other).direction()
+        else:
+            raise TypeError(f"Cannot elements of {type(self)} to {type(other)}.")
 
     def fifths(self):
         return self._fifths
@@ -400,11 +461,6 @@ class SpelledIntervalClassArray(SpelledArray, Interval, Diatonic, Chromatic):
         """
         fifths = np.vectorize(lambda i: i.fifths(), otypes=[np.int_])(intervals)
         return SpelledIntervalClassArray(fifths)
-
-    def name(self):
-        def intervalclass_name(fifths):
-            return Spelled.interval_class_from_fifths(fifths)
-        return np.vectorize(intervalclass_name, otypes=[np.str_])(self.fifths())
 
     # collection interface
 
@@ -470,12 +526,6 @@ class SpelledIntervalClassArray(SpelledArray, Interval, Diatonic, Chromatic):
     def chromatic_semitone(cls, shape):
         return cls(np.full(shape, 7, dtype=np.int_))
 
-    def __eq__(self, other):
-        if type(other) == SpelledIntervalClass or type(other) == SpelledIntervalClassArray:
-            return (self.fifths() == other.fifths()).all()
-        else:
-            return False
-
     def __add__(self, other):
         if type(other) == SpelledIntervalClass or type(other) == SpelledIntervalClassArray:
             return SpelledIntervalClassArray(self.fifths() + other.fifths())
@@ -506,9 +556,10 @@ class SpelledIntervalClassArray(SpelledArray, Interval, Diatonic, Chromatic):
 
     def direction(self):
         ds = self.diatonic_steps()
+        mask = ds == 0
         out = np.ones_like(ds, dtype=np.int_)
-        out[ds == 0] = 0
         out[ds > 3] = -1
+        out[mask] = np.sign((self.fifths()[mask] + 1) // 7)
         return out
 
     def ic(self):
@@ -521,6 +572,17 @@ class SpelledIntervalClassArray(SpelledArray, Interval, Diatonic, Chromatic):
         return np.isin(self.degree(), [0,1,6])
 
     # spelled interface
+
+    def name(self):
+        def intervalclass_name(fifths):
+            return Spelled.interval_class_from_fifths(fifths)
+        return np.vectorize(intervalclass_name, otypes=[np.str_])(self.fifths())
+
+    def compare(self, other):
+        if isinstance(other, SpelledIntervalClass) or isinstance(other, SpelledIntervalClassArray):
+            return np.sign((self - other).fifths())
+        else:
+            raise TypeError(f"Cannot elements of {type(self)} to {type(other)}.")
 
     def fifths(self):
         return self._fifths
@@ -620,7 +682,7 @@ class SpelledPitchArray(SpelledArray, Pitch):
 
     def __contains__(self, item):
         if isinstance(item, SpelledPitch):
-            return ((self.fifths() == item.fifths()) &
+            return ((self.fifths() == item.fifths()) & \
                     (self.internal_octaves() == item.internal_octaves())).any()
         else:
             return False
@@ -646,13 +708,6 @@ class SpelledPitchArray(SpelledArray, Pitch):
         
     # Pitch interface
 
-    def __eq__(self, other):
-        if type(other) == SpelledPitch or type(other) == SpelledPitchArray:
-            return (self.fifths() == other.fifths()).all() and \
-                (self.internal_octaves() == other.internal_octaves()).all()
-        else:
-            return False
-
     def __add__(self, other):
         if type(other) == SpelledInterval or type(other) == SpelledIntervalArray:
             return SpelledPitchArray(self.fifths() + other.fifths(),
@@ -673,6 +728,12 @@ class SpelledPitchArray(SpelledArray, Pitch):
         return self
 
     # Spelled interface
+
+    def compare(self, other):
+        if isinstance(other, SpelledPitch) or isinstance(other, SpelledPitchArray):
+            return (self - other).direction()
+        else:
+            raise TypeError(f"Cannot elements of {type(self)} to {type(other)}.")
 
     def name(self):
         def pitch_name(fifths, octave):
@@ -741,6 +802,12 @@ class SpelledPitchClassArray(SpelledArray, Pitch):
             return Spelled.pitch_class_from_fifths(fifths)
         return np.vectorize(pitchclass_name, otypes=[np.str_])(self.fifths())
 
+    def compare(self, other):
+        if isinstance(other, SpelledPitchClass) or isinstance(other, SpelledPitchClassArray):
+            return np.sign((self - other).fifths())
+        else:
+            raise TypeError(f"Cannot elements of {type(self)} to {type(other)}.")
+
     # collection interface
 
     def __copy__(self):
@@ -786,12 +853,6 @@ class SpelledPitchClassArray(SpelledArray, Pitch):
         return self.SpelledPitchClassArrayIter(self)
         
     # pitch interface
-
-    def __eq__(self, other):
-        if type(other) == SpelledPitchClass or type(other) == SpelledPitchClassArray:
-            return (self.fifths() == other.fifths()).all()
-        else:
-            return False
 
     def __add__(self, other):
         if type(other) == SpelledIntervalClass or type(other) == SpelledIntervalClassArray:
