@@ -125,9 +125,10 @@ class TestSpelled(TestCase):
                     # test unison(), octave(), embed(), internal_octaves(), direction(), abs()
                     self.assertEqual(SpelledIntervalClass.unison(), SpelledIntervalClass("P1"))
                     self.assertEqual(SpelledIntervalClass.octave(), SpelledIntervalClass("P1"))
-                    self.assertEqual(str(interval) + ":0", str(interval.embed()))
+                    if interval.diatonic_steps() != 0: # exclude unisons, for which this doesn't hold
+                        self.assertEqual(str(interval) + ":0", str(interval.embed()))
+                        self.assertEqual(interval.direction(), sign((float(interval_class_str[-1]) + 2) % 7 - 3))
                     self.assertEqual(interval.internal_octaves(), 0)
-                    self.assertEqual(interval.direction(), sign((float(interval_class_str[-1]) + 2) % 7 - 3))
                     # test print output
                     self.assertEqual(interval_class_str, str(interval))
                     self.assertEqual(interval_class_str, interval.name())
@@ -157,8 +158,9 @@ class TestSpelled(TestCase):
                         self.assertEqual(SpelledInterval.octave(), SpelledInterval("P1:1"))
                         self.assertEqual(interval, interval.embed())
                         # test print output
-                        self.assertEqual(interval_str, str(interval))
-                        self.assertEqual(interval_str, interval.name())
+                        if interval.diatonic_steps() != 0: # doesn't hold for unisons
+                            self.assertEqual(interval_str, str(interval))
+                            self.assertEqual(interval_str, interval.name())
                 # check link to base type
                 self.assertEqual(interval._base_type, Spelled)
                 self.assertEqual(inverse_interval._base_type, Spelled)
@@ -270,16 +272,19 @@ class TestSpelled(TestCase):
         
         self.assertEqual(SpelledInterval("m2:0").direction(), 1)
         self.assertEqual(SpelledInterval("P1:0").direction(), 0)
-        self.assertEqual(SpelledInterval("d1:0").direction(), 0)
-        self.assertEqual(SpelledInterval("a1:0").direction(), 0)
+        self.assertEqual(SpelledInterval("d1:0").direction(), -1)
+        self.assertEqual(SpelledInterval("a1:0").direction(), 1)
         self.assertEqual(SpelledInterval("-m3:0").direction(), -1)
+        self.assertEqual(SpelledInterval("P4:0").direction(), 1)
+        self.assertEqual(SpelledInterval("-M7:0").direction(), -1)
         self.assertEqual(SpelledInterval("-m3:0").abs(), SpelledInterval("m3:0"))
         self.assertEqual(SpelledInterval("m3:0").abs(), SpelledInterval("m3:0"))
         self.assertEqual(SpelledIntervalClass("m2").direction(), 1)
         self.assertEqual(SpelledIntervalClass("P1").direction(), 0)
-        self.assertEqual(SpelledIntervalClass("d1").direction(), 0)
-        self.assertEqual(SpelledIntervalClass("a1").direction(), 0)
-        self.assertEqual(SpelledIntervalClass("d1").direction(), 0)
+        self.assertEqual(SpelledIntervalClass("d1").direction(), -1)
+        self.assertEqual(SpelledIntervalClass("a1").direction(), 1)
+        self.assertEqual(SpelledIntervalClass("P4").direction(), 1)
+        self.assertEqual(SpelledIntervalClass("-M7").direction(), 1)
         self.assertEqual(SpelledIntervalClass("aaaaa4").direction(), 1)
         self.assertEqual(SpelledIntervalClass("ddddd5").direction(), -1)
         self.assertEqual(SpelledIntervalClass("-m3").abs(), SpelledIntervalClass("m3"))
@@ -323,6 +328,11 @@ class TestSpelled(TestCase):
 
         self.assertEqual(SpelledIntervalClass("d3").is_step(), False)
         self.assertEqual(SpelledIntervalClass("-d3").is_step(), False)
+
+    def test_ordering(self):
+        self.assertTrue(SpelledInterval("aa4:0") < SpelledInterval("dd5:0"))
+        self.assertTrue(SpelledPitch("C##4") < SpelledPitch("Dbb4"))
+        self.assertTrue(SpelledPitch("C-1") > SpelledPitch("Cb-1"))
 
     def test_spelled_accessors(self):
         self.assertEqual(SpelledInterval("M3:1").octaves(),  1)

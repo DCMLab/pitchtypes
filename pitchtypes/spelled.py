@@ -328,6 +328,12 @@ class SpelledPitch(Spelled, Pitch):
     def name(self):
         return f"{self.pitch_class_from_fifths(self.fifths())}{self.octaves()}"
 
+    def __lt__(self, other):
+        if isinstance(other, SpelledPitch):
+            return (self-other).direction() == -1
+        else:
+            raise TypeError(f"Cannot compare {type(self)} with {type(other)}.")
+    
     # Pitch interface
     def pc(self):
         return self.to_class()
@@ -423,6 +429,12 @@ class SpelledInterval(Spelled, Interval, Diatonic, Chromatic):
     def to_class(self):
         return self.IntervalClass(self.value[1])
 
+    def __lt__(self, other):
+        if isinstance(other, SpelledInterval):
+            return (self-other).direction() == -1
+        else:
+            raise TypeError(f"Cannot compare {type(self)} with {type(other)}.")
+
     # interval interface
 
     @classmethod
@@ -446,7 +458,13 @@ class SpelledInterval(Spelled, Interval, Diatonic, Chromatic):
         """
         ds = self.diatonic_steps()
         if ds == 0:
-            return 0
+            alt = (self.fifths() + 1) // 7
+            if alt == 0:
+                return 0
+            elif alt < 0:
+                return -1
+            else:
+                return 1
         elif ds < 0:
             return -1
         else:
@@ -530,6 +548,12 @@ class SpelledPitchClass(Spelled, Pitch):
         else:
             raise TypeError(f"Cannot take interval between SpelledPitchClass and {type(other)}.")
     
+    def __lt__(self, other):
+        if isinstance(other, SpelledPitchClass):
+            return self.fifths() < other.fifths()
+        else:
+            raise TypeError(f"Cannot compare {type(self)} with {type(other)}.")
+
     # pitch interface
 
     def pc(self):
@@ -602,6 +626,12 @@ class SpelledIntervalClass(Spelled, Interval, Diatonic, Chromatic):
         else:
             sign = ""
         return sign + self.interval_class_from_fifths(self.fifths(), inverse=inverse)
+    
+    def __lt__(self, other):
+        if isinstance(other, SpelledIntervalClass):
+            return self.fifths() < other.fifths()
+        else:
+            raise TypeError(f"Cannot compare {type(self)} with {type(other)}.")
 
     # interval interface
 
@@ -620,9 +650,15 @@ class SpelledIntervalClass(Spelled, Interval, Diatonic, Chromatic):
         return cls.from_fifths(0)
 
     def direction(self):
-        ds = self.diatonic_steps()
+        ds = self.degree()
         if ds == 0:
-            return 0
+            alt = (self.fifths() + 1) // 7
+            if alt == 0:
+                return 0
+            elif alt < 0:
+                return -1
+            else:
+                return 1
         elif ds > 3:
             return -1
         else:
