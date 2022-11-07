@@ -125,7 +125,7 @@ Array Return Values
 ^^^^^^^^^^^^^^^^^^^
 
 Most methods on spelled arrays now return either another spelled array
-or a numeric array:
+or an array or numbers or strings:
 
     >>> asi(["P1:0", "M3:0", "-m2:1"]).direction()
     array([ 0,  1, -1])
@@ -139,6 +139,39 @@ or a numeric array:
     >>> cs.letter()
     array(['C', 'C', 'C', 'C'], dtype='<U1')
 
+Comparison also works element-wise:
+
+    >>> asi(["M2:0", "d5:0", "-P5:0"]) > asi(["m2:0", "a4:0", "-P4:0"])
+    array([ True,  True, False])
+    >>> asic(["M2", "-m7", "m2"]) == SpelledIntervalClass("M2")
+    array([ True,  True, False])
+    >>> asp(["C4", "B###3", "Dbbb4"]).compare(SpelledPitch("C4"))
+    array([ 0, -1,  1])
+    >>> aspc(["C", "C#", "D"]).array_equal(aspc(["C", "Db", "D"]))
+    False
+
+Use :py:meth:`array_equal <SpelledArray.array_equal>` to test the overall equality of two arrays
+as `==` will return element-wise equality.
+
+.. warning::
+   Note that the ordering of non-class intervals/pitches and interval/pitch classes is different.
+
+   Non-class intervals/pitches have a meaningful diatonic ordering,
+   that goes by the diatonic step (or note name + octave) first and by alteration second:
+
+   .. code-block:: none
+                   
+      P4:0 < a4:0 < aaaa4:0 < dddd5:0 < d5:0 < P5:0
+      F4   < F#4  < F####4  < Gbbbb4  < Gb4  < G4
+
+   Interval/pitch classes are circular in their diatonic ordering,
+   so a line-of-fifths ordering is used instead:
+
+   .. code-block:: none
+                   
+      m7 < P4 < P1 < P5 < M2
+      Bb < F  < C  < G  < D
+    
 Names and Strings
 ^^^^^^^^^^^^^^^^^
     

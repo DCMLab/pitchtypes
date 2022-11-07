@@ -8,8 +8,8 @@ import copy
 from pitchtypes.basetypes import Pitch, Interval, Diatonic, Chromatic
 from pitchtypes.spelled import Spelled, SpelledInterval, SpelledIntervalClass, SpelledPitch, SpelledPitchClass
 
-# TODO: element-wise comparison
-# TODO: docs
+# TODO: one-/multi-hot encodings (also for scalar types)
+# TODO: implement compare() for scalar spelled types 
 
 class SpelledArray(abc.ABC):
     """
@@ -106,6 +106,15 @@ class SpelledArray(abc.ABC):
         Returns 0 where the elements are equal,
         1 where the first element is greater,
         and -1 where the second element is greater.
+
+        The respective ordering differs between types.
+        Non-class pitches and intervals use diatonic ordering,
+        interval/pitch classes use line-of-fifths ordering.
+
+        This method can be indirectly used through binary comparison operators
+        (including ``==``, ``<`` etc.).
+        To test the overall equality of two spelled arrays,
+        use :py:meth:`array_equal <SpelledArray.array_equal>`
         """
         raise NotImplementedError
     
@@ -204,16 +213,19 @@ class SpelledArray(abc.ABC):
         """
         Return the diatonic steps of the interval (unison=0, 2nd=1, ..., octave=7, ...).
         Respects both direction and octaves.
-        For pitches, use degree()
+        For pitches, use degree().
         """
         raise NotImplementedError
 
     @abc.abstractmethod
     def alteration(self):
         """
-        Return the number of semitones by which the interval is altered from its the perfect or major variant.
+        Return the number of semitones by which the interval is altered
+        from its the perfect or major variant.
         Positive alteration always indicates augmentation,
-        negative alteration indicates diminution (minor or smaller) of the interval.
+        negative alteration indicates diminution (minor or smaller) of the interval's magnitude.
+        For interval classes, alteration refers to the upward version of the interval
+        (e.g. for ``m7``/``-M2`` it is -1).
         For pitches, return the accidentals (positive=sharps, negative=flats, 0=natural).
         """
         raise NotImplementedError
@@ -374,8 +386,8 @@ class SpelledIntervalArray(SpelledArray, Interval, Diatonic, Chromatic):
 
     def direction(self):
         """
-        Return the direction of the interval (1=up / 0=neutral / -1=down).
-        All unisons are considered neutral (including augmented and diminished unisons).
+        Returns the direction of the interval (1=up / 0=neutral / -1=down).
+        The perfect unisons (``P1:0``) is considered neutral.
         """
         dia = np.sign(self.diatonic_steps())
         mask = dia == 0
@@ -402,6 +414,21 @@ class SpelledIntervalArray(SpelledArray, Interval, Diatonic, Chromatic):
         return np.vectorize(interval_name, otypes=[np.str_])(self.fifths(), abs(self).octaves(), self.direction())
 
     def compare(self, other):
+        """
+        Element-wise comparison between two spelled arrays.
+
+        Returns 0 where the elements are equal,
+        1 where the first element is greater,
+        and -1 where the second element is greater.
+
+        Spelled intervals use diatonic ordering,
+        for example ``P4:0 < a4:0 < aaaa4:0 < d5:0 < P5:0``.
+
+        This method can be indirectly used through binary comparison operators
+        (including ``==``, ``<`` etc.).
+        To test the overall equality of two spelled arrays,
+        use :py:meth:`array_equal <SpelledIntervalArray.array_equal>`
+        """
         if isinstance(other, SpelledInterval) or isinstance(other, SpelledIntervalArray):
             return (self - other).direction()
         else:
@@ -555,6 +582,12 @@ class SpelledIntervalClassArray(SpelledArray, Interval, Diatonic, Chromatic):
         return SpelledIntervalClassArray(abs_fifths)
 
     def direction(self):
+        """
+        Returns the (element-wise) directions of the intervals.
+        The direction of each interval is determined by its shortest realization:
+        ``m2``/``-M7`` is upward (1) while ``M7``/``-m2`` is downward (-1).
+        Perfect unisons (``P1``) are neutral (0).
+        """
         ds = self.diatonic_steps()
         mask = ds == 0
         out = np.ones_like(ds, dtype=np.int_)
@@ -579,6 +612,21 @@ class SpelledIntervalClassArray(SpelledArray, Interval, Diatonic, Chromatic):
         return np.vectorize(intervalclass_name, otypes=[np.str_])(self.fifths())
 
     def compare(self, other):
+        """
+        Element-wise comparison between two spelled arrays.
+
+        Returns 0 where the elements are equal,
+        1 where the first element is greater,
+        and -1 where the second element is greater.
+
+        Spelled interval classes use line-of-fifth ordering,
+        for example ``P4 < P1 < P5 < M2``.
+
+        This method can be indirectly used through binary comparison operators
+        (including ``==``, ``<`` etc.).
+        To test the overall equality of two spelled arrays,
+        use :py:meth:`array_equal <SpelledIntervalClasssArray.array_equal>`
+        """
         if isinstance(other, SpelledIntervalClass) or isinstance(other, SpelledIntervalClassArray):
             return np.sign((self - other).fifths())
         else:
@@ -730,6 +778,21 @@ class SpelledPitchArray(SpelledArray, Pitch):
     # Spelled interface
 
     def compare(self, other):
+        """
+        Element-wise comparison between two spelled arrays.
+
+        Returns 0 where the elements are equal,
+        1 where the first element is greater,
+        and -1 where the second element is greater.
+
+        Spelled pitches use diatonic ordering,
+        for example ``F4 < F#4 < F####4 < Gb4 < G4``.
+
+        This method can be indirectly used through binary comparison operators
+        (including ``==``, ``<`` etc.).
+        To test the overall equality of two spelled arrays,
+        use :py:meth:`array_equal <SpelledPitch.array_equal>`
+        """
         if isinstance(other, SpelledPitch) or isinstance(other, SpelledPitchArray):
             return (self - other).direction()
         else:
@@ -803,6 +866,21 @@ class SpelledPitchClassArray(SpelledArray, Pitch):
         return np.vectorize(pitchclass_name, otypes=[np.str_])(self.fifths())
 
     def compare(self, other):
+        """
+        Element-wise comparison between two spelled arrays.
+
+        Returns 0 where the elements are equal,
+        1 where the first element is greater,
+        and -1 where the second element is greater.
+
+        Spelled pitch classes use line-of-fifth ordering,
+        for example ``Bb < F < C < G < D``.
+
+        This method can be indirectly used through binary comparison operators
+        (including ``==``, ``<`` etc.).
+        To test the overall equality of two spelled arrays,
+        use :py:meth:`array_equal <SpelledPitchClassArray.array_equal>`
+        """
         if isinstance(other, SpelledPitchClass) or isinstance(other, SpelledPitchClassArray):
             return np.sign((self - other).fifths())
         else:
