@@ -330,9 +330,18 @@ class TestSpelled(TestCase):
         self.assertEqual(SpelledIntervalClass("-d3").is_step(), False)
 
     def test_ordering(self):
+        # ordering of intervals and pitches should follow the logical ordering of the pitch system
         self.assertTrue(SpelledInterval("aa4:0") < SpelledInterval("dd5:0"))
         self.assertTrue(SpelledPitch("C##4") < SpelledPitch("Dbb4"))
         self.assertTrue(SpelledPitch("C-1") > SpelledPitch("Cb-1"))
+        
+        self.assertTrue(SpelledInterval("aa4:0") <= SpelledInterval("dd5:0"))
+        self.assertTrue(SpelledPitch("C##4") <= SpelledPitch("Dbb4"))
+        self.assertTrue(SpelledPitch("C-1") >= SpelledPitch("Cb-1"))
+
+        # ordering of interval/pitch classes is arbitrary, for now it follows the line of fifths
+        self.assertTrue(SpelledIntervalClass("P5") > SpelledIntervalClass("P1"))
+        self.assertTrue(SpelledPitchClass("G") > SpelledPitchClass("C"))
 
     def test_spelled_accessors(self):
         self.assertEqual(SpelledInterval("M3:1").octaves(),  1)
@@ -390,3 +399,9 @@ class TestSpelled(TestCase):
         self.assertEqual(SpelledPitch("Cb-1").alteration(), -1)
         self.assertEqual(SpelledPitch("C#-1").alteration(), 1)
         self.assertEqual(SpelledPitch("D-1").degree(), 1)
+
+    def test_exceptions(self):
+        self.assertRaises(TypeError, lambda: SpelledInterval("M2:0") < 0)
+        self.assertRaises(TypeError, lambda: SpelledIntervalClass("M2") < 0)
+        self.assertRaises(TypeError, lambda: SpelledPitch("C4") < 0)
+        self.assertRaises(TypeError, lambda: SpelledPitchClass("C") < 0)

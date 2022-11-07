@@ -217,6 +217,9 @@ class Spelled(AbstractBase):
     def name(self):
         raise NotImplementedError
 
+    def __le__(self, other):
+        return (self == other) or (self < other)
+
     # Spelled interface:
 
     def fifths(self):
