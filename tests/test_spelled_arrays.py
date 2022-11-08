@@ -390,7 +390,44 @@ class TestSpelledArray(TestCase):
         self.arrayEqual(aspc(["Db", "C#", "C", "Cb", "B"]) == SpelledPitchClass("C"),
                         [False, False, True, False, False])
 
-        # TODO: more tests
+    def test_onehot(self):
+        i = asi([["M6:0", "m3:0", "M2:1"],
+                 ["-M6:0", "-m3:0", "P1:0"]])
+        ioh = i.onehot((-7,7), (-1,1))
+        self.spelledEqual(SpelledIntervalArray.from_onehot(ioh, -7, -1), i)
+        self.arrayEqual(ioh, np.array(list(map(lambda arr: arr.onehot((-7,7), (-1,1)), i))))
+        self.arrayEqual(ioh, np.array(list(map(lambda arr: list(map(lambda x: x.onehot((-7,7), (-1,1)), arr)), i))))
+        self.assertRaises(ValueError, lambda: SpelledIntervalArray.from_onehot(np.array([[[1], [1]]]), 0, 0))
+        self.assertRaises(ValueError, lambda: asi(["M7:0"]).onehot((-1,1), (-10,10))) # outside of fifth range
+        self.assertRaises(ValueError, lambda: asi(["m2:3"]).onehot((-10,10), (-1,1))) # outside of octave range
+        
+        ic = asic([["M6", "M3", "M2"],
+                   ["-M6", "-M3", "P1"]])
+        icoh = ic.onehot((-7,7))
+        self.spelledEqual(SpelledIntervalClassArray.from_onehot(icoh, -7), ic)
+        self.arrayEqual(icoh, np.array(list(map(lambda arr: arr.onehot((-7,7)), ic))))
+        self.arrayEqual(icoh, np.array(list(map(lambda arr: list(map(lambda x: x.onehot((-7,7)), arr)), ic))))
+        self.assertRaises(ValueError, lambda: SpelledIntervalClassArray.from_onehot(np.array([[1, 1]]), 0))
+        self.assertRaises(ValueError, lambda: asic(["M7"]).onehot((-1,1))) # outside of fifth range
+        
+        p = asp([["A4", "Eb4", "D5"],
+                 ["E3", "Ab3", "C4"]])
+        poh = p.onehot((-7,7), (3,5))
+        self.spelledEqual(SpelledPitchArray.from_onehot(poh, -7, 3), p)
+        self.arrayEqual(poh, np.array(list(map(lambda arr: arr.onehot((-7,7), (3,5)), p))))
+        self.arrayEqual(poh, np.array(list(map(lambda arr: list(map(lambda x: x.onehot((-7,7), (3,5)), arr)), p))))
+        self.assertRaises(ValueError, lambda: SpelledPitchArray.from_onehot(np.array([[[1], [1]]]), 0, 0))
+        self.assertRaises(ValueError, lambda: asp(["C#0"]).onehot((-1,1), (-10,10))) # outside of fifth range
+        self.assertRaises(ValueError, lambda: asp(["G8"]).onehot((-10,10), (-1,1))) # outside of octave range
+        
+        pc = aspc([["A", "Eb", "D"],
+                   ["E", "Ab", "C"]])
+        pcoh = pc.onehot((-7,7))
+        self.spelledEqual(SpelledPitchClassArray.from_onehot(pcoh, -7), pc)
+        self.arrayEqual(pcoh, np.array(list(map(lambda arr: arr.onehot((-7,7)), pc))))
+        self.arrayEqual(pcoh, np.array(list(map(lambda arr: list(map(lambda x: x.onehot((-7,7)), arr)), pc))))
+        self.assertRaises(ValueError, lambda: SpelledPitchClassArray.from_onehot(np.array([[1, 1]]), 0))
+        self.assertRaises(ValueError, lambda: aspc(["C#"]).onehot((-1,1))) # outside of fifth range
     
     @patch.multiple(SpelledArray, __abstractmethods__=set())
     def test_notimplemented(self):
@@ -411,6 +448,8 @@ class TestSpelledArray(TestCase):
         self.assertRaises(NotImplementedError, lambda: 1 in SpelledArray())
         self.assertRaises(NotImplementedError, lambda: list(SpelledArray()))
         self.assertRaises(NotImplementedError, lambda: len(SpelledArray()))
+        self.assertRaises(NotImplementedError, SpelledArray.from_onehot)
+        self.assertRaises(NotImplementedError, SpelledArray().onehot)
 
         self.assertFalse(asi("M3:0").array_equal(1))
         self.assertFalse(asic("M3").array_equal(1))
