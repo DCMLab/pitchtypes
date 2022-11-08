@@ -164,6 +164,77 @@ Examples:
     True
     >>> SpelledPitchClass("Eb").compare(SpelledPitchClass("D#")) # Eb < D# (LoF)
     -1
+
+.. _spelled.one-hot:
+    
+One-hot Encoding
+^^^^^^^^^^^^^^^^
+
+Spelled types support conversion to and from one-hot vectors.
+Pitch and interval classes are one-dimensional
+and are expressed on a segment of the line of fifths.
+When converting to one-hot vectors, the LoF range must be provided
+as a tuple ``(lower, upper)``, where the range includes both bounds.
+When converting back from a one-hot vector only the lower bound is required:
+
+    >>> SpelledIntervalClass("M7").onehot(fifth_range=(-7,7))
+    array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0])
+    >>> SpelledPitchClass.from_onehot(np.array([0, 0, 0, 1, 0]), -2)
+    G
+
+Non-class intervals and pitches are two dimensional and are thus encoded in a one-hot matrix.
+The first dimension corresponds to the line of fifths (as for classes),
+the second dimension corresponds to independent octaves.
+Both ranges must be provided as ``(lower, upper)`` tuples (inclusive) for encoding
+while only the lower bounds are required for decoding:
+
+    >>> SpelledInterval("M2:0").onehot((-3,3), (-1,1))
+    array([[0, 0, 0],
+           [0, 0, 0],
+           [0, 0, 0],
+           [0, 0, 0],
+           [0, 0, 0],
+           [0, 1, 0],
+           [0, 0, 0]])
+    >>> SpelledPitch.from_onehot(np.array([[0,0,0],
+    ...                                    [0,0,0],
+    ...                                    [0,0,0],
+    ...                                    [1,0,0],
+    ...                                    [0,0,0]]), -2, 3)
+    G3
+
+In the above example, the interval ``M2:0`` (fifth = 2, independent octaves = 0)
+is encoded with the fifths dimension (1st dimension, 7 entries) ranging from -3 (``m3``) to 3 (``M6``)
+and an octave dimension (2nd, 3 entries) ranging from -1 to 1.
+The pitch ``G3`` (fifths = 2, independent octaves = 3)
+is encoded with fifths dimension (5 entries) ranging from -2 (``Bb``) to 2 (``D``)
+and the octaves dimension (3 entries) ranging from 3 to 5.
+
+.. code-block:: none
+
+   M2:0 (f=2, o=0)
+
+   0  0  0  -3
+   0  0  0  -2
+   0  0  0  -1
+   0  0  0   0 fifth
+   0  0  0   1
+   0  1  0   2
+   0  0  0   3
+
+   -1 0  1
+   octave
+
+   G3 (f=1, o=3)
+
+   0  0  0  -2
+   0  0  0  -1
+   0  0  0   0 fifth
+   1  0  0   1
+   0  0  0   2
+
+   3  4  5
+   octave
     
 Reference
 ---------

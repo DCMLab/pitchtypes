@@ -251,7 +251,7 @@ class SpelledIntervalArray(SpelledArray, Interval, Diatonic, Chromatic):
     @staticmethod
     def from_independent(fifths, octaves):
         """
-        Create an interval array from fifths (pitch class) and independent/external octaves.
+        Create an interval array from fifths (interval class) and independent/external octaves.
         """
         return SpelledIntervalArray(fifths, octaves - (fifths * 4) // 7)
 

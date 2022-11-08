@@ -1,4 +1,4 @@
-#  Copyright (c) 2021 Robert Lieck
+#  Copyright (c) 2022 Robert Lieck, Christoph Finkensiep
 
 import numbers
 import re
@@ -341,6 +341,27 @@ class SpelledPitch(Spelled, Pitch):
         """
         return SpelledPitch((octaves, fifths))
 
+    @staticmethod
+    def from_independent(fifths, octaves):
+        """
+        Create a pitch from fifths (pitch class) and independent/external octaves (octave number).
+        """
+        return SpelledPitch.from_fifths_and_octaves(fifths, octaves - (fifths * 4) // 7)
+
+    @staticmethod
+    def from_onehot(onehot, fifth_low, octave_low):
+        """
+        Create a spelled pitch from a one-hot vector.
+        ``fifth_low`` denotes the lower bound of the fifth range used in the vector,
+        ``octave_low`` the lower bound of the octave range.
+        """
+        if onehot.sum() != 1:
+            raise ValueError(f"{onehot} is not a one-hot vector.")
+        fs, os = np.where(onehot==1)
+        return SpelledPitch.from_independent(fs[0] + fifth_low, os[0] + octave_low)
+    
+    # Pitch interface
+
     def interval_from(self, other):
         if type(other) == SpelledPitch:
             octaves1, fifths1 = self.value
@@ -351,6 +372,14 @@ class SpelledPitch(Spelled, Pitch):
     
     def to_class(self):
         return self.PitchClass(self.fifths())
+    
+    def pc(self):
+        return self.to_class()
+
+    def embed(self):
+        return self
+
+    # Spelled interface
 
     def name(self):
         return f"{self.pitch_class_from_fifths(self.fifths())}{self.octaves()}"
@@ -370,15 +399,6 @@ class SpelledPitch(Spelled, Pitch):
             return (self-other).direction()
         else:
             raise TypeError(f"Cannot compare {type(self)} with {type(other)}.")
-    
-    # Pitch interface
-    def pc(self):
-        return self.to_class()
-
-    def embed(self):
-        return self
-
-    # Spelled interface
 
     def fifths(self):
         return self.value[1]
@@ -402,6 +422,24 @@ class SpelledPitch(Spelled, Pitch):
 
     def letter(self):
         return chr(ord('A') + (self.degree() + 2) % 7)
+
+    def onehot(self, fifth_range, octave_range, dtype=int):
+        """
+        Returns a one-hot encoding of the pitch in fifths (first dimension) and external octaves (second dimension).
+        The range of fifths and octaves is given by ``fifth_range`` and ``octave_range`` respectively,
+        where each is a tuple ``(lower, upper)``.
+        """
+        flow, fhigh = fifth_range
+        olow, ohigh = octave_range
+        f = self.fifths()
+        o = self.octaves()
+        if f < flow or f > fhigh:
+            raise ValueError(f"The pitch {self} is outside the given fifth range {fifth_range}.")
+        if o < olow or o > ohigh:
+            raise ValueError(f"The pitch {self} is outside the given octave range {octave_range}.")
+        out = np.zeros((fhigh-flow+1, ohigh-olow+1), dtype=dtype)
+        out[f-flow, o-olow] = 1
+        return out
 
 
 @Spelled.link_interval_type()
@@ -444,43 +482,24 @@ class SpelledInterval(Spelled, Interval, Diatonic, Chromatic):
         """
         return SpelledInterval((octaves, fifths))
 
-    def name(self):
-        octave = abs(self.octaves())
-        if self.direction() == -1:
-            # negative intervals are to be printed with "-" sign
-            sign = "-"
-            # in return we have to invert the interval class
-            inverse = True
-            # in the interval representation, the octave "0" is positive, while "-1" is the first negative octave;
-            # an octave of "-1" in internal representation (i.e. the first negative octave) therefore corresponds to an
-            # octave "0" with negative sign in printing; we thus need to subtract one from the absolute value for
-            # printing; the unison (perfect, diminished or augmented) are an exception because they correspond to
-            # zero diatonic steps (when ignoring the octave)
-            if self.diatonic_steps() % 7 != 0:
-                octave -= 1
-        else:
-            sign = ""
-            inverse = False
-        return sign + self.interval_class_from_fifths(self.fifths(), inverse=inverse) + f":{octave}"
-
-    def to_class(self):
-        return self.IntervalClass(self.value[1])
-
-    def compare(self, other):
+    @staticmethod
+    def from_independent(fifths, octaves):
         """
-        Comparison between two spelled intervals according to diatonic ordering.
-
-        Returns 0 if the intervals are equal,
-        1 if the first interval (``self``) is greater,
-        and -1 if the second interval (``other``) is greater.
-
-        This method can be indirectly used through binary comparison operators
-        (including ``==``, ``<`` etc.).
+        Create an interval from fifths (interval class) and independent/external octaves.
         """
-        if isinstance(other, SpelledInterval):
-            return (self-other).direction()
-        else:
-            raise TypeError(f"Cannot compare {type(self)} with {type(other)}.")
+        return SpelledInterval.from_fifths_and_octaves(fifths, octaves - (fifths * 4) // 7)
+
+    @staticmethod
+    def from_onehot(onehot, fifth_low, octave_low):
+        """
+        Create a spelled interval from a one-hot vector.
+        ``fifth_low`` denotes the lower bound of the fifth range used in the vector,
+        ``octave_low`` the lower bound of the octave range.
+        """
+        if onehot.sum() != 1:
+            raise ValueError(f"{onehot} is not a one-hot vector.")
+        fs, os = np.where(onehot==1)
+        return SpelledInterval.from_independent(fs[0] + fifth_low, os[0] + octave_low)
 
     # interval interface
 
@@ -523,6 +542,9 @@ class SpelledInterval(Spelled, Interval, Diatonic, Chromatic):
         else:
             return self
 
+    def to_class(self):
+        return self.IntervalClass(self.value[1])
+
     def ic(self):
         return self.to_class()
 
@@ -537,6 +559,41 @@ class SpelledInterval(Spelled, Interval, Diatonic, Chromatic):
         return abs(self.diatonic_steps()) <= 1
 
     # spelled interface
+
+    def name(self):
+        octave = abs(self.octaves())
+        if self.direction() == -1:
+            # negative intervals are to be printed with "-" sign
+            sign = "-"
+            # in return we have to invert the interval class
+            inverse = True
+            # in the interval representation, the octave "0" is positive, while "-1" is the first negative octave;
+            # an octave of "-1" in internal representation (i.e. the first negative octave) therefore corresponds to an
+            # octave "0" with negative sign in printing; we thus need to subtract one from the absolute value for
+            # printing; the unison (perfect, diminished or augmented) are an exception because they correspond to
+            # zero diatonic steps (when ignoring the octave)
+            if self.diatonic_steps() % 7 != 0:
+                octave -= 1
+        else:
+            sign = ""
+            inverse = False
+        return sign + self.interval_class_from_fifths(self.fifths(), inverse=inverse) + f":{octave}"
+
+    def compare(self, other):
+        """
+        Comparison between two spelled intervals according to diatonic ordering.
+
+        Returns 0 if the intervals are equal,
+        1 if the first interval (``self``) is greater,
+        and -1 if the second interval (``other``) is greater.
+
+        This method can be indirectly used through binary comparison operators
+        (including ``==``, ``<`` etc.).
+        """
+        if isinstance(other, SpelledInterval):
+            return (self-other).direction()
+        else:
+            raise TypeError(f"Cannot compare {type(self)} with {type(other)}.")
 
     def fifths(self):
         return self.value[1]
@@ -558,6 +615,24 @@ class SpelledInterval(Spelled, Interval, Diatonic, Chromatic):
 
     def alteration(self):
         return (abs(self).fifths() + 1) // 7
+
+    def onehot(self, fifth_range, octave_range, dtype=int):
+        """
+        Returns a one-hot encoding of the interval in fifths (first dimension) and independent octaves (second dimension).
+        The range of fifths and octaves is given by ``fifth_range`` and ``octave_range`` respectively,
+        where each is a tuple ``(lower, upper)``.
+        """
+        flow, fhigh = fifth_range
+        olow, ohigh = octave_range
+        f = self.fifths()
+        o = self.octaves()
+        if f < flow or f > fhigh:
+            raise ValueError(f"The interval {self} is outside the given fifth range {fifth_range}.")
+        if o < olow or o > ohigh:
+            raise ValueError(f"The interval {self} is outside the given octave range {octave_range}.")
+        out = np.zeros((fhigh-flow+1, ohigh-olow+1), dtype=dtype)
+        out[f-flow, o-olow] = 1
+        return out
 
 
 @Spelled.link_pitch_class_type()
@@ -586,14 +661,35 @@ class SpelledPitchClass(Spelled, Pitch):
         """
         return SpelledPitchClass(fifths)
 
-    def name(self):
-        return self.pitch_class_from_fifths(self.fifths())
+    @staticmethod
+    def from_onehot(onehot, low):
+        """
+        Create a spelled pitch class from a one-hot vector.
+        ``low`` denotes the lower bound of the fifth range used in the vector.
+        """
+        if onehot.sum() != 1:
+            raise ValueError(f"{onehot} is not a one-hot vector.")
+        fs, = np.where(onehot==1)
+        return SpelledPitchClass.from_fifths(fs[0] + low)
+
+    # pitch interface
 
     def interval_from(self, other):
         if type(other) == SpelledPitchClass:
             return SpelledIntervalClass.from_fifths(self.value-other.value)
         else:
             raise TypeError(f"Cannot take interval between SpelledPitchClass and {type(other)}.")
+
+    def pc(self):
+        return self
+
+    def embed(self):
+        return SpelledPitch.from_fifths_and_octaves(self.fifths(), -((self.fifths() * 4) // 7))
+
+    # spelled interface
+
+    def name(self):
+        return self.pitch_class_from_fifths(self.fifths())
     
     def compare(self, other):
         """
@@ -610,16 +706,6 @@ class SpelledPitchClass(Spelled, Pitch):
             return np.sign(self.fifths() - other.fifths())
         else:
             raise TypeError(f"Cannot compare {type(self)} with {type(other)}.")
-
-    # pitch interface
-
-    def pc(self):
-        return self
-
-    def embed(self):
-        return SpelledPitch.from_fifths_and_octaves(self.fifths(), -((self.fifths() * 4) // 7))
-
-    # spelled interface
 
     def fifths(self):
         return self.value
@@ -643,6 +729,19 @@ class SpelledPitchClass(Spelled, Pitch):
 
     def letter(self):
         return chr(ord('A') + (self.degree() + 2) % 7)
+
+    def onehot(self, fifth_range, dtype=int):
+        """
+        Returns a one-hot encoding of the pitch class in fifths.
+        The range of fifths is given by ``fifth_range`` as a tuple ``(lower, upper)``.
+        """
+        low, high = fifth_range
+        f = self.fifths()
+        if f < low or f > high:
+            raise ValueError(f"The pitch class {self} is outside the given fifths range {fifth_range}.")
+        out = np.zeros(high-low+1, dtype=dtype)
+        out[f-low] = 1
+        return out
 
 
 @Spelled.link_interval_class_type()
@@ -677,28 +776,16 @@ class SpelledIntervalClass(Spelled, Interval, Diatonic, Chromatic):
         """
         return SpelledIntervalClass(fifths)
 
-    def name(self, inverse=False):
-        if inverse:
-            sign = "-"
-        else:
-            sign = ""
-        return sign + self.interval_class_from_fifths(self.fifths(), inverse=inverse)
-    
-    def compare(self, other):
+    @staticmethod
+    def from_onehot(onehot, low):
         """
-        Comparison between two spelled interval classes according to line-of-fifth.
-
-        Returns 0 if the interval classes are equal,
-        1 if the first interval class (``self``) is greater ("sharper"),
-        and -1 if the second interval class (``other``) is greater ("sharper").
-
-        This method can be indirectly used through binary comparison operators
-        (including ``==``, ``<`` etc.).
+        Create a spelled interval class from a one-hot vector.
+        ``low`` denotes the lower bound of the fifth range used in the vector.
         """
-        if isinstance(other, SpelledIntervalClass):
-            return np.sign(self.fifths() - other.fifths())
-        else:
-            raise TypeError(f"Cannot compare {type(self)} with {type(other)}.")
+        if onehot.sum() != 1:
+            raise ValueError(f"{onehot} is not a one-hot vector.")
+        fs, = np.where(onehot==1)
+        return SpelledIntervalClass.from_fifths(fs[0] + low)
 
     # interval interface
 
@@ -757,6 +844,29 @@ class SpelledIntervalClass(Spelled, Interval, Diatonic, Chromatic):
 
     # spelled interface
 
+    def name(self, inverse=False):
+        if inverse:
+            sign = "-"
+        else:
+            sign = ""
+        return sign + self.interval_class_from_fifths(self.fifths(), inverse=inverse)
+    
+    def compare(self, other):
+        """
+        Comparison between two spelled interval classes according to line-of-fifth.
+
+        Returns 0 if the interval classes are equal,
+        1 if the first interval class (``self``) is greater ("sharper"),
+        and -1 if the second interval class (``other``) is greater ("sharper").
+
+        This method can be indirectly used through binary comparison operators
+        (including ``==``, ``<`` etc.).
+        """
+        if isinstance(other, SpelledIntervalClass):
+            return np.sign(self.fifths() - other.fifths())
+        else:
+            raise TypeError(f"Cannot compare {type(self)} with {type(other)}.")
+
     def fifths(self):
         return self.value
 
@@ -774,3 +884,16 @@ class SpelledIntervalClass(Spelled, Interval, Diatonic, Chromatic):
 
     def alteration(self):
         return (self.fifths() + 1) // 7
+
+    def onehot(self, fifth_range, dtype=int):
+        """
+        Returns a one-hot encoding of the interval class in fifths.
+        The range of fifths is given by ``fifth_range`` as a tuple ``(lower, upper)``.
+        """
+        low, high = fifth_range
+        f = self.fifths()
+        if f < low or f > high:
+            raise ValueError(f"The pitch class {self} is outside the given fifths range {fifth_range}.")
+        out = np.zeros(high-low+1, dtype=dtype)
+        out[f-low] = 1
+        return out

@@ -1,10 +1,14 @@
-import re
 from unittest import TestCase
 
+import re
+import numpy as np
 from pitchtypes import Spelled, SpelledPitch, SpelledInterval, SpelledPitchClass, SpelledIntervalClass, Enharmonic
 
 
 class TestSpelled(TestCase):
+    def arrayEqual(self, a, b):
+        if not np.array_equal(a, b):
+            raise self.failureException(f"{a} is not equal to {b}")
 
     line_of_fifths = [
         "Dbbbb", "Abbbb", "Ebbbb", "Bbbbb",
@@ -254,6 +258,10 @@ class TestSpelled(TestCase):
         self.assertRaises(ValueError, lambda: Spelled.fifths_from_diatonic_pitch_class("X"))
         self.assertRaises(ValueError, lambda: Spelled.fifths_from_generic_interval_class("X"))
 
+    def test_constructors(self):
+        self.assertEqual(SpelledInterval.from_independent(2,0), SpelledInterval("M2:0"))
+        self.assertEqual(SpelledPitch.from_independent(2,4), SpelledPitch("D4"))
+
     def test_abstract_base_functions(self):
         s = Spelled("x", True, True)
         self.assertRaises(NotImplementedError, lambda: s.name())
@@ -400,6 +408,37 @@ class TestSpelled(TestCase):
         self.assertEqual(SpelledPitch("Cb-1").alteration(), -1)
         self.assertEqual(SpelledPitch("C#-1").alteration(), 1)
         self.assertEqual(SpelledPitch("D-1").degree(), 1)
+
+    def test_onehot(self):
+        self.arrayEqual(SpelledInterval("M2:0").onehot((-2,2), (-1,1)),
+                        np.array([[0,0,0], [0,0,0], [0,0,0], [0,0,0], [0,1,0]]))
+        self.assertRaises(ValueError, lambda: SpelledInterval("M2:0").onehot((-2,1), (-1,1)))
+        self.assertRaises(ValueError, lambda: SpelledInterval("M2:2").onehot((-2,2), (-1,1)))
+        self.assertEqual(SpelledInterval.from_onehot(SpelledInterval("a4:2").onehot((-8,8), (-2,2)), -8, -2),
+                         SpelledInterval("a4:2"))
+        self.assertRaises(ValueError, lambda: SpelledInterval.from_onehot(np.array([1,0,1]), 0, 0))
+        
+        self.arrayEqual(SpelledIntervalClass("M2").onehot((-2,3)),
+                        np.array([0, 0, 0, 0, 1, 0]))
+        self.assertRaises(ValueError, lambda: SpelledIntervalClass("M6").onehot((-2,2)))
+        self.assertEqual(SpelledIntervalClass.from_onehot(SpelledIntervalClass("a4").onehot((-8,8)), -8),
+                         SpelledIntervalClass("a4"))
+        self.assertRaises(ValueError, lambda: SpelledIntervalClass.from_onehot(np.array([1,0,1]), 0))
+        
+        self.arrayEqual(SpelledPitch("D4").onehot((-2,2), (3,5)),
+                        np.array([[0,0,0], [0,0,0], [0,0,0], [0,0,0], [0,1,0]]))
+        self.assertRaises(ValueError, lambda: SpelledPitch("D4").onehot((-2,1), (3,5)))
+        self.assertRaises(ValueError, lambda: SpelledPitch("D6").onehot((-2,2), (3,5)))
+        self.assertEqual(SpelledPitch.from_onehot(SpelledPitch("F#4").onehot((-8,8), (0,6)), -8, 0),
+                         SpelledPitch("F#4"))
+        self.assertRaises(ValueError, lambda: SpelledPitch.from_onehot(np.array([1,0,1]), 0, 0))
+        
+        self.arrayEqual(SpelledPitchClass("D").onehot((-2,3)),
+                        np.array([0, 0, 0, 0, 1, 0]))
+        self.assertRaises(ValueError, lambda: SpelledPitchClass("A").onehot((-2,2)))
+        self.assertEqual(SpelledPitchClass.from_onehot(SpelledPitchClass("F#").onehot((-8,8)), -8),
+                         SpelledPitchClass("F#"))
+        self.assertRaises(ValueError, lambda: SpelledPitchClass.from_onehot(np.array([1,0,1]), 0))
 
     def test_exceptions(self):
         self.assertRaises(TypeError, lambda: SpelledInterval("M2:0") < 0)
