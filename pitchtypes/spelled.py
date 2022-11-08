@@ -281,7 +281,7 @@ class Spelled(AbstractBase):
         Return the generic interval, i.e. the number of diatonic steps modulo octave.
         Unlike degree(), the result respects the sign of the interval
         (unison=0, 2nd up=1, 2nd down=-1).
-        For pitches, use degree().
+        For pitches, use :py:meth:`degree <pitchtypes.Spelled.degree>`.
         """
         raise NotImplementedError
 
@@ -289,6 +289,7 @@ class Spelled(AbstractBase):
         """
         Return the diatonic steps of the interval (unison=0, 2nd=1, ..., octave=7, ...).
         Respects both direction and octaves.
+        For pitches, use :py:meth:`degree <pitchtypes.Spelled.degree>`.
         """
         raise NotImplementedError
 
@@ -355,6 +356,16 @@ class SpelledPitch(Spelled, Pitch):
         return f"{self.pitch_class_from_fifths(self.fifths())}{self.octaves()}"
 
     def compare(self, other):
+        """
+        Comparison between two spelled pitches according to diatonic ordering.
+
+        Returns 0 if the objects are equal,
+        1 if the first pitch (``self``) is higher,
+        and -1 if the second pitch (``other``) is higher.
+
+        This method can be indirectly used through binary comparison operators
+        (including ``==``, ``<`` etc.).
+        """
         if isinstance(other, SpelledPitch):
             return (self-other).direction()
         else:
@@ -456,6 +467,16 @@ class SpelledInterval(Spelled, Interval, Diatonic, Chromatic):
         return self.IntervalClass(self.value[1])
 
     def compare(self, other):
+        """
+        Comparison between two spelled intervals according to diatonic ordering.
+
+        Returns 0 if the intervals are equal,
+        1 if the first interval (``self``) is greater,
+        and -1 if the second interval (``other``) is greater.
+
+        This method can be indirectly used through binary comparison operators
+        (including ``==``, ``<`` etc.).
+        """
         if isinstance(other, SpelledInterval):
             return (self-other).direction()
         else:
@@ -479,8 +500,8 @@ class SpelledInterval(Spelled, Interval, Diatonic, Chromatic):
 
     def direction(self):
         """
-        Return the direction of the interval (1=up / 0=neutral / -1=down).
-        All unisons are considered neutral (including augmented and diminished unisons).
+        Returns the direction of the interval (1 = up, 0 = neutral, -1 = down).
+        Only perfect unisons are considered neutral.
         """
         ds = self.diatonic_steps()
         if ds == 0:
@@ -575,6 +596,16 @@ class SpelledPitchClass(Spelled, Pitch):
             raise TypeError(f"Cannot take interval between SpelledPitchClass and {type(other)}.")
     
     def compare(self, other):
+        """
+        Comparison between two spelled pitch classes according to line-of-fifth.
+
+        Returns 0 if the pitch classes are equal,
+        1 if the first pitch class (``self``) is greater ("sharper"),
+        and -1 if the second pitch class (``other``) is greater ("sharper").
+
+        This method can be indirectly used through binary comparison operators
+        (including ``==``, ``<`` etc.).
+        """
         if isinstance(other, SpelledPitchClass):
             return np.sign(self.fifths() - other.fifths())
         else:
@@ -654,6 +685,16 @@ class SpelledIntervalClass(Spelled, Interval, Diatonic, Chromatic):
         return sign + self.interval_class_from_fifths(self.fifths(), inverse=inverse)
     
     def compare(self, other):
+        """
+        Comparison between two spelled interval classes according to line-of-fifth.
+
+        Returns 0 if the interval classes are equal,
+        1 if the first interval class (``self``) is greater ("sharper"),
+        and -1 if the second interval class (``other``) is greater ("sharper").
+
+        This method can be indirectly used through binary comparison operators
+        (including ``==``, ``<`` etc.).
+        """
         if isinstance(other, SpelledIntervalClass):
             return np.sign(self.fifths() - other.fifths())
         else:
@@ -676,6 +717,11 @@ class SpelledIntervalClass(Spelled, Interval, Diatonic, Chromatic):
         return cls.from_fifths(0)
 
     def direction(self):
+        """
+        Returns the direction of smallest realization of the interval class
+        (1 = up, 0 = neutral, -1 = down).
+        For example, the direction of ``M7`` (= ``m2``) is down.
+        """
         ds = self.degree()
         if ds == 0:
             alt = (self.fifths() + 1) // 7

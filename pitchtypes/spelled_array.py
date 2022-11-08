@@ -203,7 +203,7 @@ class SpelledArray(abc.ABC):
         Return the generic interval, i.e. the number of diatonic steps modulo octave.
         Unlike degree(), the result respects the sign of the interval
         (unison=0, 2nd up=1, 2nd down=-1).
-        For pitches, use degree().
+        For pitches, use :py:meth:`degree <pitchtypes.SpelledArray.degree>`.
         """
         raise NotImplementedError
 
@@ -212,7 +212,7 @@ class SpelledArray(abc.ABC):
         """
         Return the diatonic steps of the interval (unison=0, 2nd=1, ..., octave=7, ...).
         Respects both direction and octaves.
-        For pitches, use degree().
+        For pitches, use :py:meth:`degree <pitchtypes.SpelledArray.degree>`.
         """
         raise NotImplementedError
 
