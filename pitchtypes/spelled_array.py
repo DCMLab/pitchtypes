@@ -9,7 +9,6 @@ from pitchtypes.basetypes import Pitch, Interval, Diatonic, Chromatic
 from pitchtypes.spelled import Spelled, SpelledInterval, SpelledIntervalClass, SpelledPitch, SpelledPitchClass
 
 # TODO: one-/multi-hot encodings (also for scalar types)
-# TODO: implement compare() for scalar spelled types 
 
 class SpelledArray(abc.ABC):
     """

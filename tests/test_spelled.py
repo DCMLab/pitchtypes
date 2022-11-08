@@ -263,6 +263,7 @@ class TestSpelled(TestCase):
         self.assertRaises(NotImplementedError, lambda: s.generic())
         self.assertRaises(NotImplementedError, lambda: s.alteration())
         self.assertRaises(NotImplementedError, lambda: s.diatonic_steps())
+        self.assertRaises(NotImplementedError, lambda: s.compare(1))
  
     def test_general_interface(self):
         self.assertEqual(SpelledInterval.unison(), SpelledInterval("P1:0"))

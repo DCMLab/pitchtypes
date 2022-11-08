@@ -217,8 +217,31 @@ class Spelled(AbstractBase):
     def name(self):
         raise NotImplementedError
 
+    def compare(self, other):
+        """
+        Comparison between two spelled types.
+
+        Returns 0 if the objects are equal,
+        1 if the first object (``self``) is greater,
+        and -1 if the second object (``other``) is greater.
+
+        The respective ordering differs between types.
+        Non-class pitches and intervals use diatonic ordering,
+        interval/pitch classes use line-of-fifths ordering.
+
+        This method can be indirectly used through binary comparison operators
+        (including ``==``, ``<`` etc.).
+        """
+        raise NotImplementedError
+
+    def __eq__(self, other):
+        return self.compare(other) == 0
+
+    def __lt__(self, other):
+        return self.compare(other) == -1
+    
     def __le__(self, other):
-        return (self == other) or (self < other)
+        return self.compare(other) != 1
 
     # Spelled interface:
 
@@ -331,9 +354,9 @@ class SpelledPitch(Spelled, Pitch):
     def name(self):
         return f"{self.pitch_class_from_fifths(self.fifths())}{self.octaves()}"
 
-    def __lt__(self, other):
+    def compare(self, other):
         if isinstance(other, SpelledPitch):
-            return (self-other).direction() == -1
+            return (self-other).direction()
         else:
             raise TypeError(f"Cannot compare {type(self)} with {type(other)}.")
     
@@ -432,9 +455,9 @@ class SpelledInterval(Spelled, Interval, Diatonic, Chromatic):
     def to_class(self):
         return self.IntervalClass(self.value[1])
 
-    def __lt__(self, other):
+    def compare(self, other):
         if isinstance(other, SpelledInterval):
-            return (self-other).direction() == -1
+            return (self-other).direction()
         else:
             raise TypeError(f"Cannot compare {type(self)} with {type(other)}.")
 
@@ -551,9 +574,9 @@ class SpelledPitchClass(Spelled, Pitch):
         else:
             raise TypeError(f"Cannot take interval between SpelledPitchClass and {type(other)}.")
     
-    def __lt__(self, other):
+    def compare(self, other):
         if isinstance(other, SpelledPitchClass):
-            return self.fifths() < other.fifths()
+            return np.sign(self.fifths() - other.fifths())
         else:
             raise TypeError(f"Cannot compare {type(self)} with {type(other)}.")
 
@@ -630,9 +653,9 @@ class SpelledIntervalClass(Spelled, Interval, Diatonic, Chromatic):
             sign = ""
         return sign + self.interval_class_from_fifths(self.fifths(), inverse=inverse)
     
-    def __lt__(self, other):
+    def compare(self, other):
         if isinstance(other, SpelledIntervalClass):
-            return self.fifths() < other.fifths()
+            return np.sign(self.fifths() - other.fifths())
         else:
             raise TypeError(f"Cannot compare {type(self)} with {type(other)}.")
 

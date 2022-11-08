@@ -93,30 +93,78 @@ The generic interval (i.e. the number of diatonic steps) can be obtained using :
 If you need the total number of diatonic steps, including octaves, use :py:meth:`diatonic_steps <pitchtypes.Spelled.diatonic_steps>`.
 The method :py:meth:`degree <pitchtypes.Spelled.degree>` returns the scale degree implied by the interval relative to some root.
 Since scale degrees are always above the root,
-``degree`` treats negative intervals like their positive complements:
+``degree`` treats negative intervals like their positive complements,
+expressing the interval as a diatonic scale degree (I = 0, II = 1, ...):
 
-  >>> SpelledInterval("-M3:1").generic() # some kind of 3rd down
-  -2
-  >>> SpelledInterval("-M3:1").diatonic_steps() # a 10th down
-  -9
-  >>> SpelledInterval("-M3:1").degree() # scale degree VI
-  5
+    >>> SpelledInterval("-M3:1").generic() # some kind of 3rd down
+    -2
+    >>> SpelledInterval("-M3:1").diatonic_steps() # a 10th down
+    -9
+    >>> SpelledInterval("-M3:1").degree() # scale degree VI
+    5
 
 For interval classes, all three functions are equivalent.
 Note that all three count from 0 (for unison/I), not 1.
 
 Complementary to the generic interval methods,
-:py:meth:`alteration <pitchtypes.Spelled.alteration>` returns the specific quality of the interval.
+:py:meth:`alteration <pitchtypes.SpelledInterval.alteration>` returns the specific quality of the interval.
 For perfect or major intervals, it returns ``0``.
 Larger absolute intervals return positive values,
 smaller intervals return negative values.
+For interval classes, :py:meth:`alteration <pitchtypes.SpelledIntervalClass.alteration>`
+always refers to the upward interval,
+just like :py:meth:`degree <pitchtypes.SpelledIntervalClass.degree>`:
+
+    >>> SpelledIntervalClass("-M3")
+    m6
+    >>> SpelledIntervalClass("-M3").degree() # VI
+    5
+    >>> SpelledIntervalClass("-M3").alteration()
+    -1
 
 :py:meth:`degree <pitchtypes.Spelled.degree>` and :py:meth:`alteration <pitchtypes.Spelled.alteration>` also work on pitches.
 ``degree(p)`` returns an integer corresponding to the letter (C=0, D=1, ...),
 while ``alteration(p)`` provides the accidentals (natural=0, sharps -> positive, flats -> negative).
 For convenience, :py:meth:`letter <pitchtypes.SpelledPitch.letter>` returns the letter as an uppercase character.
 
+    >>> SpelledPitch("Dbb4").degree()
+    1
+    >>> SpelledPitch("Dbb4").alteration()
+    -2
 
+.. _spelled.ordering:
+    
+Ordering
+^^^^^^^^
+
+Spelled intervals and pitches can be compared through binary comparison operators (``==``, ``<``, etc.)
+or through the :py:meth:`compare <pitchtypes.Spelled.compare>` method.
+
+Non-class intervals/pitches have a meaningful diatonic ordering,
+that goes by the diatonic step (or note name + octave) first and by alteration second:
+
+.. code-block:: none
+                   
+   P4:0 < a4:0 < aaaa4:0 < dddd5:0 < d5:0 < P5:0
+   F4   < F#4  < F####4  < Gbbbb4  < Gb4  < G4
+
+Interval/pitch classes are circular in their diatonic ordering,
+so a line-of-fifths ordering is used instead:
+
+.. code-block:: none
+                   
+   m7 < P4 < P1 < P5 < M2
+   Bb < F  < C  < G  < D
+
+Examples:
+   
+    >>> sorted(map(SpelledInterval, ["P5:0", "d5:0", "dddd5:0", "aaaa4:0", "a4:0", "P4:0"]))
+    [P4:0, a4:0, aaaa4:0, dddd5:0, d5:0, P5:0]
+    >>> SpelledIntervalClass("P4") < SpelledIntervalClass("P1") # LoF ordering
+    True
+    >>> SpelledPitchClass("Eb").compare(SpelledPitchClass("D#")) # Eb < D# (LoF)
+    -1
+    
 Reference
 ---------
 
