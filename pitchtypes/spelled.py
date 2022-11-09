@@ -245,6 +245,11 @@ class Spelled(AbstractBase):
         return self.name()
 
     def name(self):
+        """
+        The name of the pitch or interval in string notation
+
+        :return: the object's notation name (string)
+        """
         raise NotImplementedError
 
     def compare(self, other):
@@ -261,6 +266,9 @@ class Spelled(AbstractBase):
 
         This method can be indirectly used through binary comparison operators
         (including ``==``, ``<`` etc.).
+
+        :param other: an object to compare to (same type as ``self``)
+        :return: ``-1`` / ``0`` / ``1`` (integer)
         """
         raise NotImplementedError
 
@@ -278,6 +286,8 @@ class Spelled(AbstractBase):
     def fifths(self):
         """
         Return the position of the interval on the line of fifths.
+
+        :return: fifth position (integer)
         """
         raise NotImplementedError
 
@@ -286,6 +296,8 @@ class Spelled(AbstractBase):
         For intervals, return the number of octaves the interval spans.
         Negative intervals start with -1, decreasing.
         For pitches, return the absolute octave of the pitch.
+
+        :return: external/independent octave (integer)
         """
         raise NotImplementedError
 
@@ -295,6 +307,8 @@ class Spelled(AbstractBase):
         which is dependent on the fifths.
 
         Only use this if you know what you are doing.
+
+        :return: internal/dependent octave (integer)
         """
         raise NotImplementedError
 
@@ -303,6 +317,8 @@ class Spelled(AbstractBase):
         Return the "relative scale degree" (0-6) to which the interval points
         (unison=0, 2nd=1, octave=0, 2nd down=6, etc.).
         For pitches, return the integer that corresponds to the letter (C=0, D=1, ...).
+
+        :return: degree (integer)
         """
         return self._degree_from_fifths_(self.fifths())
 
@@ -312,9 +328,19 @@ class Spelled(AbstractBase):
         Positive alteration always indicates augmentation,
         negative alteration indicates diminution (minor or smaller) of the interval.
         For pitches, return the accidentals (positive=sharps, negative=flats, 0=natural).
+
+        :return: alteration (integer)
         """
         raise NotImplementedError
 
+    def onehot(self):
+        """
+        Return a one-hot encoded tensor representing the object.
+        Specialized versions of this method take ranges for their respective dimensions.
+
+        :return: one-hot encoding of the object (numpy array)
+        """
+        raise NotImplementedError
 
 
 class SpelledI(abc.ABC):
@@ -327,6 +353,8 @@ class SpelledI(abc.ABC):
         Return the generic interval, i.e. the number of diatonic steps modulo octave.
         Unlike degree(), the result respects the sign of the interval
         (unison=0, 2nd up=1, 2nd down=-1).
+
+        :return: generic interval (integer)
         """
         raise NotImplementedError
 
@@ -335,6 +363,8 @@ class SpelledI(abc.ABC):
         """
         Return the diatonic steps of the interval (unison=0, 2nd=1, ..., octave=7, ...).
         Respects both direction and octaves.
+
+        :return: number of diatonic steps (integer)
         """
         raise NotImplementedError
 
@@ -346,6 +376,8 @@ class SpelledP(abc.ABC):
     def letter(self):        
         """
         Returns the letter associated with the pitch (without accidentals).
+
+        :return: letter (single-character string)
         """
         raise NotImplementedError
 
@@ -353,13 +385,16 @@ class SpelledP(abc.ABC):
 class SpelledPitch(Spelled, SpelledP, Pitch):
     """
     Represents a spelled pitch.
-
-    The constructor takes a string consisting of the form
-    <letter><accidentals?><octave>, e.g. "C#4", "E5", or "Db-2".
-    Accidentals may be written as ASCII symbols (#/b)
-    or with unicode symbols (♯/♭), but not mixed within the same note.
     """
     def __init__(self, value):
+        """        
+        Takes a string consisting of the form
+        ``<letter><accidentals?><octave>``, e.g. ``"C#4"``, ``"E5"``, or ``"Db-2"``.
+        Accidentals may be written as ASCII symbols (#/b)
+        or with unicode symbols (♯/♭), but not mixed within the same note.
+
+        :param value: a string or internal numeric representation of the pitch
+        """
         if isinstance(value, str):
             octaves, fifths = self.parse_pitch(value)
             assert isinstance(octaves, numbers.Integral)
@@ -384,6 +419,10 @@ class SpelledPitch(Spelled, SpelledP, Pitch):
         Each pitch is represented relative to C0
         by moving the specified number of fifths and octaves upwards
         (or downwards for negative values).
+
+        :param fifths: the fifth (= pitch class) of the pitch (integer)
+        :param octaves: the internal/dependent octave of the pitch (integer)
+        :return: the resulting pitch (SpelledPitch)
         """
         return SpelledPitch((octaves, fifths))
 
@@ -391,15 +430,24 @@ class SpelledPitch(Spelled, SpelledP, Pitch):
     def from_independent(fifths, octaves):
         """
         Create a pitch from fifths (pitch class) and independent/external octaves (octave number).
+
+        :param fifths: the fifth (= pitch class) of the pitch (integer)
+        :param octaves: the external/independent octave of the pitch (integer)
+        :return: the resulting pitch (SpelledPitch)
         """
         return SpelledPitch.from_fifths_and_octaves(fifths, octaves - (fifths * 4) // 7)
 
     @staticmethod
     def from_onehot(onehot, fifth_low, octave_low):
         """
-        Create a spelled pitch from a one-hot vector.
-        ``fifth_low`` denotes the lower bound of the fifth range used in the vector,
-        ``octave_low`` the lower bound of the octave range.
+        Create a spelled pitch from a one-hot matrix.
+
+        Requires the lower bounds of the fifth and octave range used by the one-hot matrix.
+
+        :param onehot: a one-hot matrix representing the pitch (numpy array)
+        :param fifth_low: the lowest fifth expressible in the one-hot matrix
+        :param octave_low: the lowest octave expressible in the one-hot matrix
+        :return: the resulting pitch (SpelledPitch)
         """
         if onehot.sum() != 1:
             raise ValueError(f"{onehot} is not a one-hot vector.")
@@ -440,6 +488,9 @@ class SpelledPitch(Spelled, SpelledP, Pitch):
 
         This method can be indirectly used through binary comparison operators
         (including ``==``, ``<`` etc.).
+
+        :param other: a pitch to compare to (SpelledPitch)
+        :return: ``-1`` / ``0`` / ``1`` (integer)
         """
         if isinstance(other, SpelledPitch):
             return (self-other).direction()
@@ -465,7 +516,12 @@ class SpelledPitch(Spelled, SpelledP, Pitch):
         """
         Returns a one-hot encoding of the pitch in fifths (first dimension) and external octaves (second dimension).
         The range of fifths and octaves is given by ``fifth_range`` and ``octave_range`` respectively,
-        where each is a tuple ``(lower, upper)``.
+        where each is a pair ``(lower, upper)``.
+
+        :param fifth_range: the (inclusive) range of fifths (pair of integers)
+        :param octave_range: the (inclusive) range of octaves (pair of integers)
+        :param dtype: dtype of the resulting array
+        :return: a one-hot matrix (numpy array)
         """
         flow, fhigh = fifth_range
         olow, ohigh = octave_range
@@ -484,15 +540,18 @@ class SpelledPitch(Spelled, SpelledP, Pitch):
 class SpelledInterval(Spelled, SpelledI, Interval, Diatonic, Chromatic):
     """
     Represents a spelled interval.
-
-    The constructor takes a string consisting of the form
-    -?<quality><generic-size>:<octaves>,
-    e.g. "M6:0", "-m3:0", or "aa2:1",
-    which stand for a major sixth, a minor third down, and a double-augmented ninth, respectively.
-    possible qualities are d (diminished), m (minor), M (major), P (perfect), and a (augmented),
-    where d and a can be repeated.
     """
     def __init__(self, value):
+        """
+        Takes a string consisting of the form
+        ``-?<quality><generic-size>:<octaves>``,
+        e.g. ``"M6:0"``, ``"-m3:0"``, or ``"aa2:1"``,
+        which stand for a major sixth, a minor third down, and a double-augmented ninth, respectively.
+        possible qualities are d (diminished), m (minor), M (major), P (perfect), and a (augmented),
+        where d and a can be repeated.
+
+        :param value: a string or internal numeric representation of the interval
+        """
         if isinstance(value, str):
             sign, octaves, fifths = self.parse_interval(value)
             assert isinstance(sign, numbers.Integral)
@@ -517,6 +576,10 @@ class SpelledInterval(Spelled, SpelledI, Interval, Diatonic, Chromatic):
     def from_fifths_and_octaves(fifths, octaves):
         """
         Create an interval by directly providing its internal fifths and octaves.
+
+        :param fifths: the fifths (= interval class) of the interval (integer)
+        :param octaves: the internal/dependent octaves of the interval (integer)
+        :return: the resulting interval (SpelledInterval)
         """
         return SpelledInterval((octaves, fifths))
 
@@ -524,15 +587,24 @@ class SpelledInterval(Spelled, SpelledI, Interval, Diatonic, Chromatic):
     def from_independent(fifths, octaves):
         """
         Create an interval from fifths (interval class) and independent/external octaves.
+
+        :param fifths: the fifth (= interval class) of the interval (integer)
+        :param octaves: the external/independent octaves the interval spans (integer)
+        :return: the resulting interval (SpelledInterval)
         """
         return SpelledInterval.from_fifths_and_octaves(fifths, octaves - (fifths * 4) // 7)
 
     @staticmethod
     def from_onehot(onehot, fifth_low, octave_low):
         """
-        Create a spelled interval from a one-hot vector.
-        ``fifth_low`` denotes the lower bound of the fifth range used in the vector,
-        ``octave_low`` the lower bound of the octave range.
+        Create a spelled interval from a one-hot matrix.
+
+        Requires the lower bounds of the fifth and octave range used by the one-hot matrix.
+
+        :param onehot: a one-hot matrix representing the interval (numpy array)
+        :param fifth_low: the lowest fifth expressible in the one-hot matrix
+        :param octave_low: the lowest octave expressible in the one-hot matrix
+        :return: the resulting interval (SpelledInterval)
         """
         if onehot.sum() != 1:
             raise ValueError(f"{onehot} is not a one-hot vector.")
@@ -544,25 +616,36 @@ class SpelledInterval(Spelled, SpelledI, Interval, Diatonic, Chromatic):
     @classmethod
     def unison(cls):
         """
-        Return a perfect unison (P1:0).
+        Create a perfect unison.
+
+        :return: P1:0
         """
         return cls.from_fifths_and_octaves(0,0)
 
     @classmethod
     def octave(cls):
         """
-        Return a perfect octave (P1:1).
+        Create a perfect octave.
+
+        :return: P1:1
         """
         return cls.from_fifths_and_octaves(0,1)
     
     @classmethod
     def chromatic_semitone(cls):
+        """
+        Create a chromatic semitone.
+
+        :return: a1:0
+        """
         return SpelledInterval.from_fifths_and_octaves(7,-4)
 
     def direction(self):
         """
         Returns the direction of the interval (1 = up, 0 = neutral, -1 = down).
         Only perfect unisons are considered neutral.
+
+        :return: ``-1`` / ``0`` / ``1`` (integer)
         """
         ds = self.diatonic_steps()
         if ds == 0:
@@ -627,6 +710,9 @@ class SpelledInterval(Spelled, SpelledI, Interval, Diatonic, Chromatic):
 
         This method can be indirectly used through binary comparison operators
         (including ``==``, ``<`` etc.).
+
+        :param other: an interval to compare to (SpelledInterval)
+        :return: ``-1`` / ``0`` / ``1`` (integer)
         """
         if isinstance(other, SpelledInterval):
             return (self-other).direction()
@@ -659,6 +745,11 @@ class SpelledInterval(Spelled, SpelledI, Interval, Diatonic, Chromatic):
         Returns a one-hot encoding of the interval in fifths (first dimension) and independent octaves (second dimension).
         The range of fifths and octaves is given by ``fifth_range`` and ``octave_range`` respectively,
         where each is a tuple ``(lower, upper)``.
+
+        :param fifth_range: the (inclusive) range of fifths (pair of integers)
+        :param octave_range: the (inclusive) range of octaves (pair of integers)
+        :param dtype: dtype of the resulting array
+        :return: a one-hot matrix (numpy array)
         """
         flow, fhigh = fifth_range
         olow, ohigh = octave_range
@@ -677,13 +768,16 @@ class SpelledInterval(Spelled, SpelledI, Interval, Diatonic, Chromatic):
 class SpelledPitchClass(Spelled, SpelledP, Pitch):
     """
     Represents a spelled pitch class, i.e. a pitch without octave information.
-
-    The constructor takes a string consisting of the form
-    <letter><accidentals?>, e.g. "C#", "E", or "Dbb".
-    Accidentals may be written as ASCII symbols (#/b)
-    or with unicode symbols (♯/♭), but not mixed within the same note.
     """
     def __init__(self, value):
+        """
+        Takes a string consisting of the form
+        ``<letter><accidentals?>``, e.g. ``"C#"``, ``"E"``, or ``"Dbb"``.
+        Accidentals may be written as ASCII symbols (#/b)
+        or with unicode symbols (♯/♭), but not mixed within the same note.
+
+        :param value: a string or internal numeric representation of the pitch class
+        """
         if isinstance(value, str):
             octaves, fifths = self.parse_pitch(value)
             assert octaves is None
@@ -696,19 +790,27 @@ class SpelledPitchClass(Spelled, SpelledP, Pitch):
     def from_fifths(fifths):
         """
         Create a pitch class by directly providing its position on the line of fifths (C=0, G=1, D=2, ...).
+
+        :param fifths: the line-of-fifths position of the pitch class (integer)
+        :return: the resulting pitch class (SpelledPitchClass)
         """
         return SpelledPitchClass(fifths)
 
     @staticmethod
-    def from_onehot(onehot, low):
+    def from_onehot(onehot, fifth_low):
         """
         Create a spelled pitch class from a one-hot vector.
-        ``low`` denotes the lower bound of the fifth range used in the vector.
+
+        Requires the lower bounds of the fifth range used by the one-hot vector.
+
+        :param onehot: a one-hot vector representing the pitch (numpy array)
+        :param fifth_low: the lowest fifth expressible in the one-hot vector
+        :return: the resulting pitch class (SpelledPitchClass)
         """
         if onehot.sum() != 1:
             raise ValueError(f"{onehot} is not a one-hot vector.")
         fs, = np.where(onehot==1)
-        return SpelledPitchClass.from_fifths(fs[0] + low)
+        return SpelledPitchClass.from_fifths(fs[0] + fifth_low)
 
     # pitch interface
 
@@ -739,6 +841,9 @@ class SpelledPitchClass(Spelled, SpelledP, Pitch):
 
         This method can be indirectly used through binary comparison operators
         (including ``==``, ``<`` etc.).
+
+        :param other: a pitch class to compare to (SpelledPitchClass)
+        :return: ``-1`` / ``0`` / ``1`` (integer)
         """
         if isinstance(other, SpelledPitchClass):
             return np.sign(self.fifths() - other.fifths())
@@ -764,6 +869,10 @@ class SpelledPitchClass(Spelled, SpelledP, Pitch):
         """
         Returns a one-hot encoding of the pitch class in fifths.
         The range of fifths is given by ``fifth_range`` as a tuple ``(lower, upper)``.
+
+        :param fifth_range: the (inclusive) range of fifths (pair of integers)
+        :param dtype: dtype of the resulting array
+        :return: a one-hot vector (numpy array)
         """
         low, high = fifth_range
         f = self.fifths()
@@ -778,15 +887,18 @@ class SpelledPitchClass(Spelled, SpelledP, Pitch):
 class SpelledIntervalClass(Spelled, SpelledI, Interval, Diatonic, Chromatic):
     """
     Represents a spelled interval class, i.e. an interval without octave information.
-
-    The constructor takes a string consisting of the form
-    -?<quality><generic-size>,
-    e.g. "M6", "-m3", or "aa2",
-    which stand for a major sixth, a minor third down (= major sixth up), and a double-augmented second, respectively.
-    possible qualities are d (diminished), m (minor), M (major), P (perfect), and a (augmented),
-    where d and a can be repeated.
     """
     def __init__(self, value):
+        """
+        Takes a string consisting of the form
+        ``-?<quality><generic-size>``,
+        e.g. ``"M6"``, ``"-m3"``, or ``"aa2"``,
+        which stand for a major sixth, a minor third down (= major sixth up), and a double-augmented second, respectively.
+        possible qualities are d (diminished), m (minor), M (major), P (perfect), and a (augmented),
+        where d and a can be repeated.
+
+        :param value: a string or internal numeric representation of the interval class
+        """
         if isinstance(value, str):
             sign, octaves, fifths = self.parse_interval(value)
             assert isinstance(sign, numbers.Integral)
@@ -803,6 +915,9 @@ class SpelledIntervalClass(Spelled, SpelledI, Interval, Diatonic, Chromatic):
     def from_fifths(fifths):
         """
         Create an interval class by directly providing its internal fifths.
+
+        :param fifths: the line-of-fifths position of the interval class (integer)
+        :return: the resulting interval class (SpelledIntervalClass)
         """
         return SpelledIntervalClass(fifths)
 
@@ -810,7 +925,12 @@ class SpelledIntervalClass(Spelled, SpelledI, Interval, Diatonic, Chromatic):
     def from_onehot(onehot, low):
         """
         Create a spelled interval class from a one-hot vector.
-        ``low`` denotes the lower bound of the fifth range used in the vector.
+
+        Requires the lower bounds of the fifth range used by the one-hot vector.
+
+        :param onehot: a one-hot vector representing the interval (numpy array)
+        :param fifth_low: the lowest fifth expressible in the one-hot vector
+        :return: the resulting interval class (SpelledIntervalClass)
         """
         if onehot.sum() != 1:
             raise ValueError(f"{onehot} is not a one-hot vector.")
@@ -822,19 +942,28 @@ class SpelledIntervalClass(Spelled, SpelledI, Interval, Diatonic, Chromatic):
     @classmethod
     def unison(cls):
         """
-        Return a perfect unison (P1).
+        Return a perfect unison.
+
+        :return: P1
         """
         return cls.from_fifths(0)
 
     @classmethod
     def octave(cls):
         """
-        Return a perfect unison (P1), which is the same as an octave for interval classes.
+        Return a perfect unison, which is the same as an octave for interval classes.
+
+        :return: P1
         """
         return cls.from_fifths(0)
 
     @classmethod
     def chromatic_semitone(cls):
+        """
+        Return a chromatic semitone
+
+        :return: a1
+        """
         return SpelledIntervalClass.from_fifths(7)
 
     def direction(self):
@@ -842,6 +971,8 @@ class SpelledIntervalClass(Spelled, SpelledI, Interval, Diatonic, Chromatic):
         Returns the direction of smallest realization of the interval class
         (1 = up, 0 = neutral, -1 = down).
         For example, the direction of ``M7`` (= ``m2``) is down.
+
+        :return: ``-1`` / ``0`` / ``1`` (integer)
         """
         ds = self.degree()
         if ds == 0:
@@ -891,6 +1022,9 @@ class SpelledIntervalClass(Spelled, SpelledI, Interval, Diatonic, Chromatic):
 
         This method can be indirectly used through binary comparison operators
         (including ``==``, ``<`` etc.).
+
+        :param other: an interval class to compare to (SpelledIntervalClass)
+        :return: ``-1`` / ``0`` / ``1`` (integer)
         """
         if isinstance(other, SpelledIntervalClass):
             return np.sign(self.fifths() - other.fifths())
@@ -919,6 +1053,10 @@ class SpelledIntervalClass(Spelled, SpelledI, Interval, Diatonic, Chromatic):
         """
         Returns a one-hot encoding of the interval class in fifths.
         The range of fifths is given by ``fifth_range`` as a tuple ``(lower, upper)``.
+
+        :param fifth_range: the (inclusive) range of fifths (pair of integers)
+        :param dtype: dtype of the resulting array
+        :return: a one-hot vector (numpy array)
         """
         low, high = fifth_range
         f = self.fifths()

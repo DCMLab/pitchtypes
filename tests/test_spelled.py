@@ -273,6 +273,7 @@ class TestSpelled(TestCase):
         self.assertRaises(NotImplementedError, lambda: s.internal_octaves())
         self.assertRaises(NotImplementedError, lambda: s.alteration())
         self.assertRaises(NotImplementedError, lambda: s.compare(1))
+        self.assertRaises(NotImplementedError, lambda: s.onehot())
         
         self.assertRaises(NotImplementedError, lambda: SpelledI().generic())
         self.assertRaises(NotImplementedError, lambda: SpelledI().diatonic_steps())

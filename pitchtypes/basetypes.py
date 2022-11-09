@@ -368,7 +368,9 @@ class Interval(abc.ABC):
     @abc.abstractmethod
     def unison(cls):
         """
-        Return the unison interval of this type.
+        Create the unison interval of this type.
+
+        :return: a unison interval
         """
         raise NotImplementedError
 
@@ -376,7 +378,9 @@ class Interval(abc.ABC):
     @abc.abstractmethod
     def octave(cls):
         """
-        Return the octave interval of this type.
+        Create the octave interval of this type.
+
+        :return: an octave interval
         """
         raise NotImplementedError
 
@@ -433,15 +437,19 @@ class Interval(abc.ABC):
     @abc.abstractmethod
     def direction(self):
         """
-        Return the direction of the interval:
+        Determines the direction of the interval:
         1 for up, -1 for down and 0 for neutral.
         Different types may have different conventions for the direction of an interval.
+
+        :return: the interval's direction (``-1`` / ``0`` / ``1``, integer)
         """
         raise NotImplementedError
 
     def abs(self):
         """
         For downward intervals, return their upward counterpart, otherwise just return the interval itself.
+
+        :return: the absolute interval
         """
         return abs(self)
     
@@ -450,12 +458,16 @@ class Interval(abc.ABC):
         """
         Return the interval class that corresponds to this interval.
         If the interval is already an interval class, it is returned itself.
+
+        :return: the interval's corresponding interval class
         """
         raise NotImplementedError
 
     def to_class(self):
         """
         Alias for ic(), but also supported by pitch types.
+
+        :return: the interval's corresponding interval class
         """
         return self.ic()
 
@@ -464,6 +476,8 @@ class Interval(abc.ABC):
         """
         For interval classes, return an embedding into the interval space in a (type-dependent) default octave.
         For non-class intervals, return the interval itself.
+
+        :return: a non-class version of this interval
         """
         raise NotImplementedError
 
@@ -478,6 +492,8 @@ class Chromatic(abc.ABC):
     def chromatic_semitone(cls):
         """
         Return a chromatic semitone (augmented unison) of this type.
+
+        :return: a chromatic semitone interval
         """
         raise NotImplementedError
 
@@ -491,6 +507,8 @@ class Diatonic(abc.ABC):
     def is_step(self):
         """
         Return True if the interval is considered a step, False otherwise.
+
+        :return: the stepness of the interval (boolean)
         """
         raise NotImplementedError
 
@@ -510,6 +528,9 @@ class Pitch(abc.ABC):
     def __add__(self, other):
         """
         Returns the pitch transposed by an interval
+
+        :param other: an interval of matching type
+        :return: the pitch transposed by ``other``
         """
         raise NotImplementedError
 
@@ -517,6 +538,10 @@ class Pitch(abc.ABC):
         """
         When subtracting another pitch (p1 - p2), return the interval from p2 to p1.
         When subtracting an interval (p - i), transpose the pitch by the inverse interval (p + -i).
+
+        :param other: pitch or interval
+        :return: if ``other`` is an interval, the transposed pitch;
+                 if ``other`` is a pitch, the interval between both pitches
         """
         if isinstance(other, Pitch):
             try:
@@ -533,13 +558,19 @@ class Pitch(abc.ABC):
     @abc.abstractmethod
     def interval_from(self, other):
         """
-        Returns the interval from another pitch to this pitch.
+        Computes the interval from another pitch to this pitch.
+
+        :param other: another pitch
+        :return: the interval from other to self
         """
         raise NotImplementedError
 
     def interval_to(self, other):
         """
-        Returns the interval from this pitch to another pitch.
+        Computes the interval from this pitch to another pitch.
+
+        :param other: another pitch
+        :return: the interval from self to other
         """
         return - self.interval_from(other)
     
@@ -548,12 +579,16 @@ class Pitch(abc.ABC):
         """
         Returns the pitch class corresponding to the pitch.
         For pitch classes, it returns the pitch class itself.
+
+        :return: the pitch class that corresponds to this pitch
         """
         raise NotImplementedError
 
     def to_class(self):
         """
         Alias for pc(), but also supported by interval types.
+
+        :return: the pitch class that corresponds to this pitch
         """
         return self.pc()
 
@@ -562,6 +597,8 @@ class Pitch(abc.ABC):
         """
         For a pitch class, returns the corresponding pitch in a (type-dependent) default octave.
         For non-class pitches, returns the pitch itself.
+
+        :return: a non-class version of this pitch
         """
         raise NotImplementedError
 
