@@ -11,7 +11,7 @@ setuptools.setup(
     version="0.3.0",
     author="Robert Lieck",
     author_email="robert.lieck@epfl.ch",
-    description="musically meaningful pitch types",
+    description="musically meaningful pitch and interval types",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/DCMLab/pitchtypes",
