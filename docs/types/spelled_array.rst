@@ -223,7 +223,69 @@ such as :py:func:`len`, ``in``, or iteration:
     Interval dd1:3 corresponds to interval class dd1.
     >>> list(intervals)
     [m6:0, m7:8, dd1:3]
-    
+
+One-hot Encoding
+^^^^^^^^^^^^^^^^
+
+Spelled arrays support :ref:`the same one-hot encoding style as their scalar counterparts <spelled.one-hot>`.
+That means that non-class intervals/pitches are encoded using fifths and (independent) octaves
+while interval/pitch classes are encoded only in fifths.
+Each dimension covers a certain range of fifths/octaves that needs to be known when converting to/from one-hot tensors.
+You can create a one-hot tensor using :py:meth:`onehot() <Spelled.onehot>`
+and convert it back to a spelled array using :py:meth:`from_onehot() <Spelled.from_onehot>`.
+
+In addition to the fifth and octave dimensions, one-hot tensors of spelled arrays have additional dimensions
+that reflect the original shape of the array.
+The fifth (and octave) dimension(s) are the last (two) dimensions in the tensor's shape,
+so for non-class arrays, the shape of the one-hot tensor is ``original_shape + (n_fifths, n_octaves)``
+while for class arrays, the shape is ``original_shape + (n_fifths,)``.
+
+Simple example (pitch class array, one array dimension):
+
+    >>> pc_onehot = aspc(["C", "G", "F", "D", "Bb", "A", "Eb"]).onehot((-4,4))
+    >>> pc_onehot.shape # 7 pitches x 9 fifths (-4 to 4)
+    (7, 9)
+    >>> pc_onehot
+    array([[0, 0, 0, 0, 1, 0, 0, 0, 0],
+           [0, 0, 0, 0, 0, 1, 0, 0, 0],
+           [0, 0, 0, 1, 0, 0, 0, 0, 0],
+           [0, 0, 0, 0, 0, 0, 1, 0, 0],
+           [0, 0, 1, 0, 0, 0, 0, 0, 0],
+           [0, 0, 0, 0, 0, 0, 0, 1, 0],
+           [0, 1, 0, 0, 0, 0, 0, 0, 0]])
+    >>> SpelledPitchClassArray.from_onehot(pc_onehot, -4)
+    aspc(['C', 'G', 'F', 'D', 'Bb', 'A', 'Eb'])
+
+Complex example (interval array, two array dimensions):
+
+    >>> intervals = asi([["M6:0", "m3:0", "M2:1"],
+    ...                  ["-M6:0", "-m3:0", "P1:0"]])
+    >>> print(intervals)
+    [[M6:0 m3:0 M2:1]
+     [-M6:0 -m3:0 P1:0]]
+    >>> i_onehot = intervals.onehot((-4,4), (-1,1))
+    >>> i_onehot.shape # 2 rows, 3 columns, 9 fifths (-4 to 4), 3 octaves (-1 to 1)
+    (2, 3, 9, 3)
+    >>> i_onehot[0,2] # M2:1: fifth=2 (out of -4 to 4), octave=1 (out of -1 to 1)
+    array([[0, 0, 0],
+           [0, 0, 0],
+           [0, 0, 0],
+           [0, 0, 0],
+           [0, 0, 0],
+           [0, 0, 0],
+           [0, 0, 1],
+           [0, 0, 0],
+           [0, 0, 0]])
+    >>> SpelledInterval("M2:1").onehot((-4,4), (-1,1))
+    array([[0, 0, 0],
+           [0, 0, 0],
+           [0, 0, 0],
+           [0, 0, 0],
+           [0, 0, 0],
+           [0, 0, 0],
+           [0, 0, 1],
+           [0, 0, 0],
+           [0, 0, 0]])
     
 Reference
 ---------

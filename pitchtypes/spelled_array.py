@@ -8,8 +8,6 @@ import copy
 from pitchtypes.basetypes import Pitch, Interval, Diatonic, Chromatic
 from pitchtypes.spelled import Spelled, SpelledInterval, SpelledIntervalClass, SpelledPitch, SpelledPitchClass
 
-# TODO: one-/multi-hot encodings (also for scalar types)
-
 class SpelledArray(abc.ABC):
     """
     A common base class for vectorized spelled pitch and interval types.
