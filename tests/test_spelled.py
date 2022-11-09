@@ -1,8 +1,9 @@
 from unittest import TestCase
+from unittest.mock import patch
 
 import re
 import numpy as np
-from pitchtypes import Spelled, SpelledPitch, SpelledInterval, SpelledPitchClass, SpelledIntervalClass, Enharmonic
+from pitchtypes import Spelled, SpelledI, SpelledP, SpelledPitch, SpelledInterval, SpelledPitchClass, SpelledIntervalClass, Enharmonic
 
 
 class TestSpelled(TestCase):
@@ -262,16 +263,20 @@ class TestSpelled(TestCase):
         self.assertEqual(SpelledInterval.from_independent(2,0), SpelledInterval("M2:0"))
         self.assertEqual(SpelledPitch.from_independent(2,4), SpelledPitch("D4"))
 
+    @patch.multiple(SpelledI, __abstractmethods__=set())
+    @patch.multiple(SpelledP, __abstractmethods__=set())
     def test_abstract_base_functions(self):
         s = Spelled("x", True, True)
         self.assertRaises(NotImplementedError, lambda: s.name())
         self.assertRaises(NotImplementedError, lambda: s.fifths())
         self.assertRaises(NotImplementedError, lambda: s.octaves())
         self.assertRaises(NotImplementedError, lambda: s.internal_octaves())
-        self.assertRaises(NotImplementedError, lambda: s.generic())
         self.assertRaises(NotImplementedError, lambda: s.alteration())
-        self.assertRaises(NotImplementedError, lambda: s.diatonic_steps())
         self.assertRaises(NotImplementedError, lambda: s.compare(1))
+        
+        self.assertRaises(NotImplementedError, lambda: SpelledI().generic())
+        self.assertRaises(NotImplementedError, lambda: SpelledI().diatonic_steps())
+        self.assertRaises(NotImplementedError, lambda: SpelledP().letter())
  
     def test_general_interface(self):
         self.assertEqual(SpelledInterval.unison(), SpelledInterval("P1:0"))
@@ -379,16 +384,12 @@ class TestSpelled(TestCase):
         self.assertEqual(SpelledPitch("Ebb5").octaves(),  5)
         self.assertEqual(SpelledPitch("Ebb5").fifths(),  -10)
         self.assertEqual(SpelledPitch("Ebb5").degree(),  2)
-        self.assertRaises(NotImplementedError, SpelledPitch("Ebb5").generic)
-        self.assertRaises(NotImplementedError, SpelledPitch("Ebb5").diatonic_steps)
         self.assertEqual(SpelledPitch("Ebb5").alteration(),  -2)
         self.assertEqual(SpelledPitch("Ebb5").letter(),  'E')
         
         self.assertEqual(SpelledPitchClass("F#").octaves(), 0)
         self.assertEqual(SpelledPitchClass("F#").fifths(), 6)
         self.assertEqual(SpelledPitchClass("F#").degree(), 3)
-        self.assertRaises(NotImplementedError, SpelledPitchClass("F#").generic)
-        self.assertRaises(NotImplementedError, SpelledPitchClass("F#").diatonic_steps)
         self.assertEqual(SpelledPitchClass("F#").alteration(), 1)
         self.assertEqual(SpelledPitchClass("F#").letter(), 'F')
         

@@ -204,25 +204,6 @@ class SpelledArray(abc.ABC):
         return (self.fifths() * 4) % 7
 
     @abc.abstractmethod
-    def generic(self):
-        """
-        Return the generic interval, i.e. the number of diatonic steps modulo octave.
-        Unlike degree(), the result respects the sign of the interval
-        (unison=0, 2nd up=1, 2nd down=-1).
-        For pitches, use :py:meth:`degree <pitchtypes.SpelledArray.degree>`.
-        """
-        raise NotImplementedError
-
-    @abc.abstractmethod
-    def diatonic_steps(self):
-        """
-        Return the diatonic steps of the interval (unison=0, 2nd=1, ..., octave=7, ...).
-        Respects both direction and octaves.
-        For pitches, use :py:meth:`degree <pitchtypes.SpelledArray.degree>`.
-        """
-        raise NotImplementedError
-
-    @abc.abstractmethod
     def alteration(self):
         """
         Return the number of semitones by which the interval is altered
@@ -243,8 +224,40 @@ class SpelledArray(abc.ABC):
         """
         raise NotImplementedError
 
+class SpelledArrayI(abc.ABC):
+    """
+    The interface for spelled interval array types.
+    """
+    @abc.abstractmethod
+    def generic(self):
+        """
+        Return the generic interval, i.e. the number of diatonic steps modulo octave.
+        Unlike degree(), the result respects the sign of the interval
+        (unison=0, 2nd up=1, 2nd down=-1).
+        """
+        raise NotImplementedError
 
-class SpelledIntervalArray(SpelledArray, Interval, Diatonic, Chromatic):
+    @abc.abstractmethod
+    def diatonic_steps(self):
+        """
+        Return the diatonic steps of the interval (unison=0, 2nd=1, ..., octave=7, ...).
+        Respects both direction and octaves.
+        """
+        raise NotImplementedError
+
+class SpelledArrayP(abc.ABC):
+    """
+    The interface for spelled pitch array types.
+    """
+    @abc.abstractmethod
+    def letter(self):        
+        """
+        Returns the letter associated with the pitch (without accidentals).
+        """
+        raise NotImplementedError
+        
+
+class SpelledIntervalArray(SpelledArray, SpelledArrayI, Interval, Diatonic, Chromatic):
     """
     Represents an array of spelled intervals.
     """
@@ -524,7 +537,7 @@ class SpelledIntervalArray(SpelledArray, Interval, Diatonic, Chromatic):
         out[indices] = 1
         return out
 
-class SpelledIntervalClassArray(SpelledArray, Interval, Diatonic, Chromatic):
+class SpelledIntervalClassArray(SpelledArray, SpelledArrayI, Interval, Diatonic, Chromatic):
     """
     Represents a spelled interval class, i.e. an interval without octave information.
     """
@@ -765,7 +778,7 @@ class SpelledIntervalClassArray(SpelledArray, Interval, Diatonic, Chromatic):
         out[indices] = 1
         return out
 
-class SpelledPitchArray(SpelledArray, Pitch):
+class SpelledPitchArray(SpelledArray, SpelledArrayP, Pitch):
     """
     Represents a vector spelled pitch.
     """
@@ -950,14 +963,6 @@ class SpelledPitchArray(SpelledArray, Pitch):
     def internal_octaves(self):
         return self._octaves
 
-    def generic(self):
-        # return self.degree()
-        raise NotImplementedError
-
-    def diatonic_steps(self):
-        # return self.degree()
-        raise NotImplementedError
-
     def alteration(self):
         return (self.fifths() + 1) // 7
 
@@ -997,7 +1002,7 @@ class SpelledPitchArray(SpelledArray, Pitch):
         out[indices] = 1
         return out
 
-class SpelledPitchClassArray(SpelledArray, Pitch):
+class SpelledPitchClassArray(SpelledArray, SpelledArrayP, Pitch):
     """
     Represents a spelled pitch class, i.e. a pitch without octave information.
     """
@@ -1150,14 +1155,6 @@ class SpelledPitchClassArray(SpelledArray, Pitch):
 
     def internal_octaves(self):
         return 0
-
-    def generic(self):
-        # return self.degree()
-        raise NotImplementedError
-
-    def diatonic_steps(self):
-        # return self.degree()
-        raise NotImplementedError
 
     def alteration(self):
         return (self.fifths() + 1) // 7

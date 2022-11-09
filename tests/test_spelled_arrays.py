@@ -69,8 +69,6 @@ class TestSpelledArray(TestCase):
         self.arrayEqual(p.internal_octaves(), [11, -6])
         self.arrayEqual(p.fifths(), [-10, 9])
         self.arrayEqual(p.degree(), [2, 1])
-        self.assertRaises(NotImplementedError, p.generic)
-        self.assertRaises(NotImplementedError, p.diatonic_steps)
         manyps = ["Ebb5", "D#-1", "F4", "B3", "F#4", "Bb3", "C#-1", "Cb-1"]
         self.arrayEqual(asp(manyps).alteration(),
                         [-2, 1, 0, 0, 1, -1, 1, -1])
@@ -82,8 +80,6 @@ class TestSpelledArray(TestCase):
         self.arrayEqual(pc.internal_octaves(), [0, 0])
         self.arrayEqual(pc.fifths(), [-10, 9])
         self.arrayEqual(pc.degree(), [2, 1])
-        self.assertRaises(NotImplementedError, pc.generic)
-        self.assertRaises(NotImplementedError, pc.diatonic_steps)
         manypcs = ["Ebb", "D#", "F", "B", "F#", "Bb", "C#", "Cb"]
         self.arrayEqual(aspc(manypcs).alteration(),
                         [-2, 1, 0, 0, 1, -1, 1, -1])
@@ -430,14 +426,14 @@ class TestSpelledArray(TestCase):
         self.assertRaises(ValueError, lambda: aspc(["C#"]).onehot((-1,1))) # outside of fifth range
     
     @patch.multiple(SpelledArray, __abstractmethods__=set())
+    @patch.multiple(SpelledArrayI, __abstractmethods__=set())
+    @patch.multiple(SpelledArrayP, __abstractmethods__=set())
     def test_notimplemented(self):
         self.assertRaises(NotImplementedError, SpelledArray().name)
         self.assertRaises(NotImplementedError, lambda: SpelledArray().compare(1))
         self.assertRaises(NotImplementedError, SpelledArray().fifths)
         self.assertRaises(NotImplementedError, SpelledArray().octaves)
         self.assertRaises(NotImplementedError, SpelledArray().internal_octaves)
-        self.assertRaises(NotImplementedError, SpelledArray().generic)
-        self.assertRaises(NotImplementedError, SpelledArray().diatonic_steps)
         self.assertRaises(NotImplementedError, SpelledArray().alteration)
         self.assertRaises(NotImplementedError, SpelledArray().copy)
         self.assertRaises(NotImplementedError, SpelledArray().deepcopy)
@@ -450,6 +446,11 @@ class TestSpelledArray(TestCase):
         self.assertRaises(NotImplementedError, lambda: len(SpelledArray()))
         self.assertRaises(NotImplementedError, SpelledArray.from_onehot)
         self.assertRaises(NotImplementedError, SpelledArray().onehot)
+        
+        self.assertRaises(NotImplementedError, SpelledArrayI().generic)
+        self.assertRaises(NotImplementedError, SpelledArrayI().diatonic_steps)
+        
+        self.assertRaises(NotImplementedError, SpelledArrayP().letter)
 
         self.assertFalse(asi("M3:0").array_equal(1))
         self.assertFalse(asic("M3").array_equal(1))

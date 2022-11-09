@@ -2,6 +2,7 @@
 
 import numbers
 import re
+import abc
 
 import numpy as np
 
@@ -26,8 +27,11 @@ class Spelled(AbstractBase):
         Parse a string as a spelled pitch or spelled pitch class. Returns a tuple (octave, fifths), where octave
         indicates the octave the pitch lies in (None for spelled pitch classes) and fifths indicates the steps taken
         along the line of fifths.
+        
         :param s: string to parse
         :return: (octave, fifths)
+
+        :meta private:
         """
         if not isinstance(s, str):
             raise TypeError(f"expected string as input, got {s}")
@@ -59,8 +63,11 @@ class Spelled(AbstractBase):
         sign is +1 or -1 and indicates the sign given in the string (no sign means positive), octave indicates the
         number of full octave steps (in positive or negative direction; None for spelled interval classes), and fifths
         indicates the steps taken along the line of fifths (i.e. not actual fifth steps that would add to the octaves).
+        
         :param s: string to parse
         :return: (sign, octave, fifths)
+
+        :meta private:
         """
         if not isinstance(s, str):
             raise TypeError("expecte string as input, got {s}")
@@ -114,8 +121,11 @@ class Spelled(AbstractBase):
     def pitch_class_from_fifths(fifth_steps):
         """
         Return the pitch class given the number of steps along the line of fifths
+
         :param fifth_steps: number of steps along the line of fifths
         :return: pitch class (e.g. C, Bb, F##, Abbb etc.)
+
+        :meta private:
         """
         base_pitch = ["F", "C", "G", "D", "A", "E", "B"][(fifth_steps + 1) % 7]
         flat_sharp = (fifth_steps + 1) // 7
@@ -126,8 +136,11 @@ class Spelled(AbstractBase):
         """
         Return the interval quality (major, minor, perfect, augmented, diminished, doubly-augmented etc) given the
         number of steps along the line of fifths.
+        
         :param fifth_steps: number of steps along the line of fifths
         :return: interval quality (M, m, p, a, d, aa, dd, aaa, ddd etc)
+
+        :meta private:
         """
         if -5 <= fifth_steps <= 5:
             quality = ['m', 'm', 'm', 'm', 'P', 'P', 'P', 'M', 'M', 'M', 'M'][fifth_steps + 5]
@@ -142,8 +155,11 @@ class Spelled(AbstractBase):
         """
         Return the number of diatonic steps corresponding to the number of steps on the line of fifths
         (`4 * fifth_steps`).
+        
         :param fifth_steps: number of fifth steps
         :return: number of diatonic steps
+
+        :meta private:
         """
         return 4 * fifth_steps
 
@@ -153,8 +169,11 @@ class Spelled(AbstractBase):
         Return the generic interval class corresponding to the given number of fifths. This corresponds to the number of
         diatonic steps plus one. The generic interval also corresponds to the scale degree when interpreted as the tone
         reached when starting from the tonic.
+        
         :param fifth_steps: number of fifth steps
         :return: scale degree (integer in 1,...,7)
+
+        :meta private:
         """
         return Spelled.diatonic_steps_from_fifths(fifth_steps) % 7 + 1
 
@@ -164,9 +183,12 @@ class Spelled(AbstractBase):
         Return the interval class corresponding to the given number of steps along the line of fifths. This function
         combines Spelled.interval_quality_from_fifths and Spelled.generic_interval_class_from_fifths. Specifying
         inverse=True (default is False) returns the inverse interval class (m2 for M7, aa4 for dd5 etc.).
+        
         :param fifths: number of fifth steps
         :param inverse: whether to return the inverse interval class
         :return: interval class (p1, M3, aa6 etc.)
+
+        :meta private:
         """
         if inverse:
             fifths = -fifths
@@ -178,6 +200,8 @@ class Spelled(AbstractBase):
         """
         Return the scale degree of a pitch/interval based on its fifths.
         Helper function for degree()
+
+        :meta private:
         """
         return (fifths*4) % 7
 
@@ -185,8 +209,11 @@ class Spelled(AbstractBase):
     def fifths_from_diatonic_pitch_class(pitch_class):
         """
         Return the number of steps along the line of fifths corresponding to a diatonic pitch class.
+        
         :param pitch_class: a diatonic pitch class; character in A, B, C, D, E, F, G
         :return: fifth steps; an integer in -1, 0, ... 5
+
+        :meta private:
         """
         pitch_classes = "ABCDEFG"
         if pitch_class not in pitch_classes:
@@ -199,8 +226,11 @@ class Spelled(AbstractBase):
         """
         Return the number of steps along the line of fifths corresponding to the given generic interval:
         (2 * generic - 1) % 7 - 1.
+        
         :param generic: generic interval (integer in 1,...,7)
         :return: fifth steps (integer in -1, 0, ..., 5)
+
+        :meta private:
         """
         if not isinstance(generic, numbers.Integral) or not (1 <= generic <= 7):
             raise ValueError(f"generic interval must be an integer between 1 and 7 (incl.), got {generic}")
@@ -276,23 +306,6 @@ class Spelled(AbstractBase):
         """
         return self._degree_from_fifths_(self.fifths())
 
-    def generic(self):
-        """
-        Return the generic interval, i.e. the number of diatonic steps modulo octave.
-        Unlike degree(), the result respects the sign of the interval
-        (unison=0, 2nd up=1, 2nd down=-1).
-        For pitches, use :py:meth:`degree <pitchtypes.Spelled.degree>`.
-        """
-        raise NotImplementedError
-
-    def diatonic_steps(self):
-        """
-        Return the diatonic steps of the interval (unison=0, 2nd=1, ..., octave=7, ...).
-        Respects both direction and octaves.
-        For pitches, use :py:meth:`degree <pitchtypes.Spelled.degree>`.
-        """
-        raise NotImplementedError
-
     def alteration(self):
         """
         Return the number of semitones by which the interval is altered from its the perfect or major variant.
@@ -303,8 +316,41 @@ class Spelled(AbstractBase):
         raise NotImplementedError
 
 
+
+class SpelledI(abc.ABC):
+    """
+    The interface for spelled interval types.
+    """
+    @abc.abstractmethod
+    def generic(self):
+        """
+        Return the generic interval, i.e. the number of diatonic steps modulo octave.
+        Unlike degree(), the result respects the sign of the interval
+        (unison=0, 2nd up=1, 2nd down=-1).
+        """
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def diatonic_steps(self):
+        """
+        Return the diatonic steps of the interval (unison=0, 2nd=1, ..., octave=7, ...).
+        Respects both direction and octaves.
+        """
+        raise NotImplementedError
+
+class SpelledP(abc.ABC):
+    """
+    The interface for spelled pitch types.
+    """
+    @abc.abstractmethod
+    def letter(self):        
+        """
+        Returns the letter associated with the pitch (without accidentals).
+        """
+        raise NotImplementedError
+
 @Spelled.link_pitch_type()
-class SpelledPitch(Spelled, Pitch):
+class SpelledPitch(Spelled, SpelledP, Pitch):
     """
     Represents a spelled pitch.
 
@@ -409,14 +455,6 @@ class SpelledPitch(Spelled, Pitch):
     def internal_octaves(self):
         return self.value[0]
 
-    def generic(self):
-        # return self.degree()
-        raise NotImplementedError
-
-    def diatonic_steps(self):
-        # return (self.fifths() * 4) + (self.internal_octaves() * 7)
-        raise NotImplementedError
-
     def alteration(self):
         return (self.fifths() + 1) // 7
 
@@ -443,7 +481,7 @@ class SpelledPitch(Spelled, Pitch):
 
 
 @Spelled.link_interval_type()
-class SpelledInterval(Spelled, Interval, Diatonic, Chromatic):
+class SpelledInterval(Spelled, SpelledI, Interval, Diatonic, Chromatic):
     """
     Represents a spelled interval.
 
@@ -516,6 +554,10 @@ class SpelledInterval(Spelled, Interval, Diatonic, Chromatic):
         Return a perfect octave (P1:1).
         """
         return cls.from_fifths_and_octaves(0,1)
+    
+    @classmethod
+    def chromatic_semitone(cls):
+        return SpelledInterval.from_fifths_and_octaves(7,-4)
 
     def direction(self):
         """
@@ -550,10 +592,6 @@ class SpelledInterval(Spelled, Interval, Diatonic, Chromatic):
 
     def embed(self):
         return self
-    
-    @classmethod
-    def chromatic_semitone(cls):
-        return SpelledInterval.from_fifths_and_octaves(7,-4)
 
     def is_step(self):
         return abs(self.diatonic_steps()) <= 1
@@ -636,7 +674,7 @@ class SpelledInterval(Spelled, Interval, Diatonic, Chromatic):
 
 
 @Spelled.link_pitch_class_type()
-class SpelledPitchClass(Spelled, Pitch):
+class SpelledPitchClass(Spelled, SpelledP, Pitch):
     """
     Represents a spelled pitch class, i.e. a pitch without octave information.
 
@@ -716,14 +754,6 @@ class SpelledPitchClass(Spelled, Pitch):
     def internal_octaves(self):
         return 0
 
-    def generic(self):
-        # return self.degree()
-        raise NotImplementedError
-
-    def diatonic_steps(self):
-        # return self.degree()
-        raise NotImplementedError
-
     def alteration(self):
         return (self.fifths() + 1) // 7
 
@@ -745,7 +775,7 @@ class SpelledPitchClass(Spelled, Pitch):
 
 
 @Spelled.link_interval_class_type()
-class SpelledIntervalClass(Spelled, Interval, Diatonic, Chromatic):
+class SpelledIntervalClass(Spelled, SpelledI, Interval, Diatonic, Chromatic):
     """
     Represents a spelled interval class, i.e. an interval without octave information.
 
@@ -803,6 +833,10 @@ class SpelledIntervalClass(Spelled, Interval, Diatonic, Chromatic):
         """
         return cls.from_fifths(0)
 
+    @classmethod
+    def chromatic_semitone(cls):
+        return SpelledIntervalClass.from_fifths(7)
+
     def direction(self):
         """
         Returns the direction of smallest realization of the interval class
@@ -834,10 +868,6 @@ class SpelledIntervalClass(Spelled, Interval, Diatonic, Chromatic):
 
     def embed(self):
         return SpelledInterval.from_fifths_and_octaves(self.fifths(), -((self.fifths() * 4) // 7))
-
-    @classmethod
-    def chromatic_semitone(cls):
-        return SpelledIntervalClass.from_fifths(7)
 
     def is_step(self):
         return self.degree() in [0,1,6]

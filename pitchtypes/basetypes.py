@@ -30,6 +30,8 @@ class AbstractBase:
          (i.e. try to add but don't overwrite existing methods)
         :param names: name of the methods; if added, they will be accessible as via `*.name`
         :param funcs: callables (i.e. implementations of the methods)
+
+        :meta private:
         """
         for flag, name, func in zip(flags, names, funcs):
             if flag or flag is None and name not in vars(sub_type):
@@ -49,6 +51,8 @@ class AbstractBase:
         :param suffix: expected suffix (`Pitch`, `Interval`, `PitchClass`, or `IntervalClass`)
         :param skip_name_check: skip the check and don't raise
         :raises TypeError: if `sub_type.__name__` does not match `cls.__name__ + suffix`
+
+        :meta private:
         """
         if not skip_name_check:
             got_name = sub_type.__name__
@@ -66,6 +70,8 @@ class AbstractBase:
                         create_to_class: Optional[bool] = None):
         """
         A decorator to link a pitch type to its base type.
+
+        :meta private:
         """
         def decorator(sub_type):
             # link types
@@ -115,6 +121,8 @@ class AbstractBase:
                            create_to_class: Optional[bool] = None):
         """
         A decorator to link an interval type to its base type.
+
+        :meta private:
         """
         def decorator(sub_type):
             # link types
@@ -172,6 +180,8 @@ class AbstractBase:
                               create_sub: Optional[bool] = None):
         """
         A decorator to link a pitch class type to its base type.
+
+        :meta private:
         """
         def decorator(sub_type):
             # link types
@@ -217,6 +227,8 @@ class AbstractBase:
                                  create_neg: Optional[bool] = None):
         """
         A decorator to link an interval class type to its base type.
+
+        :meta private:
         """
         def decorator(sub_type):
             # link types

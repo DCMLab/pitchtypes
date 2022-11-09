@@ -242,40 +242,44 @@ Reference
 General Interface
 ^^^^^^^^^^^^^^^^^
 
-.. autoclass:: pitchtypes.Spelled()
-   :members: fifths, octaves, internal_octaves,
-             degree, generic, diatonic_steps, alteration
+.. autoclass:: pitchtypes.Spelled
+   :members:
+   :member-order: bysource
+
+.. autoclass:: pitchtypes.SpelledI
+   :members:
+   :member-order: bysource
+
+.. autoclass:: pitchtypes.SpelledP
+   :members:
+   :member-order: bysource
 
 Spelled Interval and Pitch
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
              
 .. autoclass:: pitchtypes.SpelledInterval(string)
-   :members: from_fifths_and_octaves,
-             direction, abs,
-             unison, octave, chromatic_semitone, is_step,
-             fifths, octaves, internal_octaves,
-             degree, generic, diatonic_steps, alteration,
-             ic, embed
+   :special-members: __init__
+   :members:
+   :inherited-members:
+   :member-order: bysource
 
 .. autoclass:: pitchtypes.SpelledPitch(string)
-   :members: from_fifths_and_octaves,
-             pc, embed, letter,
-             fifths, octaves, internal_octaves,
-             degree, generic, diatonic_steps, alteration
+   :special-members: __init__
+   :members:
+   :inherited-members:
+   :member-order: bysource
 
 Spelled Interval and Pitch Class
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
              
 .. autoclass:: pitchtypes.SpelledIntervalClass(string)
-   :members: from_fifths,
-             direction, abs,
-             unison, octave, chromatic_semitone, is_step,
-             fifths, octaves, internal_octaves,
-             degree, generic, diatonic_steps, alteration,
-             ic, embed
-
+   :special-members: __init__
+   :members:
+   :inherited-members:
+   :member-order: bysource
+                  
 .. autoclass:: pitchtypes.SpelledPitchClass(string)
-   :members: from_fifths,
-             pc, embed, letter,
-             degree, generic, diatonic_steps, alteration,
-             fifths, octaves, internal_octaves
+   :special-members: __init__
+   :members:
+   :inherited-members:
+   :member-order: bysource

@@ -298,7 +298,17 @@ Reference
 General Interface
 ^^^^^^^^^^^^^^^^^
 
-.. autoclass:: pitchtypes.SpelledArray()
+.. autoclass:: pitchtypes.SpelledArray
+   :members:
+   :inherited-members:
+   :member-order: bysource
+                  
+.. autoclass:: pitchtypes.SpelledArrayI
+   :members:
+   :inherited-members:
+   :member-order: bysource
+                  
+.. autoclass:: pitchtypes.SpelledArrayP
    :members:
    :inherited-members:
    :member-order: bysource
