@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Log-Frequency Pitch &mdash; pitchtypes  documentation</title>
@@ -14,7 +14,9 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -41,13 +43,28 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../introduction.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="spelled.html">Spelled Pitch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spelled_array.html">Spelled Interval and Pitch Arrays</a></li>
 <li class="toctree-l1"><a class="reference internal" href="enharmonic.html">Enharmonic Pitch</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Log-Frequency Pitch</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#reference">Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#reference">Reference</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pitchtypes.LogFreq"><code class="docutils literal notranslate"><span class="pre">LogFreq</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pitchtypes.LogFreq.Interval"><code class="docutils literal notranslate"><span class="pre">LogFreq.Interval</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pitchtypes.LogFreq.IntervalClass"><code class="docutils literal notranslate"><span class="pre">LogFreq.IntervalClass</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pitchtypes.LogFreq.Pitch"><code class="docutils literal notranslate"><span class="pre">LogFreq.Pitch</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pitchtypes.LogFreq.PitchClass"><code class="docutils literal notranslate"><span class="pre">LogFreq.PitchClass</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pitchtypes.LogFreqPitch"><code class="docutils literal notranslate"><span class="pre">LogFreqPitch</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pitchtypes.LogFreqInterval"><code class="docutils literal notranslate"><span class="pre">LogFreqInterval</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pitchtypes.LogFreqPitchClass"><code class="docutils literal notranslate"><span class="pre">LogFreqPitchClass</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pitchtypes.LogFreqIntervalClass"><code class="docutils literal notranslate"><span class="pre">LogFreqIntervalClass</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="harmonic.html">Harmonic Pitch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_summary.html">API Summary</a></li>
 </ul>
 
         </div>
@@ -63,8 +80,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Log-Frequency Pitch</li>
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">Log-Frequency Pitch</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/types/frequencies.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -75,12 +92,12 @@
            <div itemprop="articleBody">
              
   <section id="log-frequency-pitch">
-<h1>Log-Frequency Pitch<a class="headerlink" href="#log-frequency-pitch" title="Permalink to this headline"></a></h1>
+<h1>Log-Frequency Pitch<a class="headerlink" href="#log-frequency-pitch" title="Permalink to this heading"></a></h1>
 <p><strong>Note: This type is functional and tested, but it does not yet conform to
 the general API and the documentation is still incomplete.</strong></p>
 <p><strong>TODO: examples from Julia implementation, adapt to python</strong></p>
 <section id="overview">
-<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline"></a></h2>
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this heading"></a></h2>
 <p>Pitches and intervals can also be expressed
 as physical frequencies and freqency ratios, respectively.
 We provide wrappers around <cite>Float64</cite> that represent log frequencies and log freqency ratios,
@@ -112,7 +129,7 @@ true</p>
 </div></blockquote>
 </section>
 <section id="reference">
-<h2>Reference<a class="headerlink" href="#reference" title="Permalink to this headline"></a></h2>
+<h2>Reference<a class="headerlink" href="#reference" title="Permalink to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="pitchtypes.LogFreq">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pitchtypes.</span></span><span class="sig-name descname"><span class="pre">LogFreq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_pitch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_class</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_log</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.LogFreq" title="Permalink to this definition"></a></dt>
@@ -121,25 +138,25 @@ representation.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pitchtypes.LogFreq.Interval">
 <span class="sig-name descname"><span class="pre">Interval</span></span><a class="headerlink" href="#pitchtypes.LogFreq.Interval" title="Permalink to this definition"></a></dt>
-<dd><p>alias of <a class="reference internal" href="#pitchtypes.LogFreqInterval" title="pitchtypes.datatypes.LogFreqInterval"><code class="xref py py-class docutils literal notranslate"><span class="pre">pitchtypes.datatypes.LogFreqInterval</span></code></a></p>
+<dd><p>alias of <a class="reference internal" href="../_autosummary/pitchtypes.logfreq.LogFreqInterval.html#pitchtypes.logfreq.LogFreqInterval" title="pitchtypes.logfreq.LogFreqInterval"><code class="xref py py-class docutils literal notranslate"><span class="pre">LogFreqInterval</span></code></a></p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pitchtypes.LogFreq.IntervalClass">
 <span class="sig-name descname"><span class="pre">IntervalClass</span></span><a class="headerlink" href="#pitchtypes.LogFreq.IntervalClass" title="Permalink to this definition"></a></dt>
-<dd><p>alias of <a class="reference internal" href="#pitchtypes.LogFreqIntervalClass" title="pitchtypes.datatypes.LogFreqIntervalClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">pitchtypes.datatypes.LogFreqIntervalClass</span></code></a></p>
+<dd><p>alias of <a class="reference internal" href="../_autosummary/pitchtypes.logfreq.LogFreqIntervalClass.html#pitchtypes.logfreq.LogFreqIntervalClass" title="pitchtypes.logfreq.LogFreqIntervalClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">LogFreqIntervalClass</span></code></a></p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pitchtypes.LogFreq.Pitch">
 <span class="sig-name descname"><span class="pre">Pitch</span></span><a class="headerlink" href="#pitchtypes.LogFreq.Pitch" title="Permalink to this definition"></a></dt>
-<dd><p>alias of <a class="reference internal" href="#pitchtypes.LogFreqPitch" title="pitchtypes.datatypes.LogFreqPitch"><code class="xref py py-class docutils literal notranslate"><span class="pre">pitchtypes.datatypes.LogFreqPitch</span></code></a></p>
+<dd><p>alias of <a class="reference internal" href="../_autosummary/pitchtypes.logfreq.LogFreqPitch.html#pitchtypes.logfreq.LogFreqPitch" title="pitchtypes.logfreq.LogFreqPitch"><code class="xref py py-class docutils literal notranslate"><span class="pre">LogFreqPitch</span></code></a></p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pitchtypes.LogFreq.PitchClass">
 <span class="sig-name descname"><span class="pre">PitchClass</span></span><a class="headerlink" href="#pitchtypes.LogFreq.PitchClass" title="Permalink to this definition"></a></dt>
-<dd><p>alias of <a class="reference internal" href="#pitchtypes.LogFreqPitchClass" title="pitchtypes.datatypes.LogFreqPitchClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">pitchtypes.datatypes.LogFreqPitchClass</span></code></a></p>
+<dd><p>alias of <a class="reference internal" href="../_autosummary/pitchtypes.logfreq.LogFreqPitchClass.html#pitchtypes.logfreq.LogFreqPitchClass" title="pitchtypes.logfreq.LogFreqPitchClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">LogFreqPitchClass</span></code></a></p>
 </dd></dl>
 
 </dd></dl>

@@ -1,0 +1,61 @@
+pitchtypes.spelled.SpelledPitch
+===============================
+
+.. currentmodule:: pitchtypes.spelled
+
+.. autoclass:: SpelledPitch
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members:
+   :exclude-members: __init__
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~SpelledPitch.__init__
+      ~SpelledPitch.alteration
+      ~SpelledPitch.compare
+      ~SpelledPitch.convert_to
+      ~SpelledPitch.create_subtypes
+      ~SpelledPitch.degree
+      ~SpelledPitch.diatonic_steps_from_fifths
+      ~SpelledPitch.embed
+      ~SpelledPitch.fifths
+      ~SpelledPitch.fifths_from_diatonic_pitch_class
+      ~SpelledPitch.fifths_from_generic_interval_class
+      ~SpelledPitch.from_fifths_and_octaves
+      ~SpelledPitch.from_independent
+      ~SpelledPitch.from_onehot
+      ~SpelledPitch.generic_interval_class_from_fifths
+      ~SpelledPitch.internal_octaves
+      ~SpelledPitch.interval_class_from_fifths
+      ~SpelledPitch.interval_from
+      ~SpelledPitch.interval_quality_from_fifths
+      ~SpelledPitch.interval_to
+      ~SpelledPitch.letter
+      ~SpelledPitch.link_interval_class_type
+      ~SpelledPitch.link_interval_type
+      ~SpelledPitch.link_pitch_class_type
+      ~SpelledPitch.link_pitch_type
+      ~SpelledPitch.name
+      ~SpelledPitch.name_check
+      ~SpelledPitch.octaves
+      ~SpelledPitch.onehot
+      ~SpelledPitch.parse_interval
+      ~SpelledPitch.parse_pitch
+      ~SpelledPitch.pc
+      ~SpelledPitch.pitch_class_from_fifths
+      ~SpelledPitch.set_func_attr
+      ~SpelledPitch.to_class
+   
+   
+
+   
+   
+   

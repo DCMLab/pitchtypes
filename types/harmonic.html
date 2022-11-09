@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Harmonic Pitch &mdash; pitchtypes  documentation</title>
@@ -14,10 +14,13 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="API Summary" href="../api_summary.html" />
     <link rel="prev" title="Log-Frequency Pitch" href="frequencies.html" /> 
 </head>
 
@@ -40,12 +43,23 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../introduction.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="spelled.html">Spelled Pitch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spelled_array.html">Spelled Interval and Pitch Arrays</a></li>
 <li class="toctree-l1"><a class="reference internal" href="enharmonic.html">Enharmonic Pitch</a></li>
 <li class="toctree-l1"><a class="reference internal" href="frequencies.html">Log-Frequency Pitch</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Harmonic Pitch</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#reference">Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#reference">Reference</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pitchtypes.Harmonic"><code class="docutils literal notranslate"><span class="pre">Harmonic</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pitchtypes.Harmonic.Interval"><code class="docutils literal notranslate"><span class="pre">Harmonic.Interval</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pitchtypes.Harmonic.IntervalClass"><code class="docutils literal notranslate"><span class="pre">Harmonic.IntervalClass</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#pitchtypes.HarmonicInterval"><code class="docutils literal notranslate"><span class="pre">HarmonicInterval</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pitchtypes.HarmonicIntervalClass"><code class="docutils literal notranslate"><span class="pre">HarmonicIntervalClass</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api_summary.html">API Summary</a></li>
 </ul>
 
         </div>
@@ -61,8 +75,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Harmonic Pitch</li>
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">Harmonic Pitch</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/types/harmonic.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -73,24 +87,24 @@
            <div itemprop="articleBody">
              
   <section id="harmonic-pitch">
-<h1>Harmonic Pitch<a class="headerlink" href="#harmonic-pitch" title="Permalink to this headline"></a></h1>
+<h1>Harmonic Pitch<a class="headerlink" href="#harmonic-pitch" title="Permalink to this heading"></a></h1>
 <p><strong>Note: This type is functional and tested, but it does not yet conform to
 the general API and the documentation is still incomplete.</strong></p>
 <section id="reference">
-<h2>Reference<a class="headerlink" href="#reference" title="Permalink to this headline"></a></h2>
+<h2>Reference<a class="headerlink" href="#reference" title="Permalink to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="pitchtypes.Harmonic">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pitchtypes.</span></span><span class="sig-name descname"><span class="pre">Harmonic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.Harmonic" title="Permalink to this definition"></a></dt>
 <dd><dl class="py attribute">
 <dt class="sig sig-object py" id="pitchtypes.Harmonic.Interval">
 <span class="sig-name descname"><span class="pre">Interval</span></span><a class="headerlink" href="#pitchtypes.Harmonic.Interval" title="Permalink to this definition"></a></dt>
-<dd><p>alias of <a class="reference internal" href="#pitchtypes.HarmonicInterval" title="pitchtypes.datatypes.HarmonicInterval"><code class="xref py py-class docutils literal notranslate"><span class="pre">pitchtypes.datatypes.HarmonicInterval</span></code></a></p>
+<dd><p>alias of <a class="reference internal" href="../_autosummary/pitchtypes.harmonic.HarmonicInterval.html#pitchtypes.harmonic.HarmonicInterval" title="pitchtypes.harmonic.HarmonicInterval"><code class="xref py py-class docutils literal notranslate"><span class="pre">HarmonicInterval</span></code></a></p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pitchtypes.Harmonic.IntervalClass">
 <span class="sig-name descname"><span class="pre">IntervalClass</span></span><a class="headerlink" href="#pitchtypes.Harmonic.IntervalClass" title="Permalink to this definition"></a></dt>
-<dd><p>alias of <a class="reference internal" href="#pitchtypes.HarmonicIntervalClass" title="pitchtypes.datatypes.HarmonicIntervalClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">pitchtypes.datatypes.HarmonicIntervalClass</span></code></a></p>
+<dd><p>alias of <a class="reference internal" href="../_autosummary/pitchtypes.harmonic.HarmonicIntervalClass.html#pitchtypes.harmonic.HarmonicIntervalClass" title="pitchtypes.harmonic.HarmonicIntervalClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">HarmonicIntervalClass</span></code></a></p>
 </dd></dl>
 
 </dd></dl>
@@ -113,6 +127,7 @@ the general API and the documentation is still incomplete.</strong></p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="frequencies.html" class="btn btn-neutral float-left" title="Log-Frequency Pitch" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../api_summary.html" class="btn btn-neutral float-right" title="API Summary" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

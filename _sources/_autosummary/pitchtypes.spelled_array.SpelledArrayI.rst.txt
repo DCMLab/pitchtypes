@@ -1,0 +1,29 @@
+pitchtypes.spelled\_array.SpelledArrayI
+=======================================
+
+.. currentmodule:: pitchtypes.spelled_array
+
+.. autoclass:: SpelledArrayI
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members:
+   :exclude-members: __init__
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~SpelledArrayI.__init__
+      ~SpelledArrayI.diatonic_steps
+      ~SpelledArrayI.generic
+   
+   
+
+   
+   
+   

@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pitchtypes.basetypes.Pitch &mdash; pitchtypes  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="pitchtypes.converters" href="pitchtypes.converters.html" />
+    <link rel="prev" title="pitchtypes.basetypes.Interval" href="pitchtypes.basetypes.Interval.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> pitchtypes
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../types/spelled.html">Spelled Pitch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../types/spelled_array.html">Spelled Interval and Pitch Arrays</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../types/enharmonic.html">Enharmonic Pitch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../types/frequencies.html">Log-Frequency Pitch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../types/harmonic.html">Harmonic Pitch</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api_summary.html">API Summary</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="pitchtypes.html">pitchtypes</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="pitchtypes.basetypes.html">pitchtypes.basetypes</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="pitchtypes.basetypes.AbstractBase.html">pitchtypes.basetypes.AbstractBase</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pitchtypes.basetypes.Chromatic.html">pitchtypes.basetypes.Chromatic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pitchtypes.basetypes.Converters.html">pitchtypes.basetypes.Converters</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pitchtypes.basetypes.Diatonic.html">pitchtypes.basetypes.Diatonic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pitchtypes.basetypes.Interval.html">pitchtypes.basetypes.Interval</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">pitchtypes.basetypes.Pitch</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pitchtypes.converters.html">pitchtypes.converters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pitchtypes.enharmonic.html">pitchtypes.enharmonic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pitchtypes.harmonic.html">pitchtypes.harmonic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pitchtypes.logfreq.html">pitchtypes.logfreq</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pitchtypes.spelled.html">pitchtypes.spelled</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pitchtypes.spelled_array.html">pitchtypes.spelled_array</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pitchtypes</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../api_summary.html">API Summary</a></li>
+          <li class="breadcrumb-item"><a href="pitchtypes.html">pitchtypes</a></li>
+          <li class="breadcrumb-item"><a href="pitchtypes.basetypes.html">pitchtypes.basetypes</a></li>
+      <li class="breadcrumb-item active">pitchtypes.basetypes.Pitch</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/_autosummary/pitchtypes.basetypes.Pitch.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="pitchtypes-basetypes-pitch">
+<h1>pitchtypes.basetypes.Pitch<a class="headerlink" href="#pitchtypes-basetypes-pitch" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="pitchtypes.basetypes.Pitch">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pitchtypes.basetypes.</span></span><span class="sig-name descname"><span class="pre">Pitch</span></span><a class="headerlink" href="#pitchtypes.basetypes.Pitch" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
+<p>The basic interface that is implemented by every pitch (and pitch class) type.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.basetypes.Pitch.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.basetypes.Pitch.__init__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.basetypes.Pitch.__init__" title="pitchtypes.basetypes.Pitch.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.basetypes.Pitch.embed" title="pitchtypes.basetypes.Pitch.embed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">embed</span></code></a>()</p></td>
+<td><p>For a pitch class, returns the corresponding pitch in a (type-dependent) default octave.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.basetypes.Pitch.interval_from" title="pitchtypes.basetypes.Pitch.interval_from"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interval_from</span></code></a>(other)</p></td>
+<td><p>Computes the interval from another pitch to this pitch.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.basetypes.Pitch.interval_to" title="pitchtypes.basetypes.Pitch.interval_to"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interval_to</span></code></a>(other)</p></td>
+<td><p>Computes the interval from this pitch to another pitch.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.basetypes.Pitch.pc" title="pitchtypes.basetypes.Pitch.pc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pc</span></code></a>()</p></td>
+<td><p>Returns the pitch class corresponding to the pitch.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.basetypes.Pitch.to_class" title="pitchtypes.basetypes.Pitch.to_class"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_class</span></code></a>()</p></td>
+<td><p>Alias for pc(), but also supported by interval types.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.basetypes.Pitch.__add__">
+<span class="sig-name descname"><span class="pre">__add__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.basetypes.Pitch.__add__" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the pitch transposed by an interval</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> – an interval of matching type</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the pitch transposed by <code class="docutils literal notranslate"><span class="pre">other</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.basetypes.Pitch.__eq__">
+<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.basetypes.Pitch.__eq__" title="Permalink to this definition"></a></dt>
+<dd><p>Return self==value.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pitchtypes.basetypes.Pitch.__hash__">
+<span class="sig-name descname"><span class="pre">__hash__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pitchtypes.basetypes.Pitch.__hash__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.basetypes.Pitch.__sub__">
+<span class="sig-name descname"><span class="pre">__sub__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.basetypes.Pitch.__sub__" title="Permalink to this definition"></a></dt>
+<dd><p>When subtracting another pitch (p1 - p2), return the interval from p2 to p1.
+When subtracting an interval (p - i), transpose the pitch by the inverse interval (p + -i).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> – pitch or interval</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>if <code class="docutils literal notranslate"><span class="pre">other</span></code> is an interval, the transposed pitch;
+if <code class="docutils literal notranslate"><span class="pre">other</span></code> is a pitch, the interval between both pitches</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pitchtypes.basetypes.Pitch.__weakref__">
+<span class="sig-name descname"><span class="pre">__weakref__</span></span><a class="headerlink" href="#pitchtypes.basetypes.Pitch.__weakref__" title="Permalink to this definition"></a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.basetypes.Pitch.embed">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">embed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.basetypes.Pitch.embed" title="Permalink to this definition"></a></dt>
+<dd><p>For a pitch class, returns the corresponding pitch in a (type-dependent) default octave.
+For non-class pitches, returns the pitch itself.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>a non-class version of this pitch</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.basetypes.Pitch.interval_from">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">interval_from</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.basetypes.Pitch.interval_from" title="Permalink to this definition"></a></dt>
+<dd><p>Computes the interval from another pitch to this pitch.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> – another pitch</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the interval from other to self</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.basetypes.Pitch.interval_to">
+<span class="sig-name descname"><span class="pre">interval_to</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.basetypes.Pitch.interval_to" title="Permalink to this definition"></a></dt>
+<dd><p>Computes the interval from this pitch to another pitch.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> – another pitch</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the interval from self to other</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.basetypes.Pitch.pc">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.basetypes.Pitch.pc" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the pitch class corresponding to the pitch.
+For pitch classes, it returns the pitch class itself.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the pitch class that corresponds to this pitch</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.basetypes.Pitch.to_class">
+<span class="sig-name descname"><span class="pre">to_class</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.basetypes.Pitch.to_class" title="Permalink to this definition"></a></dt>
+<dd><p>Alias for pc(), but also supported by interval types.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the pitch class that corresponds to this pitch</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="pitchtypes.basetypes.Interval.html" class="btn btn-neutral float-left" title="pitchtypes.basetypes.Interval" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="pitchtypes.converters.html" class="btn btn-neutral float-right" title="pitchtypes.converters" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Robert Lieck, Christoph Finkensiep, DCML.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

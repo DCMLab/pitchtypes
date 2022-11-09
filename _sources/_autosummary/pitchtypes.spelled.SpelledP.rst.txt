@@ -1,0 +1,28 @@
+pitchtypes.spelled.SpelledP
+===========================
+
+.. currentmodule:: pitchtypes.spelled
+
+.. autoclass:: SpelledP
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members:
+   :exclude-members: __init__
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~SpelledP.__init__
+      ~SpelledP.letter
+   
+   
+
+   
+   
+   

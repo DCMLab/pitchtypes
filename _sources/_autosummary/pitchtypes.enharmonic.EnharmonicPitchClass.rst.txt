@@ -1,0 +1,39 @@
+pitchtypes.enharmonic.EnharmonicPitchClass
+==========================================
+
+.. currentmodule:: pitchtypes.enharmonic
+
+.. autoclass:: EnharmonicPitchClass
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members:
+   :exclude-members: __init__
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~EnharmonicPitchClass.__init__
+      ~EnharmonicPitchClass.convert_to
+      ~EnharmonicPitchClass.convert_to_logfreq
+      ~EnharmonicPitchClass.create_subtypes
+      ~EnharmonicPitchClass.link_interval_class_type
+      ~EnharmonicPitchClass.link_interval_type
+      ~EnharmonicPitchClass.link_pitch_class_type
+      ~EnharmonicPitchClass.link_pitch_type
+      ~EnharmonicPitchClass.name
+      ~EnharmonicPitchClass.name_check
+      ~EnharmonicPitchClass.pitch_class_name_from_midi
+      ~EnharmonicPitchClass.print_options
+      ~EnharmonicPitchClass.set_func_attr
+   
+   
+
+   
+   
+   

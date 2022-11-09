@@ -1,0 +1,28 @@
+pitchtypes.spelled\_array.SpelledArrayP
+=======================================
+
+.. currentmodule:: pitchtypes.spelled_array
+
+.. autoclass:: SpelledArrayP
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members:
+   :exclude-members: __init__
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~SpelledArrayP.__init__
+      ~SpelledArrayP.letter
+   
+   
+
+   
+   
+   

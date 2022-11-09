@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Enharmonic Pitch &mdash; pitchtypes  documentation</title>
@@ -14,12 +14,14 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Log-Frequency Pitch" href="frequencies.html" />
-    <link rel="prev" title="Spelled Pitch" href="spelled.html" /> 
+    <link rel="prev" title="Spelled Interval and Pitch Arrays" href="spelled_array.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -41,13 +43,29 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../introduction.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="spelled.html">Spelled Pitch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="spelled_array.html">Spelled Interval and Pitch Arrays</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Enharmonic Pitch</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#reference">Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#reference">Reference</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pitchtypes.Enharmonic"><code class="docutils literal notranslate"><span class="pre">Enharmonic</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pitchtypes.Enharmonic.Interval"><code class="docutils literal notranslate"><span class="pre">Enharmonic.Interval</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pitchtypes.Enharmonic.IntervalClass"><code class="docutils literal notranslate"><span class="pre">Enharmonic.IntervalClass</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pitchtypes.Enharmonic.Pitch"><code class="docutils literal notranslate"><span class="pre">Enharmonic.Pitch</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pitchtypes.Enharmonic.PitchClass"><code class="docutils literal notranslate"><span class="pre">Enharmonic.PitchClass</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pitchtypes.Enharmonic.pitch_class_name_from_midi"><code class="docutils literal notranslate"><span class="pre">Enharmonic.pitch_class_name_from_midi()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pitchtypes.EnharmonicPitch"><code class="docutils literal notranslate"><span class="pre">EnharmonicPitch</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pitchtypes.EnharmonicInterval"><code class="docutils literal notranslate"><span class="pre">EnharmonicInterval</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pitchtypes.EnharmonicPitchClass"><code class="docutils literal notranslate"><span class="pre">EnharmonicPitchClass</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pitchtypes.EnharmonicIntervalClass"><code class="docutils literal notranslate"><span class="pre">EnharmonicIntervalClass</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="frequencies.html">Log-Frequency Pitch</a></li>
 <li class="toctree-l1"><a class="reference internal" href="harmonic.html">Harmonic Pitch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api_summary.html">API Summary</a></li>
 </ul>
 
         </div>
@@ -63,8 +81,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Enharmonic Pitch</li>
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">Enharmonic Pitch</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/types/enharmonic.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -75,21 +93,17 @@
            <div itemprop="articleBody">
              
   <section id="enharmonic-pitch">
-<h1>Enharmonic Pitch<a class="headerlink" href="#enharmonic-pitch" title="Permalink to this headline"></a></h1>
+<h1>Enharmonic Pitch<a class="headerlink" href="#enharmonic-pitch" title="Permalink to this heading"></a></h1>
 <p><strong>Note: This type is functional and tested, but it does not yet conform to
 the general API and the documentation is still incomplete.</strong></p>
 <section id="overview">
-<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline"></a></h2>
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this heading"></a></h2>
 <p>Enharmonic pitches and intervals are specified in 12-TET semitones, with 60 as Middle C, as in the MIDI standard.
 Both enharmonic pitches and intervals can be represented by integers,
 However, we provides wrapper classes around <cite>int</cite> to distinguish
 the different interpretations as pitches and intervals (and their respective class variants).
 Enharmonic pitches can be easily created using the <cite>Enharmonic*</cite> constructors, all of which take integers.</p>
 <table class="docutils align-default">
-<colgroup>
-<col style="width: 56%" />
-<col style="width: 44%" />
-</colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>constructor example</p></th>
 <th class="head"><p>printed representation</p></th>
@@ -109,32 +123,32 @@ Enharmonic pitches can be easily created using the <cite>Enharmonic*</cite> cons
 </table>
 </section>
 <section id="reference">
-<h2>Reference<a class="headerlink" href="#reference" title="Permalink to this headline"></a></h2>
+<h2>Reference<a class="headerlink" href="#reference" title="Permalink to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="pitchtypes.Enharmonic">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pitchtypes.</span></span><span class="sig-name descname"><span class="pre">Enharmonic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_pitch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_class</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.Enharmonic" title="Permalink to this definition"></a></dt>
 <dd><dl class="py attribute">
 <dt class="sig sig-object py" id="pitchtypes.Enharmonic.Interval">
 <span class="sig-name descname"><span class="pre">Interval</span></span><a class="headerlink" href="#pitchtypes.Enharmonic.Interval" title="Permalink to this definition"></a></dt>
-<dd><p>alias of <a class="reference internal" href="#pitchtypes.EnharmonicInterval" title="pitchtypes.datatypes.EnharmonicInterval"><code class="xref py py-class docutils literal notranslate"><span class="pre">pitchtypes.datatypes.EnharmonicInterval</span></code></a></p>
+<dd><p>alias of <a class="reference internal" href="../_autosummary/pitchtypes.enharmonic.EnharmonicInterval.html#pitchtypes.enharmonic.EnharmonicInterval" title="pitchtypes.enharmonic.EnharmonicInterval"><code class="xref py py-class docutils literal notranslate"><span class="pre">EnharmonicInterval</span></code></a></p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pitchtypes.Enharmonic.IntervalClass">
 <span class="sig-name descname"><span class="pre">IntervalClass</span></span><a class="headerlink" href="#pitchtypes.Enharmonic.IntervalClass" title="Permalink to this definition"></a></dt>
-<dd><p>alias of <a class="reference internal" href="#pitchtypes.EnharmonicIntervalClass" title="pitchtypes.datatypes.EnharmonicIntervalClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">pitchtypes.datatypes.EnharmonicIntervalClass</span></code></a></p>
+<dd><p>alias of <a class="reference internal" href="../_autosummary/pitchtypes.enharmonic.EnharmonicIntervalClass.html#pitchtypes.enharmonic.EnharmonicIntervalClass" title="pitchtypes.enharmonic.EnharmonicIntervalClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">EnharmonicIntervalClass</span></code></a></p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pitchtypes.Enharmonic.Pitch">
 <span class="sig-name descname"><span class="pre">Pitch</span></span><a class="headerlink" href="#pitchtypes.Enharmonic.Pitch" title="Permalink to this definition"></a></dt>
-<dd><p>alias of <a class="reference internal" href="#pitchtypes.EnharmonicPitch" title="pitchtypes.datatypes.EnharmonicPitch"><code class="xref py py-class docutils literal notranslate"><span class="pre">pitchtypes.datatypes.EnharmonicPitch</span></code></a></p>
+<dd><p>alias of <a class="reference internal" href="../_autosummary/pitchtypes.enharmonic.EnharmonicPitch.html#pitchtypes.enharmonic.EnharmonicPitch" title="pitchtypes.enharmonic.EnharmonicPitch"><code class="xref py py-class docutils literal notranslate"><span class="pre">EnharmonicPitch</span></code></a></p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pitchtypes.Enharmonic.PitchClass">
 <span class="sig-name descname"><span class="pre">PitchClass</span></span><a class="headerlink" href="#pitchtypes.Enharmonic.PitchClass" title="Permalink to this definition"></a></dt>
-<dd><p>alias of <a class="reference internal" href="#pitchtypes.EnharmonicPitchClass" title="pitchtypes.datatypes.EnharmonicPitchClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">pitchtypes.datatypes.EnharmonicPitchClass</span></code></a></p>
+<dd><p>alias of <a class="reference internal" href="../_autosummary/pitchtypes.enharmonic.EnharmonicPitchClass.html#pitchtypes.enharmonic.EnharmonicPitchClass" title="pitchtypes.enharmonic.EnharmonicPitchClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">EnharmonicPitchClass</span></code></a></p>
 </dd></dl>
 
 <dl class="py method">
@@ -175,7 +189,7 @@ Enharmonic pitches can be easily created using the <cite>Enharmonic*</cite> cons
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="spelled.html" class="btn btn-neutral float-left" title="Spelled Pitch" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="spelled_array.html" class="btn btn-neutral float-left" title="Spelled Interval and Pitch Arrays" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="frequencies.html" class="btn btn-neutral float-right" title="Log-Frequency Pitch" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
