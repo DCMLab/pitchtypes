@@ -8,7 +8,7 @@ with open("requirements.txt", "r") as fh:
 
 setuptools.setup(
     name="pitchtypes",
-    version="0.3.0",
+    version="0.4.0",
     author="Robert Lieck",
     author_email="robert.lieck@epfl.ch",
     description="musically meaningful pitch and interval types",
