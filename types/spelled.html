@@ -54,8 +54,6 @@
 <li class="toctree-l2"><a class="reference internal" href="#reference">Reference</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#general-interface">General Interface</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#pitchtypes.Spelled"><code class="docutils literal notranslate"><span class="pre">Spelled</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#pitchtypes.SpelledI"><code class="docutils literal notranslate"><span class="pre">SpelledI</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#pitchtypes.SpelledP"><code class="docutils literal notranslate"><span class="pre">SpelledP</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#spelled-interval-and-pitch">Spelled Interval and Pitch</a><ul>
@@ -482,54 +480,6 @@ Specialized versions of this method take ranges for their respective dimensions.
 <dt class="sig sig-object py" id="pitchtypes.Spelled.PitchClass">
 <span class="sig-name descname"><span class="pre">PitchClass</span></span><a class="headerlink" href="#pitchtypes.Spelled.PitchClass" title="Permalink to this definition"></a></dt>
 <dd><p>alias of <a class="reference internal" href="../_autosummary/pitchtypes.spelled.SpelledPitchClass.html#pitchtypes.spelled.SpelledPitchClass" title="pitchtypes.spelled.SpelledPitchClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">SpelledPitchClass</span></code></a></p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="pitchtypes.SpelledI">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pitchtypes.</span></span><span class="sig-name descname"><span class="pre">SpelledI</span></span><a class="headerlink" href="#pitchtypes.SpelledI" title="Permalink to this definition"></a></dt>
-<dd><p>The interface for spelled interval types.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="pitchtypes.SpelledI.generic">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">generic</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledI.generic" title="Permalink to this definition"></a></dt>
-<dd><p>Return the generic interval, i.e. the number of diatonic steps modulo octave.
-Unlike degree(), the result respects the sign of the interval
-(unison=0, 2nd up=1, 2nd down=-1).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>generic interval (integer)</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pitchtypes.SpelledI.diatonic_steps">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">diatonic_steps</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledI.diatonic_steps" title="Permalink to this definition"></a></dt>
-<dd><p>Return the diatonic steps of the interval (unison=0, 2nd=1, …, octave=7, …).
-Respects both direction and octaves.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>number of diatonic steps (integer)</p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="pitchtypes.SpelledP">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pitchtypes.</span></span><span class="sig-name descname"><span class="pre">SpelledP</span></span><a class="headerlink" href="#pitchtypes.SpelledP" title="Permalink to this definition"></a></dt>
-<dd><p>The interface for spelled pitch types.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="pitchtypes.SpelledP.letter">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">letter</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledP.letter" title="Permalink to this definition"></a></dt>
-<dd><p>Returns the letter associated with the pitch (without accidentals).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>letter (single-character string)</p>
-</dd>
-</dl>
 </dd></dl>
 
 </dd></dl>

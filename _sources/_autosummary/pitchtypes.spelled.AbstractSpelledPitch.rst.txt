@@ -1,9 +1,9 @@
-pitchtypes.spelled\_array.SpelledArrayP
+pitchtypes.spelled.AbstractSpelledPitch
 =======================================
 
-.. currentmodule:: pitchtypes.spelled_array
+.. currentmodule:: pitchtypes.spelled
 
-.. autoclass:: SpelledArrayP
+.. autoclass:: AbstractSpelledPitch
    :members:
    :show-inheritance:
    :inherited-members:
@@ -18,8 +18,8 @@ pitchtypes.spelled\_array.SpelledArrayP
 
    .. autosummary::
    
-      ~SpelledArrayP.__init__
-      ~SpelledArrayP.letter
+      ~AbstractSpelledPitch.__init__
+      ~AbstractSpelledPitch.letter
    
    
 

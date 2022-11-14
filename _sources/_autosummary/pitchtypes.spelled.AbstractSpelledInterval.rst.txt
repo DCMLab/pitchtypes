@@ -1,9 +1,9 @@
-pitchtypes.spelled.SpelledI
-===========================
+pitchtypes.spelled.AbstractSpelledInterval
+==========================================
 
 .. currentmodule:: pitchtypes.spelled
 
-.. autoclass:: SpelledI
+.. autoclass:: AbstractSpelledInterval
    :members:
    :show-inheritance:
    :inherited-members:
@@ -18,9 +18,9 @@ pitchtypes.spelled.SpelledI
 
    .. autosummary::
    
-      ~SpelledI.__init__
-      ~SpelledI.diatonic_steps
-      ~SpelledI.generic
+      ~AbstractSpelledInterval.__init__
+      ~AbstractSpelledInterval.diatonic_steps
+      ~AbstractSpelledInterval.generic
    
    
 

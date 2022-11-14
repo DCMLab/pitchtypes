@@ -20,7 +20,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="pitchtypes.spelled.Spelled" href="pitchtypes.spelled.Spelled.html" />
+    <link rel="next" title="pitchtypes.spelled.AbstractSpelledInterval" href="pitchtypes.spelled.AbstractSpelledInterval.html" />
     <link rel="prev" title="pitchtypes.logfreq.LogFreqPitchClass" href="pitchtypes.logfreq.LogFreqPitchClass.html" /> 
 </head>
 
@@ -55,11 +55,11 @@
 <li class="toctree-l3"><a class="reference internal" href="pitchtypes.harmonic.html">pitchtypes.harmonic</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pitchtypes.logfreq.html">pitchtypes.logfreq</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">pitchtypes.spelled</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="pitchtypes.spelled.AbstractSpelledInterval.html">pitchtypes.spelled.AbstractSpelledInterval</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pitchtypes.spelled.AbstractSpelledPitch.html">pitchtypes.spelled.AbstractSpelledPitch</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pitchtypes.spelled.Spelled.html">pitchtypes.spelled.Spelled</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pitchtypes.spelled.SpelledI.html">pitchtypes.spelled.SpelledI</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pitchtypes.spelled.SpelledInterval.html">pitchtypes.spelled.SpelledInterval</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pitchtypes.spelled.SpelledIntervalClass.html">pitchtypes.spelled.SpelledIntervalClass</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pitchtypes.spelled.SpelledP.html">pitchtypes.spelled.SpelledP</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pitchtypes.spelled.SpelledPitch.html">pitchtypes.spelled.SpelledPitch</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pitchtypes.spelled.SpelledPitchClass.html">pitchtypes.spelled.SpelledPitchClass</a></li>
 </ul>
@@ -102,20 +102,20 @@
 <p class="rubric">Classes</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="pitchtypes.spelled.AbstractSpelledInterval.html#pitchtypes.spelled.AbstractSpelledInterval" title="pitchtypes.spelled.AbstractSpelledInterval"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AbstractSpelledInterval</span></code></a>()</p></td>
+<td><p>The interface for spelled interval types.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pitchtypes.spelled.AbstractSpelledPitch.html#pitchtypes.spelled.AbstractSpelledPitch" title="pitchtypes.spelled.AbstractSpelledPitch"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AbstractSpelledPitch</span></code></a>()</p></td>
+<td><p>The interface for spelled pitch types.</p></td>
+</tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="pitchtypes.spelled.Spelled.html#pitchtypes.spelled.Spelled" title="pitchtypes.spelled.Spelled"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Spelled</span></code></a>(value, is_pitch, is_class, **kwargs)</p></td>
 <td><p>A common base class for spelled pitch and interval types.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="pitchtypes.spelled.SpelledI.html#pitchtypes.spelled.SpelledI" title="pitchtypes.spelled.SpelledI"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SpelledI</span></code></a>()</p></td>
-<td><p>The interface for spelled interval types.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="pitchtypes.spelled.SpelledInterval.html#pitchtypes.spelled.SpelledInterval" title="pitchtypes.spelled.SpelledInterval"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SpelledInterval</span></code></a>(value)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="pitchtypes.spelled.SpelledInterval.html#pitchtypes.spelled.SpelledInterval" title="pitchtypes.spelled.SpelledInterval"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SpelledInterval</span></code></a>(value)</p></td>
 <td><p>Represents a spelled interval.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="pitchtypes.spelled.SpelledIntervalClass.html#pitchtypes.spelled.SpelledIntervalClass" title="pitchtypes.spelled.SpelledIntervalClass"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SpelledIntervalClass</span></code></a>(value)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="pitchtypes.spelled.SpelledIntervalClass.html#pitchtypes.spelled.SpelledIntervalClass" title="pitchtypes.spelled.SpelledIntervalClass"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SpelledIntervalClass</span></code></a>(value)</p></td>
 <td><p>Represents a spelled interval class, i.e. an interval without octave information.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="pitchtypes.spelled.SpelledP.html#pitchtypes.spelled.SpelledP" title="pitchtypes.spelled.SpelledP"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SpelledP</span></code></a>()</p></td>
-<td><p>The interface for spelled pitch types.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="pitchtypes.spelled.SpelledPitch.html#pitchtypes.spelled.SpelledPitch" title="pitchtypes.spelled.SpelledPitch"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SpelledPitch</span></code></a>(value)</p></td>
 <td><p>Represents a spelled pitch.</p></td>
@@ -132,7 +132,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="pitchtypes.logfreq.LogFreqPitchClass.html" class="btn btn-neutral float-left" title="pitchtypes.logfreq.LogFreqPitchClass" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="pitchtypes.spelled.Spelled.html" class="btn btn-neutral float-right" title="pitchtypes.spelled.Spelled" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="pitchtypes.spelled.AbstractSpelledInterval.html" class="btn btn-neutral float-right" title="pitchtypes.spelled.AbstractSpelledInterval" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

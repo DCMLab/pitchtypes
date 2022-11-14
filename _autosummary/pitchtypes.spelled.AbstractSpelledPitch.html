@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pitchtypes.spelled.SpelledI &mdash; pitchtypes  documentation</title>
+  <title>pitchtypes.spelled.AbstractSpelledPitch &mdash; pitchtypes  documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -20,8 +20,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="pitchtypes.spelled.SpelledInterval" href="pitchtypes.spelled.SpelledInterval.html" />
-    <link rel="prev" title="pitchtypes.spelled.Spelled" href="pitchtypes.spelled.Spelled.html" /> 
+    <link rel="next" title="pitchtypes.spelled.Spelled" href="pitchtypes.spelled.Spelled.html" />
+    <link rel="prev" title="pitchtypes.spelled.AbstractSpelledInterval" href="pitchtypes.spelled.AbstractSpelledInterval.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -55,11 +55,11 @@
 <li class="toctree-l3"><a class="reference internal" href="pitchtypes.harmonic.html">pitchtypes.harmonic</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pitchtypes.logfreq.html">pitchtypes.logfreq</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="pitchtypes.spelled.html">pitchtypes.spelled</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="pitchtypes.spelled.AbstractSpelledInterval.html">pitchtypes.spelled.AbstractSpelledInterval</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">pitchtypes.spelled.AbstractSpelledPitch</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pitchtypes.spelled.Spelled.html">pitchtypes.spelled.Spelled</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">pitchtypes.spelled.SpelledI</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pitchtypes.spelled.SpelledInterval.html">pitchtypes.spelled.SpelledInterval</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pitchtypes.spelled.SpelledIntervalClass.html">pitchtypes.spelled.SpelledIntervalClass</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pitchtypes.spelled.SpelledP.html">pitchtypes.spelled.SpelledP</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pitchtypes.spelled.SpelledPitch.html">pitchtypes.spelled.SpelledPitch</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pitchtypes.spelled.SpelledPitchClass.html">pitchtypes.spelled.SpelledPitchClass</a></li>
 </ul>
@@ -88,9 +88,9 @@
           <li class="breadcrumb-item"><a href="../api_summary.html">API Summary</a></li>
           <li class="breadcrumb-item"><a href="pitchtypes.html">pitchtypes</a></li>
           <li class="breadcrumb-item"><a href="pitchtypes.spelled.html">pitchtypes.spelled</a></li>
-      <li class="breadcrumb-item active">pitchtypes.spelled.SpelledI</li>
+      <li class="breadcrumb-item active">pitchtypes.spelled.AbstractSpelledPitch</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/_autosummary/pitchtypes.spelled.SpelledI.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/_autosummary/pitchtypes.spelled.AbstractSpelledPitch.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -98,59 +98,42 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="pitchtypes-spelled-spelledi">
-<h1>pitchtypes.spelled.SpelledI<a class="headerlink" href="#pitchtypes-spelled-spelledi" title="Permalink to this heading"></a></h1>
+  <section id="pitchtypes-spelled-abstractspelledpitch">
+<h1>pitchtypes.spelled.AbstractSpelledPitch<a class="headerlink" href="#pitchtypes-spelled-abstractspelledpitch" title="Permalink to this heading"></a></h1>
 <dl class="py class">
-<dt class="sig sig-object py" id="pitchtypes.spelled.SpelledI">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pitchtypes.spelled.</span></span><span class="sig-name descname"><span class="pre">SpelledI</span></span><a class="headerlink" href="#pitchtypes.spelled.SpelledI" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="pitchtypes.spelled.AbstractSpelledPitch">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pitchtypes.spelled.</span></span><span class="sig-name descname"><span class="pre">AbstractSpelledPitch</span></span><a class="headerlink" href="#pitchtypes.spelled.AbstractSpelledPitch" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
-<p>The interface for spelled interval types.</p>
+<p>The interface for spelled pitch types.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="pitchtypes.spelled.SpelledI.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled.SpelledI.__init__" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="pitchtypes.spelled.AbstractSpelledPitch.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled.AbstractSpelledPitch.__init__" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledI.__init__" title="pitchtypes.spelled.SpelledI.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.spelled.AbstractSpelledPitch.__init__" title="pitchtypes.spelled.AbstractSpelledPitch.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledI.diatonic_steps" title="pitchtypes.spelled.SpelledI.diatonic_steps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">diatonic_steps</span></code></a>()</p></td>
-<td><p>Return the diatonic steps of the interval (unison=0, 2nd=1, ..., octave=7, ...).</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledI.generic" title="pitchtypes.spelled.SpelledI.generic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generic</span></code></a>()</p></td>
-<td><p>Return the generic interval, i.e. the number of diatonic steps modulo octave.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.spelled.AbstractSpelledPitch.letter" title="pitchtypes.spelled.AbstractSpelledPitch.letter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">letter</span></code></a>()</p></td>
+<td><p>Returns the letter associated with the pitch (without accidentals).</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="pitchtypes.spelled.SpelledI.__weakref__">
-<span class="sig-name descname"><span class="pre">__weakref__</span></span><a class="headerlink" href="#pitchtypes.spelled.SpelledI.__weakref__" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="pitchtypes.spelled.AbstractSpelledPitch.__weakref__">
+<span class="sig-name descname"><span class="pre">__weakref__</span></span><a class="headerlink" href="#pitchtypes.spelled.AbstractSpelledPitch.__weakref__" title="Permalink to this definition"></a></dt>
 <dd><p>list of weak references to the object (if defined)</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pitchtypes.spelled.SpelledI.diatonic_steps">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">diatonic_steps</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled.SpelledI.diatonic_steps" title="Permalink to this definition"></a></dt>
-<dd><p>Return the diatonic steps of the interval (unison=0, 2nd=1, …, octave=7, …).
-Respects both direction and octaves.</p>
+<dt class="sig sig-object py" id="pitchtypes.spelled.AbstractSpelledPitch.letter">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">letter</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled.AbstractSpelledPitch.letter" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the letter associated with the pitch (without accidentals).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>number of diatonic steps (integer)</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pitchtypes.spelled.SpelledI.generic">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">generic</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled.SpelledI.generic" title="Permalink to this definition"></a></dt>
-<dd><p>Return the generic interval, i.e. the number of diatonic steps modulo octave.
-Unlike degree(), the result respects the sign of the interval
-(unison=0, 2nd up=1, 2nd down=-1).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>generic interval (integer)</p>
+<dd class="field-odd"><p>letter (single-character string)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -163,8 +146,8 @@ Unlike degree(), the result respects the sign of the interval
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="pitchtypes.spelled.Spelled.html" class="btn btn-neutral float-left" title="pitchtypes.spelled.Spelled" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="pitchtypes.spelled.SpelledInterval.html" class="btn btn-neutral float-right" title="pitchtypes.spelled.SpelledInterval" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="pitchtypes.spelled.AbstractSpelledInterval.html" class="btn btn-neutral float-left" title="pitchtypes.spelled.AbstractSpelledInterval" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="pitchtypes.spelled.Spelled.html" class="btn btn-neutral float-right" title="pitchtypes.spelled.Spelled" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

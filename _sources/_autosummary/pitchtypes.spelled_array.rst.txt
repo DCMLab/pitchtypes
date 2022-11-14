@@ -29,9 +29,9 @@ pitchtypes.spelled\_array
       :toctree:
       :template: custom-class-template.rst
    
+      AbstractSpelledArrayInterval
+      AbstractSpelledArrayPitch
       SpelledArray
-      SpelledArrayI
-      SpelledArrayP
       SpelledIntervalArray
       SpelledIntervalClassArray
       SpelledPitchArray

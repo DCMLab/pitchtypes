@@ -19,11 +19,11 @@ pitchtypes.spelled
       :toctree:
       :template: custom-class-template.rst
    
+      AbstractSpelledInterval
+      AbstractSpelledPitch
       Spelled
-      SpelledI
       SpelledInterval
       SpelledIntervalClass
-      SpelledP
       SpelledPitch
       SpelledPitchClass
    

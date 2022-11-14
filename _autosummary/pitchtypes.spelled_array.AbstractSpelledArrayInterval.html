@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pitchtypes.spelled_array.SpelledArrayP &mdash; pitchtypes  documentation</title>
+  <title>pitchtypes.spelled_array.AbstractSpelledArrayInterval &mdash; pitchtypes  documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -20,8 +20,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="pitchtypes.spelled_array.SpelledIntervalArray" href="pitchtypes.spelled_array.SpelledIntervalArray.html" />
-    <link rel="prev" title="pitchtypes.spelled_array.SpelledArrayI" href="pitchtypes.spelled_array.SpelledArrayI.html" /> 
+    <link rel="next" title="pitchtypes.spelled_array.AbstractSpelledArrayPitch" href="pitchtypes.spelled_array.AbstractSpelledArrayPitch.html" />
+    <link rel="prev" title="pitchtypes.spelled_array.aspc" href="pitchtypes.spelled_array.aspc.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -60,9 +60,9 @@
 <li class="toctree-l4"><a class="reference internal" href="pitchtypes.spelled_array.asic.html">pitchtypes.spelled_array.asic</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pitchtypes.spelled_array.asp.html">pitchtypes.spelled_array.asp</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pitchtypes.spelled_array.aspc.html">pitchtypes.spelled_array.aspc</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">pitchtypes.spelled_array.AbstractSpelledArrayInterval</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pitchtypes.spelled_array.AbstractSpelledArrayPitch.html">pitchtypes.spelled_array.AbstractSpelledArrayPitch</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pitchtypes.spelled_array.SpelledArray.html">pitchtypes.spelled_array.SpelledArray</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pitchtypes.spelled_array.SpelledArrayI.html">pitchtypes.spelled_array.SpelledArrayI</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">pitchtypes.spelled_array.SpelledArrayP</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pitchtypes.spelled_array.SpelledIntervalArray.html">pitchtypes.spelled_array.SpelledIntervalArray</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pitchtypes.spelled_array.SpelledIntervalClassArray.html">pitchtypes.spelled_array.SpelledIntervalClassArray</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pitchtypes.spelled_array.SpelledPitchArray.html">pitchtypes.spelled_array.SpelledPitchArray</a></li>
@@ -92,9 +92,9 @@
           <li class="breadcrumb-item"><a href="../api_summary.html">API Summary</a></li>
           <li class="breadcrumb-item"><a href="pitchtypes.html">pitchtypes</a></li>
           <li class="breadcrumb-item"><a href="pitchtypes.spelled_array.html">pitchtypes.spelled_array</a></li>
-      <li class="breadcrumb-item active">pitchtypes.spelled_array.SpelledArrayP</li>
+      <li class="breadcrumb-item active">pitchtypes.spelled_array.AbstractSpelledArrayInterval</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/_autosummary/pitchtypes.spelled_array.SpelledArrayP.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/_autosummary/pitchtypes.spelled_array.AbstractSpelledArrayInterval.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -102,42 +102,59 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="pitchtypes-spelled-array-spelledarrayp">
-<h1>pitchtypes.spelled_array.SpelledArrayP<a class="headerlink" href="#pitchtypes-spelled-array-spelledarrayp" title="Permalink to this heading"></a></h1>
+  <section id="pitchtypes-spelled-array-abstractspelledarrayinterval">
+<h1>pitchtypes.spelled_array.AbstractSpelledArrayInterval<a class="headerlink" href="#pitchtypes-spelled-array-abstractspelledarrayinterval" title="Permalink to this heading"></a></h1>
 <dl class="py class">
-<dt class="sig sig-object py" id="pitchtypes.spelled_array.SpelledArrayP">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pitchtypes.spelled_array.</span></span><span class="sig-name descname"><span class="pre">SpelledArrayP</span></span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledArrayP" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="pitchtypes.spelled_array.AbstractSpelledArrayInterval">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pitchtypes.spelled_array.</span></span><span class="sig-name descname"><span class="pre">AbstractSpelledArrayInterval</span></span><a class="headerlink" href="#pitchtypes.spelled_array.AbstractSpelledArrayInterval" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
-<p>The interface for spelled pitch array types.</p>
+<p>The interface for spelled interval array types.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="pitchtypes.spelled_array.SpelledArrayP.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledArrayP.__init__" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="pitchtypes.spelled_array.AbstractSpelledArrayInterval.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.AbstractSpelledArrayInterval.__init__" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.spelled_array.SpelledArrayP.__init__" title="pitchtypes.spelled_array.SpelledArrayP.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.spelled_array.AbstractSpelledArrayInterval.__init__" title="pitchtypes.spelled_array.AbstractSpelledArrayInterval.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.spelled_array.SpelledArrayP.letter" title="pitchtypes.spelled_array.SpelledArrayP.letter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">letter</span></code></a>()</p></td>
-<td><p>Returns the letter associated with the pitch (without accidentals).</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.spelled_array.AbstractSpelledArrayInterval.diatonic_steps" title="pitchtypes.spelled_array.AbstractSpelledArrayInterval.diatonic_steps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">diatonic_steps</span></code></a>()</p></td>
+<td><p>Return the diatonic steps of the interval (unison=0, 2nd=1, ..., octave=7, ...).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.spelled_array.AbstractSpelledArrayInterval.generic" title="pitchtypes.spelled_array.AbstractSpelledArrayInterval.generic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generic</span></code></a>()</p></td>
+<td><p>Return the generic interval, i.e. the number of diatonic steps modulo octave.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="pitchtypes.spelled_array.SpelledArrayP.__weakref__">
-<span class="sig-name descname"><span class="pre">__weakref__</span></span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledArrayP.__weakref__" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="pitchtypes.spelled_array.AbstractSpelledArrayInterval.__weakref__">
+<span class="sig-name descname"><span class="pre">__weakref__</span></span><a class="headerlink" href="#pitchtypes.spelled_array.AbstractSpelledArrayInterval.__weakref__" title="Permalink to this definition"></a></dt>
 <dd><p>list of weak references to the object (if defined)</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pitchtypes.spelled_array.SpelledArrayP.letter">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">letter</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledArrayP.letter" title="Permalink to this definition"></a></dt>
-<dd><p>Returns the letter associated with the pitch (without accidentals).</p>
+<dt class="sig sig-object py" id="pitchtypes.spelled_array.AbstractSpelledArrayInterval.diatonic_steps">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">diatonic_steps</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.AbstractSpelledArrayInterval.diatonic_steps" title="Permalink to this definition"></a></dt>
+<dd><p>Return the diatonic steps of the interval (unison=0, 2nd=1, …, octave=7, …).
+Respects both direction and octaves.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>an array of pitch letters (single-character strings)</p>
+<dd class="field-odd"><p>an array of diatonic steps (integers)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.spelled_array.AbstractSpelledArrayInterval.generic">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">generic</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.AbstractSpelledArrayInterval.generic" title="Permalink to this definition"></a></dt>
+<dd><p>Return the generic interval, i.e. the number of diatonic steps modulo octave.
+Unlike degree(), the result respects the sign of the interval
+(unison=0, 2nd up=1, 2nd down=-1).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>an array of generic intervals (integers)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -150,8 +167,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="pitchtypes.spelled_array.SpelledArrayI.html" class="btn btn-neutral float-left" title="pitchtypes.spelled_array.SpelledArrayI" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="pitchtypes.spelled_array.SpelledIntervalArray.html" class="btn btn-neutral float-right" title="pitchtypes.spelled_array.SpelledIntervalArray" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="pitchtypes.spelled_array.aspc.html" class="btn btn-neutral float-left" title="pitchtypes.spelled_array.aspc" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="pitchtypes.spelled_array.AbstractSpelledArrayPitch.html" class="btn btn-neutral float-right" title="pitchtypes.spelled_array.AbstractSpelledArrayPitch" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

@@ -21,7 +21,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="pitchtypes.spelled.SpelledIntervalClass" href="pitchtypes.spelled.SpelledIntervalClass.html" />
-    <link rel="prev" title="pitchtypes.spelled.SpelledI" href="pitchtypes.spelled.SpelledI.html" /> 
+    <link rel="prev" title="pitchtypes.spelled.Spelled" href="pitchtypes.spelled.Spelled.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -55,11 +55,11 @@
 <li class="toctree-l3"><a class="reference internal" href="pitchtypes.harmonic.html">pitchtypes.harmonic</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pitchtypes.logfreq.html">pitchtypes.logfreq</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="pitchtypes.spelled.html">pitchtypes.spelled</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="pitchtypes.spelled.AbstractSpelledInterval.html">pitchtypes.spelled.AbstractSpelledInterval</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pitchtypes.spelled.AbstractSpelledPitch.html">pitchtypes.spelled.AbstractSpelledPitch</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pitchtypes.spelled.Spelled.html">pitchtypes.spelled.Spelled</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pitchtypes.spelled.SpelledI.html">pitchtypes.spelled.SpelledI</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">pitchtypes.spelled.SpelledInterval</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pitchtypes.spelled.SpelledIntervalClass.html">pitchtypes.spelled.SpelledIntervalClass</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pitchtypes.spelled.SpelledP.html">pitchtypes.spelled.SpelledP</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pitchtypes.spelled.SpelledPitch.html">pitchtypes.spelled.SpelledPitch</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pitchtypes.spelled.SpelledPitchClass.html">pitchtypes.spelled.SpelledPitchClass</a></li>
 </ul>
@@ -103,7 +103,7 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="pitchtypes.spelled.SpelledInterval">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pitchtypes.spelled.</span></span><span class="sig-name descname"><span class="pre">SpelledInterval</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled.SpelledInterval" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference internal" href="pitchtypes.spelled.Spelled.html#pitchtypes.spelled.Spelled" title="pitchtypes.spelled.Spelled"><code class="xref py py-class docutils literal notranslate"><span class="pre">Spelled</span></code></a>, <a class="reference internal" href="pitchtypes.spelled.SpelledI.html#pitchtypes.spelled.SpelledI" title="pitchtypes.spelled.SpelledI"><code class="xref py py-class docutils literal notranslate"><span class="pre">SpelledI</span></code></a>, <a class="reference internal" href="pitchtypes.basetypes.Interval.html#pitchtypes.basetypes.Interval" title="pitchtypes.basetypes.Interval"><code class="xref py py-class docutils literal notranslate"><span class="pre">Interval</span></code></a>, <a class="reference internal" href="pitchtypes.basetypes.Diatonic.html#pitchtypes.basetypes.Diatonic" title="pitchtypes.basetypes.Diatonic"><code class="xref py py-class docutils literal notranslate"><span class="pre">Diatonic</span></code></a>, <a class="reference internal" href="pitchtypes.basetypes.Chromatic.html#pitchtypes.basetypes.Chromatic" title="pitchtypes.basetypes.Chromatic"><code class="xref py py-class docutils literal notranslate"><span class="pre">Chromatic</span></code></a></p>
+<dd><p>Bases: <a class="reference internal" href="pitchtypes.spelled.Spelled.html#pitchtypes.spelled.Spelled" title="pitchtypes.spelled.Spelled"><code class="xref py py-class docutils literal notranslate"><span class="pre">Spelled</span></code></a>, <a class="reference internal" href="pitchtypes.spelled.AbstractSpelledInterval.html#pitchtypes.spelled.AbstractSpelledInterval" title="pitchtypes.spelled.AbstractSpelledInterval"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractSpelledInterval</span></code></a>, <a class="reference internal" href="pitchtypes.basetypes.Interval.html#pitchtypes.basetypes.Interval" title="pitchtypes.basetypes.Interval"><code class="xref py py-class docutils literal notranslate"><span class="pre">Interval</span></code></a>, <a class="reference internal" href="pitchtypes.basetypes.Diatonic.html#pitchtypes.basetypes.Diatonic" title="pitchtypes.basetypes.Diatonic"><code class="xref py py-class docutils literal notranslate"><span class="pre">Diatonic</span></code></a>, <a class="reference internal" href="pitchtypes.basetypes.Chromatic.html#pitchtypes.basetypes.Chromatic" title="pitchtypes.basetypes.Chromatic"><code class="xref py py-class docutils literal notranslate"><span class="pre">Chromatic</span></code></a></p>
 <p>Represents a spelled interval.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pitchtypes.spelled.SpelledInterval.__init__">
@@ -288,6 +288,18 @@ where d and a can be repeated.</p>
 <dd><p>Return self==value.</p>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.spelled.SpelledInterval.__ge__">
+<span class="sig-name descname"><span class="pre">__ge__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">NotImplemented</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">NotImplemented</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled.SpelledInterval.__ge__" title="Permalink to this definition"></a></dt>
+<dd><p>Return a &gt;= b.  Computed by &#64;total_ordering from (not a &lt; b).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.spelled.SpelledInterval.__gt__">
+<span class="sig-name descname"><span class="pre">__gt__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">NotImplemented</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">NotImplemented</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled.SpelledInterval.__gt__" title="Permalink to this definition"></a></dt>
+<dd><p>Return a &gt; b.  Computed by &#64;total_ordering from (not a &lt; b) and (a != b).</p>
+</dd></dl>
+
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pitchtypes.spelled.SpelledInterval.__hash__">
 <span class="sig-name descname"><span class="pre">__hash__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pitchtypes.spelled.SpelledInterval.__hash__" title="Permalink to this definition"></a></dt>
@@ -295,8 +307,8 @@ where d and a can be repeated.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pitchtypes.spelled.SpelledInterval.__le__">
-<span class="sig-name descname"><span class="pre">__le__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled.SpelledInterval.__le__" title="Permalink to this definition"></a></dt>
-<dd><p>Return self&lt;=value.</p>
+<span class="sig-name descname"><span class="pre">__le__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">NotImplemented</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">NotImplemented</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled.SpelledInterval.__le__" title="Permalink to this definition"></a></dt>
+<dd><p>Return a &lt;= b.  Computed by &#64;total_ordering from (a &lt; b) or (a == b).</p>
 </dd></dl>
 
 <dl class="py method">
@@ -649,7 +661,7 @@ where each is a tuple <code class="docutils literal notranslate"><span class="pr
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="pitchtypes.spelled.SpelledI.html" class="btn btn-neutral float-left" title="pitchtypes.spelled.SpelledI" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="pitchtypes.spelled.Spelled.html" class="btn btn-neutral float-left" title="pitchtypes.spelled.Spelled" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="pitchtypes.spelled.SpelledIntervalClass.html" class="btn btn-neutral float-right" title="pitchtypes.spelled.SpelledIntervalClass" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
