@@ -67,6 +67,8 @@
 <li class="toctree-l3"><a class="reference internal" href="#pitchtypes.aspc"><code class="docutils literal notranslate"><span class="pre">aspc()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#general-interface">General Interface</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#pitchtypes.SpelledArray"><code class="docutils literal notranslate"><span class="pre">SpelledArray</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pitchtypes.AbstractSpelledArrayInterval"><code class="docutils literal notranslate"><span class="pre">AbstractSpelledArrayInterval</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pitchtypes.AbstractSpelledArrayPitch"><code class="docutils literal notranslate"><span class="pre">AbstractSpelledArrayPitch</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#spelled-interval-and-pitch">Spelled Interval and Pitch</a><ul>
@@ -628,6 +630,54 @@ Specialized versions of this method take ranges for their respective dimensions.
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>a one-hot tensor for the array</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pitchtypes.AbstractSpelledArrayInterval">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pitchtypes.</span></span><span class="sig-name descname"><span class="pre">AbstractSpelledArrayInterval</span></span><a class="headerlink" href="#pitchtypes.AbstractSpelledArrayInterval" title="Permalink to this definition"></a></dt>
+<dd><p>The interface for spelled interval array types.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.AbstractSpelledArrayInterval.generic">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">generic</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.AbstractSpelledArrayInterval.generic" title="Permalink to this definition"></a></dt>
+<dd><p>Return the generic interval, i.e. the number of diatonic steps modulo octave.
+Unlike degree(), the result respects the sign of the interval
+(unison=0, 2nd up=1, 2nd down=-1).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>an array of generic intervals (integers)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.AbstractSpelledArrayInterval.diatonic_steps">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">diatonic_steps</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.AbstractSpelledArrayInterval.diatonic_steps" title="Permalink to this definition"></a></dt>
+<dd><p>Return the diatonic steps of the interval (unison=0, 2nd=1, …, octave=7, …).
+Respects both direction and octaves.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>an array of diatonic steps (integers)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pitchtypes.AbstractSpelledArrayPitch">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pitchtypes.</span></span><span class="sig-name descname"><span class="pre">AbstractSpelledArrayPitch</span></span><a class="headerlink" href="#pitchtypes.AbstractSpelledArrayPitch" title="Permalink to this definition"></a></dt>
+<dd><p>The interface for spelled pitch array types.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.AbstractSpelledArrayPitch.letter">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">letter</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.AbstractSpelledArrayPitch.letter" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the letter associated with the pitch (without accidentals).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>an array of pitch letters (single-character strings)</p>
 </dd>
 </dl>
 </dd></dl>

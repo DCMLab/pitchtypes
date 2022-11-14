@@ -303,12 +303,12 @@ General Interface
    :inherited-members:
    :member-order: bysource
                   
-.. autoclass:: pitchtypes.SpelledArrayI
+.. autoclass:: pitchtypes.AbstractSpelledArrayInterval
    :members:
    :inherited-members:
    :member-order: bysource
                   
-.. autoclass:: pitchtypes.SpelledArrayP
+.. autoclass:: pitchtypes.AbstractSpelledArrayPitch
    :members:
    :inherited-members:
    :member-order: bysource

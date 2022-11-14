@@ -246,11 +246,11 @@ General Interface
    :members:
    :member-order: bysource
 
-.. autoclass:: pitchtypes.SpelledI
+.. autoclass:: pitchtypes.AbstractSpelledInterval
    :members:
    :member-order: bysource
 
-.. autoclass:: pitchtypes.SpelledP
+.. autoclass:: pitchtypes.AbstractSpelledPitch
    :members:
    :member-order: bysource
 
