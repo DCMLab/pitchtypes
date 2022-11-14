@@ -115,7 +115,7 @@ class SpelledArray(abc.ABC):
         :return: ``True`` if the two arrays are equal, ``False`` otherwise
         """
         try:
-            return (self == other).all()
+            return (self.compare(other) == 0).all()
         except TypeError:
             return False
 
@@ -151,7 +151,10 @@ class SpelledArray(abc.ABC):
         :param other: the spelled array or scalar to compare to
         :return: a boolean array that indicates where this array is ``< other``
         """
-        return self.compare(other) == -1
+        try:
+            return self.compare(other) == -1
+        except TypeError:
+           return NotImplemented
 
     def __le__(self, other):
         """
@@ -160,7 +163,10 @@ class SpelledArray(abc.ABC):
         :param other: the spelled array or scalar to compare to
         :return: a boolean array that indicates where this array is ``<= other``
         """
-        return self.compare(other) != 1
+        try:
+            return self.compare(other) != 1
+        except TypeError:
+           return NotImplemented
 
     def __gt__(self, other):
         """
@@ -169,7 +175,10 @@ class SpelledArray(abc.ABC):
         :param other: the spelled array or scalar to compare to
         :return: a boolean array that indicates where this array is ``> other``
         """
-        return self.compare(other) == 1
+        try:
+            return self.compare(other) == 1
+        except TypeError:
+           return NotImplemented
 
     def __ge__(self, other):
         """
@@ -178,7 +187,10 @@ class SpelledArray(abc.ABC):
         :param other: the spelled array or scalar to compare to
         :return: a boolean array that indicates where this array is ``>= other``
         """
-        return self.compare(other) != -1
+        try:
+            return self.compare(other) != -1
+        except TypeError:
+           return NotImplemented
 
     def __eq__(self, other):
         """
@@ -187,7 +199,10 @@ class SpelledArray(abc.ABC):
         :param other: the spelled array or scalar to compare to
         :return: a boolean array that indicates where this array is ``== other``
         """
-        return self.compare(other) == 0
+        try:
+            return self.compare(other) == 0
+        except TypeError:
+           return NotImplemented
 
     def __ne__(self, other):
         """
@@ -196,7 +211,10 @@ class SpelledArray(abc.ABC):
         :param other: the spelled array or scalar to compare to
         :return: a boolean array that indicates where this array is ``!= other``
         """
-        return self.compare(other) != 0
+        try:
+            return self.compare(other) != 0
+        except TypeError:
+           return NotImplemented
 
     # spelled interface
 
@@ -277,7 +295,7 @@ class SpelledArray(abc.ABC):
         """
         raise NotImplementedError
 
-class SpelledArrayI(abc.ABC):
+class AbstractSpelledArrayInterval(abc.ABC):
     """
     The interface for spelled interval array types.
     """
@@ -302,7 +320,7 @@ class SpelledArrayI(abc.ABC):
         """
         raise NotImplementedError
 
-class SpelledArrayP(abc.ABC):
+class AbstractSpelledArrayPitch(abc.ABC):
     """
     The interface for spelled pitch array types.
     """
@@ -316,7 +334,7 @@ class SpelledArrayP(abc.ABC):
         raise NotImplementedError
         
 
-class SpelledIntervalArray(SpelledArray, SpelledArrayI, Interval, Diatonic, Chromatic):
+class SpelledIntervalArray(SpelledArray, AbstractSpelledArrayInterval, Interval, Diatonic, Chromatic):
     """
     Represents an array of spelled intervals.
     """
@@ -633,7 +651,7 @@ class SpelledIntervalArray(SpelledArray, SpelledArrayI, Interval, Diatonic, Chro
         out[indices] = 1
         return out
 
-class SpelledIntervalClassArray(SpelledArray, SpelledArrayI, Interval, Diatonic, Chromatic):
+class SpelledIntervalClassArray(SpelledArray, AbstractSpelledArrayInterval, Interval, Diatonic, Chromatic):
     """
     Represents an array of spelled interval classes, i.e. intervals without octave information.
     """
@@ -907,7 +925,7 @@ class SpelledIntervalClassArray(SpelledArray, SpelledArrayI, Interval, Diatonic,
         out[indices] = 1
         return out
 
-class SpelledPitchArray(SpelledArray, SpelledArrayP, Pitch):
+class SpelledPitchArray(SpelledArray, AbstractSpelledArrayPitch, Pitch):
     """
     Represents an array of spelled pitches.
     """
@@ -1157,7 +1175,7 @@ class SpelledPitchArray(SpelledArray, SpelledArrayP, Pitch):
         out[indices] = 1
         return out
 
-class SpelledPitchClassArray(SpelledArray, SpelledArrayP, Pitch):
+class SpelledPitchClassArray(SpelledArray, AbstractSpelledArrayPitch, Pitch):
     """
     Represents a spelled pitch class, i.e. a pitch without octave information.
     """

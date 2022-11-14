@@ -3,12 +3,13 @@
 import numbers
 import re
 import abc
+import functools
 
 import numpy as np
 
 from pitchtypes.basetypes import AbstractBase, Pitch, Interval, Diatonic, Chromatic
 
-
+@functools.total_ordering
 class Spelled(AbstractBase):
     """
     A common base class for spelled pitch and interval types.
@@ -273,14 +274,17 @@ class Spelled(AbstractBase):
         raise NotImplementedError
 
     def __eq__(self, other):
-        return self.compare(other) == 0
+        try:
+            return self.compare(other) == 0
+        except TypeError:
+            return NotImplemented
 
     def __lt__(self, other):
-        return self.compare(other) == -1
+        try:
+            return self.compare(other) == -1
+        except TypeError:
+            return NotImplemented
     
-    def __le__(self, other):
-        return self.compare(other) != 1
-
     # Spelled interface:
 
     def fifths(self):
@@ -343,7 +347,7 @@ class Spelled(AbstractBase):
         raise NotImplementedError
 
 
-class SpelledI(abc.ABC):
+class AbstractSpelledInterval(abc.ABC):
     """
     The interface for spelled interval types.
     """
@@ -368,7 +372,7 @@ class SpelledI(abc.ABC):
         """
         raise NotImplementedError
 
-class SpelledP(abc.ABC):
+class AbstractSpelledPitch(abc.ABC):
     """
     The interface for spelled pitch types.
     """
@@ -382,7 +386,7 @@ class SpelledP(abc.ABC):
         raise NotImplementedError
 
 @Spelled.link_pitch_type()
-class SpelledPitch(Spelled, SpelledP, Pitch):
+class SpelledPitch(Spelled, AbstractSpelledPitch, Pitch):
     """
     Represents a spelled pitch.
     """
@@ -537,7 +541,7 @@ class SpelledPitch(Spelled, SpelledP, Pitch):
 
 
 @Spelled.link_interval_type()
-class SpelledInterval(Spelled, SpelledI, Interval, Diatonic, Chromatic):
+class SpelledInterval(Spelled, AbstractSpelledInterval, Interval, Diatonic, Chromatic):
     """
     Represents a spelled interval.
     """
@@ -765,7 +769,7 @@ class SpelledInterval(Spelled, SpelledI, Interval, Diatonic, Chromatic):
 
 
 @Spelled.link_pitch_class_type()
-class SpelledPitchClass(Spelled, SpelledP, Pitch):
+class SpelledPitchClass(Spelled, AbstractSpelledPitch, Pitch):
     """
     Represents a spelled pitch class, i.e. a pitch without octave information.
     """
@@ -884,7 +888,7 @@ class SpelledPitchClass(Spelled, SpelledP, Pitch):
 
 
 @Spelled.link_interval_class_type()
-class SpelledIntervalClass(Spelled, SpelledI, Interval, Diatonic, Chromatic):
+class SpelledIntervalClass(Spelled, AbstractSpelledInterval, Interval, Diatonic, Chromatic):
     """
     Represents a spelled interval class, i.e. an interval without octave information.
     """

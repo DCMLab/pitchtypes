@@ -3,7 +3,7 @@ from unittest.mock import patch
 
 import re
 import numpy as np
-from pitchtypes import Spelled, SpelledI, SpelledP, SpelledPitch, SpelledInterval, SpelledPitchClass, SpelledIntervalClass, Enharmonic
+from pitchtypes import Spelled, AbstractSpelledInterval, AbstractSpelledPitch, SpelledPitch, SpelledInterval, SpelledPitchClass, SpelledIntervalClass, Enharmonic
 
 
 class TestSpelled(TestCase):
@@ -263,8 +263,8 @@ class TestSpelled(TestCase):
         self.assertEqual(SpelledInterval.from_independent(2,0), SpelledInterval("M2:0"))
         self.assertEqual(SpelledPitch.from_independent(2,4), SpelledPitch("D4"))
 
-    @patch.multiple(SpelledI, __abstractmethods__=set())
-    @patch.multiple(SpelledP, __abstractmethods__=set())
+    @patch.multiple(AbstractSpelledInterval, __abstractmethods__=set())
+    @patch.multiple(AbstractSpelledPitch, __abstractmethods__=set())
     def test_abstract_base_functions(self):
         s = Spelled("x", True, True)
         self.assertRaises(NotImplementedError, lambda: s.name())
@@ -275,9 +275,9 @@ class TestSpelled(TestCase):
         self.assertRaises(NotImplementedError, lambda: s.compare(1))
         self.assertRaises(NotImplementedError, lambda: s.onehot())
         
-        self.assertRaises(NotImplementedError, lambda: SpelledI().generic())
-        self.assertRaises(NotImplementedError, lambda: SpelledI().diatonic_steps())
-        self.assertRaises(NotImplementedError, lambda: SpelledP().letter())
+        self.assertRaises(NotImplementedError, lambda: AbstractSpelledInterval().generic())
+        self.assertRaises(NotImplementedError, lambda: AbstractSpelledInterval().diatonic_steps())
+        self.assertRaises(NotImplementedError, lambda: AbstractSpelledPitch().letter())
  
     def test_general_interface(self):
         self.assertEqual(SpelledInterval.unison(), SpelledInterval("P1:0"))
@@ -349,6 +349,7 @@ class TestSpelled(TestCase):
         self.assertTrue(SpelledInterval("aa4:0") < SpelledInterval("dd5:0"))
         self.assertTrue(SpelledPitch("C##4") < SpelledPitch("Dbb4"))
         self.assertTrue(SpelledPitch("C-1") > SpelledPitch("Cb-1"))
+        self.assertFalse(SpelledPitch("C4") == 0)
         
         self.assertTrue(SpelledInterval("aa4:0") <= SpelledInterval("dd5:0"))
         self.assertTrue(SpelledPitch("C##4") <= SpelledPitch("Dbb4"))

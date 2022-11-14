@@ -357,6 +357,12 @@ class TestSpelledArray(TestCase):
                         [False, False, True, False, False])
         self.arrayEqual(asi(["m2:0", "a1:0", "P1:0", "-a1:0", "-m2:0"]) != SpelledInterval("P1:0"),
                         [True, True, False, True, True])
+        self.assertFalse(asi(["M2:0"]) == 1)
+        self.assertTrue(asi(["M2:0"]) != 1)
+        self.assertRaises(TypeError, lambda: asi(["M2:0"]) < 1)
+        self.assertRaises(TypeError, lambda: asi(["M2:0"]) > 1)
+        self.assertRaises(TypeError, lambda: asi(["M2:0"]) <= 1)
+        self.assertRaises(TypeError, lambda: asi(["M2:0"]) >= 1)
         
         self.arrayEqual(asp(["Gb4", "C0", "Bb-1"]) > asp(["F#4", "C#0", "B-1"]),
                         [True, False, False])
@@ -426,8 +432,8 @@ class TestSpelledArray(TestCase):
         self.assertRaises(ValueError, lambda: aspc(["C#"]).onehot((-1,1))) # outside of fifth range
     
     @patch.multiple(SpelledArray, __abstractmethods__=set())
-    @patch.multiple(SpelledArrayI, __abstractmethods__=set())
-    @patch.multiple(SpelledArrayP, __abstractmethods__=set())
+    @patch.multiple(AbstractSpelledArrayInterval, __abstractmethods__=set())
+    @patch.multiple(AbstractSpelledArrayPitch, __abstractmethods__=set())
     def test_notimplemented(self):
         self.assertRaises(NotImplementedError, SpelledArray().name)
         self.assertRaises(NotImplementedError, lambda: SpelledArray().compare(1))
@@ -447,10 +453,10 @@ class TestSpelledArray(TestCase):
         self.assertRaises(NotImplementedError, SpelledArray.from_onehot)
         self.assertRaises(NotImplementedError, SpelledArray().onehot)
         
-        self.assertRaises(NotImplementedError, SpelledArrayI().generic)
-        self.assertRaises(NotImplementedError, SpelledArrayI().diatonic_steps)
+        self.assertRaises(NotImplementedError, AbstractSpelledArrayInterval().generic)
+        self.assertRaises(NotImplementedError, AbstractSpelledArrayInterval().diatonic_steps)
         
-        self.assertRaises(NotImplementedError, SpelledArrayP().letter)
+        self.assertRaises(NotImplementedError, AbstractSpelledArrayPitch().letter)
 
         self.assertFalse(asi("M3:0").array_equal(1))
         self.assertFalse(asic("M3").array_equal(1))
