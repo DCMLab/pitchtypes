@@ -1,9 +1,15 @@
-import re
 from unittest import TestCase
-from pitchtypes import Spelled, SpelledPitch, SpelledInterval, SpelledPitchClass, SpelledIntervalClass, Enharmonic
+from unittest.mock import patch
+
+import re
+import numpy as np
+from pitchtypes import Spelled, AbstractSpelledInterval, AbstractSpelledPitch, SpelledPitch, SpelledInterval, SpelledPitchClass, SpelledIntervalClass, Enharmonic
 
 
 class TestSpelled(TestCase):
+    def arrayEqual(self, a, b):
+        if not np.array_equal(a, b):
+            raise self.failureException(f"{a} is not equal to {b}")
 
     line_of_fifths = [
         "Dbbbb", "Abbbb", "Ebbbb", "Bbbbb",
@@ -68,7 +74,6 @@ class TestSpelled(TestCase):
                     # test factory functions
                     self.assertEqual(pp, SpelledPitchClass.from_fifths(fifths=pp.fifths()))
                     # check conversion to enharmonic
-                    self.assertEqual(pp.convert_to_enharmonic(), Enharmonic.PitchClass(p))
                     self.assertEqual(pp.convert_to(Enharmonic.PitchClass), Enharmonic.PitchClass(p))
                     # test class conversion
                     self.assertEqual(pp, pp.pc())
@@ -85,7 +90,6 @@ class TestSpelled(TestCase):
                         self.assertEqual(pp, SpelledPitch.from_fifths_and_octaves(fifths=pp.fifths(),
                                                                                   octaves=pp.internal_octaves()))
                         # check conversion to enharmonic
-                        self.assertEqual(pp.convert_to_enharmonic(), Enharmonic.Pitch(p_oct))
                         self.assertEqual(pp.convert_to(Enharmonic.Pitch), Enharmonic.Pitch(p_oct))
                         # check octaves / internal octaves
                         self.assertEqual(pp.octaves(), pp.value[0] + (pp.fifths() * 4) // 7)
@@ -119,8 +123,6 @@ class TestSpelled(TestCase):
                     # test factory functions
                     self.assertEqual(interval, SpelledIntervalClass.from_fifths(fifths=interval.fifths()))
                     # check conversion to enharmonic
-                    self.assertEqual(interval.convert_to_enharmonic(),
-                                     Enharmonic.IntervalClass(interval_class_str))
                     self.assertEqual(interval.convert_to(Enharmonic.IntervalClass),
                                      Enharmonic.IntervalClass(interval_class_str))
                     # test class conversion
@@ -128,9 +130,10 @@ class TestSpelled(TestCase):
                     # test unison(), octave(), embed(), internal_octaves(), direction(), abs()
                     self.assertEqual(SpelledIntervalClass.unison(), SpelledIntervalClass("P1"))
                     self.assertEqual(SpelledIntervalClass.octave(), SpelledIntervalClass("P1"))
-                    self.assertEqual(str(interval) + ":0", str(interval.embed()))
+                    if interval.diatonic_steps() != 0: # exclude unisons, for which this doesn't hold
+                        self.assertEqual(str(interval) + ":0", str(interval.embed()))
+                        self.assertEqual(interval.direction(), sign((float(interval_class_str[-1]) + 2) % 7 - 3))
                     self.assertEqual(interval.internal_octaves(), 0)
-                    self.assertEqual(interval.direction(), sign((float(interval_class_str[-1]) + 2) % 7 - 3))
                     # test print output
                     self.assertEqual(interval_class_str, str(interval))
                     self.assertEqual(interval_class_str, interval.name())
@@ -151,7 +154,6 @@ class TestSpelled(TestCase):
                                          SpelledInterval.from_fifths_and_octaves(fifths=interval.fifths(),
                                                                                  octaves=interval.internal_octaves()))
                         # check conversion to enharmonic
-                        self.assertEqual(interval.convert_to_enharmonic(), Enharmonic.Interval(interval_str))
                         self.assertEqual(interval.convert_to(Enharmonic.Interval), Enharmonic.Interval(interval_str))
                         # test class conversion
                         self.assertEqual(interval.to_class(), SpelledIntervalClass(interval_class_str))
@@ -161,8 +163,9 @@ class TestSpelled(TestCase):
                         self.assertEqual(SpelledInterval.octave(), SpelledInterval("P1:1"))
                         self.assertEqual(interval, interval.embed())
                         # test print output
-                        self.assertEqual(interval_str, str(interval))
-                        self.assertEqual(interval_str, interval.name())
+                        if interval.diatonic_steps() != 0: # doesn't hold for unisons
+                            self.assertEqual(interval_str, str(interval))
+                            self.assertEqual(interval_str, interval.name())
                 # check link to base type
                 self.assertEqual(interval._base_type, Spelled)
                 self.assertEqual(inverse_interval._base_type, Spelled)
@@ -203,6 +206,14 @@ class TestSpelled(TestCase):
         p2 = SpelledPitch("Gb5")
         self.assertRaises(TypeError, lambda: p1 + p2)
         self.assertRaises(TypeError, lambda: SpelledPitchClass("G") - SpelledPitch("G4"))
+        self.assertRaises(TypeError, lambda: SpelledPitch("Ebb4").interval_from(1))
+        self.assertRaises(TypeError, lambda: SpelledPitchClass("Ebb").interval_from(1))
+        self.assertEqual(SpelledPitch("G4").interval_from(SpelledPitch("C#4")), SpelledInterval("d5:0"))
+        self.assertEqual(SpelledPitch("G4").interval_to(SpelledPitch("C#4")), SpelledInterval("-d5:0"))
+        self.assertEqual(SpelledPitchClass("G").interval_from(SpelledPitchClass("C#")), SpelledIntervalClass("d5"))
+        self.assertEqual(SpelledPitchClass("G").interval_to(SpelledPitchClass("C#")), SpelledIntervalClass("-d5"))
+        self.assertEqual(4 * SpelledInterval("M2:0"), SpelledInterval("a5:0"))
+        self.assertEqual(4 * SpelledIntervalClass("M2"), SpelledIntervalClass("a5"))
 
     def test_from_fifths_functions(self):
         print(SpelledInterval("ddd2:4"))
@@ -248,15 +259,25 @@ class TestSpelled(TestCase):
         self.assertRaises(ValueError, lambda: Spelled.fifths_from_diatonic_pitch_class("X"))
         self.assertRaises(ValueError, lambda: Spelled.fifths_from_generic_interval_class("X"))
 
+    def test_constructors(self):
+        self.assertEqual(SpelledInterval.from_independent(2,0), SpelledInterval("M2:0"))
+        self.assertEqual(SpelledPitch.from_independent(2,4), SpelledPitch("D4"))
+
+    @patch.multiple(AbstractSpelledInterval, __abstractmethods__=set())
+    @patch.multiple(AbstractSpelledPitch, __abstractmethods__=set())
     def test_abstract_base_functions(self):
         s = Spelled("x", True, True)
         self.assertRaises(NotImplementedError, lambda: s.name())
         self.assertRaises(NotImplementedError, lambda: s.fifths())
         self.assertRaises(NotImplementedError, lambda: s.octaves())
         self.assertRaises(NotImplementedError, lambda: s.internal_octaves())
-        self.assertRaises(NotImplementedError, lambda: s.generic())
         self.assertRaises(NotImplementedError, lambda: s.alteration())
-        self.assertRaises(NotImplementedError, lambda: s.diatonic_steps())
+        self.assertRaises(NotImplementedError, lambda: s.compare(1))
+        self.assertRaises(NotImplementedError, lambda: s.onehot())
+        
+        self.assertRaises(NotImplementedError, lambda: AbstractSpelledInterval().generic())
+        self.assertRaises(NotImplementedError, lambda: AbstractSpelledInterval().diatonic_steps())
+        self.assertRaises(NotImplementedError, lambda: AbstractSpelledPitch().letter())
  
     def test_general_interface(self):
         self.assertEqual(SpelledInterval.unison(), SpelledInterval("P1:0"))
@@ -266,20 +287,77 @@ class TestSpelled(TestCase):
         
         self.assertEqual(SpelledInterval("m2:0").direction(), 1)
         self.assertEqual(SpelledInterval("P1:0").direction(), 0)
-        self.assertEqual(SpelledInterval("d1:0").direction(), 0)
-        self.assertEqual(SpelledInterval("a1:0").direction(), 0)
+        self.assertEqual(SpelledInterval("d1:0").direction(), -1)
+        self.assertEqual(SpelledInterval("a1:0").direction(), 1)
         self.assertEqual(SpelledInterval("-m3:0").direction(), -1)
+        self.assertEqual(SpelledInterval("P4:0").direction(), 1)
+        self.assertEqual(SpelledInterval("-M7:0").direction(), -1)
         self.assertEqual(SpelledInterval("-m3:0").abs(), SpelledInterval("m3:0"))
         self.assertEqual(SpelledInterval("m3:0").abs(), SpelledInterval("m3:0"))
         self.assertEqual(SpelledIntervalClass("m2").direction(), 1)
         self.assertEqual(SpelledIntervalClass("P1").direction(), 0)
-        self.assertEqual(SpelledIntervalClass("d1").direction(), 0)
-        self.assertEqual(SpelledIntervalClass("a1").direction(), 0)
-        self.assertEqual(SpelledIntervalClass("d1").direction(), 0)
+        self.assertEqual(SpelledIntervalClass("d1").direction(), -1)
+        self.assertEqual(SpelledIntervalClass("a1").direction(), 1)
+        self.assertEqual(SpelledIntervalClass("P4").direction(), 1)
+        self.assertEqual(SpelledIntervalClass("-M7").direction(), 1)
         self.assertEqual(SpelledIntervalClass("aaaaa4").direction(), 1)
         self.assertEqual(SpelledIntervalClass("ddddd5").direction(), -1)
         self.assertEqual(SpelledIntervalClass("-m3").abs(), SpelledIntervalClass("m3"))
         self.assertEqual(SpelledIntervalClass("m3").abs(), SpelledIntervalClass("m3"))
+
+        self.assertEqual(SpelledInterval.chromatic_semitone(), SpelledInterval("a1:0"))
+        self.assertEqual(SpelledIntervalClass.chromatic_semitone(), SpelledIntervalClass("a1"))
+        
+        self.assertEqual(SpelledInterval("d1:0").is_step(), True)
+        self.assertEqual(SpelledInterval("P1:0").is_step(), True)
+        self.assertEqual(SpelledInterval("a1:0").is_step(), True)
+        self.assertEqual(SpelledInterval("d2:0").is_step(), True)
+        self.assertEqual(SpelledInterval("m2:0").is_step(), True)
+        self.assertEqual(SpelledInterval("M2:0").is_step(), True)
+        self.assertEqual(SpelledInterval("a2:0").is_step(), True)
+        self.assertEqual(SpelledInterval("-d2:0").is_step(), True)
+        self.assertEqual(SpelledInterval("-m2:0").is_step(), True)
+        self.assertEqual(SpelledInterval("-M2:0").is_step(), True)
+        self.assertEqual(SpelledInterval("-a2:0").is_step(), True)
+
+        self.assertEqual(SpelledInterval("d3:0").is_step(), False)
+        self.assertEqual(SpelledInterval("-d3:0").is_step(), False)
+        self.assertEqual(SpelledInterval("M7:0").is_step(), False)
+        self.assertEqual(SpelledInterval("-M7:0").is_step(), False)
+        self.assertEqual(SpelledInterval("P1:1").is_step(), False)
+        self.assertEqual(SpelledInterval("-P1:1").is_step(), False)
+        self.assertEqual(SpelledInterval("m2:1").is_step(), False)
+        self.assertEqual(SpelledInterval("-m2:1").is_step(), False)
+
+        self.assertEqual(SpelledIntervalClass("d1").is_step(), True)
+        self.assertEqual(SpelledIntervalClass("P1").is_step(), True)
+        self.assertEqual(SpelledIntervalClass("a1").is_step(), True)
+        self.assertEqual(SpelledIntervalClass("d2").is_step(), True)
+        self.assertEqual(SpelledIntervalClass("m2").is_step(), True)
+        self.assertEqual(SpelledIntervalClass("M2").is_step(), True)
+        self.assertEqual(SpelledIntervalClass("a2").is_step(), True)
+        self.assertEqual(SpelledIntervalClass("-d2").is_step(), True)
+        self.assertEqual(SpelledIntervalClass("-m2").is_step(), True)
+        self.assertEqual(SpelledIntervalClass("-M2").is_step(), True)
+        self.assertEqual(SpelledIntervalClass("-a2").is_step(), True)
+
+        self.assertEqual(SpelledIntervalClass("d3").is_step(), False)
+        self.assertEqual(SpelledIntervalClass("-d3").is_step(), False)
+
+    def test_ordering(self):
+        # ordering of intervals and pitches should follow the logical ordering of the pitch system
+        self.assertTrue(SpelledInterval("aa4:0") < SpelledInterval("dd5:0"))
+        self.assertTrue(SpelledPitch("C##4") < SpelledPitch("Dbb4"))
+        self.assertTrue(SpelledPitch("C-1") > SpelledPitch("Cb-1"))
+        self.assertFalse(SpelledPitch("C4") == 0)
+        
+        self.assertTrue(SpelledInterval("aa4:0") <= SpelledInterval("dd5:0"))
+        self.assertTrue(SpelledPitch("C##4") <= SpelledPitch("Dbb4"))
+        self.assertTrue(SpelledPitch("C-1") >= SpelledPitch("Cb-1"))
+
+        # ordering of interval/pitch classes is arbitrary, for now it follows the line of fifths
+        self.assertTrue(SpelledIntervalClass("P5") > SpelledIntervalClass("P1"))
+        self.assertTrue(SpelledPitchClass("G") > SpelledPitchClass("C"))
 
     def test_spelled_accessors(self):
         self.assertEqual(SpelledInterval("M3:1").octaves(),  1)
@@ -308,16 +386,12 @@ class TestSpelled(TestCase):
         self.assertEqual(SpelledPitch("Ebb5").octaves(),  5)
         self.assertEqual(SpelledPitch("Ebb5").fifths(),  -10)
         self.assertEqual(SpelledPitch("Ebb5").degree(),  2)
-        self.assertEqual(SpelledPitch("Ebb5").generic(),  2)
-        self.assertEqual(SpelledPitch("Ebb5").diatonic_steps(), 37)
         self.assertEqual(SpelledPitch("Ebb5").alteration(),  -2)
         self.assertEqual(SpelledPitch("Ebb5").letter(),  'E')
         
         self.assertEqual(SpelledPitchClass("F#").octaves(), 0)
         self.assertEqual(SpelledPitchClass("F#").fifths(), 6)
         self.assertEqual(SpelledPitchClass("F#").degree(), 3)
-        self.assertEqual(SpelledPitchClass("F#").generic(), 3)
-        self.assertEqual(SpelledPitchClass("F#").diatonic_steps(), 3)
         self.assertEqual(SpelledPitchClass("F#").alteration(), 1)
         self.assertEqual(SpelledPitchClass("F#").letter(), 'F')
         
@@ -337,3 +411,40 @@ class TestSpelled(TestCase):
         self.assertEqual(SpelledPitch("Cb-1").alteration(), -1)
         self.assertEqual(SpelledPitch("C#-1").alteration(), 1)
         self.assertEqual(SpelledPitch("D-1").degree(), 1)
+
+    def test_onehot(self):
+        self.arrayEqual(SpelledInterval("M2:0").onehot((-2,2), (-1,1)),
+                        np.array([[0,0,0], [0,0,0], [0,0,0], [0,0,0], [0,1,0]]))
+        self.assertRaises(ValueError, lambda: SpelledInterval("M2:0").onehot((-2,1), (-1,1)))
+        self.assertRaises(ValueError, lambda: SpelledInterval("M2:2").onehot((-2,2), (-1,1)))
+        self.assertEqual(SpelledInterval.from_onehot(SpelledInterval("a4:2").onehot((-8,8), (-2,2)), -8, -2),
+                         SpelledInterval("a4:2"))
+        self.assertRaises(ValueError, lambda: SpelledInterval.from_onehot(np.array([1,0,1]), 0, 0))
+        
+        self.arrayEqual(SpelledIntervalClass("M2").onehot((-2,3)),
+                        np.array([0, 0, 0, 0, 1, 0]))
+        self.assertRaises(ValueError, lambda: SpelledIntervalClass("M6").onehot((-2,2)))
+        self.assertEqual(SpelledIntervalClass.from_onehot(SpelledIntervalClass("a4").onehot((-8,8)), -8),
+                         SpelledIntervalClass("a4"))
+        self.assertRaises(ValueError, lambda: SpelledIntervalClass.from_onehot(np.array([1,0,1]), 0))
+        
+        self.arrayEqual(SpelledPitch("D4").onehot((-2,2), (3,5)),
+                        np.array([[0,0,0], [0,0,0], [0,0,0], [0,0,0], [0,1,0]]))
+        self.assertRaises(ValueError, lambda: SpelledPitch("D4").onehot((-2,1), (3,5)))
+        self.assertRaises(ValueError, lambda: SpelledPitch("D6").onehot((-2,2), (3,5)))
+        self.assertEqual(SpelledPitch.from_onehot(SpelledPitch("F#4").onehot((-8,8), (0,6)), -8, 0),
+                         SpelledPitch("F#4"))
+        self.assertRaises(ValueError, lambda: SpelledPitch.from_onehot(np.array([1,0,1]), 0, 0))
+        
+        self.arrayEqual(SpelledPitchClass("D").onehot((-2,3)),
+                        np.array([0, 0, 0, 0, 1, 0]))
+        self.assertRaises(ValueError, lambda: SpelledPitchClass("A").onehot((-2,2)))
+        self.assertEqual(SpelledPitchClass.from_onehot(SpelledPitchClass("F#").onehot((-8,8)), -8),
+                         SpelledPitchClass("F#"))
+        self.assertRaises(ValueError, lambda: SpelledPitchClass.from_onehot(np.array([1,0,1]), 0))
+
+    def test_exceptions(self):
+        self.assertRaises(TypeError, lambda: SpelledInterval("M2:0") < 0)
+        self.assertRaises(TypeError, lambda: SpelledIntervalClass("M2") < 0)
+        self.assertRaises(TypeError, lambda: SpelledPitch("C4") < 0)
+        self.assertRaises(TypeError, lambda: SpelledPitchClass("C") < 0)

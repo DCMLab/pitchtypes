@@ -20,7 +20,8 @@ For other (and mostly compatible) implementations see:
 
 The main goals of this library are:
 
-- providing types and operations (such as arithmetics, printing and parsing) for common types of pitches and intervals
+- providing types and operations (such as arithmetics, printing and parsing) for common types of pitches and intervals,
+  (in particular spelled pitches and intervals, which are often difficult to handle),
 - providing a generic interface for writing code that is agnostic to the specific pitch or interval types.
 
 ## Installation
