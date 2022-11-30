@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pitchtypes.spelled_array.SpelledIntervalArray &mdash; pitchtypes  documentation</title>
@@ -116,7 +116,7 @@
 one for fifths and one for internal/dependent octaves,
 both as integers.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>fifths</strong> – the internal fifths of each interval (numpy array of integers)</p></li>
 <li><p><strong>octaves</strong> – the internal octaves of each interval (numpy array of integers)</p></li>
@@ -127,6 +127,10 @@ both as integers.</p>
 
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.spelled_array.SpelledIntervalArray.__init__" title="pitchtypes.spelled_array.SpelledIntervalArray.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(fifths, octaves)</p></td>
 <td><p>Takes two numpy arrays, one for fifths and one for internal/dependent octaves, both as integers.</p></td>
@@ -228,10 +232,10 @@ both as integers.</p>
 <span class="sig-name descname"><span class="pre">__contains__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.__contains__" title="Permalink to this definition"></a></dt>
 <dd><p>Returns true if the array contains the given interval/pitch.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>item</strong> – the potential item to test</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if the array contains <code class="docutils literal notranslate"><span class="pre">item</span></code>, otherwise <code class="docutils literal notranslate"><span class="pre">False</span></code></p>
 </dd>
 </dl>
@@ -242,10 +246,10 @@ both as integers.</p>
 <span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.__eq__" title="Permalink to this definition"></a></dt>
 <dd><p>Element-wise <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code> between two spelled arrays.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>other</strong> – the spelled array or scalar to compare to</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p>a boolean array that indicates where this array is <code class="docutils literal notranslate"><span class="pre">==</span> <span class="pre">other</span></code></p>
 </dd>
 </dl>
@@ -256,10 +260,10 @@ both as integers.</p>
 <span class="sig-name descname"><span class="pre">__ge__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.__ge__" title="Permalink to this definition"></a></dt>
 <dd><p>Element-wise <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code> between two spelled arrays.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>other</strong> – the spelled array or scalar to compare to</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p>a boolean array that indicates where this array is <code class="docutils literal notranslate"><span class="pre">&gt;=</span> <span class="pre">other</span></code></p>
 </dd>
 </dl>
@@ -271,10 +275,10 @@ both as integers.</p>
 <dd><p>Returns an item or a subarray of the spelled array.
 Supports advanced indexing as on numpy arrays.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>index</strong> – a numpy-compatible index into the array</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p>a new array or a scalar value (depending on the index)</p>
 </dd>
 </dl>
@@ -285,10 +289,10 @@ Supports advanced indexing as on numpy arrays.</p>
 <span class="sig-name descname"><span class="pre">__gt__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.__gt__" title="Permalink to this definition"></a></dt>
 <dd><p>Element-wise <code class="docutils literal notranslate"><span class="pre">&gt;</span></code> between two spelled arrays.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>other</strong> – the spelled array or scalar to compare to</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p>a boolean array that indicates where this array is <code class="docutils literal notranslate"><span class="pre">&gt;</span> <span class="pre">other</span></code></p>
 </dd>
 </dl>
@@ -304,10 +308,10 @@ Supports advanced indexing as on numpy arrays.</p>
 <span class="sig-name descname"><span class="pre">__le__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.__le__" title="Permalink to this definition"></a></dt>
 <dd><p>Element-wise <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code> between two spelled arrays.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>other</strong> – the spelled array or scalar to compare to</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p>a boolean array that indicates where this array is <code class="docutils literal notranslate"><span class="pre">&lt;=</span> <span class="pre">other</span></code></p>
 </dd>
 </dl>
@@ -318,7 +322,7 @@ Supports advanced indexing as on numpy arrays.</p>
 <span class="sig-name descname"><span class="pre">__len__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.__len__" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the length of the array (first dimension, as in numpy).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>the length of the array (1st dimension, integer)</p>
 </dd>
 </dl>
@@ -329,10 +333,10 @@ Supports advanced indexing as on numpy arrays.</p>
 <span class="sig-name descname"><span class="pre">__lt__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.__lt__" title="Permalink to this definition"></a></dt>
 <dd><p>Element-wise <code class="docutils literal notranslate"><span class="pre">&lt;</span></code> between two spelled arrays.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>other</strong> – the spelled array or scalar to compare to</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p>a boolean array that indicates where this array is <code class="docutils literal notranslate"><span class="pre">&lt;</span> <span class="pre">other</span></code></p>
 </dd>
 </dl>
@@ -349,10 +353,10 @@ Supports advanced indexing as on numpy arrays.</p>
 <span class="sig-name descname"><span class="pre">__ne__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.__ne__" title="Permalink to this definition"></a></dt>
 <dd><p>Element-wise <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code> between two spelled arrays.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>other</strong> – the spelled array or scalar to compare to</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p>a boolean array that indicates where this array is <code class="docutils literal notranslate"><span class="pre">!=</span> <span class="pre">other</span></code></p>
 </dd>
 </dl>
@@ -382,7 +386,7 @@ Supports advanced indexing as on numpy arrays.</p>
 <dd><p>Sets the given indices to the given item(s).
 Supports advanced indexing as on numpy arrays.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>index</strong> – a numpy-compatible index into the array</p></li>
 <li><p><strong>item</strong> – an array or a scalar to assign to the indicated sub-array</p></li>
@@ -414,7 +418,7 @@ Supports advanced indexing as on numpy arrays.</p>
 <span class="sig-name descname"><span class="pre">abs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.abs" title="Permalink to this definition"></a></dt>
 <dd><p>For downward intervals, return their upward counterpart, otherwise just return the interval itself.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>the absolute interval</p>
 </dd>
 </dl>
@@ -431,7 +435,7 @@ For interval classes, alteration refers to the upward version of the interval
 (e.g. for <code class="docutils literal notranslate"><span class="pre">m7</span></code>/<code class="docutils literal notranslate"><span class="pre">-M2</span></code> it is -1).
 For pitches, return the accidentals (positive=sharps, negative=flats, 0=natural).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>an array of alterations (integers)</p>
 </dd>
 </dl>
@@ -443,10 +447,10 @@ For pitches, return the accidentals (positive=sharps, negative=flats, 0=natural)
 <dd><p>Returns True if self and other are the equal,
 False otherwise.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>other</strong> – another spelled array of the same type</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if the two arrays are equal, <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise</p>
 </dd>
 </dl>
@@ -457,10 +461,10 @@ False otherwise.</p>
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">chromatic_semitone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shape</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.chromatic_semitone" title="Permalink to this definition"></a></dt>
 <dd><p>Returns an array of the given shape filled with chromatic semitones (a1:0).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>shape</strong> – the shape of the resulting array (tuple of integers)</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p>a <code class="docutils literal notranslate"><span class="pre">SpelledIntervalArray</span></code> of shape <code class="docutils literal notranslate"><span class="pre">shape</span></code> filled with a1:0</p>
 </dd>
 </dl>
@@ -480,10 +484,10 @@ for example <code class="docutils literal notranslate"><span class="pre">P4:0</s
 To test the overall equality of two spelled arrays,
 use <a class="reference internal" href="#pitchtypes.spelled_array.SpelledIntervalArray.array_equal" title="pitchtypes.spelled_array.SpelledIntervalArray.array_equal"><code class="xref py py-meth docutils literal notranslate"><span class="pre">array_equal</span></code></a></p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>other</strong> – another <code class="docutils literal notranslate"><span class="pre">SpelledIntervalArray</span></code> or <code class="docutils literal notranslate"><span class="pre">SpelledInterval</span></code></p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p>an array of <code class="docutils literal notranslate"><span class="pre">-1</span></code> / <code class="docutils literal notranslate"><span class="pre">0</span></code> / <code class="docutils literal notranslate"><span class="pre">1</span></code> (integer)</p>
 </dd>
 </dl>
@@ -495,7 +499,7 @@ use <a class="reference internal" href="#pitchtypes.spelled_array.SpelledInterva
 <dd><p>Returns a shallow copy of the array.
 This also creates copies of the underlying numpy arrays.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>a copy of the array</p>
 </dd>
 </dl>
@@ -506,7 +510,7 @@ This also creates copies of the underlying numpy arrays.</p>
 <span class="sig-name descname"><span class="pre">deepcopy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.deepcopy" title="Permalink to this definition"></a></dt>
 <dd><p>Returns a deep copy of the array.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>a deepcopy of the array</p>
 </dd>
 </dl>
@@ -519,7 +523,7 @@ This also creates copies of the underlying numpy arrays.</p>
 (unison=0, 2nd=1, octave=0, 2nd down=6, etc.).
 For pitches, return the integer that corresponds to the letter (C=0, D=1, …).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>an array of degrees (integers)</p>
 </dd>
 </dl>
@@ -531,7 +535,7 @@ For pitches, return the integer that corresponds to the letter (C=0, D=1, …).<
 <dd><p>Return the diatonic steps of the interval (unison=0, 2nd=1, …, octave=7, …).
 Respects both direction and octaves.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>an array of diatonic steps (integers)</p>
 </dd>
 </dl>
@@ -543,7 +547,7 @@ Respects both direction and octaves.</p>
 <dd><p>Returns the direction of the interval (1=up / 0=neutral / -1=down).
 The perfect unisons (<code class="docutils literal notranslate"><span class="pre">P1:0</span></code>) is considered neutral.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>an array of <code class="docutils literal notranslate"><span class="pre">-1</span></code> / <code class="docutils literal notranslate"><span class="pre">0</span></code> / <code class="docutils literal notranslate"><span class="pre">1</span></code> (integer)</p>
 </dd>
 </dl>
@@ -555,7 +559,7 @@ The perfect unisons (<code class="docutils literal notranslate"><span class="pre
 <dd><p>For interval classes, return an embedding into the interval space in a (type-dependent) default octave.
 For non-class intervals, return the interval itself.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>a non-class version of this interval</p>
 </dd>
 </dl>
@@ -566,7 +570,7 @@ For non-class intervals, return the interval itself.</p>
 <span class="sig-name descname"><span class="pre">fifths</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.fifths" title="Permalink to this definition"></a></dt>
 <dd><p>Return the position of the interval on the line of fifths.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>an array of fifths (integers)</p>
 </dd>
 </dl>
@@ -577,10 +581,10 @@ For non-class intervals, return the interval itself.</p>
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">intervals</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.from_array" title="Permalink to this definition"></a></dt>
 <dd><p>Create an interval array from an array of intervals.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>intervals</strong> – an array-like of <code class="docutils literal notranslate"><span class="pre">SpelledInterval</span></code></p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p>the corresponding interval array</p>
 </dd>
 </dl>
@@ -591,13 +595,13 @@ For non-class intervals, return the interval itself.</p>
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_independent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fifths</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">octaves</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.from_independent" title="Permalink to this definition"></a></dt>
 <dd><p>Create an interval array from fifths (interval class) and independent/external octaves.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>fifths</strong> – the internal fifths of each interval (numpy array of integers)</p></li>
 <li><p><strong>octaves</strong> – the external/independent octaves of each interval (numpy array of integers)</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p>the corresponding interval array</p>
 </dd>
 </dl>
@@ -611,14 +615,14 @@ For non-class intervals, return the interval itself.</p>
 <code class="docutils literal notranslate"><span class="pre">octave_low</span></code> the lower bound of the octave range.
 The shape of the resulting array will be equivalent to the first n-2 dimensions of the input tensor.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>onehot</strong> – a one-hot tensor representing the intervals (numpy array)</p></li>
 <li><p><strong>fifth_low</strong> – the lowest fifth expressible in the one-hot tensor (integer)</p></li>
 <li><p><strong>octave_low</strong> – the lowest octave expressible in the one-hot tensor (integer)</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p>the corresponding interval array</p>
 </dd>
 </dl>
@@ -629,10 +633,10 @@ The shape of the resulting array will be equivalent to the first n-2 dimensions 
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_strings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strings</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.from_strings" title="Permalink to this definition"></a></dt>
 <dd><p>Create an interval array from an array of strings (using spelled interval notation).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>strings</strong> – an array-like of interval notation strings</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p>the corresponding interval array</p>
 </dd>
 </dl>
@@ -645,7 +649,7 @@ The shape of the resulting array will be equivalent to the first n-2 dimensions 
 Unlike degree(), the result respects the sign of the interval
 (unison=0, 2nd up=1, 2nd down=-1).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>an array of generic intervals (integers)</p>
 </dd>
 </dl>
@@ -657,7 +661,7 @@ Unlike degree(), the result respects the sign of the interval
 <dd><p>Return the interval class that corresponds to this interval.
 If the interval is already an interval class, it is returned itself.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>the interval’s corresponding interval class</p>
 </dd>
 </dl>
@@ -670,7 +674,7 @@ If the interval is already an interval class, it is returned itself.</p>
 which is dependent on the fifths.</p>
 <p>Only use this if you know what you are doing.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>an array of internal/dependent octaves (integers)</p>
 </dd>
 </dl>
@@ -681,7 +685,7 @@ which is dependent on the fifths.</p>
 <span class="sig-name descname"><span class="pre">is_step</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.is_step" title="Permalink to this definition"></a></dt>
 <dd><p>Return True if the interval is considered a step, False otherwise.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>the stepness of the interval (boolean)</p>
 </dd>
 </dl>
@@ -693,7 +697,7 @@ which is dependent on the fifths.</p>
 <dd><p>Returns the names of the objects in the array
 as an array of strings of the same shape.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>an array of notation strings</p>
 </dd>
 </dl>
@@ -704,10 +708,10 @@ as an array of strings of the same shape.</p>
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">octave</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shape</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.octave" title="Permalink to this definition"></a></dt>
 <dd><p>Return an array of the given shape filled with perfect octaves (P1:1).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>shape</strong> – the shape of the resulting array (tuple of integers)</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p>a <code class="docutils literal notranslate"><span class="pre">SpelledIntervalArray</span></code> of shape <code class="docutils literal notranslate"><span class="pre">shape</span></code> filled with P1:0</p>
 </dd>
 </dl>
@@ -720,7 +724,7 @@ as an array of strings of the same shape.</p>
 Negative intervals start with -1, decreasing.
 For pitches, return the absolute octave of the pitch.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>an array of external/independent octaves (integers)</p>
 </dd>
 </dl>
@@ -735,14 +739,14 @@ where each is a tuple <code class="docutils literal notranslate"><span class="pr
 The outer shape of the output tensor is identical to the shape of the original array,
 so the resulting shape is <code class="docutils literal notranslate"><span class="pre">original_shape</span> <span class="pre">+</span> <span class="pre">(n_fifths,</span> <span class="pre">n_octaves)</span></code>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>fifth_range</strong> – the (inclusive) range of fifths (pair of integers)</p></li>
 <li><p><strong>octave_range</strong> – the (inclusive) range of octaves (pair of integers)</p></li>
 <li><p><strong>dtype</strong> – dtype of the resulting array (default: <code class="docutils literal notranslate"><span class="pre">int</span></code>)</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p>a one-hot tensor (numpy array)</p>
 </dd>
 </dl>
@@ -753,7 +757,7 @@ so the resulting shape is <code class="docutils literal notranslate"><span class
 <span class="sig-name descname"><span class="pre">to_class</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.to_class" title="Permalink to this definition"></a></dt>
 <dd><p>Alias for ic(), but also supported by pitch types.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>the interval’s corresponding interval class</p>
 </dd>
 </dl>
@@ -764,10 +768,10 @@ so the resulting shape is <code class="docutils literal notranslate"><span class
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">unison</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shape</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.unison" title="Permalink to this definition"></a></dt>
 <dd><p>Create an array of the given shape filled with perfect unisons (P1:0).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>shape</strong> – the shape of the resulting array (tuple of integers)</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p>a <code class="docutils literal notranslate"><span class="pre">SpelledIntervalArray</span></code> of shape <code class="docutils literal notranslate"><span class="pre">shape</span></code> filled with P1:0</p>
 </dd>
 </dl>

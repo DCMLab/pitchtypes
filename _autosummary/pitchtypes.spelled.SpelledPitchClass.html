@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pitchtypes.spelled.SpelledPitchClass &mdash; pitchtypes  documentation</title>
@@ -113,7 +113,7 @@
 Accidentals may be written as ASCII symbols (#/b)
 or with unicode symbols (♯/♭), but not mixed within the same note.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>value</strong> – a string or internal numeric representation of the pitch class</p>
 </dd>
 </dl>
@@ -121,6 +121,10 @@ or with unicode symbols (♯/♭), but not mixed within the same note.</p>
 
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledPitchClass.__init__" title="pitchtypes.spelled.SpelledPitchClass.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(value)</p></td>
 <td><p>Takes a string consisting of the form <code class="docutils literal notranslate"><span class="pre">&lt;letter&gt;&lt;accidentals?&gt;</span></code>, e.g.</p></td>
@@ -255,10 +259,10 @@ or with unicode symbols (♯/♭), but not mixed within the same note.</p>
 <span class="sig-name descname"><span class="pre">__add__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled.SpelledPitchClass.__add__" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the pitch transposed by an interval</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>other</strong> – an interval of matching type</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p>the pitch transposed by <code class="docutils literal notranslate"><span class="pre">other</span></code></p>
 </dd>
 </dl>
@@ -317,10 +321,10 @@ or with unicode symbols (♯/♭), but not mixed within the same note.</p>
 <dd><p>When subtracting another pitch (p1 - p2), return the interval from p2 to p1.
 When subtracting an interval (p - i), transpose the pitch by the inverse interval (p + -i).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>other</strong> – pitch or interval</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p>if <code class="docutils literal notranslate"><span class="pre">other</span></code> is an interval, the transposed pitch;
 if <code class="docutils literal notranslate"><span class="pre">other</span></code> is a pitch, the interval between both pitches</p>
 </dd>
@@ -341,7 +345,7 @@ Positive alteration always indicates augmentation,
 negative alteration indicates diminution (minor or smaller) of the interval.
 For pitches, return the accidentals (positive=sharps, negative=flats, 0=natural).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>alteration (integer)</p>
 </dd>
 </dl>
@@ -357,10 +361,10 @@ and -1 if the second pitch class (<code class="docutils literal notranslate"><sp
 <p>This method can be indirectly used through binary comparison operators
 (including <code class="docutils literal notranslate"><span class="pre">==</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code> etc.).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>other</strong> – a pitch class to compare to (SpelledPitchClass)</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">-1</span></code> / <code class="docutils literal notranslate"><span class="pre">0</span></code> / <code class="docutils literal notranslate"><span class="pre">1</span></code> (integer)</p>
 </dd>
 </dl>
@@ -373,7 +377,7 @@ and -1 if the second pitch class (<code class="docutils literal notranslate"><sp
 (unison=0, 2nd=1, octave=0, 2nd down=6, etc.).
 For pitches, return the integer that corresponds to the letter (C=0, D=1, …).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>degree (integer)</p>
 </dd>
 </dl>
@@ -385,7 +389,7 @@ For pitches, return the integer that corresponds to the letter (C=0, D=1, …).<
 <dd><p>For a pitch class, returns the corresponding pitch in a (type-dependent) default octave.
 For non-class pitches, returns the pitch itself.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>a non-class version of this pitch</p>
 </dd>
 </dl>
@@ -396,7 +400,7 @@ For non-class pitches, returns the pitch itself.</p>
 <span class="sig-name descname"><span class="pre">fifths</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled.SpelledPitchClass.fifths" title="Permalink to this definition"></a></dt>
 <dd><p>Return the position of the interval on the line of fifths.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>fifth position (integer)</p>
 </dd>
 </dl>
@@ -407,10 +411,10 @@ For non-class pitches, returns the pitch itself.</p>
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_fifths</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fifths</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled.SpelledPitchClass.from_fifths" title="Permalink to this definition"></a></dt>
 <dd><p>Create a pitch class by directly providing its position on the line of fifths (C=0, G=1, D=2, …).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>fifths</strong> – the line-of-fifths position of the pitch class (integer)</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p>the resulting pitch class (SpelledPitchClass)</p>
 </dd>
 </dl>
@@ -422,13 +426,13 @@ For non-class pitches, returns the pitch itself.</p>
 <dd><p>Create a spelled pitch class from a one-hot vector.</p>
 <p>Requires the lower bounds of the fifth range used by the one-hot vector.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>onehot</strong> – a one-hot vector representing the pitch (numpy array)</p></li>
 <li><p><strong>fifth_low</strong> – the lowest fifth expressible in the one-hot vector</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p>the resulting pitch class (SpelledPitchClass)</p>
 </dd>
 </dl>
@@ -441,7 +445,7 @@ For non-class pitches, returns the pitch itself.</p>
 which is dependent on the fifths.</p>
 <p>Only use this if you know what you are doing.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>internal/dependent octave (integer)</p>
 </dd>
 </dl>
@@ -452,10 +456,10 @@ which is dependent on the fifths.</p>
 <span class="sig-name descname"><span class="pre">interval_from</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled.SpelledPitchClass.interval_from" title="Permalink to this definition"></a></dt>
 <dd><p>Computes the interval from another pitch to this pitch.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>other</strong> – another pitch</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p>the interval from other to self</p>
 </dd>
 </dl>
@@ -466,10 +470,10 @@ which is dependent on the fifths.</p>
 <span class="sig-name descname"><span class="pre">interval_to</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled.SpelledPitchClass.interval_to" title="Permalink to this definition"></a></dt>
 <dd><p>Computes the interval from this pitch to another pitch.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>other</strong> – another pitch</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p>the interval from self to other</p>
 </dd>
 </dl>
@@ -480,7 +484,7 @@ which is dependent on the fifths.</p>
 <span class="sig-name descname"><span class="pre">letter</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled.SpelledPitchClass.letter" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the letter associated with the pitch (without accidentals).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>letter (single-character string)</p>
 </dd>
 </dl>
@@ -491,7 +495,7 @@ which is dependent on the fifths.</p>
 <span class="sig-name descname"><span class="pre">name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled.SpelledPitchClass.name" title="Permalink to this definition"></a></dt>
 <dd><p>The name of the pitch or interval in string notation</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>the object’s notation name (string)</p>
 </dd>
 </dl>
@@ -504,7 +508,7 @@ which is dependent on the fifths.</p>
 Negative intervals start with -1, decreasing.
 For pitches, return the absolute octave of the pitch.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>external/independent octave (integer)</p>
 </dd>
 </dl>
@@ -516,13 +520,13 @@ For pitches, return the absolute octave of the pitch.</p>
 <dd><p>Returns a one-hot encoding of the pitch class in fifths.
 The range of fifths is given by <code class="docutils literal notranslate"><span class="pre">fifth_range</span></code> as a tuple <code class="docutils literal notranslate"><span class="pre">(lower,</span> <span class="pre">upper)</span></code>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>fifth_range</strong> – the (inclusive) range of fifths (pair of integers)</p></li>
 <li><p><strong>dtype</strong> – dtype of the resulting array</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p>a one-hot vector (numpy array)</p>
 </dd>
 </dl>
@@ -534,7 +538,7 @@ The range of fifths is given by <code class="docutils literal notranslate"><span
 <dd><p>Returns the pitch class corresponding to the pitch.
 For pitch classes, it returns the pitch class itself.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>the pitch class that corresponds to this pitch</p>
 </dd>
 </dl>
@@ -545,7 +549,7 @@ For pitch classes, it returns the pitch class itself.</p>
 <span class="sig-name descname"><span class="pre">to_class</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled.SpelledPitchClass.to_class" title="Permalink to this definition"></a></dt>
 <dd><p>Alias for pc(), but also supported by interval types.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>the pitch class that corresponds to this pitch</p>
 </dd>
 </dl>

@@ -20,12 +20,11 @@ The following representations of intervals and pitches are implemented so far:
 
 * :doc:`spelled <types/spelled>`: based on Western notation
 * :doc:`spelled <types/spelled_array>`: based on Western notation
-* :doc:`enharmonic <types/enharmonic>`: based on the chromatic 12-tone system (WIP*)
-* :doc:`frequency <types/frequencies>`: based on the frequencies and frequency ratios (WIP*)
-* :doc:`harmonic <types/harmonic>`: based prime-factorized just intervals (very WIP*)
+* :doc:`enharmonic <types/enharmonic>`: based on the chromatic 12-tone system (*)
+* :doc:`frequency <types/frequencies>`: based on the frequencies and frequency ratios (*)
+* :doc:`harmonic <types/harmonic>`: based prime-factorized just intervals (*)
 
-WIP*: The interfaces for these types are not yet standardized
-and/or synchronized with the other implementations,
+(*): The interfaces for these types are not yet standardized/synchronized with the implementations in other languages
 and lack detailed documentation.
 They implement the basic pitch/interval interface,
 but type-specific details (notation etc.) might change in the future.

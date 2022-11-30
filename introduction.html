@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Overview &mdash; pitchtypes  documentation</title>
@@ -110,12 +110,11 @@ such as addition and scalar multiplication.</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="types/spelled.html"><span class="doc">spelled</span></a>: based on Western notation</p></li>
 <li><p><a class="reference internal" href="types/spelled_array.html"><span class="doc">spelled</span></a>: based on Western notation</p></li>
-<li><p><a class="reference internal" href="types/enharmonic.html"><span class="doc">enharmonic</span></a>: based on the chromatic 12-tone system (WIP*)</p></li>
-<li><p><a class="reference internal" href="types/frequencies.html"><span class="doc">frequency</span></a>: based on the frequencies and frequency ratios (WIP*)</p></li>
-<li><p><a class="reference internal" href="types/harmonic.html"><span class="doc">harmonic</span></a>: based prime-factorized just intervals (very WIP*)</p></li>
+<li><p><a class="reference internal" href="types/enharmonic.html"><span class="doc">enharmonic</span></a>: based on the chromatic 12-tone system (*)</p></li>
+<li><p><a class="reference internal" href="types/frequencies.html"><span class="doc">frequency</span></a>: based on the frequencies and frequency ratios (*)</p></li>
+<li><p><a class="reference internal" href="types/harmonic.html"><span class="doc">harmonic</span></a>: based prime-factorized just intervals (*)</p></li>
 </ul>
-<p>WIP*: The interfaces for these types are not yet standardized
-and/or synchronized with the other implementations,
+<p>(*): The interfaces for these types are not yet standardized/synchronized with the implementations in other languages
 and lack detailed documentation.
 They implement the basic pitch/interval interface,
 but type-specific details (notation etc.) might change in the future.</p>
@@ -198,7 +197,7 @@ use semantic methods such as <a class="reference internal" href="#pitchtypes.Int
 <span class="sig-name descname"><span class="pre">abs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.Interval.abs" title="Permalink to this definition"></a></dt>
 <dd><p>For downward intervals, return their upward counterpart, otherwise just return the interval itself.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>the absolute interval</p>
 </dd>
 </dl>
@@ -211,7 +210,7 @@ use semantic methods such as <a class="reference internal" href="#pitchtypes.Int
 1 for up, -1 for down and 0 for neutral.
 Different types may have different conventions for the direction of an interval.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>the interval’s direction (<code class="docutils literal notranslate"><span class="pre">-1</span></code> / <code class="docutils literal notranslate"><span class="pre">0</span></code> / <code class="docutils literal notranslate"><span class="pre">1</span></code>, integer)</p>
 </dd>
 </dl>
@@ -223,7 +222,7 @@ Different types may have different conventions for the direction of an interval.
 <dd><p>For interval classes, return an embedding into the interval space in a (type-dependent) default octave.
 For non-class intervals, return the interval itself.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>a non-class version of this interval</p>
 </dd>
 </dl>
@@ -235,7 +234,7 @@ For non-class intervals, return the interval itself.</p>
 <dd><p>Return the interval class that corresponds to this interval.
 If the interval is already an interval class, it is returned itself.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>the interval’s corresponding interval class</p>
 </dd>
 </dl>
@@ -246,7 +245,7 @@ If the interval is already an interval class, it is returned itself.</p>
 <em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">octave</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.Interval.octave" title="Permalink to this definition"></a></dt>
 <dd><p>Create the octave interval of this type.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>an octave interval</p>
 </dd>
 </dl>
@@ -257,7 +256,7 @@ If the interval is already an interval class, it is returned itself.</p>
 <span class="sig-name descname"><span class="pre">to_class</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.Interval.to_class" title="Permalink to this definition"></a></dt>
 <dd><p>Alias for ic(), but also supported by pitch types.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>the interval’s corresponding interval class</p>
 </dd>
 </dl>
@@ -268,7 +267,7 @@ If the interval is already an interval class, it is returned itself.</p>
 <em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">unison</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.Interval.unison" title="Permalink to this definition"></a></dt>
 <dd><p>Create the unison interval of this type.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>a unison interval</p>
 </dd>
 </dl>
@@ -285,7 +284,7 @@ If the interval is already an interval class, it is returned itself.</p>
 <em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">chromatic_semitone</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.Chromatic.chromatic_semitone" title="Permalink to this definition"></a></dt>
 <dd><p>Return a chromatic semitone (augmented unison) of this type.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>a chromatic semitone interval</p>
 </dd>
 </dl>
@@ -302,7 +301,7 @@ If the interval is already an interval class, it is returned itself.</p>
 <em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_step</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.Diatonic.is_step" title="Permalink to this definition"></a></dt>
 <dd><p>Return True if the interval is considered a step, False otherwise.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>the stepness of the interval (boolean)</p>
 </dd>
 </dl>
@@ -323,7 +322,7 @@ If the interval is already an interval class, it is returned itself.</p>
 <dd><p>For a pitch class, returns the corresponding pitch in a (type-dependent) default octave.
 For non-class pitches, returns the pitch itself.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>a non-class version of this pitch</p>
 </dd>
 </dl>
@@ -334,10 +333,10 @@ For non-class pitches, returns the pitch itself.</p>
 <em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">interval_from</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.Pitch.interval_from" title="Permalink to this definition"></a></dt>
 <dd><p>Computes the interval from another pitch to this pitch.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>other</strong> – another pitch</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p>the interval from other to self</p>
 </dd>
 </dl>
@@ -348,10 +347,10 @@ For non-class pitches, returns the pitch itself.</p>
 <span class="sig-name descname"><span class="pre">interval_to</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.Pitch.interval_to" title="Permalink to this definition"></a></dt>
 <dd><p>Computes the interval from this pitch to another pitch.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>other</strong> – another pitch</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p>the interval from self to other</p>
 </dd>
 </dl>
@@ -363,7 +362,7 @@ For non-class pitches, returns the pitch itself.</p>
 <dd><p>Returns the pitch class corresponding to the pitch.
 For pitch classes, it returns the pitch class itself.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>the pitch class that corresponds to this pitch</p>
 </dd>
 </dl>
@@ -374,7 +373,7 @@ For pitch classes, it returns the pitch class itself.</p>
 <span class="sig-name descname"><span class="pre">to_class</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.Pitch.to_class" title="Permalink to this definition"></a></dt>
 <dd><p>Alias for pc(), but also supported by interval types.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>the pitch class that corresponds to this pitch</p>
 </dd>
 </dl>

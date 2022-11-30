@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pitchtypes.spelled_array.SpelledArray &mdash; pitchtypes  documentation</title>
@@ -117,6 +117,10 @@ Uses the same interface as the Spelled types.</p>
 
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.spelled_array.SpelledArray.__init__" title="pitchtypes.spelled_array.SpelledArray.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>()</p></td>
 <td><p></p></td>
@@ -164,10 +168,10 @@ Uses the same interface as the Spelled types.</p>
 <em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">__contains__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledArray.__contains__" title="Permalink to this definition"></a></dt>
 <dd><p>Returns true if the array contains the given interval/pitch.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>item</strong> – the potential item to test</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if the array contains <code class="docutils literal notranslate"><span class="pre">item</span></code>, otherwise <code class="docutils literal notranslate"><span class="pre">False</span></code></p>
 </dd>
 </dl>
@@ -178,10 +182,10 @@ Uses the same interface as the Spelled types.</p>
 <span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledArray.__eq__" title="Permalink to this definition"></a></dt>
 <dd><p>Element-wise <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code> between two spelled arrays.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>other</strong> – the spelled array or scalar to compare to</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p>a boolean array that indicates where this array is <code class="docutils literal notranslate"><span class="pre">==</span> <span class="pre">other</span></code></p>
 </dd>
 </dl>
@@ -192,10 +196,10 @@ Uses the same interface as the Spelled types.</p>
 <span class="sig-name descname"><span class="pre">__ge__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledArray.__ge__" title="Permalink to this definition"></a></dt>
 <dd><p>Element-wise <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code> between two spelled arrays.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>other</strong> – the spelled array or scalar to compare to</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p>a boolean array that indicates where this array is <code class="docutils literal notranslate"><span class="pre">&gt;=</span> <span class="pre">other</span></code></p>
 </dd>
 </dl>
@@ -207,10 +211,10 @@ Uses the same interface as the Spelled types.</p>
 <dd><p>Returns an item or a subarray of the spelled array.
 Supports advanced indexing as on numpy arrays.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>index</strong> – a numpy-compatible index into the array</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p>a new array or a scalar value (depending on the index)</p>
 </dd>
 </dl>
@@ -221,10 +225,10 @@ Supports advanced indexing as on numpy arrays.</p>
 <span class="sig-name descname"><span class="pre">__gt__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledArray.__gt__" title="Permalink to this definition"></a></dt>
 <dd><p>Element-wise <code class="docutils literal notranslate"><span class="pre">&gt;</span></code> between two spelled arrays.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>other</strong> – the spelled array or scalar to compare to</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p>a boolean array that indicates where this array is <code class="docutils literal notranslate"><span class="pre">&gt;</span> <span class="pre">other</span></code></p>
 </dd>
 </dl>
@@ -240,10 +244,10 @@ Supports advanced indexing as on numpy arrays.</p>
 <span class="sig-name descname"><span class="pre">__le__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledArray.__le__" title="Permalink to this definition"></a></dt>
 <dd><p>Element-wise <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code> between two spelled arrays.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>other</strong> – the spelled array or scalar to compare to</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p>a boolean array that indicates where this array is <code class="docutils literal notranslate"><span class="pre">&lt;=</span> <span class="pre">other</span></code></p>
 </dd>
 </dl>
@@ -254,7 +258,7 @@ Supports advanced indexing as on numpy arrays.</p>
 <em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">__len__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledArray.__len__" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the length of the array (first dimension, as in numpy).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>the length of the array (1st dimension, integer)</p>
 </dd>
 </dl>
@@ -265,10 +269,10 @@ Supports advanced indexing as on numpy arrays.</p>
 <span class="sig-name descname"><span class="pre">__lt__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledArray.__lt__" title="Permalink to this definition"></a></dt>
 <dd><p>Element-wise <code class="docutils literal notranslate"><span class="pre">&lt;</span></code> between two spelled arrays.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>other</strong> – the spelled array or scalar to compare to</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p>a boolean array that indicates where this array is <code class="docutils literal notranslate"><span class="pre">&lt;</span> <span class="pre">other</span></code></p>
 </dd>
 </dl>
@@ -279,10 +283,10 @@ Supports advanced indexing as on numpy arrays.</p>
 <span class="sig-name descname"><span class="pre">__ne__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledArray.__ne__" title="Permalink to this definition"></a></dt>
 <dd><p>Element-wise <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code> between two spelled arrays.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>other</strong> – the spelled array or scalar to compare to</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p>a boolean array that indicates where this array is <code class="docutils literal notranslate"><span class="pre">!=</span> <span class="pre">other</span></code></p>
 </dd>
 </dl>
@@ -300,7 +304,7 @@ Supports advanced indexing as on numpy arrays.</p>
 <dd><p>Sets the given indices to the given item(s).
 Supports advanced indexing as on numpy arrays.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>index</strong> – a numpy-compatible index into the array</p></li>
 <li><p><strong>item</strong> – an array or a scalar to assign to the indicated sub-array</p></li>
@@ -332,7 +336,7 @@ For interval classes, alteration refers to the upward version of the interval
 (e.g. for <code class="docutils literal notranslate"><span class="pre">m7</span></code>/<code class="docutils literal notranslate"><span class="pre">-M2</span></code> it is -1).
 For pitches, return the accidentals (positive=sharps, negative=flats, 0=natural).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>an array of alterations (integers)</p>
 </dd>
 </dl>
@@ -344,10 +348,10 @@ For pitches, return the accidentals (positive=sharps, negative=flats, 0=natural)
 <dd><p>Returns True if self and other are the equal,
 False otherwise.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>other</strong> – another spelled array of the same type</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if the two arrays are equal, <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise</p>
 </dd>
 </dl>
@@ -368,10 +372,10 @@ interval/pitch classes use line-of-fifths ordering.</p>
 To test the overall equality of two spelled arrays,
 use <a class="reference internal" href="#pitchtypes.spelled_array.SpelledArray.array_equal" title="pitchtypes.spelled_array.SpelledArray.array_equal"><code class="xref py py-meth docutils literal notranslate"><span class="pre">array_equal</span></code></a></p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>other</strong> – another spelled array or scalar</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Returns</dt>
 <dd class="field-even"><p>an array of <code class="docutils literal notranslate"><span class="pre">-1</span></code> / <code class="docutils literal notranslate"><span class="pre">0</span></code> / <code class="docutils literal notranslate"><span class="pre">1</span></code> (integer)</p>
 </dd>
 </dl>
@@ -383,7 +387,7 @@ use <a class="reference internal" href="#pitchtypes.spelled_array.SpelledArray.a
 <dd><p>Returns a shallow copy of the array.
 This also creates copies of the underlying numpy arrays.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>a copy of the array</p>
 </dd>
 </dl>
@@ -394,7 +398,7 @@ This also creates copies of the underlying numpy arrays.</p>
 <span class="sig-name descname"><span class="pre">deepcopy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledArray.deepcopy" title="Permalink to this definition"></a></dt>
 <dd><p>Returns a deep copy of the array.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>a deepcopy of the array</p>
 </dd>
 </dl>
@@ -407,7 +411,7 @@ This also creates copies of the underlying numpy arrays.</p>
 (unison=0, 2nd=1, octave=0, 2nd down=6, etc.).
 For pitches, return the integer that corresponds to the letter (C=0, D=1, …).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>an array of degrees (integers)</p>
 </dd>
 </dl>
@@ -418,7 +422,7 @@ For pitches, return the integer that corresponds to the letter (C=0, D=1, …).<
 <em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fifths</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledArray.fifths" title="Permalink to this definition"></a></dt>
 <dd><p>Return the position of the interval on the line of fifths.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>an array of fifths (integers)</p>
 </dd>
 </dl>
@@ -431,7 +435,7 @@ For pitches, return the integer that corresponds to the letter (C=0, D=1, …).<
 which is dependent on the fifths.</p>
 <p>Only use this if you know what you are doing.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>an array of internal/dependent octaves (integers)</p>
 </dd>
 </dl>
@@ -443,7 +447,7 @@ which is dependent on the fifths.</p>
 <dd><p>Returns the names of the objects in the array
 as an array of strings of the same shape.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>an array of notation strings</p>
 </dd>
 </dl>
@@ -456,7 +460,7 @@ as an array of strings of the same shape.</p>
 Negative intervals start with -1, decreasing.
 For pitches, return the absolute octave of the pitch.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>an array of external/independent octaves (integers)</p>
 </dd>
 </dl>
@@ -468,7 +472,7 @@ For pitches, return the absolute octave of the pitch.</p>
 <dd><p>Return a one-hot encoded tensor representing the elements of the array.
 Specialized versions of this method take ranges for their respective dimensions.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>a one-hot tensor for the array</p>
 </dd>
 </dl>
