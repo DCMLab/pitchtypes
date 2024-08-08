@@ -1,13 +1,13 @@
 #  Copyright (c) 2022 Robert Lieck, Christoph Finkensiep
 
 import numbers
-import re
 import abc
 import functools
 
 import numpy as np
 
 from pitchtypes.basetypes import AbstractBase, Pitch, Interval, Diatonic, Chromatic
+from pitchtypes import utils
 
 
 @functools.total_ordering
@@ -17,16 +17,8 @@ class Generic(AbstractBase):
     See below for a set of common operations.
     """
 
-    _pitch_regex = re.compile(
-        "^(?P<class>[A-G])(?P<modifiers>(b*)|(#*))(?P<octave>(-?[0-9]+)?)$"
-    )
-    _interval_regex = re.compile(
-        "^(?P<sign>[-+])?("
-        "(?P<quality0>P)(?P<generic0>[145])|"  # perfect intervals
-        "(?P<quality1>|(M)|(m))(?P<generic1>[2367])|"  # imperfect intervals
-        "(?P<quality2>(a+)|(d+))(?P<generic2>[1-7])"  # augmeted/diminished intervals
-        ")(?P<octave>(:-?[0-9]+)?)$"
-    )
+    _pitch_regex = utils.PITCH_REGEX
+    _interval_regex = utils.INTERVAL_REGEX
 
     @staticmethod
     def parse_pitch(s):
@@ -168,19 +160,6 @@ class Generic(AbstractBase):
         return quality
 
     @staticmethod
-    def diatonic_steps_from_fifths(fifth_steps):
-        """
-        Return the number of diatonic steps corresponding to the number of steps on the line of fifths
-        (`4 * fifth_steps`).
-
-        :param fifth_steps: number of fifth steps
-        :return: number of diatonic steps
-
-        :meta private:
-        """
-        return 4 * fifth_steps
-
-    @staticmethod
     def generic_interval_class_from_fifths(fifth_steps):
         """
         Return the generic interval class corresponding to the given number of fifths. This corresponds to the number of
@@ -192,7 +171,7 @@ class Generic(AbstractBase):
 
         :meta private:
         """
-        return Generic.diatonic_steps_from_fifths(fifth_steps) % 7 + 1
+        return utils.diatonic_steps_from_fifths(fifth_steps) % 7 + 1
 
     @staticmethod
     def interval_class_from_fifths(fifths, inverse=False):
