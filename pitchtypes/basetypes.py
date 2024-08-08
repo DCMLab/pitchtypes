@@ -3,6 +3,10 @@ from typing import Iterable, Union, Any, Callable, Optional
 
 import numpy as np
 import abc
+import re
+
+from spelled import Spelled
+
 
 class AbstractBase:
     """
@@ -13,7 +17,7 @@ class AbstractBase:
 
     @staticmethod
     def set_func_attr(sub_type: Any,
-                      flags: Iterable[Union[bool,None]],
+                      flags: Iterable[Union[bool, None]],
                       names: Iterable[str],
                       funcs: Iterable[Callable]):
         """
@@ -73,6 +77,7 @@ class AbstractBase:
 
         :meta private:
         """
+
         def decorator(sub_type):
             # link types
             cls.Pitch = sub_type
@@ -107,6 +112,7 @@ class AbstractBase:
             AbstractBase.name_check(cls, sub_type, "Pitch", skip_name_check)
 
             return sub_type
+
         return decorator
 
     @classmethod
@@ -124,6 +130,7 @@ class AbstractBase:
 
         :meta private:
         """
+
         def decorator(sub_type):
             # link types
             cls.Interval = sub_type
@@ -170,6 +177,7 @@ class AbstractBase:
             AbstractBase.name_check(cls, sub_type, "Interval", skip_name_check)
 
             return sub_type
+
         return decorator
 
     @classmethod
@@ -183,6 +191,7 @@ class AbstractBase:
 
         :meta private:
         """
+
         def decorator(sub_type):
             # link types
             cls.PitchClass = sub_type
@@ -214,6 +223,7 @@ class AbstractBase:
             AbstractBase.name_check(cls, sub_type, "PitchClass", skip_name_check)
 
             return sub_type
+
         return decorator
 
     @classmethod
@@ -230,6 +240,7 @@ class AbstractBase:
 
         :meta private:
         """
+
         def decorator(sub_type):
             # link types
             cls.IntervalClass = sub_type
@@ -273,6 +284,7 @@ class AbstractBase:
             AbstractBase.name_check(cls, sub_type, "IntervalClass", skip_name_check)
 
             return sub_type
+
         return decorator
 
     @staticmethod
@@ -286,29 +298,34 @@ class AbstractBase:
             # Pitch
             class Pitch(cls):
                 pass
+
             Pitch.__name__ = cls.__name__ + "Pitch"
             cls.link_pitch_type()(Pitch)
 
             # Interval
             class Interval(cls):
                 pass
+
             Interval.__name__ = cls.__name__ + "Interval"
             cls.link_interval_type()(Interval)
 
             # PitchClass
             class PitchClass(cls):
                 pass
+
             PitchClass.__name__ = cls.__name__ + "PitchClass"
             cls.link_pitch_class_type()(PitchClass)
 
             # IntervalClass
             class IntervalClass(cls):
                 pass
+
             IntervalClass.__name__ = cls.__name__ + "IntervalClass"
             cls.link_interval_class_type()(IntervalClass)
 
             # return the class (which now has the linked sub-types)
             return cls
+
         return decorator
 
     def __init__(self, value, is_pitch, is_class, **kwargs):
@@ -357,6 +374,7 @@ class AbstractBase:
     def convert_to(self, other_type):
         return Converters.convert(self, other_type)
 
+
 class Interval(abc.ABC):
     """
     The basic interface implemented by every interval (and interval class) type.
@@ -403,20 +421,20 @@ class Interval(abc.ABC):
         Returns the difference of two intervals.
         """
         raise NotImplementedError
-    
+
     # @abc.abstractmethod
     def __mul__(self, other):
         """
         Returns an integer multiple of the interval.
         """
         raise NotImplementedError
-    
+
     def __rmul__(self, other):
         """
         Returns an integer multiple of the interval.
         """
         return self.__mul__(other)
-    
+
     # @abc.abstractmethod
     def __neg__(self):
         """
@@ -431,9 +449,8 @@ class Interval(abc.ABC):
         """
         raise NotImplementedError
 
-    
     # other interface methods
-    
+
     @abc.abstractmethod
     def direction(self):
         """
@@ -452,7 +469,7 @@ class Interval(abc.ABC):
         :return: the absolute interval
         """
         return abs(self)
-    
+
     @abc.abstractmethod
     def ic(self):
         """
@@ -480,6 +497,73 @@ class Interval(abc.ABC):
         :return: a non-class version of this interval
         """
         raise NotImplementedError
+
+    _interval_regex = re.compile("^(?P<sign>[-+])?("
+                                 "(?P<quality0>P)(?P<generic0>[145])|"  # perfect intervals
+                                 "(?P<quality1>|(M)|(m))(?P<generic1>[2367])|"  # imperfect intervals
+                                 "(?P<quality2>(a+)|(d+))(?P<generic2>[1-7])"  # augmeted/diminished intervals
+                                 ")(?P<octave>(:-?[0-9]+)?)$")
+
+    @staticmethod
+    def parse_interval(s):
+        """
+        Parse a string as a spelled interval or spelled interval class. Returns a tuple (sign, octave, fifths), where
+        sign is +1 or -1 and indicates the sign given in the string (no sign means positive), octave indicates the
+        number of full octave steps (in positive or negative direction; None for spelled interval classes), and fifths
+        indicates the steps taken along the line of fifths (i.e. not actual fifth steps that would add to the octaves).
+
+        :param s: string to parse
+        :return: (sign, octave, fifths)
+
+        :meta private:
+        """
+        if not isinstance(s, str):
+            raise TypeError("expecte string as input, got {s}")
+        interval_match = Interval._interval_regex.match(s)
+        if interval_match is None:
+            raise ValueError(f"could not match '{s}' with regex: '{Interval._interval_regex.pattern}'")
+        # get quality and generic interval (first corresponding group that is not None)
+        for i in range(3):
+            g = interval_match[f"generic{i}"]
+            q = interval_match[f"quality{i}"]
+            if g is not None and q is not None:
+                generic = int(g)
+                quality = q
+                break
+        else:
+            raise RuntimeError(f"Could not match generic interval and quality, this is a bug in the regex ("
+                               f"{[interval_match[f'generic{i}'] for i in range(3)]}, "
+                               f"{[interval_match[f'quality{i}'] for i in range(3)]}"
+                               f")")
+        # initialise value with generic interval classes
+        fifth_steps = Spelled.fifths_from_generic_interval_class(generic)
+        # add modifiers
+        if quality in ["P", "M"]:
+            pass
+        elif quality == "m":
+            fifth_steps -= 7
+        elif "a" in quality:
+            fifth_steps += 7 * len(quality)
+        elif "d" in quality:
+            if generic in [4, 1, 5]:
+                fifth_steps -= 7 * len(quality)
+            else:
+                fifth_steps -= 7 * (len(quality) + 1)
+        else:
+            raise RuntimeError(f"Initialization from string failed: "
+                               f"Unexpected interval quality '{quality}'. This is a bug and "
+                               f"means that either the used regex is bad or the handling code.")
+        # get octave
+        if interval_match['octave'][1:] == "":
+            octave = None
+        else:
+            octave = int(interval_match['octave'][1:])
+        # get sign and bring adapt fifth steps
+        if interval_match['sign'] == '-':
+            sign = -1
+        else:
+            sign = 1
+        return sign, octave, fifth_steps
 
 
 class Chromatic(abc.ABC):
@@ -573,7 +657,7 @@ class Pitch(abc.ABC):
         :return: the interval from self to other
         """
         return - self.interval_from(other)
-    
+
     @abc.abstractmethod
     def pc(self):
         """
@@ -602,9 +686,45 @@ class Pitch(abc.ABC):
         """
         raise NotImplementedError
 
+    _pitch_regex = re.compile("^(?P<class>[A-G])(?P<modifiers>(b*)|(#*))(?P<octave>(-?[0-9]+)?)$")
+
+    @staticmethod
+    def parse_pitch(s):
+        """
+        Parse a string as a spelled pitch or spelled pitch class. Returns a tuple (octave, fifths), where octave
+        indicates the octave the pitch lies in (None for spelled pitch classes) and fifths indicates the steps taken
+        along the line of fifths.
+
+        :param s: string to parse
+        :return: (octave, fifths)
+
+        :meta private:
+        """
+        if not isinstance(s, str):
+            raise TypeError(f"expected string as input, got {s}")
+        # convert unicode flats and sharps (♭ -> b and ♯ -> #)
+        s = s.replace("♭", "b")
+        s = s.replace("♯", "#")
+        # match with regex
+        pitch_match = Pitch._pitch_regex.match(s)
+        if pitch_match is None:
+            raise ValueError(f"could not match '{s}' with regex: '{Pitch._pitch_regex.pattern}'")
+        octave = pitch_match['octave']
+        # initialise fifth steps from diatonic pitch class
+        fifth_steps = Spelled.fifths_from_diatonic_pitch_class(pitch_match['class'])
+        # add modifiers
+        if "#" in pitch_match['modifiers']:
+            fifth_steps += 7 * len(pitch_match['modifiers'])
+        else:
+            fifth_steps -= 7 * len(pitch_match['modifiers'])
+        # add octave
+        if octave == "":
+            return None, fifth_steps
+        else:
+            return int(octave), fifth_steps
+
 
 class Converters:
-
     # store converters for classes derived from Pitch;
     # it's a dict of dicts, so that _converters[A][B] returns is a list of functions that, when executed
     # successively, converts A to B

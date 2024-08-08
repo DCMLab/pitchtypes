@@ -2,13 +2,18 @@
 
 import numbers
 
-from pitchtypes.basetypes import AbstractBase
-from pitchtypes.spelled import Spelled
+from pitchtypes.spelled import Spelled, SpelledPitch, SpelledInterval, SpelledPitchClass, SpelledIntervalClass
 from pitchtypes.logfreq import LogFreq
+
+import re
+import abc
+import functools
+import numpy as np
+
+from pitchtypes.basetypes import AbstractBase, Pitch, Interval, Diatonic, Chromatic
 
 
 class Enharmonic(AbstractBase):
-
     # how should Pitch and PitchClass types be printed
     _print_as_int = False
     _print_flat_sharp = 'sharp'
@@ -81,9 +86,141 @@ class Enharmonic(AbstractBase):
     def name(self, *args, **kwargs):
         raise NotImplementedError
 
+    @abc.abstractmethod
+    def convert_to_logfreq(self):
+        pass
+
+    @abc.abstractmethod
+    def octaves(self):
+        pass
+
+    @abc.abstractmethod
+    def embed(self):
+        pass
+
+    @abc.abstractmethod
+    def from_semitones(cls, semitones):
+        pass
+
+    def __int__(self):
+        return self.value
+
+
+class AbstractEnharmonicInterval(abc.ABC):
+    @abc.abstractmethod
+    def name(self, *args, **kwargs):
+        pass
+
+    @abc.abstractmethod
+    def convert_to_logfreq(self):
+        pass
+
+    @abc.abstractmethod
+    def octaves(self):
+        pass
+
+    def __int__(self):
+        return self.value
+
+    @abc.abstractmethod
+    def embed(self):
+        pass
+
+    @abc.abstractmethod
+    def from_semitones(cls, semitones):
+        pass
+
+
+class AbstractEnharmonicPitch(abc.ABC):
+    @abc.abstractmethod
+    def name(self, *args, **kwargs):
+        pass
+
+    @abc.abstractmethod
+    def convert_to_logfreq(self):
+        pass
+
+    @abc.abstractmethod
+    def octaves(self):
+        pass
+
+    @abc.abstractmethod
+    def freq(self):
+        pass
+
+    @abc.abstractmethod
+    def pc(self):
+        pass
+
+    def __int__(self):
+        return self.value
+
+    @abc.abstractmethod
+    def midi(self):
+        pass
+
+    @abc.abstractmethod
+    def from_semitones(cls, semitones):
+        pass
+
+    @abc.abstractmethod
+    def embed(self):
+        pass
+
 
 @Enharmonic.link_pitch_type()
-class EnharmonicPitch(Enharmonic):
+class EnharmonicPitch(Enharmonic, AbstractEnharmonicPitch, Pitch):
+
+    def __init__(self, value):
+        """
+        Takes a string consisting of the form
+        ``<letter><accidentals?><octave>``, e.g. ``"C#4"``, ``"E5"``, or ``"Db-2"``.
+        Accidentals may be written as ASCII symbols (#/b)
+        or with unicode symbols (♯/♭), but not mixed within the same note.
+
+        or the MIDI value (str or int) of the pitch.
+
+        :param value: a string or internal numeric representation of the pitch
+        """
+        if isinstance(value, str):
+            if value.isdigit():
+                value = int(value)
+            else:
+                octaves, fifths = self.parse_pitch(value)
+                assert isinstance(octaves, numbers.Integral)
+                assert isinstance(fifths, numbers.Integral)
+                value = (fifths * 7) % 12 + 12 * octaves
+        elif isinstance(value, int):
+            value = int(value)
+        elif isinstance(value, SpelledPitch):
+            value = (value.fifths() * 7) % 12 + 12 * value.octaves()
+        else:
+            raise ValueError(f"Expected string or integer pitch value but got {value}")
+
+        super().__init__(value=value, is_pitch=True, is_class=False)
+
+    @staticmethod
+    def from_semitones(semitones):
+        """
+        Create a pitch by directly providing its internal semitone value.
+
+        Each pitch is represented relative to C0
+        by moving the specified number of semitones upwards
+        (or downwards for negative values).
+
+        :param semitones: the number of semitones to move from C0
+        :return: the resulting pitch (EnharmonicPitch)
+        """
+        return EnharmonicPitch(semitones)
+
+    def embed(self):
+        return self
+
+    def interval_from(self, other):
+        if type(other) == EnharmonicPitchClass:
+            return EnharmonicIntervalClass.from_semitones((self.value - other.value) % 12)
+        else:
+            raise TypeError(f"Cannot take interval between EnharmonicPitch and {type(other)}.")
 
     def to_class(self):
         return self.PitchClass(value=self.value % 12)
@@ -110,9 +247,107 @@ class EnharmonicPitch(Enharmonic):
     def midi(self):
         return self.value
 
+    def pc(self):
+        return self.to_class()
+
 
 @Enharmonic.link_interval_type()
-class EnharmonicInterval(Enharmonic):
+class EnharmonicInterval(Enharmonic, AbstractEnharmonicInterval, Interval, Chromatic):
+
+    def __init__(self, value):
+        """
+        Takes a string consisting of the form
+        ``-?<quality><generic-size>:<octaves>``,
+        e.g. ``"M6:0"``, ``"-m3:0"``, or ``"aa2:1"``,
+        which stand for a major sixth, a minor third down, and a double-augmented ninth, respectively.
+        possible qualities are d (diminished), m (minor), M (major), P (perfect), and a (augmented),
+        where d and a can be repeated.
+
+        :param value: a string or internal numeric representation of the interval
+        """
+        if isinstance(value, str):
+            if value.isdigit():
+                value = int(value)
+            else:
+                sign, octaves, fifths = self.parse_interval(value)
+                assert isinstance(sign, numbers.Integral)
+                assert isinstance(octaves, numbers.Integral)
+                assert isinstance(fifths, numbers.Integral)
+                assert abs(sign) == 1
+                assert octaves >= 0
+                # correct octaves from fifth steps
+                value = (fifths * 7) % 12 + 12 * octaves
+                # negate value for negative intervals
+                if sign < 0:
+                    value *= -1
+        elif isinstance(value, int):
+            value = int(value)
+        elif isinstance(value, SpelledInterval):
+            value = (value.fifths() * 7) % 12 + 12 * value.octaves()
+        else:
+            raise ValueError(f"Expected string or integer interval value but got {value}")
+        super().__init__(value=value, is_pitch=False, is_class=False)
+
+    @staticmethod
+    def from_semitones(semitones):
+        """
+        Create an interval by directly providing its internal semitone value.
+
+        :param semitones: the semitones (= interval class) of the interval (integer)
+        :return: the resulting interval (EnharmonicInterval)
+        """
+        return EnharmonicInterval(semitones)
+
+    @classmethod
+    def unison(cls):
+        """
+        Create a perfect unison.
+
+        :return: P1:0
+        """
+        return cls.from_semitones(0)
+
+    @classmethod
+    def octave(cls):
+        """
+        Create a perfect octave.
+
+        :return: P1:1
+        """
+        return cls.from_semitones(12)
+
+    def __abs__(self):
+        if self.direction() < 0:
+            return -self
+        else:
+            return self
+
+    def direction(self):
+        """
+        Returns the direction of the interval (1 = up, 0 = neutral, -1 = down).
+        Only perfect unisons are considered neutral.
+
+        :return: ``-1`` / ``0`` / ``1`` (integer)
+        """
+        if self.value == 0:
+            return 0
+        return self.value // abs(self.value)
+
+    def ic(self):
+        return self.to_class()
+
+    def embed(self):
+        return self
+
+    @classmethod
+    def chromatic_semitone(cls):
+        """
+        Create a chromatic semitone.
+
+        :return: a1:0
+        """
+        return EnharmonicInterval.from_semitones(1)
+
     def to_class(self):
         return self.IntervalClass(value=self.value % 12)
 
@@ -128,7 +363,59 @@ class EnharmonicInterval(Enharmonic):
 
 
 @Enharmonic.link_pitch_class_type()
-class EnharmonicPitchClass(Enharmonic):
+class EnharmonicPitchClass(Enharmonic, AbstractEnharmonicPitch, Pitch):
+
+    def midi(self):
+        """
+        Return the MIDI value of the pitch class, a value in the range [0, 11].
+        """
+        return self.value
+
+    def __init__(self, value):
+        """
+        Takes a string consisting of the form
+        ``<letter><accidentals?>``, e.g. ``"C#"``, ``"E"``, or ``"Dbb"``.
+        Accidentals may be written as ASCII symbols (#/b)
+        or with unicode symbols (♯/♭), but not mixed within the same note.
+
+        :param value: a string or internal numeric representation of the pitch class
+        """
+        if isinstance(value, str):
+            if value.isdigit():
+                value = int(value)
+            else:
+                octaves, fifths = self.parse_pitch(value)
+                assert isinstance(fifths, numbers.Integral)
+                assert octaves is None
+                value = (fifths * 7) % 12
+        elif isinstance(value, int):
+            value = int(value)
+        elif isinstance(value, SpelledPitchClass) or isinstance(value, SpelledPitch):
+            value = (value.fifths() * 7) % 12
+        else:
+            raise ValueError(f"Expected string or integer pitch class value but got {value}")
+        super().__init__(value=value, is_pitch=True, is_class=True)
+
+    def freq(self):
+        return 2 ** ((self.value - 69) / 12) * 440
+
+    def octaves(self):
+        return 0
+
+    def from_semitones(cls, semitones):
+        return cls(semitones)
+
+    def pc(self):
+        return self
+
+    def interval_from(self, other):
+        if type(other) == EnharmonicPitchClass:
+            return EnharmonicIntervalClass.from_semitones((self.value - other.value) % 12)
+        else:
+            raise TypeError(f"Cannot take interval between EnharmonicPitchClass and {type(other)}.")
+
+    def embed(self):
+        return EnharmonicPitch.from_semitones(self.value)
 
     def name(self, as_int=None, flat_sharp=None):
         if as_int is None:
@@ -144,7 +431,101 @@ class EnharmonicPitchClass(Enharmonic):
 
 
 @Enharmonic.link_interval_class_type()
-class EnharmonicIntervalClass(Enharmonic):
+class EnharmonicIntervalClass(Enharmonic, AbstractEnharmonicInterval, Interval, Chromatic):
+
+    def __init__(self, value):
+        """
+        Takes a string consisting of the form
+        ``-?<quality><generic-size>``,
+        e.g. ``"M6"``, ``"-m3"``, or ``"aa2"``,
+        which stand for a major sixth, a minor third down (= major sixth up), and a double-augmented second, respectively.
+        possible qualities are d (diminished), m (minor), M (major), P (perfect), and a (augmented),
+        where d and a can be repeated.
+
+        :param value: a string or internal numeric representation of the interval class
+        """
+        if isinstance(value, str):
+            if value.isdigit():
+                value = int(value)
+            else:
+                sign, octaves, fifths = self.parse_interval(value)
+                assert isinstance(sign, numbers.Integral)
+                assert abs(sign) == 1
+                assert octaves is None
+                assert isinstance(fifths, numbers.Integral)
+                value = ((fifths * 7) % 12) * sign
+        elif isinstance(value, int):
+            value = value
+        elif isinstance(value, SpelledIntervalClass) or isinstance(value, SpelledInterval):
+            value = (value.fifths() * 7) % 12
+        else:
+            raise ValueError(f"Expected string or integer interval class value but got {value}")
+        super().__init__(value=fifths, is_pitch=False, is_class=True)
+
+    @classmethod
+    def octaves(cls):
+        """
+        Return a perfect unison, which is the same as an octave for interval classes.
+F
+        :return: P1
+        """
+        return cls.from_semitones(0)
+
+    @staticmethod
+    def from_semitones(semitones):
+        """
+        Create an interval class by directly providing its internal semitones.
+
+        :param semitones: the semitones (= interval class) of the interval (integer)
+        :return: the resulting interval class (EnharmonicIntervalClass)
+        """
+        return EnharmonicIntervalClass(semitones)
+
+    @classmethod
+    def unison(cls):
+        """
+        Return a perfect unison.
+
+        :return: P1
+        """
+        return cls.from_semitones(0)
+
+    @classmethod
+    def chromatic_semitone(cls):
+        """
+        Return a chromatic semitone
+
+        :return: a1
+        """
+        return EnharmonicIntervalClass.from_semitones(0)
+
+    def embed(self):
+        return EnharmonicInterval.from_semitones(self.value)
+
+    def ic(self):
+        return self
+
+    @classmethod
+    def octave(cls):
+        return 0
+
+    def __abs__(self):
+        if self.direction() < 0:
+            return -self
+        else:
+            return self
+
+    def direction(self):
+        """
+        Returns the direction of the interval (1 = up, 0 = neutral, -1 = down).
+        Only perfect unisons are considered neutral.
+
+        :return: ``-1`` / ``0`` / ``1`` (integer)
+        """
+        if self.value == 0:
+            return 0
+        return self.value // abs(self.value)
+
     def name(self):
         sign = "-" if self.value < 0 else ""
         return sign + str(abs(self.value))
