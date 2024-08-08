@@ -28,11 +28,13 @@
    :template: custom-module-template.rst
    :recursive:
 
-   pitchtypes.basetypes
-   pitchtypes.converters
-   pitchtypes.enharmonic
-   pitchtypes.harmonic
-   pitchtypes.logfreq
-   pitchtypes.spelled
-   pitchtypes.spelled_array
+   basetypes
+   converters
+   enharmonic
+   generic
+   harmonic
+   logfreq
+   spelled
+   spelled_array
+   utils
 

@@ -27,7 +27,6 @@ pitchtypes.spelled.SpelledInterval
       ~SpelledInterval.create_subtypes
       ~SpelledInterval.degree
       ~SpelledInterval.diatonic_steps
-      ~SpelledInterval.diatonic_steps_from_fifths
       ~SpelledInterval.direction
       ~SpelledInterval.embed
       ~SpelledInterval.fifths

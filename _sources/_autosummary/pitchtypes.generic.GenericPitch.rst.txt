@@ -1,0 +1,58 @@
+pitchtypes.generic.GenericPitch
+===============================
+
+.. currentmodule:: pitchtypes.generic
+
+.. autoclass:: GenericPitch
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members:
+   :exclude-members: __init__
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~GenericPitch.__init__
+      ~GenericPitch.alteration
+      ~GenericPitch.compare
+      ~GenericPitch.convert_to
+      ~GenericPitch.create_subtypes
+      ~GenericPitch.degree
+      ~GenericPitch.embed
+      ~GenericPitch.fifths
+      ~GenericPitch.from_fifths_and_octaves
+      ~GenericPitch.from_independent
+      ~GenericPitch.from_onehot
+      ~GenericPitch.generic_interval_class_from_fifths
+      ~GenericPitch.internal_octaves
+      ~GenericPitch.interval_class_from_fifths
+      ~GenericPitch.interval_from
+      ~GenericPitch.interval_to
+      ~GenericPitch.letter
+      ~GenericPitch.link_interval_class_type
+      ~GenericPitch.link_interval_type
+      ~GenericPitch.link_pitch_class_type
+      ~GenericPitch.link_pitch_type
+      ~GenericPitch.name
+      ~GenericPitch.name_check
+      ~GenericPitch.octaves
+      ~GenericPitch.onehot
+      ~GenericPitch.parse_interval
+      ~GenericPitch.parse_pitch
+      ~GenericPitch.pc
+      ~GenericPitch.pitch_class_from_fifths
+      ~GenericPitch.set_func_attr
+      ~GenericPitch.steps
+      ~GenericPitch.to_class
+   
+   
+
+   
+   
+   

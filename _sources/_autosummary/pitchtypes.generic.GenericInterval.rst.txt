@@ -1,0 +1,63 @@
+pitchtypes.generic.GenericInterval
+==================================
+
+.. currentmodule:: pitchtypes.generic
+
+.. autoclass:: GenericInterval
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members:
+   :exclude-members: __init__
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~GenericInterval.__init__
+      ~GenericInterval.abs
+      ~GenericInterval.alteration
+      ~GenericInterval.chromatic_semitone
+      ~GenericInterval.compare
+      ~GenericInterval.convert_to
+      ~GenericInterval.create_subtypes
+      ~GenericInterval.degree
+      ~GenericInterval.diatonic_steps
+      ~GenericInterval.direction
+      ~GenericInterval.embed
+      ~GenericInterval.fifths
+      ~GenericInterval.from_fifths_and_octaves
+      ~GenericInterval.from_independent
+      ~GenericInterval.from_onehot
+      ~GenericInterval.generic
+      ~GenericInterval.generic_interval_class_from_fifths
+      ~GenericInterval.ic
+      ~GenericInterval.internal_octaves
+      ~GenericInterval.interval_class_from_fifths
+      ~GenericInterval.is_step
+      ~GenericInterval.link_interval_class_type
+      ~GenericInterval.link_interval_type
+      ~GenericInterval.link_pitch_class_type
+      ~GenericInterval.link_pitch_type
+      ~GenericInterval.name
+      ~GenericInterval.name_check
+      ~GenericInterval.octave
+      ~GenericInterval.octaves
+      ~GenericInterval.onehot
+      ~GenericInterval.parse_interval
+      ~GenericInterval.parse_pitch
+      ~GenericInterval.pitch_class_from_fifths
+      ~GenericInterval.set_func_attr
+      ~GenericInterval.steps
+      ~GenericInterval.to_class
+      ~GenericInterval.unison
+   
+   
+
+   
+   
+   

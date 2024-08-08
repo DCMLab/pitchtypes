@@ -1,22 +1,23 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pitchtypes.basetypes.Interval &mdash; pitchtypes  documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -29,11 +30,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../index.html" class="icon icon-home"> pitchtypes
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            pitchtypes
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -60,10 +65,12 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="pitchtypes.converters.html">pitchtypes.converters</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pitchtypes.enharmonic.html">pitchtypes.enharmonic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pitchtypes.generic.html">pitchtypes.generic</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pitchtypes.harmonic.html">pitchtypes.harmonic</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pitchtypes.logfreq.html">pitchtypes.logfreq</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pitchtypes.spelled.html">pitchtypes.spelled</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pitchtypes.spelled_array.html">pitchtypes.spelled_array</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pitchtypes.utils.html">pitchtypes.utils</a></li>
 </ul>
 </li>
 </ul>
@@ -83,7 +90,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a></li>
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../api_summary.html">API Summary</a></li>
           <li class="breadcrumb-item"><a href="pitchtypes.html">pitchtypes</a></li>
           <li class="breadcrumb-item"><a href="pitchtypes.basetypes.html">pitchtypes.basetypes</a></li>
@@ -98,23 +105,19 @@
            <div itemprop="articleBody">
              
   <section id="pitchtypes-basetypes-interval">
-<h1>pitchtypes.basetypes.Interval<a class="headerlink" href="#pitchtypes-basetypes-interval" title="Permalink to this heading"></a></h1>
+<h1>pitchtypes.basetypes.Interval<a class="headerlink" href="#pitchtypes-basetypes-interval" title="Link to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="pitchtypes.basetypes.Interval">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pitchtypes.basetypes.</span></span><span class="sig-name descname"><span class="pre">Interval</span></span><a class="headerlink" href="#pitchtypes.basetypes.Interval" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pitchtypes.basetypes.</span></span><span class="sig-name descname"><span class="pre">Interval</span></span><a class="headerlink" href="#pitchtypes.basetypes.Interval" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
 <p>The basic interface implemented by every interval (and interval class) type.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pitchtypes.basetypes.Interval.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.basetypes.Interval.__init__" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.basetypes.Interval.__init__" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <p class="rubric">Methods</p>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.basetypes.Interval.__init__" title="pitchtypes.basetypes.Interval.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>()</p></td>
 <td><p></p></td>
@@ -144,63 +147,63 @@
 </table>
 <dl class="py method">
 <dt class="sig sig-object py" id="pitchtypes.basetypes.Interval.__abs__">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">__abs__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.basetypes.Interval.__abs__" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">__abs__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.basetypes.Interval.__abs__" title="Link to this definition"></a></dt>
 <dd><p>For downward intervals, return their upward counterpart, otherwise just return the interval itself.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pitchtypes.basetypes.Interval.__add__">
-<span class="sig-name descname"><span class="pre">__add__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.basetypes.Interval.__add__" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">__add__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.basetypes.Interval.__add__" title="Link to this definition"></a></dt>
 <dd><p>Returns the sum of two intervals.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pitchtypes.basetypes.Interval.__eq__">
-<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.basetypes.Interval.__eq__" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.basetypes.Interval.__eq__" title="Link to this definition"></a></dt>
 <dd><p>Return self==value.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pitchtypes.basetypes.Interval.__hash__">
-<span class="sig-name descname"><span class="pre">__hash__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pitchtypes.basetypes.Interval.__hash__" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">__hash__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pitchtypes.basetypes.Interval.__hash__" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pitchtypes.basetypes.Interval.__mul__">
-<span class="sig-name descname"><span class="pre">__mul__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.basetypes.Interval.__mul__" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">__mul__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.basetypes.Interval.__mul__" title="Link to this definition"></a></dt>
 <dd><p>Returns an integer multiple of the interval.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pitchtypes.basetypes.Interval.__neg__">
-<span class="sig-name descname"><span class="pre">__neg__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.basetypes.Interval.__neg__" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">__neg__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.basetypes.Interval.__neg__" title="Link to this definition"></a></dt>
 <dd><p>Returns the inversion of the interval (same size in the other direction).</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pitchtypes.basetypes.Interval.__rmul__">
-<span class="sig-name descname"><span class="pre">__rmul__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.basetypes.Interval.__rmul__" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">__rmul__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.basetypes.Interval.__rmul__" title="Link to this definition"></a></dt>
 <dd><p>Returns an integer multiple of the interval.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pitchtypes.basetypes.Interval.__sub__">
-<span class="sig-name descname"><span class="pre">__sub__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.basetypes.Interval.__sub__" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">__sub__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.basetypes.Interval.__sub__" title="Link to this definition"></a></dt>
 <dd><p>Returns the difference of two intervals.</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pitchtypes.basetypes.Interval.__weakref__">
-<span class="sig-name descname"><span class="pre">__weakref__</span></span><a class="headerlink" href="#pitchtypes.basetypes.Interval.__weakref__" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">__weakref__</span></span><a class="headerlink" href="#pitchtypes.basetypes.Interval.__weakref__" title="Link to this definition"></a></dt>
 <dd><p>list of weak references to the object (if defined)</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pitchtypes.basetypes.Interval.abs">
-<span class="sig-name descname"><span class="pre">abs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.basetypes.Interval.abs" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">abs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.basetypes.Interval.abs" title="Link to this definition"></a></dt>
 <dd><p>For downward intervals, return their upward counterpart, otherwise just return the interval itself.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>the absolute interval</p>
 </dd>
 </dl>
@@ -208,12 +211,12 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pitchtypes.basetypes.Interval.direction">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">direction</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.basetypes.Interval.direction" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">direction</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.basetypes.Interval.direction" title="Link to this definition"></a></dt>
 <dd><p>Determines the direction of the interval:
 1 for up, -1 for down and 0 for neutral.
 Different types may have different conventions for the direction of an interval.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>the interval’s direction (<code class="docutils literal notranslate"><span class="pre">-1</span></code> / <code class="docutils literal notranslate"><span class="pre">0</span></code> / <code class="docutils literal notranslate"><span class="pre">1</span></code>, integer)</p>
 </dd>
 </dl>
@@ -221,11 +224,11 @@ Different types may have different conventions for the direction of an interval.
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pitchtypes.basetypes.Interval.embed">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">embed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.basetypes.Interval.embed" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">embed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.basetypes.Interval.embed" title="Link to this definition"></a></dt>
 <dd><p>For interval classes, return an embedding into the interval space in a (type-dependent) default octave.
 For non-class intervals, return the interval itself.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>a non-class version of this interval</p>
 </dd>
 </dl>
@@ -233,11 +236,11 @@ For non-class intervals, return the interval itself.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pitchtypes.basetypes.Interval.ic">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ic</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.basetypes.Interval.ic" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ic</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.basetypes.Interval.ic" title="Link to this definition"></a></dt>
 <dd><p>Return the interval class that corresponds to this interval.
 If the interval is already an interval class, it is returned itself.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>the interval’s corresponding interval class</p>
 </dd>
 </dl>
@@ -245,10 +248,10 @@ If the interval is already an interval class, it is returned itself.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pitchtypes.basetypes.Interval.octave">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">octave</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.basetypes.Interval.octave" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">octave</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.basetypes.Interval.octave" title="Link to this definition"></a></dt>
 <dd><p>Create the octave interval of this type.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>an octave interval</p>
 </dd>
 </dl>
@@ -256,10 +259,10 @@ If the interval is already an interval class, it is returned itself.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pitchtypes.basetypes.Interval.to_class">
-<span class="sig-name descname"><span class="pre">to_class</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.basetypes.Interval.to_class" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">to_class</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.basetypes.Interval.to_class" title="Link to this definition"></a></dt>
 <dd><p>Alias for ic(), but also supported by pitch types.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>the interval’s corresponding interval class</p>
 </dd>
 </dl>
@@ -267,10 +270,10 @@ If the interval is already an interval class, it is returned itself.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pitchtypes.basetypes.Interval.unison">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">unison</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.basetypes.Interval.unison" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">unison</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.basetypes.Interval.unison" title="Link to this definition"></a></dt>
 <dd><p>Create the unison interval of this type.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>a unison interval</p>
 </dd>
 </dl>

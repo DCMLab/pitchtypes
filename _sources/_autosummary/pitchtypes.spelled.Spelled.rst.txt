@@ -24,7 +24,6 @@ pitchtypes.spelled.Spelled
       ~Spelled.convert_to
       ~Spelled.create_subtypes
       ~Spelled.degree
-      ~Spelled.diatonic_steps_from_fifths
       ~Spelled.fifths
       ~Spelled.fifths_from_diatonic_pitch_class
       ~Spelled.fifths_from_generic_interval_class
