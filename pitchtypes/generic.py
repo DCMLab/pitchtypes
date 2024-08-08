@@ -3,6 +3,7 @@
 import numbers
 import abc
 import functools
+from typing import Tuple
 
 import numpy as np
 
@@ -125,42 +126,20 @@ class Generic(AbstractBase):
         return sign, octave, fifth_steps
 
     @staticmethod
-    def pitch_class_from_fifths(fifth_steps):
+    def pitch_class_from_fifths(fifth_steps: int) -> str:
         """
         Return the pitch class given the number of steps along the line of fifths
 
         :param fifth_steps: number of steps along the line of fifths
-        :return: pitch class (e.g. C, Bb, F##, Abbb etc.)
+        :return: generic pitch class (e.g. C, B, F, A etc.)
 
         :meta private:
         """
         base_pitch = ["F", "C", "G", "D", "A", "E", "B"][(fifth_steps + 1) % 7]
-        flat_sharp = (fifth_steps + 1) // 7
-        return base_pitch + ("#" if flat_sharp > 0 else "b") * abs(flat_sharp)
+        return base_pitch
 
     @staticmethod
-    def interval_quality_from_fifths(fifth_steps):
-        """
-        Return the interval quality (major, minor, perfect, augmented, diminished, doubly-augmented etc) given the
-        number of steps along the line of fifths.
-
-        :param fifth_steps: number of steps along the line of fifths
-        :return: interval quality (M, m, p, a, d, aa, dd, aaa, ddd etc)
-
-        :meta private:
-        """
-        if -5 <= fifth_steps <= 5:
-            quality = ["m", "m", "m", "m", "P", "P", "P", "M", "M", "M", "M"][
-                fifth_steps + 5
-            ]
-        elif fifth_steps > 5:
-            quality = "a" * ((fifth_steps + 1) // 7)
-        else:
-            quality = "d" * ((-fifth_steps + 1) // 7)
-        return quality
-
-    @staticmethod
-    def generic_interval_class_from_fifths(fifth_steps):
+    def generic_interval_class_from_fifths(fifth_steps: int) -> int:
         """
         Return the generic interval class corresponding to the given number of fifths. This corresponds to the number of
         diatonic steps plus one. The generic interval also corresponds to the scale degree when interpreted as the tone
@@ -174,7 +153,7 @@ class Generic(AbstractBase):
         return utils.diatonic_steps_from_fifths(fifth_steps) % 7 + 1
 
     @staticmethod
-    def interval_class_from_fifths(fifths, inverse=False):
+    def interval_class_from_fifths(fifths: int, inverse: bool = False):
         """
         Return the interval class corresponding to the given number of steps along the line of fifths. This function
         combines Generic.interval_quality_from_fifths and Generic.generic_interval_class_from_fifths. Specifying
@@ -188,55 +167,7 @@ class Generic(AbstractBase):
         """
         if inverse:
             fifths = -fifths
-        return (
-            f"{Generic.interval_quality_from_fifths(fifths)}"
-            f"{Generic.generic_interval_class_from_fifths(fifths)}"
-        )
-
-    @staticmethod
-    def _degree_from_fifths_(fifths):
-        """
-        Return the scale degree of a pitch/interval based on its fifths.
-        Helper function for degree()
-
-        :meta private:
-        """
-        return (fifths * 4) % 7
-
-    @staticmethod
-    def fifths_from_diatonic_pitch_class(pitch_class):
-        """
-        Return the number of steps along the line of fifths corresponding to a diatonic pitch class.
-
-        :param pitch_class: a diatonic pitch class; character in A, B, C, D, E, F, G
-        :return: fifth steps; an integer in -1, 0, ... 5
-
-        :meta private:
-        """
-        pitch_classes = "ABCDEFG"
-        if pitch_class not in pitch_classes:
-            pitch_classes = "', '".join(pitch_classes)
-            raise ValueError(
-                f"diatonic pitch class must be one of '{pitch_classes}', but got {pitch_class}"
-            )
-        return {"F": -1, "C": 0, "G": 1, "D": 2, "A": 3, "E": 4, "B": 5}[pitch_class]
-
-    @staticmethod
-    def fifths_from_generic_interval_class(generic):
-        """
-        Return the number of steps along the line of fifths corresponding to the given generic interval:
-        (2 * generic - 1) % 7 - 1.
-
-        :param generic: generic interval (integer in 1,...,7)
-        :return: fifth steps (integer in -1, 0, ..., 5)
-
-        :meta private:
-        """
-        if not isinstance(generic, numbers.Integral) or not (1 <= generic <= 7):
-            raise ValueError(
-                f"generic interval must be an integer between 1 and 7 (incl.), got {generic}"
-            )
-        return (2 * generic - 1) % 7 - 1
+        return f"{Generic.generic_interval_class_from_fifths(fifths)}"
 
     def __init__(self, value, is_pitch, is_class, **kwargs):
         super().__init__(value=value, is_pitch=is_pitch, is_class=is_class, **kwargs)
@@ -296,6 +227,16 @@ class Generic(AbstractBase):
         """
         raise NotImplementedError
 
+    def steps(self):
+        """
+        Return the diatonic steps of the object.
+        For intervals: unison=0, 2nd=1, ..., 7th=6
+        For pitches: C=0, D=1, ..., B=6.
+
+        :return: number of diatonic steps (integer)
+        """
+        raise NotImplementedError
+
     def octaves(self):
         """
         For intervals, return the number of octaves the interval spans.
@@ -317,15 +258,14 @@ class Generic(AbstractBase):
         """
         raise NotImplementedError
 
-    def degree(self):
+    def degree(self) -> int:
         """
-        Return the "relative scale degree" (0-6) to which the interval points
-        (unison=0, 2nd=1, octave=0, 2nd down=6, etc.).
-        For pitches, return the integer that corresponds to the letter (C=0, D=1, ...).
+        Return the "scale degree" or "generic interval" (1-7).
+        For pitches, return the integer that corresponds to the letter (C=1, D=2, ...).
 
         :return: degree (integer)
         """
-        return self._degree_from_fifths_(self.fifths())
+        return self.steps() + 1
 
     def alteration(self):
         """
@@ -353,26 +293,7 @@ class AbstractGenericInterval(abc.ABC):
     The interface for Generic interval types.
     """
 
-    @abc.abstractmethod
-    def generic(self):
-        """
-        Return the generic interval, i.e. the number of diatonic steps modulo octave.
-        Unlike degree(), the result respects the sign of the interval
-        (unison=0, 2nd up=1, 2nd down=-1).
-
-        :return: generic interval (integer)
-        """
-        raise NotImplementedError
-
-    @abc.abstractmethod
-    def diatonic_steps(self):
-        """
-        Return the diatonic steps of the interval (unison=0, 2nd=1, ..., octave=7, ...).
-        Respects both direction and octaves.
-
-        :return: number of diatonic steps (integer)
-        """
-        raise NotImplementedError
+    pass
 
 
 class AbstractGenericPitch(abc.ABC):
@@ -396,35 +317,30 @@ class GenericPitch(Generic, AbstractGenericPitch, Pitch):
     Represents a Generic pitch.
     """
 
-    def __init__(self, value):
+    def __init__(self, value: str | Tuple[int, int]):
         """
         Takes a string consisting of the form
         ``<letter><accidentals?><octave>``, e.g. ``"C#4"``, ``"E5"``, or ``"Db-2"``.
         Accidentals may be written as ASCII symbols (#/b)
         or with unicode symbols (♯/♭), but not mixed within the same note.
 
-        :param value: a string or internal numeric representation of the pitch
+        :param value: a string or internal numeric representation of the pitch (<internal_octave>, [0-6])
         """
         if isinstance(value, str):
             octaves, fifths = self.parse_pitch(value)
-            assert isinstance(octaves, numbers.Integral)
-            assert isinstance(fifths, numbers.Integral)
-            # correct for octaves taken by fifth steps
-            octaves -= Generic.diatonic_steps_from_fifths(fifths) // 7
-            value = np.array([octaves, fifths])
+            steps = utils.diatonic_steps_from_fifths(fifths)
         else:
-            octaves, fifths = value
-            assert isinstance(octaves, numbers.Integral)
-            assert isinstance(fifths, numbers.Integral)
-            value = np.array([octaves, fifths])
-        assert isinstance(fifths, numbers.Integral)
+            octaves, steps = value
+        steps %= 7
+        value = np.array([octaves, steps])
+        assert isinstance(steps, numbers.Integral)
         assert isinstance(octaves, numbers.Integral)
         super().__init__(value=value, is_pitch=True, is_class=False)
 
     @staticmethod
     def from_fifths_and_octaves(fifths, octaves):
         """
-        Create a pitch by directly providing its internal fifths and octaves.
+        Create a pitch by directly providing fifths and octaves.
 
         Each pitch is represented relative to C0
         by moving the specified number of fifths and octaves upwards
@@ -434,21 +350,21 @@ class GenericPitch(Generic, AbstractGenericPitch, Pitch):
         :param octaves: the internal/dependent octave of the pitch (integer)
         :return: the resulting pitch (GenericPitch)
         """
-        return GenericPitch((octaves, fifths))
+        return GenericPitch((octaves, utils.diatonic_steps_from_fifths(fifths)))
 
     @staticmethod
-    def from_independent(fifths, octaves):
+    def from_independent(steps: int, octaves: int):
         """
         Create a pitch from fifths (pitch class) and independent/external octaves (octave number).
 
-        :param fifths: the fifth (= pitch class) of the pitch (integer)
+        :param steps: the steps (= generic pitch class 0-6) of the pitch (integer)
         :param octaves: the external/independent octave of the pitch (integer)
         :return: the resulting pitch (GenericPitch)
         """
-        return GenericPitch.from_fifths_and_octaves(fifths, octaves - (fifths * 4) // 7)
+        return GenericPitch(octaves, steps)
 
     @staticmethod
-    def from_onehot(onehot, fifth_low, octave_low):
+    def from_onehot(onehot, octave_low):
         """
         Create a Generic pitch from a one-hot matrix.
 
@@ -462,24 +378,22 @@ class GenericPitch(Generic, AbstractGenericPitch, Pitch):
         if onehot.sum() != 1:
             raise ValueError(f"{onehot} is not a one-hot vector.")
         fs, os = np.where(onehot == 1)
-        return GenericPitch.from_independent(fs[0] + fifth_low, os[0] + octave_low)
+        return GenericPitch.from_independent(fs[0], os[0] + octave_low)
 
     # Pitch interface
 
     def interval_from(self, other):
         if type(other) is GenericPitch:
-            octaves1, fifths1 = self.value
-            octaves2, fifths2 = other.value
-            return GenericInterval.from_fifths_and_octaves(
-                fifths1 - fifths2, octaves1 - octaves2
-            )
+            octaves1, steps1 = self.value
+            octaves2, steps2 = other.value
+            return GenericInterval((octaves1 - octaves2, steps1 - steps2))
         else:
             raise TypeError(
                 f"Cannot take interval between GenericPitch and {type(other)}."
             )
 
     def to_class(self):
-        return self.PitchClass(self.fifths())
+        return self.PitchClass(self.steps())
 
     def pc(self):
         return self.to_class()
@@ -511,22 +425,22 @@ class GenericPitch(Generic, AbstractGenericPitch, Pitch):
         else:
             raise TypeError(f"Cannot compare {type(self)} with {type(other)}.")
 
-    def fifths(self):
+    def steps(self) -> int:
         return self.value[1]
 
-    def octaves(self):
-        return self.value[0] + self.diatonic_steps_from_fifths(self.fifths()) // 7
+    def octaves(self) -> int:
+        return self.value[0] + 1
 
-    def internal_octaves(self):
+    def internal_octaves(self) -> int:
         return self.value[0]
 
     def alteration(self):
-        return (self.fifths() + 1) // 7
+        return NotImplementedError
 
-    def letter(self):
-        return chr(ord("A") + (self.degree() + 2) % 7)
+    def letter(self) -> str:
+        return ["A", "B", "C", "D", "E", "F", "G"][self.steps()]
 
-    def onehot(self, fifth_range, octave_range, dtype=int):
+    def onehot(self, octave_range, dtype=int):
         """
         Returns a one-hot encoding of the pitch in fifths (first dimension) and external octaves (second dimension).
         The range of fifths and octaves is given by ``fifth_range`` and ``octave_range`` respectively,
@@ -537,20 +451,18 @@ class GenericPitch(Generic, AbstractGenericPitch, Pitch):
         :param dtype: dtype of the resulting array
         :return: a one-hot matrix (numpy array)
         """
-        flow, fhigh = fifth_range
+        slow, shigh = (0, 6)
         olow, ohigh = octave_range
-        f = self.fifths()
+        st = self.steps()
         o = self.octaves()
-        if f < flow or f > fhigh:
-            raise ValueError(
-                f"The pitch {self} is outside the given fifth range {fifth_range}."
-            )
+        if st < slow or st > shigh:
+            raise ValueError(f"The pitch {self} is outside the range (0, 6).")
         if o < olow or o > ohigh:
             raise ValueError(
                 f"The pitch {self} is outside the given octave range {octave_range}."
             )
-        out = np.zeros((fhigh - flow + 1, ohigh - olow + 1), dtype=dtype)
-        out[f - flow, o - olow] = 1
+        out = np.zeros((shigh - slow + 1, ohigh - olow + 1), dtype=dtype)
+        out[st - slow, o - olow] = 1
         return out
 
 
@@ -579,7 +491,7 @@ class GenericInterval(Generic, AbstractGenericInterval, Interval, Diatonic, Chro
             assert abs(sign) == 1
             assert octaves >= 0
             # correct octaves from fifth steps
-            octaves -= Generic.diatonic_steps_from_fifths(fifths) // 7
+            octaves -= utils.diatonic_steps_from_fifths(fifths) // 7
             value = np.array([octaves, fifths])
             # negate value for negative intervals
             if sign < 0:
@@ -744,7 +656,7 @@ class GenericInterval(Generic, AbstractGenericInterval, Interval, Diatonic, Chro
         else:
             raise TypeError(f"Cannot compare {type(self)} with {type(other)}.")
 
-    def fifths(self):
+    def steps(self):
         return self.value[1]
 
     def octaves(self):
@@ -884,7 +796,7 @@ class GenericPitchClass(Generic, AbstractGenericPitch, Pitch):
         else:
             raise TypeError(f"Cannot compare {type(self)} with {type(other)}.")
 
-    def fifths(self):
+    def steps(self):
         return self.value
 
     def octaves(self):
@@ -1072,7 +984,7 @@ class GenericIntervalClass(
         else:
             raise TypeError(f"Cannot compare {type(self)} with {type(other)}.")
 
-    def fifths(self):
+    def steps(self):
         return self.value
 
     def octaves(self):
