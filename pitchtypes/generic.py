@@ -3,7 +3,7 @@
 import numbers
 import abc
 import functools
-from typing import Tuple
+from typing import Tuple, Union
 
 import numpy as np
 
@@ -317,7 +317,7 @@ class GenericPitch(Generic, AbstractGenericPitch, Pitch):
     Represents a Generic pitch.
     """
 
-    def __init__(self, value: str | Tuple[int, int]):
+    def __init__(self, value: Union[str, Tuple[int, int]]):
         """
         Takes a string consisting of the form
         ``<letter><accidentals?><octave>``, e.g. ``"C#4"``, ``"E5"``, or ``"Db-2"``.
