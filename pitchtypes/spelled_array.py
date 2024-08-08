@@ -1535,7 +1535,7 @@ def asi(things, things2=None):
     :return: a spelled-interval array of the same shape as the input
     """
     input = np.array(things)
-    if input.dtype.type is np.str_ or input.dtype.type is np.strings:
+    if input.dtype.type is np.str_ or input.dtype.type is np.bytes_:
         return SpelledIntervalArray.from_strings(input)
     if isinstance(input.flat[0], SpelledInterval):
         return SpelledIntervalArray.from_array(input)
