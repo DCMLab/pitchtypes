@@ -3,11 +3,11 @@
 import numbers
 import abc
 import functools
+from abc import ABC
 
 import numpy as np
-
+from utils import diatonic_steps_from_fifths
 from pitchtypes.basetypes import AbstractBase, Pitch, Interval, Diatonic, Chromatic
-from pitchtypes import utils
 
 
 @functools.total_ordering
@@ -16,113 +16,6 @@ class Spelled(AbstractBase):
     A common base class for spelled pitch and interval types.
     See below for a set of common operations.
     """
-
-    _pitch_regex = utils.PITCH_REGEX
-    _interval_regex = utils.INTERVAL_REGEX
-
-    @staticmethod
-    def parse_pitch(s):
-        """
-        Parse a string as a spelled pitch or spelled pitch class. Returns a tuple (octave, fifths), where octave
-        indicates the octave the pitch lies in (None for spelled pitch classes) and fifths indicates the steps taken
-        along the line of fifths.
-
-        :param s: string to parse
-        :return: (octave, fifths)
-
-        :meta private:
-        """
-        if not isinstance(s, str):
-            raise TypeError(f"expected string as input, got {s}")
-        # convert unicode flats and sharps (♭ -> b and ♯ -> #)
-        s = s.replace("♭", "b")
-        s = s.replace("♯", "#")
-        # match with regex
-        pitch_match = Spelled._pitch_regex.match(s)
-        if pitch_match is None:
-            raise ValueError(
-                f"could not match '{s}' with regex: '{Spelled._pitch_regex.pattern}'"
-            )
-        octave = pitch_match["octave"]
-        # initialise fifth steps from diatonic pitch class
-        fifth_steps = Spelled.fifths_from_diatonic_pitch_class(pitch_match["class"])
-        # add modifiers
-        if "#" in pitch_match["modifiers"]:
-            fifth_steps += 7 * len(pitch_match["modifiers"])
-        else:
-            fifth_steps -= 7 * len(pitch_match["modifiers"])
-        # add octave
-        if octave == "":
-            return None, fifth_steps
-        else:
-            return int(octave), fifth_steps
-
-    @staticmethod
-    def parse_interval(s):
-        """
-        Parse a string as a spelled interval or spelled interval class. Returns a tuple (sign, octave, fifths), where
-        sign is +1 or -1 and indicates the sign given in the string (no sign means positive), octave indicates the
-        number of full octave steps (in positive or negative direction; None for spelled interval classes), and fifths
-        indicates the steps taken along the line of fifths (i.e. not actual fifth steps that would add to the octaves).
-
-        :param s: string to parse
-        :return: (sign, octave, fifths)
-
-        :meta private:
-        """
-        if not isinstance(s, str):
-            raise TypeError("expecte string as input, got {s}")
-        interval_match = Spelled._interval_regex.match(s)
-        if interval_match is None:
-            raise ValueError(
-                f"could not match '{s}' with regex: '{Spelled._interval_regex.pattern}'"
-            )
-        # get quality and generic interval (first corresponding group that is not None)
-        for i in range(3):
-            g = interval_match[f"generic{i}"]
-            q = interval_match[f"quality{i}"]
-            if g is not None and q is not None:
-                generic = int(g)
-                quality = q
-                break
-        else:
-            raise RuntimeError(
-                f"Could not match generic interval and quality, this is a bug in the regex ("
-                f"{[interval_match[f'generic{i}'] for i in range(3)]}, "
-                f"{[interval_match[f'quality{i}'] for i in range(3)]}"
-                f")"
-            )
-        # initialise value with generic interval classes
-        fifth_steps = Spelled.fifths_from_generic_interval_class(generic)
-        # add modifiers
-        if quality in ["P", "M"]:
-            pass
-        elif quality == "m":
-            fifth_steps -= 7
-        elif "a" in quality:
-            fifth_steps += 7 * len(quality)
-        elif "d" in quality:
-            if generic in [4, 1, 5]:
-                fifth_steps -= 7 * len(quality)
-            else:
-                fifth_steps -= 7 * (len(quality) + 1)
-        else:
-            raise RuntimeError(
-                f"Initialization from string failed: "
-                f"Unexpected interval quality '{quality}'. This is a bug and "
-                f"means that either the used regex is bad or the handling code."
-            )
-        # get octave
-        if interval_match["octave"][1:] == "":
-            octave = None
-        else:
-            octave = int(interval_match["octave"][1:])
-        # get sign and bring adapt fifth steps
-        if interval_match["sign"] == "-":
-            sign = -1
-        else:
-            sign = 1
-        return sign, octave, fifth_steps
 
     @staticmethod
     def pitch_class_from_fifths(fifth_steps):
@@ -136,7 +29,7 @@ class Spelled(AbstractBase):
         """
         base_pitch = ["F", "C", "G", "D", "A", "E", "B"][(fifth_steps + 1) % 7]
         flat_sharp = (fifth_steps + 1) // 7
-        return base_pitch + ("#" if flat_sharp > 0 else "b") * abs(flat_sharp)
+        return base_pitch + ('#' if flat_sharp > 0 else 'b') * abs(flat_sharp)
 
     @staticmethod
     def interval_quality_from_fifths(fifth_steps):
@@ -150,13 +43,11 @@ class Spelled(AbstractBase):
         :meta private:
         """
         if -5 <= fifth_steps <= 5:
-            quality = ["m", "m", "m", "m", "P", "P", "P", "M", "M", "M", "M"][
-                fifth_steps + 5
-            ]
+            quality = ['m', 'm', 'm', 'm', 'P', 'P', 'P', 'M', 'M', 'M', 'M'][fifth_steps + 5]
         elif fifth_steps > 5:
-            quality = "a" * ((fifth_steps + 1) // 7)
+            quality = 'a' * ((fifth_steps + 1) // 7)
         else:
-            quality = "d" * ((-fifth_steps + 1) // 7)
+            quality = 'd' * ((-fifth_steps + 1) // 7)
         return quality
 
     @staticmethod
@@ -171,7 +62,7 @@ class Spelled(AbstractBase):
 
         :meta private:
         """
-        return utils.diatonic_steps_from_fifths(fifth_steps) % 7 + 1
+        return diatonic_steps_from_fifths(fifth_steps) % 7 + 1
 
     @staticmethod
     def interval_class_from_fifths(fifths, inverse=False):
@@ -188,10 +79,8 @@ class Spelled(AbstractBase):
         """
         if inverse:
             fifths = -fifths
-        return (
-            f"{Spelled.interval_quality_from_fifths(fifths)}"
-            f"{Spelled.generic_interval_class_from_fifths(fifths)}"
-        )
+        return f"{Spelled.interval_quality_from_fifths(fifths)}" \
+               f"{Spelled.generic_interval_class_from_fifths(fifths)}"
 
     @staticmethod
     def _degree_from_fifths_(fifths):
@@ -202,41 +91,6 @@ class Spelled(AbstractBase):
         :meta private:
         """
         return (fifths * 4) % 7
-
-    @staticmethod
-    def fifths_from_diatonic_pitch_class(pitch_class):
-        """
-        Return the number of steps along the line of fifths corresponding to a diatonic pitch class.
-
-        :param pitch_class: a diatonic pitch class; character in A, B, C, D, E, F, G
-        :return: fifth steps; an integer in -1, 0, ... 5
-
-        :meta private:
-        """
-        pitch_classes = "ABCDEFG"
-        if pitch_class not in pitch_classes:
-            pitch_classes = "', '".join(pitch_classes)
-            raise ValueError(
-                f"diatonic pitch class must be one of '{pitch_classes}', but got {pitch_class}"
-            )
-        return {"F": -1, "C": 0, "G": 1, "D": 2, "A": 3, "E": 4, "B": 5}[pitch_class]
-
-    @staticmethod
-    def fifths_from_generic_interval_class(generic):
-        """
-        Return the number of steps along the line of fifths corresponding to the given generic interval:
-        (2 * generic - 1) % 7 - 1.
-
-        :param generic: generic interval (integer in 1,...,7)
-        :return: fifth steps (integer in -1, 0, ..., 5)
-
-        :meta private:
-        """
-        if not isinstance(generic, numbers.Integral) or not (1 <= generic <= 7):
-            raise ValueError(
-                f"generic interval must be an integer between 1 and 7 (incl.), got {generic}"
-            )
-        return (2 * generic - 1) % 7 - 1
 
     def __init__(self, value, is_pitch, is_class, **kwargs):
         super().__init__(value=value, is_pitch=is_pitch, is_class=is_class, **kwargs)
@@ -354,6 +208,38 @@ class AbstractSpelledInterval(abc.ABC):
     """
 
     @abc.abstractmethod
+    def name(self):
+        pass
+
+    @abc.abstractmethod
+    def compare(self, other):
+        pass
+
+    @abc.abstractmethod
+    def fifths(self):
+        pass
+
+    @abc.abstractmethod
+    def octaves(self):
+        pass
+
+    @abc.abstractmethod
+    def internal_octaves(self):
+        pass
+
+    @abc.abstractmethod
+    def alteration(self):
+        pass
+
+    @abc.abstractmethod
+    def onehot(self, fifth_range, octave_range, dtype=int):
+        pass
+
+    @abc.abstractmethod
+    def embed(self):
+        pass
+
+    @abc.abstractmethod
     def generic(self):
         """
         Return the generic interval, i.e. the number of diatonic steps modulo octave.
@@ -381,11 +267,52 @@ class AbstractSpelledPitch(abc.ABC):
     """
 
     @abc.abstractmethod
+    def name(self):
+        pass
+
+    @abc.abstractmethod
+    def compare(self, other):
+        pass
+
+    @abc.abstractmethod
+    def fifths(self):
+        pass
+
+    @abc.abstractmethod
+    def octaves(self):
+        pass
+
+    @abc.abstractmethod
+    def internal_octaves(self):
+        pass
+
+    @abc.abstractmethod
+    def alteration(self):
+        pass
+
+    @abc.abstractmethod
+    def onehot(self, fifth_range, octave_range, dtype=int):
+        pass
+
+    @abc.abstractmethod
+    def embed(self):
+        pass
+
+    @abc.abstractmethod
     def letter(self):
         """
         Returns the letter associated with the pitch (without accidentals).
 
         :return: letter (single-character string)
+        """
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def midi(self):
+        """
+        Return the MIDI number of the pitch.
+
+        :return: MIDI number (integer)
         """
         raise NotImplementedError
 
@@ -395,6 +322,14 @@ class SpelledPitch(Spelled, AbstractSpelledPitch, Pitch):
     """
     Represents a spelled pitch.
     """
+
+    def midi(self):
+        """
+        Return the MIDI value, in the interval [0,127].
+
+        :return: MIDI value (integer)
+        """
+        return 12 * (self.octaves() + 1) + (self.fifths() * 7) % 12
 
     def __init__(self, value):
         """
@@ -410,7 +345,7 @@ class SpelledPitch(Spelled, AbstractSpelledPitch, Pitch):
             assert isinstance(octaves, numbers.Integral)
             assert isinstance(fifths, numbers.Integral)
             # correct for octaves taken by fifth steps
-            octaves -= utils.diatonic_steps_from_fifths(fifths) // 7
+            octaves -= diatonic_steps_from_fifths(fifths) // 7
             value = np.array([octaves, fifths])
         else:
             octaves, fifths = value
@@ -467,16 +402,12 @@ class SpelledPitch(Spelled, AbstractSpelledPitch, Pitch):
     # Pitch interface
 
     def interval_from(self, other):
-        if type(other) is SpelledPitch:
+        if type(other) == SpelledPitch:
             octaves1, fifths1 = self.value
             octaves2, fifths2 = other.value
-            return SpelledInterval.from_fifths_and_octaves(
-                fifths1 - fifths2, octaves1 - octaves2
-            )
+            return SpelledInterval.from_fifths_and_octaves(fifths1 - fifths2, octaves1 - octaves2)
         else:
-            raise TypeError(
-                f"Cannot take interval between SpelledPitch and {type(other)}."
-            )
+            raise TypeError(f"Cannot take interval between SpelledPitch and {type(other)}.")
 
     def to_class(self):
         return self.PitchClass(self.fifths())
@@ -515,7 +446,7 @@ class SpelledPitch(Spelled, AbstractSpelledPitch, Pitch):
         return self.value[1]
 
     def octaves(self):
-        return self.value[0] + utils.diatonic_steps_from_fifths(self.fifths()) // 7
+        return self.value[0] + diatonic_steps_from_fifths(self.fifths()) // 7
 
     def internal_octaves(self):
         return self.value[0]
@@ -524,7 +455,7 @@ class SpelledPitch(Spelled, AbstractSpelledPitch, Pitch):
         return (self.fifths() + 1) // 7
 
     def letter(self):
-        return chr(ord("A") + (self.degree() + 2) % 7)
+        return chr(ord('A') + (self.degree() + 2) % 7)
 
     def onehot(self, fifth_range, octave_range, dtype=int):
         """
@@ -542,13 +473,9 @@ class SpelledPitch(Spelled, AbstractSpelledPitch, Pitch):
         f = self.fifths()
         o = self.octaves()
         if f < flow or f > fhigh:
-            raise ValueError(
-                f"The pitch {self} is outside the given fifth range {fifth_range}."
-            )
+            raise ValueError(f"The pitch {self} is outside the given fifth range {fifth_range}.")
         if o < olow or o > ohigh:
-            raise ValueError(
-                f"The pitch {self} is outside the given octave range {octave_range}."
-            )
+            raise ValueError(f"The pitch {self} is outside the given octave range {octave_range}.")
         out = np.zeros((fhigh - flow + 1, ohigh - olow + 1), dtype=dtype)
         out[f - flow, o - olow] = 1
         return out
@@ -579,11 +506,15 @@ class SpelledInterval(Spelled, AbstractSpelledInterval, Interval, Diatonic, Chro
             assert abs(sign) == 1
             assert octaves >= 0
             # correct octaves from fifth steps
-            octaves -= utils.diatonic_steps_from_fifths(fifths) // 7
+            octaves -= diatonic_steps_from_fifths(fifths) // 7
             value = np.array([octaves, fifths])
             # negate value for negative intervals
             if sign < 0:
                 value *= -1
+        elif isinstance(value, int):
+            octaves = 0
+            fifths = value
+            value = np.array([octaves, fifths])
         else:
             octaves, fifths = value
             assert isinstance(octaves, numbers.Integral)
@@ -611,9 +542,7 @@ class SpelledInterval(Spelled, AbstractSpelledInterval, Interval, Diatonic, Chro
         :param octaves: the external/independent octaves the interval spans (integer)
         :return: the resulting interval (SpelledInterval)
         """
-        return SpelledInterval.from_fifths_and_octaves(
-            fifths, octaves - (fifths * 4) // 7
-        )
+        return SpelledInterval.from_fifths_and_octaves(fifths, octaves - (fifths * 4) // 7)
 
     @staticmethod
     def from_onehot(onehot, fifth_low, octave_low):
@@ -719,11 +648,7 @@ class SpelledInterval(Spelled, AbstractSpelledInterval, Interval, Diatonic, Chro
         else:
             sign = ""
             inverse = False
-        return (
-            sign
-            + self.interval_class_from_fifths(self.fifths(), inverse=inverse)
-            + f":{octave}"
-        )
+        return sign + self.interval_class_from_fifths(self.fifths(), inverse=inverse) + f":{octave}"
 
     def compare(self, other):
         """
@@ -767,8 +692,7 @@ class SpelledInterval(Spelled, AbstractSpelledInterval, Interval, Diatonic, Chro
 
     def onehot(self, fifth_range, octave_range, dtype=int):
         """
-        Returns a one-hot encoding of the interval in fifths (first dimension) and independent octaves (second
-        dimension).
+        Returns a one-hot encoding of the interval in fifths (first dimension) and independent octaves (second dimension).
         The range of fifths and octaves is given by ``fifth_range`` and ``octave_range`` respectively,
         where each is a tuple ``(lower, upper)``.
 
@@ -782,13 +706,9 @@ class SpelledInterval(Spelled, AbstractSpelledInterval, Interval, Diatonic, Chro
         f = self.fifths()
         o = self.octaves()
         if f < flow or f > fhigh:
-            raise ValueError(
-                f"The interval {self} is outside the given fifth range {fifth_range}."
-            )
+            raise ValueError(f"The interval {self} is outside the given fifth range {fifth_range}.")
         if o < olow or o > ohigh:
-            raise ValueError(
-                f"The interval {self} is outside the given octave range {octave_range}."
-            )
+            raise ValueError(f"The interval {self} is outside the given octave range {octave_range}.")
         out = np.zeros((fhigh - flow + 1, ohigh - olow + 1), dtype=dtype)
         out[f - flow, o - olow] = 1
         return out
@@ -799,6 +719,14 @@ class SpelledPitchClass(Spelled, AbstractSpelledPitch, Pitch):
     """
     Represents a spelled pitch class, i.e. a pitch without octave information.
     """
+
+    def midi(self):
+        """
+        Return the MIDI number of the pitch class, in the interval [0,11].
+
+        :return: MIDI number (integer)
+        """
+        return (self.fifths() * 7) % 12
 
     def __init__(self, value):
         """
@@ -840,26 +768,22 @@ class SpelledPitchClass(Spelled, AbstractSpelledPitch, Pitch):
         """
         if onehot.sum() != 1:
             raise ValueError(f"{onehot} is not a one-hot vector.")
-        (fs,) = np.where(onehot == 1)
+        fs, = np.where(onehot == 1)
         return SpelledPitchClass.from_fifths(fs[0] + fifth_low)
 
     # pitch interface
 
     def interval_from(self, other):
-        if type(other) is SpelledPitchClass:
+        if type(other) == SpelledPitchClass:
             return SpelledIntervalClass.from_fifths(self.value - other.value)
         else:
-            raise TypeError(
-                f"Cannot take interval between SpelledPitchClass and {type(other)}."
-            )
+            raise TypeError(f"Cannot take interval between SpelledPitchClass and {type(other)}.")
 
     def pc(self):
         return self
 
     def embed(self):
-        return SpelledPitch.from_fifths_and_octaves(
-            self.fifths(), -((self.fifths() * 4) // 7)
-        )
+        return SpelledPitch.from_fifths_and_octaves(self.fifths(), -((self.fifths() * 4) // 7))
 
     # spelled interface
 
@@ -898,7 +822,7 @@ class SpelledPitchClass(Spelled, AbstractSpelledPitch, Pitch):
         return (self.fifths() + 1) // 7
 
     def letter(self):
-        return chr(ord("A") + (self.degree() + 2) % 7)
+        return chr(ord('A') + (self.degree() + 2) % 7)
 
     def onehot(self, fifth_range, dtype=int):
         """
@@ -912,18 +836,14 @@ class SpelledPitchClass(Spelled, AbstractSpelledPitch, Pitch):
         low, high = fifth_range
         f = self.fifths()
         if f < low or f > high:
-            raise ValueError(
-                f"The pitch class {self} is outside the given fifths range {fifth_range}."
-            )
+            raise ValueError(f"The pitch class {self} is outside the given fifths range {fifth_range}.")
         out = np.zeros(high - low + 1, dtype=dtype)
         out[f - low] = 1
         return out
 
 
 @Spelled.link_interval_class_type()
-class SpelledIntervalClass(
-    Spelled, AbstractSpelledInterval, Interval, Diatonic, Chromatic
-):
+class SpelledIntervalClass(Spelled, AbstractSpelledInterval, Interval, Diatonic, Chromatic):
     """
     Represents a spelled interval class, i.e. an interval without octave information.
     """
@@ -933,8 +853,7 @@ class SpelledIntervalClass(
         Takes a string consisting of the form
         ``-?<quality><generic-size>``,
         e.g. ``"M6"``, ``"-m3"``, or ``"aa2"``,
-        which stand for a major sixth, a minor third down (= major sixth up), and a double-augmented second,
-        respectively.
+        which stand for a major sixth, a minor third down (= major sixth up), and a double-augmented second, respectively.
         possible qualities are d (diminished), m (minor), M (major), P (perfect), and a (augmented),
         where d and a can be repeated.
 
@@ -975,7 +894,7 @@ class SpelledIntervalClass(
         """
         if onehot.sum() != 1:
             raise ValueError(f"{onehot} is not a one-hot vector.")
-        (fs,) = np.where(onehot == 1)
+        fs, = np.where(onehot == 1)
         return SpelledIntervalClass.from_fifths(fs[0] + low)
 
     # interval interface
@@ -990,7 +909,7 @@ class SpelledIntervalClass(
         return cls.from_fifths(0)
 
     @classmethod
-    def octave(cls):
+    def octaves(cls):
         """
         Return a perfect unison, which is the same as an octave for interval classes.
 
@@ -1039,9 +958,7 @@ class SpelledIntervalClass(
         return self
 
     def embed(self):
-        return SpelledInterval.from_fifths_and_octaves(
-            self.fifths(), -((self.fifths() * 4) // 7)
-        )
+        return SpelledInterval.from_fifths_and_octaves(self.fifths(), -((self.fifths() * 4) // 7))
 
     def is_step(self):
         return self.degree() in [0, 1, 6]
@@ -1077,7 +994,7 @@ class SpelledIntervalClass(
     def fifths(self):
         return self.value
 
-    def octaves(self):
+    def octave(self):
         return 0
 
     def internal_octaves(self):
@@ -1104,9 +1021,7 @@ class SpelledIntervalClass(
         low, high = fifth_range
         f = self.fifths()
         if f < low or f > high:
-            raise ValueError(
-                f"The pitch class {self} is outside the given fifths range {fifth_range}."
-            )
+            raise ValueError(f"The pitch class {self} is outside the given fifths range {fifth_range}.")
         out = np.zeros(high - low + 1, dtype=dtype)
         out[f - low] = 1
         return out
