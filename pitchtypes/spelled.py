@@ -428,7 +428,7 @@ class SpelledPitch(Spelled, AbstractSpelledPitch, Pitch):
     # Pitch interface
 
     def interval_from(self, other):
-        if type(other) == SpelledPitch:
+        if isinstance(other, SpelledPitch):
             octaves1, fifths1 = self.value
             octaves2, fifths2 = other.value
             return SpelledInterval.from_fifths_and_octaves(fifths1 - fifths2, octaves1 - octaves2)
