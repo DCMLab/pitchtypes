@@ -18,8 +18,12 @@ class TestHarmonic(TestCase):
         self.assertRaises(ValueError, lambda: Harmonic.parse_exponents("[1, -2, 3, -4"))
         self.assertRaises(ValueError, lambda: Harmonic.parse_exponents("[1, 2, -3; 4]"))
         self.assertRaises(ValueError, lambda: Harmonic.parse_exponents("[1, X, -3, 4]"))
-        self.assertRaises(ValueError, lambda: Harmonic.parse_exponents("[1, 2, -3.5, 4]"))
-        self.assertRaises(ValueError, lambda: Harmonic.parse_exponents("[1, 2, -3, 4.0]"))
+        self.assertRaises(
+            ValueError, lambda: Harmonic.parse_exponents("[1, 2, -3.5, 4]")
+        )
+        self.assertRaises(
+            ValueError, lambda: Harmonic.parse_exponents("[1, 2, -3, 4.0]")
+        )
 
         with np.printoptions(legacy='1.21'):
             # Interval

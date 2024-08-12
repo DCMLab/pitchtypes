@@ -1,6 +1,8 @@
 #  Copyright (c) 2020 Robert Lieck
 from typing import Iterable, Union, Any, Callable, Optional
-
+from pitchtypes.utils import fifths_from_generic_interval_class, fifths_from_diatonic_pitch_class
+from pitchtypes.operations import addition_convert_types, subtraction_convert_types
+import importlib
 import numpy as np
 import abc
 import re
@@ -89,19 +91,19 @@ class AbstractBase:
 
             def __add__(self, other):
                 if type(self).__bases__[0] is type(other).__bases__[0]:
-                    if type(self) is other.Interval:
+                    if type(other) is other.Interval:
                         return self.Pitch(self.value + other.value)
                     if type(other) is self.IntervalClass:
-                        return self.PitchClass(self.value + other.value)
-
-                key = (type(self).__name__, type(other).__name__)
-                if key in addition_convert_types:
-                    self_converted = cls.convert_to(self, cls._import_class(addition_convert_types[key][0]))
-                    other_converted = cls.convert_to(other, cls._import_class(addition_convert_types[key][1]))
-                    if type(other_converted) is self_converted.Interval:
-                        return self_converted.Pitch(self_converted.value + other_converted.value)
-                    if type(other_converted) is self_converted.IntervalClass:
-                        return self_converted.PitchClass(self_converted.value + other_converted.value)
+                        return self.PitchClass(self.value[1] + other.value)
+                else:
+                    key = (type(self).__name__, type(other).__name__)
+                    if key in addition_convert_types:
+                        self_converted = cls.convert_to(self, cls._import_class(addition_convert_types[key][0]))
+                        other_converted = cls.convert_to(other, cls._import_class(addition_convert_types[key][1]))
+                        if type(other_converted) is self_converted.Interval:
+                            return self_converted.Pitch(self_converted.value + other_converted.value)
+                        if type(other_converted) is self_converted.IntervalClass:
+                            return self_converted.PitchClass(self_converted.value + other_converted.value)
                 return NotImplemented
 
             def __sub__(self, other):
@@ -111,22 +113,22 @@ class AbstractBase:
                     elif type(other) is self.Interval:
                         return self.Pitch(self.value - other.value)
                     elif type(other) is self.PitchClass:
-                        return self.IntervalClass(self.value - other.value)
+                        return self.IntervalClass(self.value[1] - other.value)
                     elif type(other) is self.IntervalClass:
-                        return self.PitchClass(self.value - other.value)
-
-                key = (type(self).__name__, type(other).__name__)
-                if key in subtraction_convert_types:
-                    self_converted = cls.convert_to(self, cls._import_class(subtraction_convert_types[key][0]))
-                    other_converted = cls.convert_to(other, cls._import_class(subtraction_convert_types[key][1]))
-                    if type(other_converted) is self_converted.Pitch:
-                        return self_converted.Interval(self_converted.value - other_converted.value)
-                    elif type(other_converted) is self_converted.Interval:
-                        return self_converted.Pitch(self_converted.value - other_converted.value)
-                    elif type(other_converted) is self_converted.PitchClass:
-                        return self_converted.IntervalClass(self.value - other.value)
-                    elif type(other_converted) is self_converted.IntervalClass:
-                        return self_converted.PitchClass(self_converted.value - other_converted.value)
+                        return self.PitchClass(self.value[1] - other.value)
+                else:
+                    key = (type(self).__name__, type(other).__name__)
+                    if key in subtraction_convert_types:
+                        self_converted = cls.convert_to(self, cls._import_class(subtraction_convert_types[key][0]))
+                        other_converted = cls.convert_to(other, cls._import_class(subtraction_convert_types[key][1]))
+                        if type(other_converted) is self_converted.Pitch:
+                            return self_converted.Interval(self_converted.value - other_converted.value)
+                        elif type(other_converted) is self_converted.Interval:
+                            return self_converted.Pitch(self_converted.value - other_converted.value)
+                        elif type(other_converted) is self_converted.PitchClass:
+                            return self_converted.IntervalClass(self.value - other.value)
+                        elif type(other_converted) is self_converted.IntervalClass:
+                            return self_converted.PitchClass(self_converted.value - other_converted.value)
                 return NotImplemented
 
             def to_class(self):
@@ -175,16 +177,16 @@ class AbstractBase:
                     if type(other) is self.Interval:
                         return self.Interval(self.value + other.value)
                     elif type(other) is self.IntervalClass:
-                        return self.IntervalClass(self.value + other.value)
-
-                key = (type(self).__name__, type(other).__name__)
-                if key in addition_convert_types:
-                    self_converted = cls.convert_to(self, cls._import_class(addition_convert_types[key][0]))
-                    other_converted = cls.convert_to(other, cls._import_class(addition_convert_types[key][1]))
-                    if type(other_converted) is self_converted.Interval:
-                        return self.Interval(self_converted.value + other_converted.value)
-                    elif type(other_converted) is self_converted.IntervalClass:
-                        return self.IntervalClass(self_converted.value + other_converted.value)
+                        return self.IntervalClass(self.value[1] + other.value)
+                else:
+                    key = (type(self).__name__, type(other).__name__)
+                    if key in addition_convert_types:
+                        self_converted = cls.convert_to(self, cls._import_class(addition_convert_types[key][0]))
+                        other_converted = cls.convert_to(other, cls._import_class(addition_convert_types[key][1]))
+                        if type(other_converted) is self_converted.Interval:
+                            return self.Interval(self_converted.value + other_converted.value)
+                        elif type(other_converted) is self_converted.IntervalClass:
+                            return self.IntervalClass(self_converted.value + other_converted.value)
                 return NotImplemented
 
             def __sub__(self, other):
@@ -192,16 +194,16 @@ class AbstractBase:
                     if type(other) is self.Interval:
                         return self.Interval(self.value - other.value)
                     elif type(other) is self.IntervalClass:
-                        return self.IntervalClass(self.value - other.value)
-
-                key = (type(self).__name__, type(other).__name__)
-                if key in subtraction_convert_types:
-                    self_converted = cls.convert_to(self, cls._import_class(subtraction_convert_types[key][0]))
-                    other_converted = cls.convert_to(other, cls._import_class(subtraction_convert_types[key][1]))
-                    if type(other_converted) is self_converted.Interval:
-                        return self_converted.Interval(self_converted.value - other_converted.value)
-                    elif type(other_converted) is self_converted.IntervalClass:
-                        return self_converted.IntervalClass(self_converted.value - other_converted.value)
+                        return self.IntervalClass(self.value[1] - other.value)
+                else:
+                    key = (type(self).__name__, type(other).__name__)
+                    if key in subtraction_convert_types:
+                        self_converted = cls.convert_to(self, cls._import_class(subtraction_convert_types[key][0]))
+                        other_converted = cls.convert_to(other, cls._import_class(subtraction_convert_types[key][1]))
+                        if type(other_converted) is self_converted.Interval:
+                            return self_converted.Interval(self_converted.value - other_converted.value)
+                        elif type(other_converted) is self_converted.IntervalClass:
+                            return self_converted.IntervalClass(self_converted.value - other_converted.value)
                 return NotImplemented
 
             def __mul__(self, other):
@@ -259,17 +261,17 @@ class AbstractBase:
                 if type(self).__bases__[0] is type(other).__bases__[0]:
                     if type(other) is self.IntervalClass:
                         return self.PitchClass(self.value + other.value)
-                    elif type(other) is self.PitchClass:
-                        return self.IntervalClass(self.value + other.value)
-
-                key = (type(self).__name__, type(other).__name__)
-                if key in addition_convert_types:
-                    self_converted = cls.convert_to(self, cls._import_class(addition_convert_types[key][0]))
-                    other_converted = cls.convert_to(other, cls._import_class(addition_convert_types[key][1]))
-                    if type(other_converted) is self_converted.IntervalClass:
-                        return self_converted.PitchClass(self_converted.value + other_converted.value)
-                    elif type(other_converted) is self_converted.PitchClass:
-                        return self_converted.IntervalClass(self_converted.value + other_converted.value)
+                    elif type(other) is self.Interval:
+                        return self.PitchClass(self.value + other.value[1])
+                else:
+                    key = (type(self).__name__, type(other).__name__)
+                    if key in addition_convert_types:
+                        self_converted = cls.convert_to(self, cls._import_class(addition_convert_types[key][0]))
+                        other_converted = cls.convert_to(other, cls._import_class(addition_convert_types[key][1]))
+                        if type(other_converted) is self_converted.IntervalClass:
+                            return self_converted.PitchClass(self_converted.value + other_converted.value)
+                        elif type(other_converted) is self_converted.PitchClass:
+                            return self_converted.IntervalClass(self_converted.value + other_converted.value)
                 return NotImplemented
 
             def __sub__(self, other):
@@ -279,22 +281,22 @@ class AbstractBase:
                     elif type(other) is self.IntervalClass:
                         return self.PitchClass(self.value - other.value)
                     elif type(other) is self.Pitch:
-                        return self.IntervalClass(self.value - other.value)
+                        return self.IntervalClass(self.value - other.value[1])
                     elif type(other) is self.Interval:
-                        return self.PitchClass(self.value - other.value)
-
-                key = (type(self).__name__, type(other).__name__)
-                if key in subtraction_convert_types:
-                    self_converted = cls.convert_to(self, cls._import_class(subtraction_convert_types[key][0]))
-                    other_converted = cls.convert_to(other, cls._import_class(subtraction_convert_types[key][1]))
-                    if type(other_converted) is self_converted.PitchClass:
-                        return self_converted.IntervalClass(self.value - other.value)
-                    elif type(other_converted) is self_converted.IntervalClass:
-                        return self_converted.PitchClass(self_converted.value - other_converted.value)
-                    elif type(other_converted) is self_converted.Pitch:
-                        return self_converted.IntervalClass(self.value - other.value)
-                    elif type(other_converted) is self_converted.Interval:
-                        return self_converted.PitchClass(self.value - other_converted.value)
+                        return self.PitchClass(self.value - other.value[1])
+                else:
+                    key = (type(self).__name__, type(other).__name__)
+                    if key in subtraction_convert_types:
+                        self_converted = cls.convert_to(self, cls._import_class(subtraction_convert_types[key][0]))
+                        other_converted = cls.convert_to(other, cls._import_class(subtraction_convert_types[key][1]))
+                        if type(other_converted) is self_converted.PitchClass:
+                            return self_converted.IntervalClass(self.value - other.value)
+                        elif type(other_converted) is self_converted.IntervalClass:
+                            return self_converted.PitchClass(self_converted.value - other_converted.value)
+                        elif type(other_converted) is self_converted.Pitch:
+                            return self_converted.IntervalClass(self.value - other.value)
+                        elif type(other_converted) is self_converted.Interval:
+                            return self_converted.PitchClass(self.value - other_converted.value)
                 return NotImplemented
 
             # set default functions
@@ -339,16 +341,16 @@ class AbstractBase:
                     if type(other) is self.IntervalClass:
                         return self.IntervalClass(self.value + other.value)
                     elif type(other) is self.Interval:
-                        return self.IntervalClass(self.value + other.value)
-
-                key = (type(self).__name__, type(other).__name__)
-                if key in addition_convert_types:
-                    self_converted = cls.convert_to(self, cls._import_class(addition_convert_types[key][0]))
-                    other_converted = cls.convert_to(other, cls._import_class(addition_convert_types[key][1]))
-                    if type(other_converted) is self_converted.IntervalClass:
-                        return self_converted.IntervalClass(self_converted.value + other_converted.value)
-                    elif type(other_converted) is self_converted.Interval:
-                        return self_converted.IntervalClass(self_converted.value + other_converted.value)
+                        return self.IntervalClass(self.value + other.value[1])
+                else:
+                    key = (type(self).__name__, type(other).__name__)
+                    if key in addition_convert_types:
+                        self_converted = cls.convert_to(self, cls._import_class(addition_convert_types[key][0]))
+                        other_converted = cls.convert_to(other, cls._import_class(addition_convert_types[key][1]))
+                        if type(other_converted) is self_converted.IntervalClass:
+                            return self_converted.IntervalClass(self_converted.value + other_converted.value)
+                        elif type(other_converted) is self_converted.Interval:
+                            return self_converted.IntervalClass(self_converted.value + other_converted.value)
                 return NotImplemented
 
             def __sub__(self, other):
@@ -356,16 +358,16 @@ class AbstractBase:
                     if type(other) is self.IntervalClass:
                         return self.IntervalClass(self.value - other.value)
                     elif type(other) is self.Interval:
-                        return self.IntervalClass(self.value - other.value)
-
-                key = (type(self).__name__, type(other).__name__)
-                if key in subtraction_convert_types:
-                    self_converted = cls.convert_to(self, cls._import_class(subtraction_convert_types[key][0]))
-                    other_converted = cls.convert_to(other, cls._import_class(subtraction_convert_types[key][1]))
-                    if type(other_converted) is self_converted.IntervalClass:
-                        return self_converted.IntervalClass(self_converted.value - other_converted.value)
-                    elif type(other_converted) is self_converted.Interval:
-                        return self_converted.IntervalClass(self_converted.value - other_converted.value)
+                        return self.IntervalClass(self.value - other.value[1])
+                else:
+                    key = (type(self).__name__, type(other).__name__)
+                    if key in subtraction_convert_types:
+                        self_converted = cls.convert_to(self, cls._import_class(subtraction_convert_types[key][0]))
+                        other_converted = cls.convert_to(other, cls._import_class(subtraction_convert_types[key][1]))
+                        if type(other_converted) is self_converted.IntervalClass:
+                            return self_converted.IntervalClass(self_converted.value - other_converted.value)
+                        elif type(other_converted) is self_converted.Interval:
+                            return self_converted.IntervalClass(self_converted.value - other_converted.value)
                 return NotImplemented
 
             def __mul__(self, other):
@@ -663,7 +665,7 @@ class Interval(abc.ABC):
                                f"means that either the used regex is bad or the handling code.")
         # get octave
         if interval_match['octave'][1:] == "":
-            octave = None
+            octave = 0
         else:
             octave = int(interval_match['octave'][1:])
         # get sign and bring adapt fifth steps

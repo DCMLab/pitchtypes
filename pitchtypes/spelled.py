@@ -6,7 +6,7 @@ import abc
 import functools
 
 import numpy as np
-
+from pitchtypes.utils import diatonic_steps_from_fifths
 from pitchtypes.basetypes import AbstractBase, Pitch, Interval, Diatonic, Chromatic
 
 
@@ -36,7 +36,7 @@ class Spelled(AbstractBase):
         """
         Return the interval quality (major, minor, perfect, augmented, diminished, doubly-augmented etc) given the
         number of steps along the line of fifths.
-        
+
         :param fifth_steps: number of steps along the line of fifths
         :return: interval quality (M, m, p, a, d, aa, dd, aaa, ddd etc)
 
@@ -55,7 +55,7 @@ class Spelled(AbstractBase):
         """
         Return the number of diatonic steps corresponding to the number of steps on the line of fifths
         (`4 * fifth_steps`).
-        
+
         :param fifth_steps: number of fifth steps
         :return: number of diatonic steps
 
@@ -69,7 +69,7 @@ class Spelled(AbstractBase):
         Return the generic interval class corresponding to the given number of fifths. This corresponds to the number of
         diatonic steps plus one. The generic interval also corresponds to the scale degree when interpreted as the tone
         reached when starting from the tonic.
-        
+
         :param fifth_steps: number of fifth steps
         :return: scale degree (integer in 1,...,7)
 
@@ -83,7 +83,7 @@ class Spelled(AbstractBase):
         Return the interval class corresponding to the given number of steps along the line of fifths. This function
         combines Spelled.interval_quality_from_fifths and Spelled.generic_interval_class_from_fifths. Specifying
         inverse=True (default is False) returns the inverse interval class (m2 for M7, aa4 for dd5 etc.).
-        
+
         :param fifths: number of fifth steps
         :param inverse: whether to return the inverse interval class
         :return: interval class (p1, M3, aa6 etc.)
@@ -109,7 +109,7 @@ class Spelled(AbstractBase):
     def fifths_from_diatonic_pitch_class(pitch_class):
         """
         Return the number of steps along the line of fifths corresponding to a diatonic pitch class.
-        
+
         :param pitch_class: a diatonic pitch class; character in A, B, C, D, E, F, G
         :return: fifth steps; an integer in -1, 0, ... 5
 
@@ -126,7 +126,7 @@ class Spelled(AbstractBase):
         """
         Return the number of steps along the line of fifths corresponding to the given generic interval:
         (2 * generic - 1) % 7 - 1.
-        
+
         :param generic: generic interval (integer in 1,...,7)
         :return: fifth steps (integer in -1, 0, ..., 5)
 
@@ -358,7 +358,7 @@ class SpelledPitch(Spelled, AbstractSpelledPitch, Pitch):
     """
 
     def __init__(self, value):
-        """        
+        """
         Takes a string consisting of the form
         ``<letter><accidentals?><octave>``, e.g. ``"C#4"``, ``"E5"``, or ``"Db-2"``.
         Accidentals may be written as ASCII symbols (#/b)
@@ -788,7 +788,7 @@ class SpelledPitchClass(Spelled, AbstractSpelledPitch, Pitch):
     # pitch interface
 
     def interval_from(self, other):
-        if type(other) == SpelledPitchClass:
+        if type(other) is SpelledPitchClass:
             return SpelledIntervalClass.from_fifths(self.value - other.value)
         else:
             raise TypeError(f"Cannot take interval between SpelledPitchClass and {type(other)}.")

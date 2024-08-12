@@ -1,151 +1,178 @@
-#  Copyright (c) 2021 Robert Lieck
-
+import numpy as np
+from pitchtypes.basetypes import AbstractBase, Pitch, Interval, Diatonic
+from pitchtypes.utils import diatonic_steps_from_fifths
+from pitchtypes.spelled import Spelled, SpelledPitch, SpelledInterval, SpelledPitchClass, SpelledIntervalClass
+import functools
+import abc
 import numbers
 
-from pitchtypes.spelled import Spelled, SpelledPitch, SpelledInterval, SpelledPitchClass, SpelledIntervalClass
-from pitchtypes.logfreq import LogFreq
 
-import re
-import abc
-import functools
-import numpy as np
-
-from pitchtypes.basetypes import AbstractBase, Pitch, Interval, Diatonic, Chromatic
-
-
-class Enharmonic(AbstractBase):
-    # how should Pitch and PitchClass types be printed
-    _print_as_int = False
-    _print_flat_sharp = 'sharp'
-
-    @classmethod
-    def print_options(cls, as_int=None, flat_sharp=None):
-        if cls == Enharmonic:
-            Enharmonic.Pitch.print_options(as_int=as_int, flat_sharp=flat_sharp)
-            Enharmonic.PitchClass.print_options(as_int=as_int, flat_sharp=flat_sharp)
-        if as_int is not None:
-            cls._print_as_int = as_int
-        if flat_sharp is not None:
-            if flat_sharp not in ['sharp', 'flat']:
-                raise ValueError("'flat_sharp' has to be one of ['sharp', 'flat']")
-            else:
-                cls._print_flat_sharp = flat_sharp
-        if as_int is None and flat_sharp is None:
-            print(f"print options in {cls.__name__}:\n"
-                  f"    as_int: {cls._print_as_int}\n"
-                  f"    flat_sharp: {cls._print_flat_sharp}")
+@functools.total_ordering
+class Generic(AbstractBase):
+    """
+    A common base class for generic pitch and interval types.
+    See below for a set of common operations.
+    """
 
     @staticmethod
-    def pitch_class_name_from_midi(midi_pitch, flat_sharp):
+    def pitch_class_from_diatonic_steps(diatonic_steps):
         """
-        Return the pitch class name for the given pitch in MIDI integer.
-        :param midi_pitch: MIDI pitch
-        :param flat_sharp: whether to use flats or sharps for accidentals
-        :return: pitch class
+        Return the pitch class given the number of steps
+
+        :param diatonic_steps: number of diatonic steps
+        :return: pitch class (C, D, E, F, G, A, B)
         """
-        if flat_sharp == "sharp":
-            base_names = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
-        elif flat_sharp == "flat":
-            base_names = ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"]
-        else:
-            raise ValueError("parameter 'flat_sharp' must be one of ['sharp', 'flat']")
-        return base_names[midi_pitch % 12]
+        base_pitch = ["C", "D", "E", "F", "G", "A", "B"][diatonic_steps % 7]
+        return base_pitch
+
+    @staticmethod
+    def generic_interval_class_from_fifths(fifth_steps):
+        """
+        Return the generic interval class corresponding to the given number of fifths. This corresponds to the number of
+        diatonic steps plus one. The generic interval also corresponds to the scale degree when interpreted as the tone
+        reached when starting from the tonic.
+
+        :param fifth_steps: number of fifth steps
+        :return: scale degree (integer in 1,...,7)
+
+        :meta private:
+        """
+        return diatonic_steps_from_fifths(fifth_steps) % 7 + 1
+
+    @staticmethod
+    def _degree_from_diatonic_steps_(diatonic_steps):
+        """
+        Return the scale degree of a pitch/interval based on its diatonic steps.
+        Helper function for degree()
+
+        :meta private:
+        """
+        return diatonic_steps % 7 + 1
 
     def __init__(self, value, is_pitch, is_class, **kwargs):
-        # pre-process value
-        if isinstance(value, str):
-            if is_pitch:
-                if is_class:
-                    value = Spelled.PitchClass(value=value).convert_to(EnharmonicPitchClass).value
-                else:
-                    value = Spelled.Pitch(value=value).convert_to(EnharmonicPitch).value
-            else:
-                if is_class:
-                    value = Spelled.IntervalClass(value=value).convert_to(EnharmonicIntervalClass).value
-                else:
-                    value = Spelled.Interval(value=value).convert_to(EnharmonicInterval).value
-        elif isinstance(value, numbers.Number):
-            int_value = int(value)
-            if int_value != value:
-                raise ValueError(f"Expected integer pitch value but got {value}")
-            value = int_value
-            if is_class:
-                value = value % 12
-        # hand on initialisation to other base classes
         super().__init__(value=value, is_pitch=is_pitch, is_class=is_class, **kwargs)
-
-    def convert_to_logfreq(self):
-        raise NotImplementedError
-
-    def __int__(self):
-        return self.value
+        if not is_class:
+            self.value.flags.writeable = False
 
     def __repr__(self):
         return self.name()
 
-    def name(self, *args, **kwargs):
+    def name(self):
+        """
+        The name of the pitch or interval in string notation
+
+        :return: the object's notation name (string)
+        """
         raise NotImplementedError
 
+    def compare(self, other):
+        """
+        Comparison between two generic types.
+
+        Returns 0 if the objects are equal,
+        1 if the first object (``self``) is greater,
+        and -1 if the second object (``other``) is greater.
+
+        The respective ordering differs between types.
+        Non-class pitches and intervals use diatonic ordering,
+        interval/pitch classes use diatonic step ordering.
+
+        This method can be indirectly used through binary comparison operators
+        (including ``==``, ``<`` etc.).
+
+        :param other: an object to compare to (same type as ``self``)
+        :return: ``-1`` / ``0`` / ``1`` (integer)
+        """
+        raise NotImplementedError
+
+    def __eq__(self, other):
+        try:
+            return self.compare(other) == 0
+        except TypeError:
+            return NotImplemented
+
+    def __lt__(self, other):
+        try:
+            return self.compare(other) == -1
+        except TypeError:
+            return NotImplemented
+
+    def steps(self):
+        """
+        Return the position of the interval in diatonic steps.
+
+        :return: fifth position (integer)
+        """
+        raise NotImplementedError
+
+    def octaves(self):
+        """
+        For intervals, return the number of octaves the interval spans.
+        Negative intervals start with -1, decreasing.
+        For pitches, return the absolute octave of the pitch.
+
+        :return: external/independent octave (integer)
+        """
+        raise NotImplementedError
+
+    def internal_octaves(self):
+        """
+        Return the internal octave representation of a pitch
+
+        Only use this if you know what you are doing.
+
+        :return: internal/dependent octave (integer)
+        """
+        raise NotImplementedError
+
+    def degree(self):
+        """
+        Return the "relative scale degree" (0-6) to which the interval points
+        (unison=0, 2nd=1, octave=0, 2nd down=6, etc.).
+        For pitches, return the integer that corresponds to the letter (C=0, D=1, ...).
+
+        :return: degree (integer)
+        """
+        return self._degree_from_fifths_(self.steps)
+
+    def onehot(self):
+        """
+        Return a one-hot encoded tensor representing the object.
+        Specialized versions of this method take ranges for their respective dimensions.
+
+        :return: one-hot encoding of the object (numpy array)
+        """
+        raise NotImplementedError
+
+
+class AbstractGenericInterval(abc.ABC):
     @abc.abstractmethod
-    def convert_to_logfreq(self):
+    def name(self, *args, **kwargs):
         pass
 
     @abc.abstractmethod
     def octaves(self):
         pass
+
+    def __int__(self):
+        return self.value
 
     @abc.abstractmethod
     def embed(self):
         pass
 
     @abc.abstractmethod
-    def from_semitones(cls, semitones):
+    def from_steps(cls, steps):
         pass
 
-    def __int__(self):
-        return self.value
 
-
-class AbstractEnharmonicInterval(abc.ABC):
+class AbstractGenericPitch(abc.ABC):
     @abc.abstractmethod
     def name(self, *args, **kwargs):
         pass
 
     @abc.abstractmethod
-    def convert_to_logfreq(self):
-        pass
-
-    @abc.abstractmethod
     def octaves(self):
-        pass
-
-    def __int__(self):
-        return self.value
-
-    @abc.abstractmethod
-    def embed(self):
-        pass
-
-    @abc.abstractmethod
-    def from_semitones(cls, semitones):
-        pass
-
-
-class AbstractEnharmonicPitch(abc.ABC):
-    @abc.abstractmethod
-    def name(self, *args, **kwargs):
-        pass
-
-    @abc.abstractmethod
-    def convert_to_logfreq(self):
-        pass
-
-    @abc.abstractmethod
-    def octaves(self):
-        pass
-
-    @abc.abstractmethod
-    def freq(self):
         pass
 
     @abc.abstractmethod
@@ -156,11 +183,7 @@ class AbstractEnharmonicPitch(abc.ABC):
         return self.value
 
     @abc.abstractmethod
-    def midi(self):
-        pass
-
-    @abc.abstractmethod
-    def from_semitones(cls, semitones):
+    def from_steps(cls, steps):
         pass
 
     @abc.abstractmethod
@@ -168,9 +191,8 @@ class AbstractEnharmonicPitch(abc.ABC):
         pass
 
 
-@Enharmonic.link_pitch_type()
-class EnharmonicPitch(Enharmonic, AbstractEnharmonicPitch, Pitch):
-
+@Generic.link_pitch_type()
+class GenericPitch(Generic, AbstractGenericPitch, Pitch):
     def __init__(self, value):
         """
         Takes a string consisting of the form
@@ -189,18 +211,18 @@ class EnharmonicPitch(Enharmonic, AbstractEnharmonicPitch, Pitch):
                 octaves, fifths = self.parse_pitch(value)
                 assert isinstance(octaves, numbers.Integral)
                 assert isinstance(fifths, numbers.Integral)
-                value = (fifths * 7) % 12 + 12 * octaves
-        elif isinstance(value, int):
+                value = (fifths * 4) % 7 + 7 * octaves
+        elif isinstance(value, numbers.Integral):
             value = int(value)
         elif isinstance(value, SpelledPitch):
-            value = (value.fifths() * 7) % 12 + 12 * value.octaves()
+            value = (value.fifths() * 4) % 7 + 7 * value.octaves()
         else:
             raise ValueError(f"Expected string or integer pitch value but got {value}")
 
         super().__init__(value=value, is_pitch=True, is_class=False)
 
     @staticmethod
-    def from_semitones(semitones):
+    def from_steps(steps):
         """
         Create a pitch by directly providing its internal semitone value.
 
@@ -208,19 +230,19 @@ class EnharmonicPitch(Enharmonic, AbstractEnharmonicPitch, Pitch):
         by moving the specified number of semitones upwards
         (or downwards for negative values).
 
-        :param semitones: the number of semitones to move from C0
-        :return: the resulting pitch (EnharmonicPitch)
+        :param steps: the number of steps to move from C0
+        :return: the resulting pitch (GenericPitch)
         """
-        return EnharmonicPitch(semitones)
+        return GenericPitch(steps)
 
     def embed(self):
         return self
 
     def interval_from(self, other):
-        if type(other) is EnharmonicPitchClass:
-            return EnharmonicIntervalClass.from_semitones((self.value - other.value) % 12)
+        if type(other) is GenericPitchClass:
+            return GenericIntervalClass.from_steps((self.value - other.value) % 7)
         else:
-            raise TypeError(f"Cannot take interval between EnharmonicPitch and {type(other)}.")
+            raise TypeError(f"Cannot take interval between GenericPitch and {type(other)}.")
 
     def to_class(self):
         return self.PitchClass(value=self.value % 12)
@@ -235,24 +257,21 @@ class EnharmonicPitch(Enharmonic, AbstractEnharmonicPitch, Pitch):
         return self.pitch_class_name_from_midi(self.value, flat_sharp=flat_sharp) + str(self.octaves())
 
     def octaves(self):
-        return self.value // 12 - 1
-
-    def freq(self):
-        return 2 ** ((self.value - 69) / 12) * 440
-
-    def convert_to_logfreq(self):
-        return LogFreq.Pitch(self.freq(), is_freq=True)
+        return self.value // 7 - 1
 
     @property
-    def midi(self):
+    def steps(self):
         return self.value
 
     def pc(self):
         return self.to_class()
 
 
-@Enharmonic.link_interval_type()
-class EnharmonicInterval(Enharmonic, AbstractEnharmonicInterval, Interval, Chromatic):
+@Generic.link_interval_type()
+class GenericInterval(Generic, AbstractGenericInterval, Interval, Diatonic):
+
+    def is_step(self):
+        return True
 
     def __init__(self, value):
         """
@@ -276,27 +295,27 @@ class EnharmonicInterval(Enharmonic, AbstractEnharmonicInterval, Interval, Chrom
                 assert abs(sign) == 1
                 assert octaves >= 0
                 # correct octaves from fifth steps
-                value = (fifths * 7) % 12 + 12 * octaves
+                value = (fifths * 4) % 7 + 7 * octaves
                 # negate value for negative intervals
                 if sign < 0:
                     value *= -1
-        elif isinstance(value, int):
+        elif isinstance(value, numbers.Integral):
             value = int(value)
         elif isinstance(value, SpelledInterval):
-            value = (value.fifths() * 7) % 12 + 12 * value.octaves()
+            value = (value.fifths() * 4) % 7 + 7 * value.octaves()
         else:
             raise ValueError(f"Expected string or integer interval value but got {value}")
         super().__init__(value=value, is_pitch=False, is_class=False)
 
     @staticmethod
-    def from_semitones(semitones):
+    def from_steps(steps):
         """
-        Create an interval by directly providing its internal semitone value.
+        Create an interval by directly providing its internal step value.
 
-        :param semitones: the semitones (= interval class) of the interval (integer)
-        :return: the resulting interval (EnharmonicInterval)
+        :param steps: the steps (= interval class) of the interval (integer)
+        :return: the resulting interval (GenericInterval)
         """
-        return EnharmonicInterval(semitones)
+        return GenericInterval(steps)
 
     @classmethod
     def unison(cls):
@@ -305,7 +324,7 @@ class EnharmonicInterval(Enharmonic, AbstractEnharmonicInterval, Interval, Chrom
 
         :return: P1:0
         """
-        return cls.from_semitones(0)
+        return cls.from_steps(0)
 
     @classmethod
     def octave(cls):
@@ -314,7 +333,7 @@ class EnharmonicInterval(Enharmonic, AbstractEnharmonicInterval, Interval, Chrom
 
         :return: P1:1
         """
-        return cls.from_semitones(12)
+        return cls.from_steps(7)
 
     def __abs__(self):
         if self.direction() < 0:
@@ -340,34 +359,31 @@ class EnharmonicInterval(Enharmonic, AbstractEnharmonicInterval, Interval, Chrom
         return self
 
     @classmethod
-    def chromatic_semitone(cls):
+    def diatonic_step(cls):
         """
         Create a chromatic semitone.
 
         :return: a1:0
         """
-        return EnharmonicInterval.from_semitones(1)
+        return GenericInterval.from_steps(1)
 
     def to_class(self):
-        return self.IntervalClass(value=self.value % 12)
+        return self.IntervalClass(value=self.value % 7)
 
     def name(self):
         sign = "-" if self.value < 0 else ""
         return sign + str(abs(self.value))
 
     def octaves(self):
-        return self.value // 12
-
-    def convert_to_logfreq(self):
-        return LogFreq.Interval(2 ** (self.value / 12), is_ratio=True)
+        return self.value // 7
 
 
-@Enharmonic.link_pitch_class_type()
-class EnharmonicPitchClass(Enharmonic, AbstractEnharmonicPitch, Pitch):
+@Generic.link_pitch_class_type()
+class GenericPitchClass(Generic, AbstractGenericPitch, Pitch):
 
-    def midi(self):
+    def steps(self):
         """
-        Return the MIDI value of the pitch class, a value in the range [0, 11].
+        Return the step value of the pitch class, a value in the range [0, 6].
         """
         return self.value
 
@@ -387,35 +403,32 @@ class EnharmonicPitchClass(Enharmonic, AbstractEnharmonicPitch, Pitch):
                 octaves, fifths = self.parse_pitch(value)
                 assert isinstance(fifths, numbers.Integral)
                 assert octaves is None
-                value = (fifths * 7) % 12
-        elif isinstance(value, int):
+                value = (fifths * 4) % 7
+        elif isinstance(value, numbers.Integral):
             value = int(value)
         elif isinstance(value, SpelledPitchClass) or isinstance(value, SpelledPitch):
-            value = (value.fifths() * 7) % 12
+            value = (value.fifths() * 4) % 7
         else:
             raise ValueError(f"Expected string or integer pitch class value but got {value}")
         super().__init__(value=value, is_pitch=True, is_class=True)
 
-    def freq(self):
-        return 2 ** ((self.value - 69) / 12) * 440
-
     def octaves(self):
         return 0
 
-    def from_semitones(cls, semitones):
-        return cls(semitones)
+    def from_steps(cls, steps):
+        return cls(steps)
 
     def pc(self):
         return self
 
     def interval_from(self, other):
-        if type(other) is EnharmonicPitchClass:
-            return EnharmonicIntervalClass.from_semitones((self.value - other.value) % 12)
+        if type(other) is GenericPitchClass:
+            return GenericIntervalClass.from_steps((self.value - other.value) % 7)
         else:
             raise TypeError(f"Cannot take interval between EnharmonicPitchClass and {type(other)}.")
 
     def embed(self):
-        return EnharmonicPitch.from_semitones(self.value)
+        return GenericPitch.from_steps(self.value)
 
     def name(self, as_int=None, flat_sharp=None):
         if as_int is None:
@@ -426,12 +439,15 @@ class EnharmonicPitchClass(Enharmonic, AbstractEnharmonicPitch, Pitch):
             return str(self.value)
         return self.pitch_class_name_from_midi(self.value, flat_sharp=flat_sharp)
 
-    def convert_to_logfreq(self):
-        return LogFreq.PitchClass(2 ** ((self.value - 69) / 12) * 440, is_freq=True)
 
+@Generic.link_interval_class_type()
+class GenericIntervalClass(Generic, AbstractGenericInterval, Interval, Diatonic):
 
-@Enharmonic.link_interval_class_type()
-class EnharmonicIntervalClass(Enharmonic, AbstractEnharmonicInterval, Interval, Chromatic):
+    def is_step(self):
+        return True
+
+    def from_steps(cls, steps):
+        return cls(steps)
 
     def __init__(self, value):
         """
@@ -453,11 +469,11 @@ class EnharmonicIntervalClass(Enharmonic, AbstractEnharmonicInterval, Interval, 
                 assert abs(sign) == 1
                 assert octaves is None
                 assert isinstance(fifths, numbers.Integral)
-                value = ((fifths * 7) % 12) * sign
-        elif isinstance(value, int):
+                value = ((fifths * 4) % 7) * sign
+        elif isinstance(value, numbers.Integral):
             value = value
         elif isinstance(value, SpelledIntervalClass) or isinstance(value, SpelledInterval):
-            value = (value.fifths() * 7) % 12
+            value = (value.fifths() * 4) % 7
         else:
             raise ValueError(f"Expected string or integer interval class value but got {value}")
         super().__init__(value=fifths, is_pitch=False, is_class=True)
@@ -466,20 +482,20 @@ class EnharmonicIntervalClass(Enharmonic, AbstractEnharmonicInterval, Interval, 
     def octaves(cls):
         """
         Return a perfect unison, which is the same as an octave for interval classes.
-F
+
         :return: P1
         """
-        return cls.from_semitones(0)
+        return cls.from_steps(0)
 
     @staticmethod
-    def from_semitones(semitones):
+    def from_steps(steps):
         """
-        Create an interval class by directly providing its internal semitones.
+        Create an interval class by directly providing its internal steps.
 
-        :param semitones: the semitones (= interval class) of the interval (integer)
-        :return: the resulting interval class (EnharmonicIntervalClass)
+        :param steps: the steps (= interval class) of the interval (integer)
+        :return: the resulting interval class (GenericIntervalClass)
         """
-        return EnharmonicIntervalClass(semitones)
+        return GenericIntervalClass(steps)
 
     @classmethod
     def unison(cls):
@@ -488,19 +504,19 @@ F
 
         :return: P1
         """
-        return cls.from_semitones(0)
+        return cls.from_steps(0)
 
     @classmethod
-    def chromatic_semitone(cls):
+    def diatonic_step(cls):
         """
-        Return a chromatic semitone
+        Return a diatonic step.
 
         :return: a1
         """
-        return EnharmonicIntervalClass.from_semitones(0)
+        return GenericIntervalClass.from_steps(0)
 
     def embed(self):
-        return EnharmonicInterval.from_semitones(self.value)
+        return GenericInterval.from_steps(self.value)
 
     def ic(self):
         return self
@@ -530,5 +546,3 @@ F
         sign = "-" if self.value < 0 else ""
         return sign + str(abs(self.value))
 
-    def convert_to_logfreq(self):
-        return LogFreq.IntervalClass(2 ** (self.value / 12), is_ratio=True)
