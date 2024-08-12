@@ -214,7 +214,7 @@ class EnharmonicPitch(Enharmonic, AbstractEnharmonicPitch, Pitch):
         return self
 
     def interval_from(self, other):
-        if type(other) == EnharmonicPitchClass:
+        if type(other) is EnharmonicPitchClass:
             return EnharmonicIntervalClass.from_semitones((self.value - other.value) % 12)
         else:
             raise TypeError(f"Cannot take interval between EnharmonicPitch and {type(other)}.")
@@ -406,7 +406,7 @@ class EnharmonicPitchClass(Enharmonic, AbstractEnharmonicPitch, Pitch):
         return self
 
     def interval_from(self, other):
-        if type(other) == EnharmonicPitchClass:
+        if type(other) is EnharmonicPitchClass:
             return EnharmonicIntervalClass.from_semitones((self.value - other.value) % 12)
         else:
             raise TypeError(f"Cannot take interval between EnharmonicPitchClass and {type(other)}.")

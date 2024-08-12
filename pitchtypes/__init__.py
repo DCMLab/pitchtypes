@@ -33,7 +33,11 @@ from .logfreq import (
     LogFreqPitchClass,
     LogFreqIntervalClass,
 )
-from .harmonic import Harmonic, HarmonicInterval, HarmonicIntervalClass
+from .harmonic import (
+    Harmonic,
+    HarmonicInterval,
+    HarmonicIntervalClass
+)
 from .generic import (
     Generic,
     GenericPitch,
@@ -42,3 +46,8 @@ from .generic import (
     GenericIntervalClass,
 )
 from . import converters
+from .utils import (
+    diatonic_steps_from_fifths,
+    fifths_from_generic_interval_class,
+    fifths_from_diatonic_pitch_class,
+)

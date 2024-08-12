@@ -225,7 +225,7 @@ class TestValueTables(TestCase):
                             operation = op_match["operation"]
                             # remember result for error reporting
                             res = None
-                            # catch errors (an later re-raise) for better reporting
+                            # catch errors (and later re-raise) for better reporting
                             try:
                                 # check that result from operations prints as indicated in the table
                                 if operation == "minus":

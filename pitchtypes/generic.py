@@ -239,7 +239,7 @@ class GenericPitch(Generic, AbstractGenericPitch, Pitch):
         return self
 
     def interval_from(self, other):
-        if type(other) == GenericPitchClass:
+        if type(other) is GenericPitchClass:
             return GenericIntervalClass.from_steps((self.value - other.value) % 7)
         else:
             raise TypeError(f"Cannot take interval between GenericPitch and {type(other)}.")
@@ -422,7 +422,7 @@ class GenericPitchClass(Generic, AbstractGenericPitch, Pitch):
         return self
 
     def interval_from(self, other):
-        if type(other) == GenericPitchClass:
+        if type(other) is GenericPitchClass:
             return GenericIntervalClass.from_steps((self.value - other.value) % 7)
         else:
             raise TypeError(f"Cannot take interval between EnharmonicPitchClass and {type(other)}.")

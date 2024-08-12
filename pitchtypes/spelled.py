@@ -6,7 +6,7 @@ import functools
 from abc import ABC
 
 import numpy as np
-from utils import diatonic_steps_from_fifths
+from pitchtypes.utils import diatonic_steps_from_fifths
 from pitchtypes.basetypes import AbstractBase, Pitch, Interval, Diatonic, Chromatic
 
 
@@ -774,7 +774,7 @@ class SpelledPitchClass(Spelled, AbstractSpelledPitch, Pitch):
     # pitch interface
 
     def interval_from(self, other):
-        if type(other) == SpelledPitchClass:
+        if type(other) is SpelledPitchClass:
             return SpelledIntervalClass.from_fifths(self.value - other.value)
         else:
             raise TypeError(f"Cannot take interval between SpelledPitchClass and {type(other)}.")
