@@ -1,3 +1,14 @@
+"""
+The addition_convert_types and subtraction_convert_types dictionaries are used to determine valid operations
+and the target types to perform these operation between two pitches or intervals.
+The keys are tuples of the types of the two compatible operands for that specific operation,
+and the values are tuples of the target types of the result.
+
+For example, the key ('EnharmonicPitch', 'SpecificInterval') maps to the value
+('EnharmonicPitch', 'EnharmonicInterval'), because a specific interval has to be
+converted into an enharmonic interval to be added to an enharmonic pitch.
+"""
+
 addition_convert_types = {
     ('EnharmonicPitch', 'EnharmonicInterval'): ('EnharmonicPitch', 'EnharmonicInterval'),
     ('EnharmonicPitch', 'SpelledInterval'): ('EnharmonicPitch', 'EnharmonicInterval'),
