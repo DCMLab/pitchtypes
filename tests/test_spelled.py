@@ -13,6 +13,7 @@ from pitchtypes import (
 )
 from pitchtypes.spelled import AbstractSpelledInterval, AbstractSpelledPitch
 from pitchtypes import utils
+from pitchtypes.basetypes import Pitch, Interval
 
 
 class TestSpelled(TestCase):
@@ -464,34 +465,34 @@ class TestSpelled(TestCase):
 
     def test_parsing(self):
         # attempt to parse non-string should raise TypeError
-        self.assertRaises(TypeError, lambda: Spelled.parse_pitch(5))
-        self.assertRaises(TypeError, lambda: Spelled.parse_interval(5))
+        self.assertRaises(TypeError, lambda: Pitch.parse_pitch(5))
+        self.assertRaises(TypeError, lambda: Interval.parse_interval(5))
         # bad string input should raise ValueError
-        self.assertRaises(ValueError, lambda: Spelled.parse_pitch("xxx"))
-        self.assertRaises(ValueError, lambda: Spelled.parse_interval("yyy"))
+        self.assertRaises(ValueError, lambda: Pitch.parse_pitch("xxx"))
+        self.assertRaises(ValueError, lambda: Interval.parse_interval("yyy"))
         # temporally introduce a bug by changing regex
-        old_regex = Spelled._interval_regex
+        old_regex = Interval._interval_regex
         # test for bad interval quality
-        Spelled._interval_regex = re.compile("^(?P<generic0>[1-7])(?P<quality0>[a-z])$")
-        self.assertRaises(RuntimeError, lambda: Spelled.parse_interval("1x"))
+        Interval._interval_regex = re.compile("^(?P<generic0>[1-7])(?P<quality0>[a-z])$")
+        self.assertRaises(RuntimeError, lambda: Interval.parse_interval("1x"))
         # test for bad quality/generic matching (mixing up indices)
-        Spelled._interval_regex = re.compile(
+        Interval._interval_regex = re.compile(
             "^("
             "(?P<generic0>1)(?P<quality1>a)|"
             "(?P<generic1>2)(?P<quality0>b)|"
             "(?P<generic2>3)(?P<quality2>c)"
             ")$"
         )
-        self.assertRaises(RuntimeError, lambda: Spelled.parse_interval("1a"))
+        self.assertRaises(RuntimeError, lambda: Interval.parse_interval("1a"))
         # change back to not mess up other tests
-        Spelled._interval_regex = old_regex
+        Interval._interval_regex = old_regex
 
         # check bad input
         self.assertRaises(
-            ValueError, lambda: Spelled.fifths_from_diatonic_pitch_class("X")
+            ValueError, lambda: utils.fifths_from_diatonic_pitch_class("X")
         )
         self.assertRaises(
-            ValueError, lambda: Spelled.fifths_from_generic_interval_class("X")
+            ValueError, lambda: utils.fifths_from_generic_interval_class("X")
         )
 
     def test_constructors(self):
