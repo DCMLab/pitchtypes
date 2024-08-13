@@ -24,17 +24,17 @@ class TestHarmonic(TestCase):
         with np.printoptions(legacy='1.21'):
             # Interval
             # initialise from list
-            self.assertEqual("HarmonicInterval([np.int64(1), np.int64(-2), np.int64(3), np.int64(-4)])",
+            self.assertEqual("HarmonicInterval([1, -2, 3, -4])",
                              str(Harmonic.Interval([1, -2, 3, -4])), )
             # initialise from string
-            self.assertEqual("HarmonicInterval([np.int64(1), np.int64(-2), np.int64(3), np.int64(-4)])",
+            self.assertEqual("HarmonicInterval([1, -2, 3, -4])",
                              str(Harmonic.Interval("[1, -2, 3, -4]")), )
             # IntervalClass
             # initialise from list
-            self.assertEqual("HarmonicIntervalClass([None, np.int64(1), np.int64(-2), np.int64(3), np.int64(-4)])",
+            self.assertEqual("HarmonicIntervalClass([None, 1, -2, 3, -4])",
                              str(Harmonic.IntervalClass([1, -2, 3, -4])), )
             # initialise from string
-            self.assertEqual("HarmonicIntervalClass([None, np.int64(1), np.int64(-2), np.int64(3), np.int64(-4)])",
+            self.assertEqual("HarmonicIntervalClass([None, 1, -2, 3, -4])",
                              str(Harmonic.IntervalClass("[1, -2, 3, -4]")), )
 
     def test_to_class(self):

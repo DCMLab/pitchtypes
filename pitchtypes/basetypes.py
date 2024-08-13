@@ -566,7 +566,7 @@ class Interval(abc.ABC):
                                f"means that either the used regex is bad or the handling code.")
         # get octave
         if interval_match['octave'][1:] == "":
-            octave = 0
+            octave = None
         else:
             octave = int(interval_match['octave'][1:])
         # get sign and bring adapt fifth steps

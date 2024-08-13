@@ -319,6 +319,7 @@ class AbstractSpelledPitch(abc.ABC):
         """
         raise NotImplementedError
 
+
 @Spelled.link_pitch_type()
 class SpelledPitch(Spelled, AbstractSpelledPitch, Pitch):
     """
@@ -833,7 +834,7 @@ class SpelledPitchClass(Spelled, AbstractSpelledPitch, Pitch):
         return self.value
 
     def octaves(self):
-        return 0
+        return None
 
     def internal_octaves(self):
         return 0
@@ -889,7 +890,7 @@ class SpelledIntervalClass(Spelled, AbstractSpelledInterval, Interval, Diatonic,
             sign, octaves, fifths = self.parse_interval(value)
             assert isinstance(sign, numbers.Integral)
             assert abs(sign) == 1
-            assert octaves == 0
+            assert octaves is None
             assert isinstance(fifths, numbers.Integral)
             fifths *= sign
         else:
@@ -935,7 +936,7 @@ class SpelledIntervalClass(Spelled, AbstractSpelledInterval, Interval, Diatonic,
         return cls.from_fifths(0)
 
     @classmethod
-    def octaves(cls):
+    def octave(cls):
         """
         Return a perfect unison, which is the same as an octave for interval classes.
 
@@ -1020,8 +1021,8 @@ class SpelledIntervalClass(Spelled, AbstractSpelledInterval, Interval, Diatonic,
     def fifths(self):
         return self.value
 
-    def octave(self):
-        return 0
+    def octaves(self):
+        return None
 
     def internal_octaves(self):
         return 0

@@ -42,5 +42,5 @@ def diatonic_steps_from_fifths(fifth_steps):
 
     :meta private:
     """
-    return (4 * fifth_steps) % 7
+    return 4 * fifth_steps
 

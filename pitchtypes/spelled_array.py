@@ -352,6 +352,12 @@ class SpelledIntervalArray(
     Represents an array of spelled intervals.
     """
 
+    def semitones(self):
+        raise NotImplementedError
+
+    def steps(self):
+        raise NotImplementedError
+
     _print_name = "asi"
 
     def __init__(self, fifths, octaves):
@@ -715,6 +721,12 @@ class SpelledIntervalClassArray(
     Represents an array of spelled interval classes, i.e. intervals without octave information.
     """
 
+    def semitones(self):
+        raise NotImplementedError
+
+    def steps(self):
+        raise NotImplementedError
+
     _print_name = "asic"
 
     def __init__(self, fifths):
@@ -1012,6 +1024,15 @@ class SpelledPitchArray(SpelledArray, AbstractSpelledArrayPitch, Pitch):
     Represents an array of spelled pitches.
     """
 
+    def steps(self):
+        raise NotImplementedError
+
+    def semitones(self):
+        raise NotImplementedError
+
+    def midi(self):
+        raise NotImplementedError
+
     _print_name = "asp"
 
     # constructors
@@ -1293,6 +1314,15 @@ class SpelledPitchClassArray(SpelledArray, AbstractSpelledArrayPitch, Pitch):
     """
     Represents a spelled pitch class, i.e. a pitch without octave information.
     """
+
+    def steps(self):
+        raise NotImplementedError
+
+    def semitones(self):
+        raise NotImplementedError
+
+    def midi(self):
+        raise NotImplementedError
 
     _print_name = "aspc"
 

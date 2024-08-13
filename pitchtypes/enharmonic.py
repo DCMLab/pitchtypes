@@ -6,10 +6,9 @@ from pitchtypes.spelled import Spelled, SpelledPitch, SpelledInterval, SpelledPi
 from pitchtypes.logfreq import LogFreq
 import abc
 from pitchtypes.errors import InvalidArgument, UnexpectedValue, PropertyUndefined
-import functools
-import numpy as np
-import re
+from pitchtypes.utils import diatonic_steps_from_fifths
 from pitchtypes.basetypes import AbstractBase, Pitch, Interval, Chromatic
+
 
 class Enharmonic(AbstractBase):
     # how should Pitch and PitchClass types be printed
@@ -89,7 +88,7 @@ class Enharmonic(AbstractBase):
 
     @abc.abstractmethod
     def convert_to_logfreq(self):
-        pass
+        raise NotImplementedError
 
     @abc.abstractmethod
     def octaves(self):
@@ -196,11 +195,12 @@ class EnharmonicPitch(Enharmonic, AbstractEnharmonicPitch, Pitch):
                 octaves, fifths = self.parse_pitch(value)
                 assert isinstance(octaves, numbers.Integral)
                 assert isinstance(fifths, numbers.Integral)
-                value = (fifths * 7) % 12 + 12 * octaves
+                octaves -= diatonic_steps_from_fifths(fifths) // 7
+                value = fifths * 7 + 12 * (octaves + 1)
         elif isinstance(value, numbers.Integral):
             value = int(value)
         elif isinstance(value, SpelledPitch):
-            value = (value.fifths() * 7) % 12 + 12 * value.octaves()
+            value = (value.fifths() * 7) % 12 + 12 * (value.octaves() + 1)
         else:
             raise UnexpectedValue(f"Expected string or integer pitch value but got {value}")
 
@@ -289,7 +289,10 @@ class EnharmonicInterval(Enharmonic, AbstractEnharmonicInterval, Interval, Chrom
                 assert abs(sign) == 1
                 assert octaves >= 0
                 # correct octaves from fifth steps
-                value = (fifths * 7) % 12 + 12 * octaves
+                fifths_from_f = fifths + 1
+                base_pitch = ((fifths % 7 - 1) * 7) % 12
+                accidentals = fifths_from_f // 7
+                12 * (octaves + 1) + base_pitch + accidentals
                 # negate value for negative intervals
                 if sign < 0:
                     value *= -1
@@ -422,7 +425,7 @@ class EnharmonicPitchClass(Enharmonic, AbstractEnharmonicPitch, Pitch):
         return 2 ** ((self.value - 69) / 12) * 440
 
     def octaves(self):
-        return 0
+        return None
 
     def from_semitones(cls, semitones):
         return cls(semitones)
@@ -491,13 +494,17 @@ class EnharmonicIntervalClass(Enharmonic, AbstractEnharmonicInterval, Interval, 
         super().__init__(value=value, is_pitch=False, is_class=True)
 
     @classmethod
-    def octaves(cls):
+    def octave(cls):
         """
         Return a perfect unison, which is the same as an octave for interval classes.
 
         :return: P1
         """
         return cls.from_semitones(0)
+
+    @classmethod
+    def octaves(self):
+        return None
 
     @staticmethod
     def from_semitones(semitones):

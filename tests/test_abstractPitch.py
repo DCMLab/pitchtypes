@@ -2,8 +2,8 @@ from unittest import TestCase
 from itertools import product
 
 import numpy as np
+from pitchtypes import AbstractBase, UnexpectedValue
 
-from pitchtypes import AbstractBase
 
 class TestAbstractPitch(TestCase):
 
@@ -27,22 +27,22 @@ class TestAbstractPitch(TestCase):
         # create new sub-types with non-standard names; assert normal linking fails but can be forced
         class WrongNewTypePitch(NewType):
             pass
-        self.assertRaises(TypeError, lambda: NewType.link_pitch_type()(WrongNewTypePitch))
+        self.assertRaises(UnexpectedValue, lambda: NewType.link_pitch_type()(WrongNewTypePitch))
         NewType.link_pitch_type(skip_name_check=True)(WrongNewTypePitch)
 
         class WrongNewTypeInterval(NewType):
             pass
-        self.assertRaises(TypeError, lambda: NewType.link_interval_type()(WrongNewTypeInterval))
+        self.assertRaises(UnexpectedValue, lambda: NewType.link_interval_type()(WrongNewTypeInterval))
         NewType.link_interval_type(skip_name_check=True)(WrongNewTypeInterval)
 
         class WrongNewTypePitchClass(NewType):
             pass
-        self.assertRaises(TypeError, lambda: NewType.link_pitch_class_type()(WrongNewTypePitchClass))
+        self.assertRaises(UnexpectedValue, lambda: NewType.link_pitch_class_type()(WrongNewTypePitchClass))
         NewType.link_pitch_class_type(skip_name_check=True)(WrongNewTypePitchClass)
 
         class WrongNewTypeIntervalClass(NewType):
             pass
-        self.assertRaises(TypeError, lambda: NewType.link_interval_class_type()(WrongNewTypeIntervalClass))
+        self.assertRaises(UnexpectedValue, lambda: NewType.link_interval_class_type()(WrongNewTypeIntervalClass))
         NewType.link_interval_class_type(skip_name_check=True)(WrongNewTypeIntervalClass)
 
         # make sure the linking worked

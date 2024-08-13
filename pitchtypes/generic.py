@@ -472,7 +472,7 @@ class GenericPitchClass(Generic, AbstractGenericPitch, Pitch):
         super().__init__(value=value, is_pitch=True, is_class=True)
 
     def octaves(self):
-        return 0
+        return None
 
     def from_steps(cls, steps):
         return cls(steps)
@@ -541,13 +541,17 @@ class GenericIntervalClass(Generic, AbstractGenericInterval, Interval, Diatonic)
         super().__init__(value=fifths, is_pitch=False, is_class=True)
 
     @classmethod
-    def octaves(cls):
+    def octave(cls):
         """
         Return a perfect unison, which is the same as an octave for interval classes.
 
         :return: P1
         """
         return cls.from_steps(0)
+
+    @classmethod
+    def octaves(self):
+        return None
 
     @staticmethod
     def from_steps(steps):

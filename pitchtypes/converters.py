@@ -3,7 +3,6 @@
 from pitchtypes import Converters, Spelled, Enharmonic, Generic, LogFreq
 
 
-
 def convert_spelled_to_enharmonic(spelled):
     if spelled.is_pitch:
         fifth_steps_from_f = spelled.fifths() + 1
@@ -21,10 +20,11 @@ def convert_spelled_to_enharmonic(spelled):
         if spelled.is_class:
             spelled_ref_point = Spelled.PitchClass("C")
             enharmonic_ref_point = Enharmonic.PitchClass("C")
+            return enharmonic_ref_point - convert_spelled_to_enharmonic(spelled_ref_point - spelled)
         else:
             spelled_ref_point = Spelled.Pitch("C4")
             enharmonic_ref_point = Enharmonic.Pitch("C4")
-        return enharmonic_ref_point - convert_spelled_to_enharmonic(spelled_ref_point - spelled)
+            return enharmonic_ref_point - convert_spelled_to_enharmonic(spelled_ref_point - spelled)
 
 
 def convert_spelled_to_generic(spelled):
