@@ -51,3 +51,10 @@ from .utils import (
     fifths_from_generic_interval_class,
     fifths_from_diatonic_pitch_class,
 )
+from .errors import (
+    PropertyUndefined,
+    InvalidInitValue,
+    UnexpectedType,
+    InvalidArgument,
+    UnexpectedValue,
+)
