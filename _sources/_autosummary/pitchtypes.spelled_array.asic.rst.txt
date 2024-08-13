@@ -1,6 +1,0 @@
-pitchtypes.spelled\_array.asic
-==============================
-
-.. currentmodule:: pitchtypes.spelled_array
-
-.. autofunction:: asic
