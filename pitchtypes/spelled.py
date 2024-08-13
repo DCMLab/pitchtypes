@@ -323,6 +323,12 @@ class SpelledPitch(Spelled, AbstractSpelledPitch, Pitch):
     Represents a spelled pitch.
     """
 
+    def semitones(self):
+        return self.midi()
+
+    def steps(self):
+        return diatonic_steps_from_fifths(self.fifths()) + self.octaves() * 7
+
     def midi(self):
         """
         Return the MIDI value, in the interval [0,127].
@@ -486,6 +492,12 @@ class SpelledInterval(Spelled, AbstractSpelledInterval, Interval, Diatonic, Chro
     """
     Represents a spelled interval.
     """
+
+    def semitones(self):
+        return
+
+    def steps(self):
+        return self.diatonic_steps()
 
     def __init__(self, value):
         """
@@ -719,6 +731,12 @@ class SpelledPitchClass(Spelled, AbstractSpelledPitch, Pitch):
     """
     Represents a spelled pitch class, i.e. a pitch without octave information.
     """
+
+    def semitones(self):
+        return self.midi()
+
+    def steps(self):
+        return diatonic_steps_from_fifths(self.fifths())
 
     def midi(self):
         """

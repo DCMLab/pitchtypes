@@ -2,7 +2,7 @@ import numpy as np
 from pitchtypes.basetypes import AbstractBase, Pitch, Interval, Diatonic
 from pitchtypes.utils import diatonic_steps_from_fifths
 from pitchtypes.spelled import Spelled, SpelledPitch, SpelledInterval, SpelledPitchClass, SpelledIntervalClass
-from pitchtypes.errors import UnexpectedValue
+from pitchtypes.errors import UnexpectedValue, PropertyUndefined
 import functools
 import abc
 import numbers
@@ -236,6 +236,12 @@ class AbstractGenericPitch(abc.ABC):
 
 @Generic.link_pitch_type()
 class GenericPitch(Generic, AbstractGenericPitch, Pitch):
+    def semitones(self):
+        raise PropertyUndefined(f"Property 'semitones' is not defined for type {type(self)}")
+
+    def midi(self):
+        raise PropertyUndefined(f"Property 'semitones' is not defined for type {type(self)}")
+
     def __init__(self, value):
         """
         Takes a string consisting of the form
@@ -267,10 +273,10 @@ class GenericPitch(Generic, AbstractGenericPitch, Pitch):
     @staticmethod
     def from_steps(steps):
         """
-        Create a pitch by directly providing its internal semitone value.
+        Create a pitch by directly providing its internal step value.
 
         Each pitch is represented relative to C0
-        by moving the specified number of semitones upwards
+        by moving the specified number of steps upwards
         (or downwards for negative values).
 
         :param steps: the number of steps to move from C0
@@ -310,6 +316,9 @@ class GenericPitch(Generic, AbstractGenericPitch, Pitch):
 
 @Generic.link_interval_type()
 class GenericInterval(Generic, AbstractGenericInterval, Interval, Diatonic):
+
+    def semitones(self):
+        raise PropertyUndefined(f"Property 'semitones' is not defined for type {type(self)}")
 
     def is_step(self):
         return True
@@ -422,6 +431,12 @@ class GenericInterval(Generic, AbstractGenericInterval, Interval, Diatonic):
 @Generic.link_pitch_class_type()
 class GenericPitchClass(Generic, AbstractGenericPitch, Pitch):
 
+    def semitones(self):
+        raise PropertyUndefined(f"Property 'semitones' is not defined for type {self.__class__.__name__}")
+
+    def midi(self):
+        raise PropertyUndefined(f"Property 'semitones' is not defined for type {self.__class__.__name__}")
+
     def steps(self):
         """
         Return the step value of the pitch class, a value in the range [0, 6].
@@ -483,6 +498,9 @@ class GenericPitchClass(Generic, AbstractGenericPitch, Pitch):
 
 @Generic.link_interval_class_type()
 class GenericIntervalClass(Generic, AbstractGenericInterval, Interval, Diatonic):
+
+    def semitones(self):
+        raise PropertyUndefined(f"Property 'semitones' is not defined for type {type(self)}")
 
     def is_step(self):
         return True

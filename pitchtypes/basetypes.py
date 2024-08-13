@@ -62,7 +62,7 @@ class AbstractBase:
             expected_name = cls.__name__ + suffix
             if got_name != expected_name:
                 raise UnexpectedValue(f"Got class named {got_name}, but expected {expected_name}. "
-                                f"Use skip_name_check=True to suppress.")
+                                      f"Use skip_name_check=True to suppress.")
 
     @classmethod
     def link_pitch_type(cls,
@@ -399,7 +399,19 @@ class Interval(abc.ABC):
     The basic interface implemented by every interval (and interval class) type.
     """
 
-    # fixed intervals
+    @abc.abstractmethod
+    def semitones(self):
+        """
+        Return the number of semitones corresponding to the interval.
+        """
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def steps(self):
+        """
+        Return the number of diatonic steps corresponding to the interval.
+        """
+        raise NotImplementedError
 
     @classmethod
     @abc.abstractmethod
@@ -705,6 +717,27 @@ class Pitch(abc.ABC):
         """
         raise NotImplementedError
 
+    @abc.abstractmethod
+    def steps(self):
+        """
+        Return the number of diatonic steps corresponding to the pitch.
+        """
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def semitones(self):
+        """
+        Return the number of chromatic semitones corresponding to the pitch.
+        """
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def midi(self):
+        """
+        Return the MIDI number corresponding to the pitch.
+        """
+        raise NotImplementedError
+
     _pitch_regex = re.compile("^(?P<class>[A-G])(?P<modifiers>(b*)|(#*))(?P<octave>(-?[0-9]+)?)$")
 
     @staticmethod
@@ -858,4 +891,3 @@ class Converters:
                 # insert new converters
                 for another_to_type, converter_pipeline in new_converters:
                     other_converters[another_to_type] = converter_pipeline
-

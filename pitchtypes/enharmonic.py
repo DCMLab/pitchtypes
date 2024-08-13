@@ -6,7 +6,7 @@ from pitchtypes.spelled import Spelled, SpelledPitch, SpelledInterval, SpelledPi
 from pitchtypes.logfreq import LogFreq
 from pitchtypes.basetypes import AbstractBase, Pitch, Interval, Chromatic
 import abc
-from errors import InvalidArgument, UnexpectedValue
+from errors import InvalidArgument, UnexpectedValue, PropertyUndefined
 import functools
 import numpy as np
 
@@ -168,6 +168,12 @@ class AbstractEnharmonicPitch(abc.ABC):
 
 @Enharmonic.link_pitch_type()
 class EnharmonicPitch(Enharmonic, AbstractEnharmonicPitch, Pitch):
+
+    def steps(self):
+        raise PropertyUndefined(f"Property 'steps' is not defined for type {type(self)}.")
+
+    def semitones(self):
+        return self.value
 
     def __init__(self, value):
         """
@@ -363,9 +369,18 @@ class EnharmonicInterval(Enharmonic, AbstractEnharmonicInterval, Interval, Chrom
 @Enharmonic.link_pitch_class_type()
 class EnharmonicPitchClass(Enharmonic, AbstractEnharmonicPitch, Pitch):
 
+    def steps(self):
+        raise PropertyUndefined(f"Property 'steps' is not defined for type {type(self)}.")
+
     def midi(self):
         """
         Return the MIDI value of the pitch class, a value in the range [0, 11].
+        """
+        return self.value
+
+    def semitones(self):
+        """
+        Equivalent to the MIDI value of the pitch class.
         """
         return self.value
 
