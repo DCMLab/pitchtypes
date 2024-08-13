@@ -3,6 +3,7 @@
 from pitchtypes import Converters, Spelled, Enharmonic, Generic, LogFreq
 
 
+
 def convert_spelled_to_enharmonic(spelled):
     if spelled.is_pitch:
         fifth_steps_from_f = spelled.fifths() + 1

@@ -6,7 +6,6 @@ import numpy as np
 import abc
 import re
 
-
 class AbstractBase:
     """
     This is the abstract base class for all pitch and interval types of the library.
@@ -746,7 +745,7 @@ class Pitch(abc.ABC):
         Parse a string as a spelled pitch or spelled pitch class. Returns a tuple (octave, fifths), where octave
         indicates the octave the pitch lies in (None for spelled pitch classes) and fifths indicates the steps taken
         along the line of fifths.
-
+        
         :param s: string to parse
         :return: (octave, fifths)
 

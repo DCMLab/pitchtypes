@@ -319,7 +319,6 @@ class AbstractSpelledPitch(abc.ABC):
         """
         raise NotImplementedError
 
-
 @Spelled.link_pitch_type()
 class SpelledPitch(Spelled, AbstractSpelledPitch, Pitch):
     """
@@ -868,13 +867,13 @@ class SpelledIntervalClass(Spelled, AbstractSpelledInterval, Interval, Diatonic,
     """
     Represents a spelled interval class, i.e. an interval without octave information.
     """
-
+    
     def semitones(self):
         return (7 * self.fifths()) % 12
 
     def steps(self):
         return self.diatonic_steps()
-
+      
     def __init__(self, value):
         """
         Takes a string consisting of the form

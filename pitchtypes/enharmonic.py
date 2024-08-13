@@ -10,6 +10,12 @@ from errors import InvalidArgument, UnexpectedValue, PropertyUndefined
 import functools
 import numpy as np
 
+import re
+import abc
+import functools
+import numpy as np
+
+from pitchtypes.basetypes import AbstractBase, Pitch, Interval, Diatonic, Chromatic
 
 class Enharmonic(AbstractBase):
     # how should Pitch and PitchClass types be printed
@@ -266,7 +272,7 @@ class EnharmonicInterval(Enharmonic, AbstractEnharmonicInterval, Interval, Chrom
 
     def steps(self):
         raise PropertyUndefined(f"Property 'steps' is not defined for type {type(self)}.")
-
+        
     def __init__(self, value):
         """
         Takes a string consisting of the form
@@ -380,7 +386,7 @@ class EnharmonicPitchClass(Enharmonic, AbstractEnharmonicPitch, Pitch):
 
     def steps(self):
         raise PropertyUndefined(f"Property 'steps' is not defined for type {type(self)}.")
-
+      
     def midi(self):
         """
         Return the MIDI value of the pitch class, a value in the range [0, 11].
@@ -494,7 +500,7 @@ class EnharmonicIntervalClass(Enharmonic, AbstractEnharmonicInterval, Interval, 
     def octaves(cls):
         """
         Return a perfect unison, which is the same as an octave for interval classes.
-F
+
         :return: P1
         """
         return cls.from_semitones(0)
