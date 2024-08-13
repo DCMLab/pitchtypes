@@ -214,10 +214,10 @@ where d and a can be repeated.</p>
 <td><p>Check if <code class="docutils literal notranslate"><span class="pre">sub_type</span></code> follows the standard naming convention.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledIntervalClass.octave" title="pitchtypes.spelled.SpelledIntervalClass.octave"><code class="xref py py-obj docutils literal notranslate"><span class="pre">octave</span></code></a>()</p></td>
-<td><p>Create the octave interval of this type.</p></td>
+<td><p>Return a perfect unison, which is the same as an octave for interval classes.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledIntervalClass.octaves" title="pitchtypes.spelled.SpelledIntervalClass.octaves"><code class="xref py py-obj docutils literal notranslate"><span class="pre">octaves</span></code></a>()</p></td>
-<td><p>Return a perfect unison, which is the same as an octave for interval classes.</p></td>
+<td><p>For intervals, return the number of octaves the interval spans.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledIntervalClass.onehot" title="pitchtypes.spelled.SpelledIntervalClass.onehot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">onehot</span></code></a>(fifth_range[, dtype])</p></td>
 <td><p>Returns a one-hot encoding of the interval class in fifths.</p></td>
@@ -574,22 +574,24 @@ which is dependent on the fifths.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pitchtypes.spelled.SpelledIntervalClass.octave">
-<span class="sig-name descname"><span class="pre">octave</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled.SpelledIntervalClass.octave" title="Link to this definition"></a></dt>
-<dd><p>Create the octave interval of this type.</p>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">octave</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled.SpelledIntervalClass.octave" title="Link to this definition"></a></dt>
+<dd><p>Return a perfect unison, which is the same as an octave for interval classes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>an octave interval</p>
+<dd class="field-odd"><p>P1</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pitchtypes.spelled.SpelledIntervalClass.octaves">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">octaves</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled.SpelledIntervalClass.octaves" title="Link to this definition"></a></dt>
-<dd><p>Return a perfect unison, which is the same as an octave for interval classes.</p>
+<span class="sig-name descname"><span class="pre">octaves</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled.SpelledIntervalClass.octaves" title="Link to this definition"></a></dt>
+<dd><p>For intervals, return the number of octaves the interval spans.
+Negative intervals start with -1, decreasing.
+For pitches, return the absolute octave of the pitch.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>P1</p>
+<dd class="field-odd"><p>external/independent octave (integer)</p>
 </dd>
 </dl>
 </dd></dl>

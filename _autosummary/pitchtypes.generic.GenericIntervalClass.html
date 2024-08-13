@@ -195,7 +195,7 @@ where d and a can be repeated.</p>
 <td><p>Create the octave interval of this type.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.generic.GenericIntervalClass.octaves" title="pitchtypes.generic.GenericIntervalClass.octaves"><code class="xref py py-obj docutils literal notranslate"><span class="pre">octaves</span></code></a>()</p></td>
-<td><p>Return a perfect unison, which is the same as an octave for interval classes.</p></td>
+<td><p>For intervals, return the number of octaves the interval spans.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.generic.GenericIntervalClass.onehot" title="pitchtypes.generic.GenericIntervalClass.onehot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">onehot</span></code></a>()</p></td>
 <td><p>Return a one-hot encoded tensor representing the object.</p></td>
@@ -503,10 +503,12 @@ If the interval is already an interval class, it is returned itself.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pitchtypes.generic.GenericIntervalClass.octaves">
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">octaves</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.generic.GenericIntervalClass.octaves" title="Link to this definition"></a></dt>
-<dd><p>Return a perfect unison, which is the same as an octave for interval classes.</p>
+<dd><p>For intervals, return the number of octaves the interval spans.
+Negative intervals start with -1, decreasing.
+For pitches, return the absolute octave of the pitch.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>P1</p>
+<dd class="field-odd"><p>external/independent octave (integer)</p>
 </dd>
 </dl>
 </dd></dl>

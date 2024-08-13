@@ -647,6 +647,18 @@ Specialized versions of this method take ranges for their respective dimensions.
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pitchtypes.</span></span><span class="sig-name descname"><span class="pre">SpelledIntervalArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fifths</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">octaves</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledIntervalArray" title="Link to this definition"></a></dt>
 <dd><p>Represents an array of spelled intervals.</p>
 <dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.SpelledIntervalArray.semitones">
+<span class="sig-name descname"><span class="pre">semitones</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledIntervalArray.semitones" title="Link to this definition"></a></dt>
+<dd><p>Return the number of semitones corresponding to the interval.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.SpelledIntervalArray.steps">
+<span class="sig-name descname"><span class="pre">steps</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledIntervalArray.steps" title="Link to this definition"></a></dt>
+<dd><p>Return the number of diatonic steps corresponding to the interval.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pitchtypes.SpelledIntervalArray.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fifths</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">octaves</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledIntervalArray.__init__" title="Link to this definition"></a></dt>
 <dd><p>Takes two numpy arrays,
@@ -1016,18 +1028,6 @@ For pitches, return the integer that corresponds to the letter (C=0, D=1, …).<
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pitchtypes.SpelledIntervalArray.semitones">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">semitones</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledIntervalArray.semitones" title="Link to this definition"></a></dt>
-<dd><p>Return the number of semitones corresponding to the interval.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pitchtypes.SpelledIntervalArray.steps">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">steps</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledIntervalArray.steps" title="Link to this definition"></a></dt>
-<dd><p>Return the number of diatonic steps corresponding to the interval.</p>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="pitchtypes.SpelledIntervalArray.to_class">
 <span class="sig-name descname"><span class="pre">to_class</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledIntervalArray.to_class" title="Link to this definition"></a></dt>
 <dd><p>Alias for ic(), but also supported by pitch types.</p>
@@ -1044,6 +1044,24 @@ For pitches, return the integer that corresponds to the letter (C=0, D=1, …).<
 <dt class="sig sig-object py" id="pitchtypes.SpelledPitchArray">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pitchtypes.</span></span><span class="sig-name descname"><span class="pre">SpelledPitchArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fifths</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">octaves</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledPitchArray" title="Link to this definition"></a></dt>
 <dd><p>Represents an array of spelled pitches.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.SpelledPitchArray.steps">
+<span class="sig-name descname"><span class="pre">steps</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledPitchArray.steps" title="Link to this definition"></a></dt>
+<dd><p>Return the number of diatonic steps corresponding to the pitch.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.SpelledPitchArray.semitones">
+<span class="sig-name descname"><span class="pre">semitones</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledPitchArray.semitones" title="Link to this definition"></a></dt>
+<dd><p>Return the number of chromatic semitones corresponding to the pitch.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.SpelledPitchArray.midi">
+<span class="sig-name descname"><span class="pre">midi</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledPitchArray.midi" title="Link to this definition"></a></dt>
+<dd><p>Return the MIDI number corresponding to the pitch.</p>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="pitchtypes.SpelledPitchArray.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fifths</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">octaves</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledPitchArray.__init__" title="Link to this definition"></a></dt>
@@ -1354,24 +1372,6 @@ For pitches, return the integer that corresponds to the letter (C=0, D=1, …).<
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pitchtypes.SpelledPitchArray.midi">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">midi</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledPitchArray.midi" title="Link to this definition"></a></dt>
-<dd><p>Return the MIDI number corresponding to the pitch.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pitchtypes.SpelledPitchArray.semitones">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">semitones</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledPitchArray.semitones" title="Link to this definition"></a></dt>
-<dd><p>Return the number of chromatic semitones corresponding to the pitch.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pitchtypes.SpelledPitchArray.steps">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">steps</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledPitchArray.steps" title="Link to this definition"></a></dt>
-<dd><p>Return the number of diatonic steps corresponding to the pitch.</p>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="pitchtypes.SpelledPitchArray.to_class">
 <span class="sig-name descname"><span class="pre">to_class</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledPitchArray.to_class" title="Link to this definition"></a></dt>
 <dd><p>Alias for pc(), but also supported by interval types.</p>
@@ -1391,6 +1391,18 @@ For pitches, return the integer that corresponds to the letter (C=0, D=1, …).<
 <dt class="sig sig-object py" id="pitchtypes.SpelledIntervalClassArray">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pitchtypes.</span></span><span class="sig-name descname"><span class="pre">SpelledIntervalClassArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fifths</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledIntervalClassArray" title="Link to this definition"></a></dt>
 <dd><p>Represents an array of spelled interval classes, i.e. intervals without octave information.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.SpelledIntervalClassArray.semitones">
+<span class="sig-name descname"><span class="pre">semitones</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledIntervalClassArray.semitones" title="Link to this definition"></a></dt>
+<dd><p>Return the number of semitones corresponding to the interval.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.SpelledIntervalClassArray.steps">
+<span class="sig-name descname"><span class="pre">steps</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledIntervalClassArray.steps" title="Link to this definition"></a></dt>
+<dd><p>Return the number of diatonic steps corresponding to the interval.</p>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="pitchtypes.SpelledIntervalClassArray.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fifths</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledIntervalClassArray.__init__" title="Link to this definition"></a></dt>
@@ -1737,18 +1749,6 @@ For pitches, return the integer that corresponds to the letter (C=0, D=1, …).<
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pitchtypes.SpelledIntervalClassArray.semitones">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">semitones</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledIntervalClassArray.semitones" title="Link to this definition"></a></dt>
-<dd><p>Return the number of semitones corresponding to the interval.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pitchtypes.SpelledIntervalClassArray.steps">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">steps</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledIntervalClassArray.steps" title="Link to this definition"></a></dt>
-<dd><p>Return the number of diatonic steps corresponding to the interval.</p>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="pitchtypes.SpelledIntervalClassArray.to_class">
 <span class="sig-name descname"><span class="pre">to_class</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledIntervalClassArray.to_class" title="Link to this definition"></a></dt>
 <dd><p>Alias for ic(), but also supported by pitch types.</p>
@@ -1765,6 +1765,24 @@ For pitches, return the integer that corresponds to the letter (C=0, D=1, …).<
 <dt class="sig sig-object py" id="pitchtypes.SpelledPitchClassArray">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pitchtypes.</span></span><span class="sig-name descname"><span class="pre">SpelledPitchClassArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fifths</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledPitchClassArray" title="Link to this definition"></a></dt>
 <dd><p>Represents a spelled pitch class, i.e. a pitch without octave information.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.SpelledPitchClassArray.steps">
+<span class="sig-name descname"><span class="pre">steps</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledPitchClassArray.steps" title="Link to this definition"></a></dt>
+<dd><p>Return the number of diatonic steps corresponding to the pitch.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.SpelledPitchClassArray.semitones">
+<span class="sig-name descname"><span class="pre">semitones</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledPitchClassArray.semitones" title="Link to this definition"></a></dt>
+<dd><p>Return the number of chromatic semitones corresponding to the pitch.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.SpelledPitchClassArray.midi">
+<span class="sig-name descname"><span class="pre">midi</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledPitchClassArray.midi" title="Link to this definition"></a></dt>
+<dd><p>Return the MIDI number corresponding to the pitch.</p>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="pitchtypes.SpelledPitchClassArray.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fifths</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledPitchClassArray.__init__" title="Link to this definition"></a></dt>
@@ -2044,24 +2062,6 @@ For pitches, return the integer that corresponds to the letter (C=0, D=1, …).<
 <dd class="field-even"><p>the interval from self to other</p>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pitchtypes.SpelledPitchClassArray.midi">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">midi</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledPitchClassArray.midi" title="Link to this definition"></a></dt>
-<dd><p>Return the MIDI number corresponding to the pitch.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pitchtypes.SpelledPitchClassArray.semitones">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">semitones</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledPitchClassArray.semitones" title="Link to this definition"></a></dt>
-<dd><p>Return the number of chromatic semitones corresponding to the pitch.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pitchtypes.SpelledPitchClassArray.steps">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">steps</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledPitchClassArray.steps" title="Link to this definition"></a></dt>
-<dd><p>Return the number of diatonic steps corresponding to the pitch.</p>
 </dd></dl>
 
 <dl class="py method">

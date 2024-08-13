@@ -1234,8 +1234,8 @@ where d and a can be repeated.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pitchtypes.SpelledIntervalClass.octaves">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">octaves</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledIntervalClass.octaves" title="Link to this definition"></a></dt>
+<dt class="sig sig-object py" id="pitchtypes.SpelledIntervalClass.octave">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">octave</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledIntervalClass.octave" title="Link to this definition"></a></dt>
 <dd><p>Return a perfect unison, which is the same as an octave for interval classes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -1345,12 +1345,14 @@ and -1 if the second interval class (<code class="docutils literal notranslate">
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pitchtypes.SpelledIntervalClass.octave">
-<span class="sig-name descname"><span class="pre">octave</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledIntervalClass.octave" title="Link to this definition"></a></dt>
-<dd><p>Create the octave interval of this type.</p>
+<dt class="sig sig-object py" id="pitchtypes.SpelledIntervalClass.octaves">
+<span class="sig-name descname"><span class="pre">octaves</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledIntervalClass.octaves" title="Link to this definition"></a></dt>
+<dd><p>For intervals, return the number of octaves the interval spans.
+Negative intervals start with -1, decreasing.
+For pitches, return the absolute octave of the pitch.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>an octave interval</p>
+<dd class="field-odd"><p>external/independent octave (integer)</p>
 </dd>
 </dl>
 </dd></dl>
