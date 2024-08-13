@@ -100,6 +100,9 @@ class Spelled(AbstractBase):
     def __repr__(self):
         return self.name()
 
+    def __str__(self):
+        return self.name()
+
     def name(self):
         """
         The name of the pitch or interval in string notation
@@ -494,7 +497,7 @@ class SpelledInterval(Spelled, AbstractSpelledInterval, Interval, Diatonic, Chro
     """
 
     def semitones(self):
-        return
+        return 7 * self.fifths() + 12 * self.octaves()
 
     def steps(self):
         return self.diatonic_steps()
@@ -865,6 +868,12 @@ class SpelledIntervalClass(Spelled, AbstractSpelledInterval, Interval, Diatonic,
     """
     Represents a spelled interval class, i.e. an interval without octave information.
     """
+
+    def semitones(self):
+        return (7 * self.fifths()) % 12
+
+    def steps(self):
+        return self.diatonic_steps()
 
     def __init__(self, value):
         """

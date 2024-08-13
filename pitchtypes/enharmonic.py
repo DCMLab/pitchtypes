@@ -81,6 +81,9 @@ class Enharmonic(AbstractBase):
     def __repr__(self):
         return self.name()
 
+    def __str__(self):
+        return self.name()
+
     def name(self, *args, **kwargs):
         raise NotImplementedError
 
@@ -257,6 +260,12 @@ class EnharmonicPitch(Enharmonic, AbstractEnharmonicPitch, Pitch):
 
 @Enharmonic.link_interval_type()
 class EnharmonicInterval(Enharmonic, AbstractEnharmonicInterval, Interval, Chromatic):
+
+    def semitones(self):
+        return self.value
+
+    def steps(self):
+        raise PropertyUndefined(f"Property 'steps' is not defined for type {type(self)}.")
 
     def __init__(self, value):
         """
@@ -445,6 +454,12 @@ class EnharmonicPitchClass(Enharmonic, AbstractEnharmonicPitch, Pitch):
 
 @Enharmonic.link_interval_class_type()
 class EnharmonicIntervalClass(Enharmonic, AbstractEnharmonicInterval, Interval, Chromatic):
+
+    def semitones(self):
+        return self.value
+
+    def steps(self):
+        raise PropertyUndefined(f"Property 'steps' is not defined for type {type(self)}.")
 
     def __init__(self, value):
         """
