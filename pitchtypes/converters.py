@@ -31,18 +31,18 @@ def convert_spelled_to_generic(spelled):
         # get the base pitch in [0,6]
         base_pitch = (spelled.fifths() * 4) % 7
         if spelled.is_class:
-            return Enharmonic.PitchClass(value=base_pitch)
+            return Generic.PitchClass(value=base_pitch)
         else:
-            return Enharmonic.Pitch(value=12 * (spelled.octaves() + 1) + base_pitch)
+            return Generic.Pitch(value=7 * (spelled.octaves() + 1) + base_pitch)
     else:
         # convert intervals by going via reference pitches
         if spelled.is_class:
             spelled_ref_point = Spelled.PitchClass("C")
-            enharmonic_ref_point = Enharmonic.PitchClass("C")
+            generic_ref_point = Generic.PitchClass("C")
         else:
             spelled_ref_point = Spelled.Pitch("C4")
-            enharmonic_ref_point = Enharmonic.Pitch("C4")
-        return enharmonic_ref_point - convert_spelled_to_generic(spelled_ref_point - spelled)
+            generic_ref_point = Generic.Pitch("C4")
+        return generic_ref_point - convert_spelled_to_generic(spelled_ref_point - spelled)
 
 
 def convert_to_class(pitch):

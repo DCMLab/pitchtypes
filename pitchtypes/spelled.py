@@ -863,7 +863,7 @@ class SpelledIntervalClass(Spelled, AbstractSpelledInterval, Interval, Diatonic,
             sign, octaves, fifths = self.parse_interval(value)
             assert isinstance(sign, numbers.Integral)
             assert abs(sign) == 1
-            assert octaves is None
+            assert octaves == 0
             assert isinstance(fifths, numbers.Integral)
             fifths *= sign
         else:

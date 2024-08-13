@@ -2,6 +2,7 @@ import numpy as np
 from pitchtypes.basetypes import AbstractBase, Pitch, Interval, Diatonic
 from pitchtypes.utils import diatonic_steps_from_fifths
 from pitchtypes.spelled import Spelled, SpelledPitch, SpelledInterval, SpelledPitchClass, SpelledIntervalClass
+from pitchtypes.errors import UnexpectedValue
 import functools
 import abc
 import numbers
@@ -13,6 +14,20 @@ class Generic(AbstractBase):
     A common base class for generic pitch and interval types.
     See below for a set of common operations.
     """
+
+    # how should Pitch and PitchClass types be printed
+    _print_as_int = False
+
+    @classmethod
+    def print_options(cls, as_int=None):
+        if cls == Generic:
+            Generic.Pitch.print_options(as_int=as_int)
+            Generic.PitchClass.print_options(as_int=as_int)
+        if as_int is not None:
+            cls._print_as_int = as_int
+        if as_int is None:
+            print(f"print options in {cls.__name__}:\n"
+                  f"    as_int: {cls._print_as_int}")
 
     @staticmethod
     def pitch_class_from_diatonic_steps(diatonic_steps):
@@ -50,9 +65,27 @@ class Generic(AbstractBase):
         return diatonic_steps % 7 + 1
 
     def __init__(self, value, is_pitch, is_class, **kwargs):
+        # pre-process value
+        if isinstance(value, str):
+            if is_pitch:
+                if is_class:
+                    value = Spelled.PitchClass(value=value).convert_to(GenericPitchClass).value
+                else:
+                    value = Spelled.Pitch(value=value).convert_to(GenericPitch).value
+            else:
+                if is_class:
+                    value = Spelled.IntervalClass(value=value).convert_to(GenericIntervalClass).value
+                else:
+                    value = Spelled.Interval(value=value).convert_to(GenericInterval).value
+        elif isinstance(value, numbers.Number):
+            int_value = int(value)
+            if int_value != value:
+                raise UnexpectedValue(f"Expected integer pitch value but got {value}")
+            value = int_value
+            if is_class:
+                value = value % 7
+        # hand on initialisation to other base classes
         super().__init__(value=value, is_pitch=is_pitch, is_class=is_class, **kwargs)
-        if not is_class:
-            self.value.flags.writeable = False
 
     def __repr__(self):
         return self.name()
@@ -144,6 +177,16 @@ class Generic(AbstractBase):
         """
         raise NotImplementedError
 
+    @staticmethod
+    def pitch_class_name_from_steps(step_pitch):
+        """
+        Return the pitch class name for the given pitch in steps.
+        :param step_pitch: step pitch
+        :return: pitch class
+        """
+        base_names = ["C", "D", "E", "F", "G", "A", "B"]
+        return base_names[step_pitch % 7]
+
 
 class AbstractGenericInterval(abc.ABC):
     @abc.abstractmethod
@@ -217,7 +260,7 @@ class GenericPitch(Generic, AbstractGenericPitch, Pitch):
         elif isinstance(value, SpelledPitch):
             value = (value.fifths() * 4) % 7 + 7 * value.octaves()
         else:
-            raise ValueError(f"Expected string or integer pitch value but got {value}")
+            raise UnexpectedValue(f"Expected string or integer pitch value but got {value}")
 
         super().__init__(value=value, is_pitch=True, is_class=False)
 
@@ -250,11 +293,9 @@ class GenericPitch(Generic, AbstractGenericPitch, Pitch):
     def name(self, as_int=None, flat_sharp=None):
         if as_int is None:
             as_int = self._print_as_int
-        if flat_sharp is None:
-            flat_sharp = self._print_flat_sharp
         if as_int:
             return str(self.value)
-        return self.pitch_class_name_from_midi(self.value, flat_sharp=flat_sharp) + str(self.octaves())
+        return self.pitch_class_name_from_steps(self.value) + str(self.octaves())
 
     def octaves(self):
         return self.value // 7 - 1
@@ -304,7 +345,7 @@ class GenericInterval(Generic, AbstractGenericInterval, Interval, Diatonic):
         elif isinstance(value, SpelledInterval):
             value = (value.fifths() * 4) % 7 + 7 * value.octaves()
         else:
-            raise ValueError(f"Expected string or integer interval value but got {value}")
+            raise UnexpectedValue(f"Expected string or integer interval value but got {value}")
         super().__init__(value=value, is_pitch=False, is_class=False)
 
     @staticmethod
@@ -409,7 +450,7 @@ class GenericPitchClass(Generic, AbstractGenericPitch, Pitch):
         elif isinstance(value, SpelledPitchClass) or isinstance(value, SpelledPitch):
             value = (value.fifths() * 4) % 7
         else:
-            raise ValueError(f"Expected string or integer pitch class value but got {value}")
+            raise UnexpectedValue(f"Expected string or integer pitch class value but got {value}")
         super().__init__(value=value, is_pitch=True, is_class=True)
 
     def octaves(self):
@@ -475,7 +516,7 @@ class GenericIntervalClass(Generic, AbstractGenericInterval, Interval, Diatonic)
         elif isinstance(value, SpelledIntervalClass) or isinstance(value, SpelledInterval):
             value = (value.fifths() * 4) % 7
         else:
-            raise ValueError(f"Expected string or integer interval class value but got {value}")
+            raise UnexpectedValue(f"Expected string or integer interval class value but got {value}")
         super().__init__(value=fifths, is_pitch=False, is_class=True)
 
     @classmethod

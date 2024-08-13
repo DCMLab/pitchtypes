@@ -6,6 +6,7 @@ from pitchtypes.spelled import Spelled, SpelledPitch, SpelledInterval, SpelledPi
 from pitchtypes.logfreq import LogFreq
 from pitchtypes.basetypes import AbstractBase, Pitch, Interval, Chromatic
 import abc
+from errors import InvalidArgument, UnexpectedValue
 import functools
 import numpy as np
 
@@ -24,7 +25,7 @@ class Enharmonic(AbstractBase):
             cls._print_as_int = as_int
         if flat_sharp is not None:
             if flat_sharp not in ['sharp', 'flat']:
-                raise ValueError("'flat_sharp' has to be one of ['sharp', 'flat']")
+                raise InvalidArgument("'flat_sharp' has to be one of ['sharp', 'flat']")
             else:
                 cls._print_flat_sharp = flat_sharp
         if as_int is None and flat_sharp is None:
@@ -45,7 +46,7 @@ class Enharmonic(AbstractBase):
         elif flat_sharp == "flat":
             base_names = ["C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B"]
         else:
-            raise ValueError("parameter 'flat_sharp' must be one of ['sharp', 'flat']")
+            raise InvalidArgument("parameter 'flat_sharp' must be one of ['sharp', 'flat']")
         return base_names[midi_pitch % 12]
 
     def __init__(self, value, is_pitch, is_class, **kwargs):
@@ -64,7 +65,7 @@ class Enharmonic(AbstractBase):
         elif isinstance(value, numbers.Number):
             int_value = int(value)
             if int_value != value:
-                raise ValueError(f"Expected integer pitch value but got {value}")
+                raise UnexpectedValue(f"Expected integer pitch value but got {value}")
             value = int_value
             if is_class:
                 value = value % 12
@@ -192,7 +193,7 @@ class EnharmonicPitch(Enharmonic, AbstractEnharmonicPitch, Pitch):
         elif isinstance(value, SpelledPitch):
             value = (value.fifths() * 7) % 12 + 12 * value.octaves()
         else:
-            raise ValueError(f"Expected string or integer pitch value but got {value}")
+            raise UnexpectedValue(f"Expected string or integer pitch value but got {value}")
 
         super().__init__(value=value, is_pitch=True, is_class=False)
 
@@ -282,7 +283,7 @@ class EnharmonicInterval(Enharmonic, AbstractEnharmonicInterval, Interval, Chrom
         elif isinstance(value, SpelledInterval):
             value = (value.fifths() * 7) % 12 + 12 * value.octaves()
         else:
-            raise ValueError(f"Expected string or integer interval value but got {value}")
+            raise UnexpectedValue(f"Expected string or integer interval value but got {value}")
         super().__init__(value=value, is_pitch=False, is_class=False)
 
     @staticmethod
@@ -390,7 +391,7 @@ class EnharmonicPitchClass(Enharmonic, AbstractEnharmonicPitch, Pitch):
         elif isinstance(value, SpelledPitchClass) or isinstance(value, SpelledPitch):
             value = (value.fifths() * 7) % 12
         else:
-            raise ValueError(f"Expected string or integer pitch class value but got {value}")
+            raise UnexpectedValue(f"Expected string or integer pitch class value but got {value}")
         super().__init__(value=value, is_pitch=True, is_class=True)
 
     def freq(self):
@@ -456,7 +457,7 @@ class EnharmonicIntervalClass(Enharmonic, AbstractEnharmonicInterval, Interval, 
         elif isinstance(value, SpelledIntervalClass) or isinstance(value, SpelledInterval):
             value = (value.fifths() * 7) % 12
         else:
-            raise ValueError(f"Expected string or integer interval class value but got {value}")
+            raise UnexpectedValue(f"Expected string or integer interval class value but got {value}")
         super().__init__(value=value, is_pitch=False, is_class=True)
 
     @classmethod

@@ -3,6 +3,7 @@ from typing import Iterable, Union, Any, Callable, Optional
 from pitchtypes.utils import fifths_from_generic_interval_class, fifths_from_diatonic_pitch_class
 from pitchtypes.operations import addition_convert_types, subtraction_convert_types
 import importlib
+from pitchtypes.errors import UnexpectedValue, UnexpectedType
 import numpy as np
 import abc
 import re
@@ -89,7 +90,7 @@ class AbstractBase:
             got_name = sub_type.__name__
             expected_name = cls.__name__ + suffix
             if got_name != expected_name:
-                raise TypeError(f"Got class named {got_name}, but expected {expected_name}. "
+                raise UnexpectedValue(f"Got class named {got_name}, but expected {expected_name}. "
                                 f"Use skip_name_check=True to suppress.")
 
     @classmethod
@@ -490,7 +491,7 @@ class AbstractBase:
         return f"{self.__class__.__name__}({self.value})"
 
     def __eq__(self, other):
-        if type(other) == type(self):
+        if type(other) is type(self):
             assert self.is_pitch == other.is_pitch
             assert self.is_class == other.is_class
             if isinstance(self.value, np.ndarray) or isinstance(other.value, np.ndarray):
@@ -653,7 +654,7 @@ class Interval(abc.ABC):
         :meta private:
         """
         if not isinstance(s, str):
-            raise TypeError("expected string as input, got {s}")
+            raise UnexpectedType("expected string as input, got {s}")
         interval_match = Interval._interval_regex.match(s)
         if interval_match is None:
             raise ValueError(f"could not match '{s}' with regex: '{Interval._interval_regex.pattern}'")
@@ -836,7 +837,7 @@ class Pitch(abc.ABC):
         :meta private:
         """
         if not isinstance(s, str):
-            raise TypeError(f"expected string as input, got {s}")
+            raise UnexpectedType(f"expected string as input, got {s}")
         # convert unicode flats and sharps (♭ -> b and ♯ -> #)
         s = s.replace("♭", "b")
         s = s.replace("♯", "#")
