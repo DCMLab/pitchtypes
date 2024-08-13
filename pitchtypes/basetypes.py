@@ -6,6 +6,7 @@ import numpy as np
 import abc
 import re
 
+
 class AbstractBase:
     """
     This is the abstract base class for all pitch and interval types of the library.
@@ -88,8 +89,6 @@ class AbstractBase:
             def __add__(self, other):
                 if type(other) is other.Interval:
                     return self.Pitch(self.value + other.value)
-                if type(other) is self.IntervalClass:
-                    return self.PitchClass(self.value[1] + other.value)
                 return NotImplemented
 
             def __sub__(self, other):
@@ -97,10 +96,6 @@ class AbstractBase:
                     return self.Interval(self.value - other.value)
                 elif type(other) is self.Interval:
                     return self.Pitch(self.value - other.value)
-                elif type(other) is self.PitchClass:
-                    return self.IntervalClass(self.value[1] - other.value)
-                elif type(other) is self.IntervalClass:
-                    return self.PitchClass(self.value[1] - other.value)
                 return NotImplemented
 
             def to_class(self):
@@ -147,15 +142,11 @@ class AbstractBase:
             def __add__(self, other):
                 if type(other) is self.Interval:
                     return self.Interval(self.value + other.value)
-                elif type(other) is self.IntervalClass:
-                    return self.IntervalClass(self.value[1] + other.value)
                 return NotImplemented
 
             def __sub__(self, other):
                 if type(other) is self.Interval:
                     return self.Interval(self.value - other.value)
-                elif type(other) is self.IntervalClass:
-                    return self.IntervalClass(self.value[1] - other.value)
                 return NotImplemented
 
             def __mul__(self, other):
@@ -212,8 +203,6 @@ class AbstractBase:
             def __add__(self, other):
                 if type(other) is self.IntervalClass:
                     return self.PitchClass(self.value + other.value)
-                elif type(other) is self.Interval:
-                    return self.PitchClass(self.value + other.value[1])
                 return NotImplemented
 
             def __sub__(self, other):
@@ -221,10 +210,6 @@ class AbstractBase:
                     return self.IntervalClass(self.value - other.value)
                 elif type(other) is self.IntervalClass:
                     return self.PitchClass(self.value - other.value)
-                elif type(other) is self.Pitch:
-                    return self.IntervalClass(self.value - other.value[1])
-                elif type(other) is self.Interval:
-                    return self.PitchClass(self.value - other.value[1])
                 return NotImplemented
 
             # set default functions
@@ -267,15 +252,11 @@ class AbstractBase:
             def __add__(self, other):
                 if type(other) is self.IntervalClass:
                     return self.IntervalClass(self.value + other.value)
-                elif type(other) is self.Interval:
-                    return self.IntervalClass(self.value + other.value[1])
                 return NotImplemented
 
             def __sub__(self, other):
                 if type(other) is self.IntervalClass:
                     return self.IntervalClass(self.value - other.value)
-                elif type(other) is self.Interval:
-                    return self.IntervalClass(self.value - other.value[1])
                 return NotImplemented
 
             def __mul__(self, other):

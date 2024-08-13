@@ -392,7 +392,7 @@ class SpelledIntervalArray(
         """
 
         def parse_interval(string):
-            sign, octave, fifth = Spelled.parse_interval(string)
+            sign, octave, fifth = Interval.parse_interval(string)
             if octave is None:
                 raise ValueError(f"Missing octave specifier in interval '{string}'.")
             return sign, octave, fifth
@@ -735,7 +735,7 @@ class SpelledIntervalClassArray(
         """
 
         def parse_ic(string):
-            sign, octave, fifth = Spelled.parse_interval(string)
+            sign, octave, fifth = Interval.parse_interval(string)
             if octave is not None:
                 raise ValueError(
                     f"Interval classes cannot have octave specifiers ({string})."
@@ -1058,7 +1058,7 @@ class SpelledPitchArray(SpelledArray, AbstractSpelledArrayPitch, Pitch):
 
         # assert isinstance(strings.dtype, np.str_)
         def parse_pitch(string):
-            octave, fifth = Spelled.parse_pitch(string)
+            octave, fifth = Pitch.parse_pitch(string)
             if octave is None:
                 raise ValueError(f"Missing octave specifier in pitch '{string}'.")
             return octave, fifth
@@ -1314,7 +1314,7 @@ class SpelledPitchClassArray(SpelledArray, AbstractSpelledArrayPitch, Pitch):
         """
 
         def parse_pc(string):
-            octave, fifth = Spelled.parse_pitch(string)
+            octave, fifth = Pitch.parse_pitch(string)
             if octave is not None:
                 raise ValueError(
                     f"Pitch classes cannot have octave specifiers ({string})."
