@@ -1,0 +1,37 @@
+pitchtypes.errors
+=================
+
+.. automodule:: pitchtypes.errors
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Exceptions
+
+   .. autosummary::
+      :toctree:
+   
+      CustomException
+      CustomTypeError
+      CustomValueError
+      InvalidArgument
+      InvalidInitValue
+      PropertyUndefined
+      UnexpectedType
+      UnexpectedValue
+   
+   
+
+
+

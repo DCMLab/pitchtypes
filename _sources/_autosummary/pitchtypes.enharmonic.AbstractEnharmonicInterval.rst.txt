@@ -1,0 +1,32 @@
+pitchtypes.enharmonic.AbstractEnharmonicInterval
+================================================
+
+.. currentmodule:: pitchtypes.enharmonic
+
+.. autoclass:: AbstractEnharmonicInterval
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members:
+   :exclude-members: __init__
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~AbstractEnharmonicInterval.__init__
+      ~AbstractEnharmonicInterval.convert_to_logfreq
+      ~AbstractEnharmonicInterval.embed
+      ~AbstractEnharmonicInterval.from_semitones
+      ~AbstractEnharmonicInterval.name
+      ~AbstractEnharmonicInterval.octaves
+   
+   
+
+   
+   
+   

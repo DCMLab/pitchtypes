@@ -1,0 +1,64 @@
+pitchtypes.spelled.SpelledInterval
+==================================
+
+.. currentmodule:: pitchtypes.spelled
+
+.. autoclass:: SpelledInterval
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members:
+   :exclude-members: __init__
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~SpelledInterval.__init__
+      ~SpelledInterval.abs
+      ~SpelledInterval.alteration
+      ~SpelledInterval.chromatic_semitone
+      ~SpelledInterval.compare
+      ~SpelledInterval.convert_to
+      ~SpelledInterval.create_subtypes
+      ~SpelledInterval.degree
+      ~SpelledInterval.diatonic_steps
+      ~SpelledInterval.direction
+      ~SpelledInterval.embed
+      ~SpelledInterval.fifths
+      ~SpelledInterval.from_fifths_and_octaves
+      ~SpelledInterval.from_independent
+      ~SpelledInterval.from_onehot
+      ~SpelledInterval.generic
+      ~SpelledInterval.generic_interval_class_from_fifths
+      ~SpelledInterval.ic
+      ~SpelledInterval.internal_octaves
+      ~SpelledInterval.interval_class_from_fifths
+      ~SpelledInterval.interval_quality_from_fifths
+      ~SpelledInterval.is_step
+      ~SpelledInterval.link_interval_class_type
+      ~SpelledInterval.link_interval_type
+      ~SpelledInterval.link_pitch_class_type
+      ~SpelledInterval.link_pitch_type
+      ~SpelledInterval.name
+      ~SpelledInterval.name_check
+      ~SpelledInterval.octave
+      ~SpelledInterval.octaves
+      ~SpelledInterval.onehot
+      ~SpelledInterval.parse_interval
+      ~SpelledInterval.pitch_class_from_fifths
+      ~SpelledInterval.semitones
+      ~SpelledInterval.set_func_attr
+      ~SpelledInterval.steps
+      ~SpelledInterval.to_class
+      ~SpelledInterval.unison
+   
+   
+
+   
+   
+   

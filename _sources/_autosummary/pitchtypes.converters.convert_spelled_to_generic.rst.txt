@@ -1,0 +1,6 @@
+pitchtypes.converters.convert\_spelled\_to\_generic
+===================================================
+
+.. currentmodule:: pitchtypes.converters
+
+.. autofunction:: convert_spelled_to_generic

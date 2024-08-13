@@ -1,0 +1,32 @@
+pitchtypes.utils
+================
+
+.. automodule:: pitchtypes.utils
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      diatonic_steps_from_fifths
+      fifths_from_diatonic_pitch_class
+      fifths_from_generic_interval_class
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

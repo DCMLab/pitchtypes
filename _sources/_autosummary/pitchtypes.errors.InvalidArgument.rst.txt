@@ -1,0 +1,6 @@
+pitchtypes.errors.InvalidArgument
+=================================
+
+.. currentmodule:: pitchtypes.errors
+
+.. autoexception:: InvalidArgument

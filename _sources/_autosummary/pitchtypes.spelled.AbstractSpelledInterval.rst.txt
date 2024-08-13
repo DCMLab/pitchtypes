@@ -1,0 +1,37 @@
+pitchtypes.spelled.AbstractSpelledInterval
+==========================================
+
+.. currentmodule:: pitchtypes.spelled
+
+.. autoclass:: AbstractSpelledInterval
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members:
+   :exclude-members: __init__
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~AbstractSpelledInterval.__init__
+      ~AbstractSpelledInterval.alteration
+      ~AbstractSpelledInterval.compare
+      ~AbstractSpelledInterval.diatonic_steps
+      ~AbstractSpelledInterval.embed
+      ~AbstractSpelledInterval.fifths
+      ~AbstractSpelledInterval.generic
+      ~AbstractSpelledInterval.internal_octaves
+      ~AbstractSpelledInterval.name
+      ~AbstractSpelledInterval.octaves
+      ~AbstractSpelledInterval.onehot
+   
+   
+
+   
+   
+   

@@ -115,7 +115,10 @@
 <li class="toctree-l2"><a class="reference internal" href="types/harmonic.html#reference">Reference</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="api_summary.html">API Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_summary.html">API Summary</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="_autosummary/pitchtypes.html">pitchtypes</a></li>
+</ul>
+</li>
 </ul>
 </div>
 <p>A library for <strong>handling musical pitches and intervals in a systematic way</strong>.
@@ -146,26 +149,26 @@ pitch and interval types. This allows you to write generic functions</p>
 <span class="gp">... </span>    <span class="k">return</span> <span class="p">[</span><span class="n">pitch</span> <span class="o">+</span> <span class="n">interval</span> <span class="k">for</span> <span class="n">pitch</span> <span class="ow">in</span> <span class="n">pitches</span><span class="p">]</span>
 </pre></div>
 </div>
-<p>and use them with different pitch types, including <code class="xref py py-class docutils literal notranslate"><span class="pre">SpelledPitch</span></code>
+<p>and use them with different pitch types, including <a class="reference internal" href="types/spelled.html#pitchtypes.SpelledPitch" title="pitchtypes.SpelledPitch"><code class="xref py py-class docutils literal notranslate"><span class="pre">SpelledPitch</span></code></a>
 (corresponding to written notes in Western notation)</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">transposeby</span><span class="p">([</span><span class="n">pt</span><span class="o">.</span><span class="n">SpelledPitch</span><span class="p">(</span><span class="s2">&quot;C4&quot;</span><span class="p">),</span> <span class="n">pt</span><span class="o">.</span><span class="n">SpelledPitch</span><span class="p">(</span><span class="s2">&quot;Eb4&quot;</span><span class="p">),</span> <span class="n">pt</span><span class="o">.</span><span class="n">SpelledPitch</span><span class="p">(</span><span class="s2">&quot;G#4&quot;</span><span class="p">)],</span>
 <span class="gp">... </span>            <span class="n">pt</span><span class="o">.</span><span class="n">SpelledInterval</span><span class="p">(</span><span class="s2">&quot;m3:0&quot;</span><span class="p">))</span>
 <span class="go">[Eb4, Gb4, B4]</span>
 </pre></div>
 </div>
-<p><code class="xref py py-class docutils literal notranslate"><span class="pre">SpelledPitchClass</span></code> (which work the same but ignore octaves)</p>
+<p><a class="reference internal" href="types/spelled.html#pitchtypes.SpelledPitchClass" title="pitchtypes.SpelledPitchClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">SpelledPitchClass</span></code></a> (which work the same but ignore octaves)</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">transposeby</span><span class="p">([</span><span class="n">pt</span><span class="o">.</span><span class="n">SpelledPitchClass</span><span class="p">(</span><span class="s2">&quot;C&quot;</span><span class="p">),</span> <span class="n">pt</span><span class="o">.</span><span class="n">SpelledPitchClass</span><span class="p">(</span><span class="s2">&quot;Eb&quot;</span><span class="p">),</span> <span class="n">pt</span><span class="o">.</span><span class="n">SpelledPitchClass</span><span class="p">(</span><span class="s2">&quot;G#&quot;</span><span class="p">)],</span>
 <span class="gp">... </span>            <span class="n">pt</span><span class="o">.</span><span class="n">SpelledIntervalClass</span><span class="p">(</span><span class="s2">&quot;m3&quot;</span><span class="p">))</span>
 <span class="go">[Eb, Gb, B]</span>
 </pre></div>
 </div>
-<p><code class="xref py py-class docutils literal notranslate"><span class="pre">EnharmonicPitch</span></code> (corresponding to keys on the piano)</p>
+<p><a class="reference internal" href="types/enharmonic.html#pitchtypes.EnharmonicPitch" title="pitchtypes.EnharmonicPitch"><code class="xref py py-class docutils literal notranslate"><span class="pre">EnharmonicPitch</span></code></a> (corresponding to keys on the piano)</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">transposeby</span><span class="p">([</span><span class="n">pt</span><span class="o">.</span><span class="n">EnharmonicPitch</span><span class="p">(</span><span class="mi">60</span><span class="p">),</span> <span class="n">pt</span><span class="o">.</span><span class="n">EnharmonicPitch</span><span class="p">(</span><span class="mi">63</span><span class="p">),</span> <span class="n">pt</span><span class="o">.</span><span class="n">EnharmonicPitch</span><span class="p">(</span><span class="mi">68</span><span class="p">)],</span>
 <span class="gp">... </span>            <span class="n">pt</span><span class="o">.</span><span class="n">EnharmonicInterval</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>
 <span class="go">[D#4, F#4, B4]</span>
 </pre></div>
 </div>
-<p><code class="xref py py-class docutils literal notranslate"><span class="pre">LogFreqPitch</span></code> (i.e. <strong>frequencies</strong> with intervals corresponding to <strong>frequency ratios</strong>)</p>
+<p><a class="reference internal" href="types/frequencies.html#pitchtypes.LogFreqPitch" title="pitchtypes.LogFreqPitch"><code class="xref py py-class docutils literal notranslate"><span class="pre">LogFreqPitch</span></code></a> (i.e. <strong>frequencies</strong> with intervals corresponding to <strong>frequency ratios</strong>)</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">transposeby</span><span class="p">([</span><span class="n">pt</span><span class="o">.</span><span class="n">LogFreqPitch</span><span class="p">(</span><span class="s2">&quot;261.63Hz&quot;</span><span class="p">),</span> <span class="n">pt</span><span class="o">.</span><span class="n">LogFreqPitch</span><span class="p">(</span><span class="s2">&quot;311.13Hz&quot;</span><span class="p">),</span> <span class="n">pt</span><span class="o">.</span><span class="n">LogFreqPitch</span><span class="p">(</span><span class="s2">&quot;415.30Hz&quot;</span><span class="p">)],</span>
 <span class="gp">... </span>            <span class="n">pt</span><span class="o">.</span><span class="n">LogFreqInterval</span><span class="p">(</span><span class="s2">&quot;1.19&quot;</span><span class="p">))</span>
 <span class="go">[311.34Hz, 370.24Hz, 494.21Hz]</span>
@@ -176,12 +179,12 @@ pitch and interval types. This allows you to write generic functions</p>
 <section id="type-conversion">
 <h2>Type Conversion<a class="headerlink" href="#type-conversion" title="Link to this heading"></a></h2>
 <p>The library also provides <strong>type conversions</strong>, if they are reasonably well defined. For instance,
-from <code class="xref py py-class docutils literal notranslate"><span class="pre">SpelledPitch</span></code> to <code class="xref py py-class docutils literal notranslate"><span class="pre">EnharmonicPitch</span></code></p>
+from <a class="reference internal" href="types/spelled.html#pitchtypes.SpelledPitch" title="pitchtypes.SpelledPitch"><code class="xref py py-class docutils literal notranslate"><span class="pre">SpelledPitch</span></code></a> to <a class="reference internal" href="types/enharmonic.html#pitchtypes.EnharmonicPitch" title="pitchtypes.EnharmonicPitch"><code class="xref py py-class docutils literal notranslate"><span class="pre">EnharmonicPitch</span></code></a></p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pt</span><span class="o">.</span><span class="n">SpelledPitch</span><span class="p">(</span><span class="s2">&quot;F##4&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">convert_to</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">EnharmonicPitch</span><span class="p">)</span>
 <span class="go">G4</span>
 </pre></div>
 </div>
-<p>or from <code class="xref py py-class docutils literal notranslate"><span class="pre">EnharmonicPitch</span></code> to <code class="xref py py-class docutils literal notranslate"><span class="pre">LogFreqPitch</span></code>
+<p>or from <a class="reference internal" href="types/enharmonic.html#pitchtypes.EnharmonicPitch" title="pitchtypes.EnharmonicPitch"><code class="xref py py-class docutils literal notranslate"><span class="pre">EnharmonicPitch</span></code></a> to <a class="reference internal" href="types/frequencies.html#pitchtypes.LogFreqPitch" title="pitchtypes.LogFreqPitch"><code class="xref py py-class docutils literal notranslate"><span class="pre">LogFreqPitch</span></code></a>
 (assuming twelve-tone equal temperament)</p>
 <div class="highlight-pycon notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">pt</span><span class="o">.</span><span class="n">EnharmonicPitch</span><span class="p">(</span><span class="s2">&quot;A4&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">convert_to</span><span class="p">(</span><span class="n">pt</span><span class="o">.</span><span class="n">LogFreqPitch</span><span class="p">)</span>
 <span class="go">440.Hz</span>

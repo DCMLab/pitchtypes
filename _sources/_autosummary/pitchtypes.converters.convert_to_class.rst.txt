@@ -1,0 +1,6 @@
+pitchtypes.converters.convert\_to\_class
+========================================
+
+.. currentmodule:: pitchtypes.converters
+
+.. autofunction:: convert_to_class

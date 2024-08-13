@@ -1,0 +1,31 @@
+pitchtypes.generic.AbstractGenericInterval
+==========================================
+
+.. currentmodule:: pitchtypes.generic
+
+.. autoclass:: AbstractGenericInterval
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members:
+   :exclude-members: __init__
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~AbstractGenericInterval.__init__
+      ~AbstractGenericInterval.embed
+      ~AbstractGenericInterval.from_steps
+      ~AbstractGenericInterval.name
+      ~AbstractGenericInterval.octaves
+   
+   
+
+   
+   
+   
