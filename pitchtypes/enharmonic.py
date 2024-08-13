@@ -4,18 +4,12 @@ import numbers
 
 from pitchtypes.spelled import Spelled, SpelledPitch, SpelledInterval, SpelledPitchClass, SpelledIntervalClass
 from pitchtypes.logfreq import LogFreq
-from pitchtypes.basetypes import AbstractBase, Pitch, Interval, Chromatic
 import abc
-from errors import InvalidArgument, UnexpectedValue, PropertyUndefined
+from pitchtypes.errors import InvalidArgument, UnexpectedValue, PropertyUndefined
 import functools
 import numpy as np
-
 import re
-import abc
-import functools
-import numpy as np
-
-from pitchtypes.basetypes import AbstractBase, Pitch, Interval, Diatonic, Chromatic
+from pitchtypes.basetypes import AbstractBase, Pitch, Interval, Chromatic
 
 class Enharmonic(AbstractBase):
     # how should Pitch and PitchClass types be printed
