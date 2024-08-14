@@ -1583,7 +1583,7 @@ def asic(things):
     :return: a spelled-interval-class array of the same shape as the input
     """
     input = np.array(things)
-    if input.dtype.type is np.str_ or input.dtype.type is np.strings:
+    if input.dtype.type is np.str_ or input.dtype.type is np.bytes_:
         return SpelledIntervalClassArray.from_strings(input)
     if isinstance(input.flat[0], SpelledIntervalClass):
         return SpelledIntervalClassArray.from_array(input)
@@ -1602,7 +1602,7 @@ def asp(things, things2=None):
     :return: a spelled-pitch array of the same shape as the input
     """
     input = np.array(things)
-    if input.dtype.type is np.str_ or input.dtype.type is np.strings:
+    if input.dtype.type is np.str_ or input.dtype.type is np.bytes_:
         return SpelledPitchArray.from_strings(input)
     if isinstance(input.flat[0], SpelledPitch):
         return SpelledPitchArray.from_array(input)
@@ -1620,7 +1620,7 @@ def aspc(things):
     :return: a spelled-pitch-class array of the same shape as the input
     """
     input = np.array(things)
-    if input.dtype.type is np.str_ or input.dtype.type is np.strings:
+    if input.dtype.type is np.str_ or input.dtype.type is np.bytes_:
         return SpelledPitchClassArray.from_strings(input)
     if isinstance(input.flat[0], SpelledPitchClass):
         return SpelledPitchClassArray.from_array(input)
