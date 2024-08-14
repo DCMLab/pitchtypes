@@ -109,10 +109,6 @@ class Generic(AbstractBase):
         1 if the first object (``self``) is greater,
         and -1 if the second object (``other``) is greater.
 
-        The respective ordering differs between types.
-        Non-class pitches and intervals use diatonic ordering,
-        interval/pitch classes use diatonic step ordering.
-
         This method can be indirectly used through binary comparison operators
         (including ``==``, ``<`` etc.).
 
@@ -133,6 +129,7 @@ class Generic(AbstractBase):
         except TypeError:
             return NotImplemented
 
+    @abc.abstractmethod
     def steps(self):
         """
         Return the position of the interval in diatonic steps.
@@ -183,15 +180,20 @@ class Generic(AbstractBase):
     @staticmethod
     def pitch_class_name_from_steps(step_pitch):
         """
-        Return the pitch class name for the given pitch in steps.
+        Return the pitch class name for the given pitch in steps, alias for pitch_class_from_diatonic_steps
+
         :param step_pitch: step pitch
         :return: pitch class
         """
-        base_names = ["C", "D", "E", "F", "G", "A", "B"]
-        return base_names[step_pitch % 7]
+
+        return Generic.pitch_class_from_diatonic_steps(step_pitch)
 
 
 class AbstractGenericInterval(abc.ABC):
+    @abc.abstractmethod
+    def compare(self, other):
+        pass
+
     @abc.abstractmethod
     def name(self, *args, **kwargs):
         pass
@@ -213,6 +215,10 @@ class AbstractGenericInterval(abc.ABC):
 
 
 class AbstractGenericPitch(abc.ABC):
+    @abc.abstractmethod
+    def compare(self, other):
+        pass
+
     @abc.abstractmethod
     def name(self, *args, **kwargs):
         pass
@@ -239,6 +245,25 @@ class AbstractGenericPitch(abc.ABC):
 
 @Generic.link_pitch_type()
 class GenericPitch(Generic, AbstractGenericPitch, Pitch):
+    def compare(self, other):
+        """
+        Comparison between two generic pitches according to diatonic ordering.
+
+        Returns 0 if the objects are equal,
+        1 if the first pitch (``self``) is higher,
+        and -1 if the second pitch (``other``) is higher.
+
+        This method can be indirectly used through binary comparison operators
+        (including ``==``, ``<`` etc.).
+
+        :param other: a pitch to compare to (GenericPitch)
+        :return: ``-1`` / ``0`` / ``1`` (integer)
+        """
+        if isinstance(other, GenericPitch):
+            return (self - other).direction()
+        else:
+            raise TypeError(f"Cannot compare {type(self)} with {type(other)}.")
+
     def semitones(self):
         raise PropertyUndefined(f"Property 'semitones' is not defined for type {type(self)}")
 
@@ -263,11 +288,11 @@ class GenericPitch(Generic, AbstractGenericPitch, Pitch):
                 octaves, fifths = self.parse_pitch(value)
                 assert isinstance(octaves, numbers.Integral)
                 assert isinstance(fifths, numbers.Integral)
-                value = (fifths * 4) % 7 + 7 * octaves
+                value = (fifths * 4) % 7 + 7 * (octaves + 1)
         elif isinstance(value, numbers.Integral):
             value = int(value)
         elif isinstance(value, SpelledPitch):
-            value = (value.fifths() * 4) % 7 + 7 * value.octaves()
+            value = (value.fifths() * 4) % 7 + 7 * (value.octaves() + 1)
         else:
             raise UnexpectedValue(f"Expected string or integer pitch value but got {value}")
 
@@ -297,9 +322,9 @@ class GenericPitch(Generic, AbstractGenericPitch, Pitch):
             raise TypeError(f"Cannot take interval between GenericPitch and {type(other)}.")
 
     def to_class(self):
-        return self.PitchClass(value=self.value % 12)
+        return self.PitchClass(value=self.value % 7)
 
-    def name(self, as_int=None, flat_sharp=None):
+    def name(self, as_int=None):
         if as_int is None:
             as_int = self._print_as_int
         if as_int:
@@ -319,6 +344,31 @@ class GenericPitch(Generic, AbstractGenericPitch, Pitch):
 
 @Generic.link_interval_type()
 class GenericInterval(Generic, AbstractGenericInterval, Interval, Diatonic):
+
+    def compare(self, other):
+        """
+        Comparison between two generic intervals according to diatonic ordering.
+
+        Returns 0 if the intervals are equal,
+        1 if the first interval (``self``) is greater,
+        and -1 if the second interval (``other``) is greater.
+
+        This method can be indirectly used through binary comparison operators
+        (including ``==``, ``<`` etc.).
+
+        :param other: an interval to compare to (GenericInterval)
+        :return: ``-1`` / ``0`` / ``1`` (integer)
+        """
+        if isinstance(other, GenericInterval):
+            return (self - other).direction()
+        else:
+            raise TypeError(f"Cannot compare {type(self)} with {type(other)}.")
+
+    def steps(self):
+        """
+        Return the step value of the interval, a value in the range [-6, 6].
+        """
+        return self.value
 
     def semitones(self):
         raise PropertyUndefined(f"Property 'semitones' is not defined for type {type(self)}")
@@ -434,6 +484,25 @@ class GenericInterval(Generic, AbstractGenericInterval, Interval, Diatonic):
 @Generic.link_pitch_class_type()
 class GenericPitchClass(Generic, AbstractGenericPitch, Pitch):
 
+    def compare(self, other):
+        """
+        Comparison between two spelled pitch classes according to diatonic steps.
+
+        Returns 0 if the pitch classes are equal,
+        1 if the first pitch class (``self``) is greater ("sharper"),
+        and -1 if the second pitch class (``other``) is greater ("sharper").
+
+        This method can be indirectly used through binary comparison operators
+        (including ``==``, ``<`` etc.).
+
+        :param other: a pitch class to compare to (GenericPitchClass)
+        :return: ``-1`` / ``0`` / ``1`` (integer)
+        """
+        if isinstance(other, GenericPitchClass):
+            return np.sign(self.steps() - other.steps())
+        else:
+            raise TypeError(f"Cannot compare {type(self)} with {type(other)}.")
+
     def semitones(self):
         raise PropertyUndefined(f"Property 'semitones' is not defined for type {self.__class__.__name__}")
 
@@ -489,18 +558,41 @@ class GenericPitchClass(Generic, AbstractGenericPitch, Pitch):
     def embed(self):
         return GenericPitch.from_steps(self.value)
 
-    def name(self, as_int=None, flat_sharp=None):
+    def name(self, as_int=None):
         if as_int is None:
             as_int = self._print_as_int
-        if flat_sharp is None:
-            flat_sharp = self._print_flat_sharp
         if as_int:
             return str(self.value)
-        return self.pitch_class_name_from_midi(self.value, flat_sharp=flat_sharp)
+        return self.pitch_class_name_from_steps(self.value)
 
 
 @Generic.link_interval_class_type()
 class GenericIntervalClass(Generic, AbstractGenericInterval, Interval, Diatonic):
+
+    def compare(self, other):
+        """
+        Comparison between two spelled interval classes according to diatonic steps.
+
+        Returns 0 if the interval classes are equal,
+        1 if the first interval class (``self``) is greater ("sharper"),
+        and -1 if the second interval class (``other``) is greater ("sharper").
+
+        This method can be indirectly used through binary comparison operators
+        (including ``==``, ``<`` etc.).
+
+        :param other: an interval class to compare to (GenericIntervalClass)
+        :return: ``-1`` / ``0`` / ``1`` (integer)
+        """
+        if isinstance(other, GenericIntervalClass):
+            return np.sign(self.steps() - other.steps())
+        else:
+            raise TypeError(f"Cannot compare {type(self)} with {type(other)}.")
+
+    def steps(self):
+        """
+        Return the step value of the interval class, a value in the range [-6, 6].
+        """
+        return self.value
 
     def semitones(self):
         raise PropertyUndefined(f"Property 'semitones' is not defined for type {type(self)}")
@@ -538,7 +630,7 @@ class GenericIntervalClass(Generic, AbstractGenericInterval, Interval, Diatonic)
             value = (value.fifths() * 4) % 7
         else:
             raise UnexpectedValue(f"Expected string or integer interval class value but got {value}")
-        super().__init__(value=fifths, is_pitch=False, is_class=True)
+        super().__init__(value=value, is_pitch=False, is_class=True)
 
     @classmethod
     def octave(cls):

@@ -5,11 +5,13 @@ import numbers
 from pitchtypes.spelled import Spelled, SpelledPitch, SpelledInterval, SpelledPitchClass, SpelledIntervalClass
 from pitchtypes.logfreq import LogFreq
 import abc
+import functools
 from pitchtypes.errors import InvalidArgument, UnexpectedValue, PropertyUndefined
 from pitchtypes.utils import diatonic_steps_from_fifths
 from pitchtypes.basetypes import AbstractBase, Pitch, Interval, Chromatic
 
 
+@functools.total_ordering
 class Enharmonic(AbstractBase):
     # how should Pitch and PitchClass types be printed
     _print_as_int = False
@@ -105,8 +107,41 @@ class Enharmonic(AbstractBase):
     def __int__(self):
         return self.value
 
+    def compare(self, other):
+        """
+        Comparison between two enharmonic types.
+
+        Returns 0 if the objects are equal,
+        1 if the first object (``self``) is greater,
+        and -1 if the second object (``other``) is greater.
+
+        This method can be indirectly used through binary comparison operators
+        (including ``==``, ``<`` etc.).
+
+        :param other: an object to compare to (same type as ``self``)
+        :return: ``-1`` / ``0`` / ``1`` (integer)
+        """
+        raise NotImplementedError
+
+    def __eq__(self, other):
+        try:
+            return self.compare(other) == 0
+        except TypeError:
+            return NotImplemented
+
+    def __lt__(self, other):
+        try:
+            return self.compare(other) == -1
+        except TypeError:
+            return NotImplemented
+
 
 class AbstractEnharmonicInterval(abc.ABC):
+
+    @abc.abstractmethod
+    def compare(self, other):
+        pass
+
     @abc.abstractmethod
     def name(self, *args, **kwargs):
         pass
@@ -132,6 +167,11 @@ class AbstractEnharmonicInterval(abc.ABC):
 
 
 class AbstractEnharmonicPitch(abc.ABC):
+
+    @abc.abstractmethod
+    def compare(self, other):
+        pass
+
     @abc.abstractmethod
     def name(self, *args, **kwargs):
         pass
@@ -257,6 +297,25 @@ class EnharmonicPitch(Enharmonic, AbstractEnharmonicPitch, Pitch):
     def pc(self):
         return self.to_class()
 
+    def compare(self, other):
+        """
+        Comparison between two enharmonic pitches according to enharmonic semitone ordering.
+
+        Returns 0 if the objects are equal,
+        1 if the first pitch (``self``) is higher,
+        and -1 if the second pitch (``other``) is higher.
+
+        This method can be indirectly used through binary comparison operators
+        (including ``==``, ``<`` etc.).
+
+        :param other: a pitch to compare to (EnharmonicPitch)
+        :return: ``-1`` / ``0`` / ``1`` (integer)
+        """
+        if isinstance(other, EnharmonicPitch):
+            return (self - other).direction()
+        else:
+            raise TypeError(f"Cannot compare {type(self)} with {type(other)}.")
+
 
 @Enharmonic.link_interval_type()
 class EnharmonicInterval(Enharmonic, AbstractEnharmonicInterval, Interval, Chromatic):
@@ -377,6 +436,25 @@ class EnharmonicInterval(Enharmonic, AbstractEnharmonicInterval, Interval, Chrom
     def convert_to_logfreq(self):
         return LogFreq.Interval(2 ** (self.value / 12), is_ratio=True)
 
+    def compare(self, other):
+        """
+        Comparison between two enharmonic intervals according to enharmonic semitone ordering.
+
+        Returns 0 if the objects are equal,
+        1 if the first interval (``self``) is greater,
+        and -1 if the second interval (``other``) is greater.
+
+        This method can be indirectly used through binary comparison operators
+        (including ``==``, ``<`` etc.).
+
+        :param other: an interval to compare to (EnharmonicInterval)
+        :return: ``-1`` / ``0`` / ``1`` (integer)
+        """
+        if isinstance(other, EnharmonicInterval):
+            return (self - other).direction()
+        else:
+            raise TypeError(f"Cannot compare {type(self)} with {type(other)}.")
+
 
 @Enharmonic.link_pitch_class_type()
 class EnharmonicPitchClass(Enharmonic, AbstractEnharmonicPitch, Pitch):
@@ -453,6 +531,25 @@ class EnharmonicPitchClass(Enharmonic, AbstractEnharmonicPitch, Pitch):
 
     def convert_to_logfreq(self):
         return LogFreq.PitchClass(2 ** ((self.value - 69) / 12) * 440, is_freq=True)
+
+    def compare(self, other):
+        """
+        Comparison between two enharmonic pitch classes according to enharmonic semitone ordering.
+
+        Returns 0 if the objects are equal,
+        1 if the first pitch class (``self``) is higher,
+        and -1 if the second pitch class (``other``) is higher.
+
+        This method can be indirectly used through binary comparison operators
+        (including ``==``, ``<`` etc.).
+
+        :param other: a pitch class to compare to (EnharmonicPitchClass)
+        :return: ``-1`` / ``0`` / ``1`` (integer)
+        """
+        if isinstance(other, EnharmonicPitchClass):
+            return (self - other).direction()
+        else:
+            raise TypeError(f"Cannot compare {type(self)} with {type(other)}.")
 
 
 @Enharmonic.link_interval_class_type()
@@ -567,3 +664,22 @@ class EnharmonicIntervalClass(Enharmonic, AbstractEnharmonicInterval, Interval, 
 
     def convert_to_logfreq(self):
         return LogFreq.IntervalClass(2 ** (self.value / 12), is_ratio=True)
+
+    def compare(self, other):
+        """
+        Comparison between two enharmonic interval classes according to enharmonic semitone ordering.
+
+        Returns 0 if the objects are equal,
+        1 if the first interval class (``self``) is greater,
+        and -1 if the second interval class (``other``) is greater.
+
+        This method can be indirectly used through binary comparison operators
+        (including ``==``, ``<`` etc.).
+
+        :param other: an interval class to compare to (EnharmonicIntervalClass)
+        :return: ``-1`` / ``0`` / ``1`` (integer)
+        """
+        if isinstance(other, EnharmonicIntervalClass):
+            return (self - other).direction()
+        else:
+            raise TypeError(f"Cannot compare {type(self)} with {type(other)}.")
