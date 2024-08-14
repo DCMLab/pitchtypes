@@ -19,6 +19,7 @@ pitchtypes.enharmonic.AbstractEnharmonicPitch
    .. autosummary::
    
       ~AbstractEnharmonicPitch.__init__
+      ~AbstractEnharmonicPitch.compare
       ~AbstractEnharmonicPitch.convert_to_logfreq
       ~AbstractEnharmonicPitch.embed
       ~AbstractEnharmonicPitch.freq

@@ -19,6 +19,7 @@ pitchtypes.generic.AbstractGenericPitch
    .. autosummary::
    
       ~AbstractGenericPitch.__init__
+      ~AbstractGenericPitch.compare
       ~AbstractGenericPitch.embed
       ~AbstractGenericPitch.from_steps
       ~AbstractGenericPitch.name

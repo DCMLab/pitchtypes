@@ -134,7 +134,7 @@ or with unicode symbols (♯/♭), but not mixed within the same note.</p>
 <td><p>Takes a string consisting of the form <code class="docutils literal notranslate"><span class="pre">&lt;letter&gt;&lt;accidentals?&gt;&lt;octave&gt;</span></code>, e.g. <code class="docutils literal notranslate"><span class="pre">&quot;C#4&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;E5&quot;</span></code>, or <code class="docutils literal notranslate"><span class="pre">&quot;Db-2&quot;</span></code>.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.generic.GenericPitch.compare" title="pitchtypes.generic.GenericPitch.compare"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compare</span></code></a>(other)</p></td>
-<td><p>Comparison between two generic types.</p></td>
+<td><p>Comparison between two generic pitches according to diatonic ordering.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">convert_to</span></code>(other_type)</p></td>
 <td><p></p></td>
@@ -178,7 +178,7 @@ or with unicode symbols (♯/♭), but not mixed within the same note.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.generic.GenericPitch.midi" title="pitchtypes.generic.GenericPitch.midi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">midi</span></code></a>()</p></td>
 <td><p>Return the MIDI number corresponding to the pitch.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.generic.GenericPitch.name" title="pitchtypes.generic.GenericPitch.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a>([as_int, flat_sharp])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.generic.GenericPitch.name" title="pitchtypes.generic.GenericPitch.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a>([as_int])</p></td>
 <td><p>The name of the pitch or interval in string notation</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">name_check</span></code>(cls, sub_type, suffix, ...)</p></td>
@@ -200,7 +200,7 @@ or with unicode symbols (♯/♭), but not mixed within the same note.</p>
 <td><p>Return the pitch class given the number of steps</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.generic.GenericPitch.pitch_class_name_from_steps" title="pitchtypes.generic.GenericPitch.pitch_class_name_from_steps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pitch_class_name_from_steps</span></code></a>(step_pitch)</p></td>
-<td><p>Return the pitch class name for the given pitch in steps.</p></td>
+<td><p>Return the pitch class name for the given pitch in steps, alias for pitch_class_from_diatonic_steps</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_options</span></code>([as_int])</p></td>
 <td><p></p></td>
@@ -340,18 +340,15 @@ if <code class="docutils literal notranslate"><span class="pre">other</span></co
 <dl class="py method">
 <dt class="sig sig-object py" id="pitchtypes.generic.GenericPitch.compare">
 <span class="sig-name descname"><span class="pre">compare</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.generic.GenericPitch.compare" title="Link to this definition"></a></dt>
-<dd><p>Comparison between two generic types.</p>
+<dd><p>Comparison between two generic pitches according to diatonic ordering.</p>
 <p>Returns 0 if the objects are equal,
-1 if the first object (<code class="docutils literal notranslate"><span class="pre">self</span></code>) is greater,
-and -1 if the second object (<code class="docutils literal notranslate"><span class="pre">other</span></code>) is greater.</p>
-<p>The respective ordering differs between types.
-Non-class pitches and intervals use diatonic ordering,
-interval/pitch classes use diatonic step ordering.</p>
+1 if the first pitch (<code class="docutils literal notranslate"><span class="pre">self</span></code>) is higher,
+and -1 if the second pitch (<code class="docutils literal notranslate"><span class="pre">other</span></code>) is higher.</p>
 <p>This method can be indirectly used through binary comparison operators
 (including <code class="docutils literal notranslate"><span class="pre">==</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code> etc.).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>other</strong> – an object to compare to (same type as <code class="docutils literal notranslate"><span class="pre">self</span></code>)</p>
+<dd class="field-odd"><p><strong>other</strong> – a pitch to compare to (GenericPitch)</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">-1</span></code> / <code class="docutils literal notranslate"><span class="pre">0</span></code> / <code class="docutils literal notranslate"><span class="pre">1</span></code> (integer)</p>
@@ -449,7 +446,7 @@ by moving the specified number of steps upwards
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pitchtypes.generic.GenericPitch.name">
-<span class="sig-name descname"><span class="pre">name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">as_int</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flat_sharp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.generic.GenericPitch.name" title="Link to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">as_int</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.generic.GenericPitch.name" title="Link to this definition"></a></dt>
 <dd><p>The name of the pitch or interval in string notation</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -512,10 +509,15 @@ For pitch classes, it returns the pitch class itself.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pitchtypes.generic.GenericPitch.pitch_class_name_from_steps">
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pitch_class_name_from_steps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">step_pitch</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.generic.GenericPitch.pitch_class_name_from_steps" title="Link to this definition"></a></dt>
-<dd><p>Return the pitch class name for the given pitch in steps.
-:type step_pitch: 
-:param step_pitch: step pitch
-:return: pitch class</p>
+<dd><p>Return the pitch class name for the given pitch in steps, alias for pitch_class_from_diatonic_steps</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>step_pitch</strong> – step pitch</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>pitch class</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">

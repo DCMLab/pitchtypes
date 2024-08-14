@@ -171,7 +171,7 @@ See below for a set of common operations.</p>
 <td><p>Return the pitch class given the number of steps</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.generic.Generic.pitch_class_name_from_steps" title="pitchtypes.generic.Generic.pitch_class_name_from_steps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pitch_class_name_from_steps</span></code></a>(step_pitch)</p></td>
-<td><p>Return the pitch class name for the given pitch in steps.</p></td>
+<td><p>Return the pitch class name for the given pitch in steps, alias for pitch_class_from_diatonic_steps</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_options</span></code>([as_int])</p></td>
 <td><p></p></td>
@@ -274,9 +274,6 @@ See below for a set of common operations.</p>
 <p>Returns 0 if the objects are equal,
 1 if the first object (<code class="docutils literal notranslate"><span class="pre">self</span></code>) is greater,
 and -1 if the second object (<code class="docutils literal notranslate"><span class="pre">other</span></code>) is greater.</p>
-<p>The respective ordering differs between types.
-Non-class pitches and intervals use diatonic ordering,
-interval/pitch classes use diatonic step ordering.</p>
 <p>This method can be indirectly used through binary comparison operators
 (including <code class="docutils literal notranslate"><span class="pre">==</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code> etc.).</p>
 <dl class="field-list simple">
@@ -367,15 +364,20 @@ Specialized versions of this method take ranges for their respective dimensions.
 <dl class="py method">
 <dt class="sig sig-object py" id="pitchtypes.generic.Generic.pitch_class_name_from_steps">
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pitch_class_name_from_steps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">step_pitch</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.generic.Generic.pitch_class_name_from_steps" title="Link to this definition"></a></dt>
-<dd><p>Return the pitch class name for the given pitch in steps.
-:type step_pitch: 
-:param step_pitch: step pitch
-:return: pitch class</p>
+<dd><p>Return the pitch class name for the given pitch in steps, alias for pitch_class_from_diatonic_steps</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>step_pitch</strong> – step pitch</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>pitch class</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pitchtypes.generic.Generic.steps">
-<span class="sig-name descname"><span class="pre">steps</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.generic.Generic.steps" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">steps</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.generic.Generic.steps" title="Link to this definition"></a></dt>
 <dd><p>Return the position of the interval in diatonic steps.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>

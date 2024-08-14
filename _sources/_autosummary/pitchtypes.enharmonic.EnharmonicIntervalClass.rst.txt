@@ -21,6 +21,7 @@ pitchtypes.enharmonic.EnharmonicIntervalClass
       ~EnharmonicIntervalClass.__init__
       ~EnharmonicIntervalClass.abs
       ~EnharmonicIntervalClass.chromatic_semitone
+      ~EnharmonicIntervalClass.compare
       ~EnharmonicIntervalClass.convert_to
       ~EnharmonicIntervalClass.convert_to_logfreq
       ~EnharmonicIntervalClass.create_subtypes

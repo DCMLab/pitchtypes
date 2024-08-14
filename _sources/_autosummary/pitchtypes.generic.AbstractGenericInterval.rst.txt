@@ -19,6 +19,7 @@ pitchtypes.generic.AbstractGenericInterval
    .. autosummary::
    
       ~AbstractGenericInterval.__init__
+      ~AbstractGenericInterval.compare
       ~AbstractGenericInterval.embed
       ~AbstractGenericInterval.from_steps
       ~AbstractGenericInterval.name

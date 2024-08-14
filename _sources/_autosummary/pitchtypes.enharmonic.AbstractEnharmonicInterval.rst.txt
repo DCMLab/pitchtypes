@@ -19,6 +19,7 @@ pitchtypes.enharmonic.AbstractEnharmonicInterval
    .. autosummary::
    
       ~AbstractEnharmonicInterval.__init__
+      ~AbstractEnharmonicInterval.compare
       ~AbstractEnharmonicInterval.convert_to_logfreq
       ~AbstractEnharmonicInterval.embed
       ~AbstractEnharmonicInterval.from_semitones

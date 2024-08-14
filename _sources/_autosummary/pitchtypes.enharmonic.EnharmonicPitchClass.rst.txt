@@ -19,6 +19,7 @@ pitchtypes.enharmonic.EnharmonicPitchClass
    .. autosummary::
    
       ~EnharmonicPitchClass.__init__
+      ~EnharmonicPitchClass.compare
       ~EnharmonicPitchClass.convert_to
       ~EnharmonicPitchClass.convert_to_logfreq
       ~EnharmonicPitchClass.create_subtypes
