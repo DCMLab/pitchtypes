@@ -1,6 +1,0 @@
-pitchtypes.spelled\_array.aspc
-==============================
-
-.. currentmodule:: pitchtypes.spelled_array
-
-.. autofunction:: aspc

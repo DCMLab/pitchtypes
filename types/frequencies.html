@@ -52,20 +52,7 @@
 <li class="toctree-l1"><a class="reference internal" href="enharmonic.html">Enharmonic Pitch</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Log-Frequency Pitch</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#reference">Reference</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#pitchtypes.LogFreq"><code class="docutils literal notranslate"><span class="pre">LogFreq</span></code></a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#pitchtypes.LogFreq.Interval"><code class="docutils literal notranslate"><span class="pre">LogFreq.Interval</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#pitchtypes.LogFreq.IntervalClass"><code class="docutils literal notranslate"><span class="pre">LogFreq.IntervalClass</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#pitchtypes.LogFreq.Pitch"><code class="docutils literal notranslate"><span class="pre">LogFreq.Pitch</span></code></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#pitchtypes.LogFreq.PitchClass"><code class="docutils literal notranslate"><span class="pre">LogFreq.PitchClass</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="#pitchtypes.LogFreqPitch"><code class="docutils literal notranslate"><span class="pre">LogFreqPitch</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#pitchtypes.LogFreqInterval"><code class="docutils literal notranslate"><span class="pre">LogFreqInterval</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#pitchtypes.LogFreqPitchClass"><code class="docutils literal notranslate"><span class="pre">LogFreqPitchClass</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#pitchtypes.LogFreqIntervalClass"><code class="docutils literal notranslate"><span class="pre">LogFreqIntervalClass</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="#reference">Reference</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="harmonic.html">Harmonic Pitch</a></li>
@@ -135,57 +122,6 @@ true</p>
 </section>
 <section id="reference">
 <h2>Reference<a class="headerlink" href="#reference" title="Link to this heading"></a></h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="pitchtypes.LogFreq">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pitchtypes.</span></span><span class="sig-name descname"><span class="pre">LogFreq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_pitch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_class</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_log</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.LogFreq" title="Link to this definition"></a></dt>
-<dd><p>Represents a pitches and intervals in continuous frequency space with the frequency value stored in log
-representation.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pitchtypes.LogFreq.Interval">
-<span class="sig-name descname"><span class="pre">Interval</span></span><a class="headerlink" href="#pitchtypes.LogFreq.Interval" title="Link to this definition"></a></dt>
-<dd><p>alias of <a class="reference internal" href="../_autosummary/pitchtypes.logfreq.LogFreqInterval.html#pitchtypes.logfreq.LogFreqInterval" title="pitchtypes.logfreq.LogFreqInterval"><code class="xref py py-class docutils literal notranslate"><span class="pre">LogFreqInterval</span></code></a></p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pitchtypes.LogFreq.IntervalClass">
-<span class="sig-name descname"><span class="pre">IntervalClass</span></span><a class="headerlink" href="#pitchtypes.LogFreq.IntervalClass" title="Link to this definition"></a></dt>
-<dd><p>alias of <a class="reference internal" href="../_autosummary/pitchtypes.logfreq.LogFreqIntervalClass.html#pitchtypes.logfreq.LogFreqIntervalClass" title="pitchtypes.logfreq.LogFreqIntervalClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">LogFreqIntervalClass</span></code></a></p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pitchtypes.LogFreq.Pitch">
-<span class="sig-name descname"><span class="pre">Pitch</span></span><a class="headerlink" href="#pitchtypes.LogFreq.Pitch" title="Link to this definition"></a></dt>
-<dd><p>alias of <a class="reference internal" href="../_autosummary/pitchtypes.logfreq.LogFreqPitch.html#pitchtypes.logfreq.LogFreqPitch" title="pitchtypes.logfreq.LogFreqPitch"><code class="xref py py-class docutils literal notranslate"><span class="pre">LogFreqPitch</span></code></a></p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pitchtypes.LogFreq.PitchClass">
-<span class="sig-name descname"><span class="pre">PitchClass</span></span><a class="headerlink" href="#pitchtypes.LogFreq.PitchClass" title="Link to this definition"></a></dt>
-<dd><p>alias of <a class="reference internal" href="../_autosummary/pitchtypes.logfreq.LogFreqPitchClass.html#pitchtypes.logfreq.LogFreqPitchClass" title="pitchtypes.logfreq.LogFreqPitchClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">LogFreqPitchClass</span></code></a></p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="pitchtypes.LogFreqPitch">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pitchtypes.</span></span><span class="sig-name descname"><span class="pre">LogFreqPitch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_freq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.LogFreqPitch" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="pitchtypes.LogFreqInterval">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pitchtypes.</span></span><span class="sig-name descname"><span class="pre">LogFreqInterval</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_ratio</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.LogFreqInterval" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="pitchtypes.LogFreqPitchClass">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pitchtypes.</span></span><span class="sig-name descname"><span class="pre">LogFreqPitchClass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_freq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.LogFreqPitchClass" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="pitchtypes.LogFreqIntervalClass">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pitchtypes.</span></span><span class="sig-name descname"><span class="pre">LogFreqIntervalClass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_ratio</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.LogFreqIntervalClass" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
 </section>
 </section>
 
