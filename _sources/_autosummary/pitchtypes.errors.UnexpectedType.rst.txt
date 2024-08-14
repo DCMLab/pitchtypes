@@ -1,0 +1,6 @@
+pitchtypes.errors.UnexpectedType
+================================
+
+.. currentmodule:: pitchtypes.errors
+
+.. autoexception:: UnexpectedType

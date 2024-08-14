@@ -1,0 +1,41 @@
+﻿pitchtypes
+==========
+
+.. automodule:: pitchtypes
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :template: custom-module-template.rst
+   :recursive:
+
+   basetypes
+   converters
+   enharmonic
+   errors
+   generic
+   harmonic
+   logfreq
+   spelled
+   spelled_array
+   utils
+

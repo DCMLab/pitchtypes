@@ -1,0 +1,56 @@
+pitchtypes.spelled\_array.SpelledIntervalArray
+==============================================
+
+.. currentmodule:: pitchtypes.spelled_array
+
+.. autoclass:: SpelledIntervalArray
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members:
+   :exclude-members: __init__
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~SpelledIntervalArray.__init__
+      ~SpelledIntervalArray.abs
+      ~SpelledIntervalArray.alteration
+      ~SpelledIntervalArray.array_equal
+      ~SpelledIntervalArray.chromatic_semitone
+      ~SpelledIntervalArray.compare
+      ~SpelledIntervalArray.copy
+      ~SpelledIntervalArray.deepcopy
+      ~SpelledIntervalArray.degree
+      ~SpelledIntervalArray.diatonic_steps
+      ~SpelledIntervalArray.direction
+      ~SpelledIntervalArray.embed
+      ~SpelledIntervalArray.fifths
+      ~SpelledIntervalArray.from_array
+      ~SpelledIntervalArray.from_independent
+      ~SpelledIntervalArray.from_onehot
+      ~SpelledIntervalArray.from_strings
+      ~SpelledIntervalArray.generic
+      ~SpelledIntervalArray.ic
+      ~SpelledIntervalArray.internal_octaves
+      ~SpelledIntervalArray.is_step
+      ~SpelledIntervalArray.name
+      ~SpelledIntervalArray.octave
+      ~SpelledIntervalArray.octaves
+      ~SpelledIntervalArray.onehot
+      ~SpelledIntervalArray.parse_interval
+      ~SpelledIntervalArray.semitones
+      ~SpelledIntervalArray.steps
+      ~SpelledIntervalArray.to_class
+      ~SpelledIntervalArray.unison
+   
+   
+
+   
+   
+   

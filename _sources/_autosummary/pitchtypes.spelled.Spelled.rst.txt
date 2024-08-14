@@ -1,0 +1,47 @@
+pitchtypes.spelled.Spelled
+==========================
+
+.. currentmodule:: pitchtypes.spelled
+
+.. autoclass:: Spelled
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members:
+   :exclude-members: __init__
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~Spelled.__init__
+      ~Spelled.alteration
+      ~Spelled.compare
+      ~Spelled.convert_to
+      ~Spelled.create_subtypes
+      ~Spelled.degree
+      ~Spelled.fifths
+      ~Spelled.generic_interval_class_from_fifths
+      ~Spelled.internal_octaves
+      ~Spelled.interval_class_from_fifths
+      ~Spelled.interval_quality_from_fifths
+      ~Spelled.link_interval_class_type
+      ~Spelled.link_interval_type
+      ~Spelled.link_pitch_class_type
+      ~Spelled.link_pitch_type
+      ~Spelled.name
+      ~Spelled.name_check
+      ~Spelled.octaves
+      ~Spelled.onehot
+      ~Spelled.pitch_class_from_fifths
+      ~Spelled.set_func_attr
+   
+   
+
+   
+   
+   

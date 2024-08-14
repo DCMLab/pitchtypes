@@ -1,0 +1,6 @@
+pitchtypes.utils.fifths\_from\_generic\_interval\_class
+=======================================================
+
+.. currentmodule:: pitchtypes.utils
+
+.. autofunction:: fifths_from_generic_interval_class

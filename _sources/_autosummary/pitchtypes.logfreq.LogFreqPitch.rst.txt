@@ -1,0 +1,38 @@
+pitchtypes.logfreq.LogFreqPitch
+===============================
+
+.. currentmodule:: pitchtypes.logfreq
+
+.. autoclass:: LogFreqPitch
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members:
+   :exclude-members: __init__
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~LogFreqPitch.__init__
+      ~LogFreqPitch.convert_to
+      ~LogFreqPitch.create_subtypes
+      ~LogFreqPitch.freq
+      ~LogFreqPitch.link_interval_class_type
+      ~LogFreqPitch.link_interval_type
+      ~LogFreqPitch.link_pitch_class_type
+      ~LogFreqPitch.link_pitch_type
+      ~LogFreqPitch.name_check
+      ~LogFreqPitch.print_precision
+      ~LogFreqPitch.set_func_attr
+      ~LogFreqPitch.to_class
+   
+   
+
+   
+   
+   

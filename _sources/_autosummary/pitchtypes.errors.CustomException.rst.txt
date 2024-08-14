@@ -1,0 +1,6 @@
+pitchtypes.errors.CustomException
+=================================
+
+.. currentmodule:: pitchtypes.errors
+
+.. autoexception:: CustomException

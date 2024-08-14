@@ -1,0 +1,6 @@
+pitchtypes.errors.InvalidInitValue
+==================================
+
+.. currentmodule:: pitchtypes.errors
+
+.. autoexception:: InvalidInitValue

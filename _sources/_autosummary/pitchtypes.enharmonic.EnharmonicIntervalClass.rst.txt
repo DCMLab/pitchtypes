@@ -1,0 +1,53 @@
+pitchtypes.enharmonic.EnharmonicIntervalClass
+=============================================
+
+.. currentmodule:: pitchtypes.enharmonic
+
+.. autoclass:: EnharmonicIntervalClass
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members:
+   :exclude-members: __init__
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~EnharmonicIntervalClass.__init__
+      ~EnharmonicIntervalClass.abs
+      ~EnharmonicIntervalClass.chromatic_semitone
+      ~EnharmonicIntervalClass.compare
+      ~EnharmonicIntervalClass.convert_to
+      ~EnharmonicIntervalClass.convert_to_logfreq
+      ~EnharmonicIntervalClass.create_subtypes
+      ~EnharmonicIntervalClass.direction
+      ~EnharmonicIntervalClass.embed
+      ~EnharmonicIntervalClass.from_semitones
+      ~EnharmonicIntervalClass.ic
+      ~EnharmonicIntervalClass.link_interval_class_type
+      ~EnharmonicIntervalClass.link_interval_type
+      ~EnharmonicIntervalClass.link_pitch_class_type
+      ~EnharmonicIntervalClass.link_pitch_type
+      ~EnharmonicIntervalClass.name
+      ~EnharmonicIntervalClass.name_check
+      ~EnharmonicIntervalClass.octave
+      ~EnharmonicIntervalClass.octaves
+      ~EnharmonicIntervalClass.parse_interval
+      ~EnharmonicIntervalClass.pitch_class_name_from_midi
+      ~EnharmonicIntervalClass.print_options
+      ~EnharmonicIntervalClass.semitones
+      ~EnharmonicIntervalClass.set_func_attr
+      ~EnharmonicIntervalClass.steps
+      ~EnharmonicIntervalClass.to_class
+      ~EnharmonicIntervalClass.unison
+   
+   
+
+   
+   
+   

@@ -1,0 +1,6 @@
+pitchtypes.spelled\_array.asi
+=============================
+
+.. currentmodule:: pitchtypes.spelled_array
+
+.. autofunction:: asi

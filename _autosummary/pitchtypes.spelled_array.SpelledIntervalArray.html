@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pitchtypes.spelled_array.SpelledIntervalArray &mdash; pitchtypes  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="pitchtypes.spelled_array.SpelledIntervalClassArray" href="pitchtypes.spelled_array.SpelledIntervalClassArray.html" />
+    <link rel="prev" title="pitchtypes.spelled_array.SpelledArray" href="pitchtypes.spelled_array.SpelledArray.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            pitchtypes
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../types/spelled.html">Spelled Pitch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../types/spelled_array.html">Spelled Interval and Pitch Arrays</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../types/enharmonic.html">Enharmonic Pitch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../types/frequencies.html">Log-Frequency Pitch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../types/harmonic.html">Harmonic Pitch</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api_summary.html">API Summary</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="pitchtypes.html">pitchtypes</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="pitchtypes.basetypes.html">pitchtypes.basetypes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pitchtypes.converters.html">pitchtypes.converters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pitchtypes.enharmonic.html">pitchtypes.enharmonic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pitchtypes.errors.html">pitchtypes.errors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pitchtypes.generic.html">pitchtypes.generic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pitchtypes.harmonic.html">pitchtypes.harmonic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pitchtypes.logfreq.html">pitchtypes.logfreq</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pitchtypes.spelled.html">pitchtypes.spelled</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="pitchtypes.spelled_array.html">pitchtypes.spelled_array</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="pitchtypes.spelled_array.asi.html">pitchtypes.spelled_array.asi</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pitchtypes.spelled_array.asic.html">pitchtypes.spelled_array.asic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pitchtypes.spelled_array.asp.html">pitchtypes.spelled_array.asp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pitchtypes.spelled_array.aspc.html">pitchtypes.spelled_array.aspc</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pitchtypes.spelled_array.AbstractSpelledArrayInterval.html">pitchtypes.spelled_array.AbstractSpelledArrayInterval</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pitchtypes.spelled_array.AbstractSpelledArrayPitch.html">pitchtypes.spelled_array.AbstractSpelledArrayPitch</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pitchtypes.spelled_array.SpelledArray.html">pitchtypes.spelled_array.SpelledArray</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">pitchtypes.spelled_array.SpelledIntervalArray</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pitchtypes.spelled_array.SpelledIntervalClassArray.html">pitchtypes.spelled_array.SpelledIntervalClassArray</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pitchtypes.spelled_array.SpelledPitchArray.html">pitchtypes.spelled_array.SpelledPitchArray</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pitchtypes.spelled_array.SpelledPitchClassArray.html">pitchtypes.spelled_array.SpelledPitchClassArray</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pitchtypes.utils.html">pitchtypes.utils</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pitchtypes</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../api_summary.html">API Summary</a></li>
+          <li class="breadcrumb-item"><a href="pitchtypes.html">pitchtypes</a></li>
+          <li class="breadcrumb-item"><a href="pitchtypes.spelled_array.html">pitchtypes.spelled_array</a></li>
+      <li class="breadcrumb-item active">pitchtypes.spelled_array.SpelledIntervalArray</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/_autosummary/pitchtypes.spelled_array.SpelledIntervalArray.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="pitchtypes-spelled-array-spelledintervalarray">
+<h1>pitchtypes.spelled_array.SpelledIntervalArray<a class="headerlink" href="#pitchtypes-spelled-array-spelledintervalarray" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="pitchtypes.spelled_array.SpelledIntervalArray">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pitchtypes.spelled_array.</span></span><span class="sig-name descname"><span class="pre">SpelledIntervalArray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fifths</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">octaves</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="pitchtypes.spelled_array.SpelledArray.html#pitchtypes.spelled_array.SpelledArray" title="pitchtypes.spelled_array.SpelledArray"><code class="xref py py-class docutils literal notranslate"><span class="pre">SpelledArray</span></code></a>, <a class="reference internal" href="pitchtypes.spelled_array.AbstractSpelledArrayInterval.html#pitchtypes.spelled_array.AbstractSpelledArrayInterval" title="pitchtypes.spelled_array.AbstractSpelledArrayInterval"><code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractSpelledArrayInterval</span></code></a>, <a class="reference internal" href="pitchtypes.basetypes.Interval.html#pitchtypes.basetypes.Interval" title="pitchtypes.basetypes.Interval"><code class="xref py py-class docutils literal notranslate"><span class="pre">Interval</span></code></a>, <a class="reference internal" href="pitchtypes.basetypes.Diatonic.html#pitchtypes.basetypes.Diatonic" title="pitchtypes.basetypes.Diatonic"><code class="xref py py-class docutils literal notranslate"><span class="pre">Diatonic</span></code></a>, <a class="reference internal" href="pitchtypes.basetypes.Chromatic.html#pitchtypes.basetypes.Chromatic" title="pitchtypes.basetypes.Chromatic"><code class="xref py py-class docutils literal notranslate"><span class="pre">Chromatic</span></code></a></p>
+<p>Represents an array of spelled intervals.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.spelled_array.SpelledIntervalArray.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fifths</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">octaves</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.__init__" title="Link to this definition"></a></dt>
+<dd><p>Takes two numpy arrays,
+one for fifths and one for internal/dependent octaves,
+both as integers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fifths</strong> – the internal fifths of each interval (numpy array of integers)</p></li>
+<li><p><strong>octaves</strong> – the internal octaves of each interval (numpy array of integers)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.spelled_array.SpelledIntervalArray.__init__" title="pitchtypes.spelled_array.SpelledIntervalArray.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(fifths, octaves)</p></td>
+<td><p>Takes two numpy arrays, one for fifths and one for internal/dependent octaves, both as integers.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.spelled_array.SpelledIntervalArray.abs" title="pitchtypes.spelled_array.SpelledIntervalArray.abs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">abs</span></code></a>()</p></td>
+<td><p>For downward intervals, return their upward counterpart, otherwise just return the interval itself.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.spelled_array.SpelledIntervalArray.alteration" title="pitchtypes.spelled_array.SpelledIntervalArray.alteration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">alteration</span></code></a>()</p></td>
+<td><p>Return the number of semitones by which the interval is altered from its the perfect or major variant.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.spelled_array.SpelledIntervalArray.array_equal" title="pitchtypes.spelled_array.SpelledIntervalArray.array_equal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array_equal</span></code></a>(other)</p></td>
+<td><p>Returns True if self and other are the equal, False otherwise.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.spelled_array.SpelledIntervalArray.chromatic_semitone" title="pitchtypes.spelled_array.SpelledIntervalArray.chromatic_semitone"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chromatic_semitone</span></code></a>(shape)</p></td>
+<td><p>Returns an array of the given shape filled with chromatic semitones (a1:0).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.spelled_array.SpelledIntervalArray.compare" title="pitchtypes.spelled_array.SpelledIntervalArray.compare"><code class="xref py py-obj docutils literal notranslate"><span class="pre">compare</span></code></a>(other)</p></td>
+<td><p>Element-wise comparison between two spelled arrays.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.spelled_array.SpelledIntervalArray.copy" title="pitchtypes.spelled_array.SpelledIntervalArray.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>()</p></td>
+<td><p>Returns a shallow copy of the array.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.spelled_array.SpelledIntervalArray.deepcopy" title="pitchtypes.spelled_array.SpelledIntervalArray.deepcopy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">deepcopy</span></code></a>()</p></td>
+<td><p>Returns a deep copy of the array.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.spelled_array.SpelledIntervalArray.degree" title="pitchtypes.spelled_array.SpelledIntervalArray.degree"><code class="xref py py-obj docutils literal notranslate"><span class="pre">degree</span></code></a>()</p></td>
+<td><p>Return the &quot;relative scale degree&quot; (0-6) to which the interval points (unison=0, 2nd=1, octave=0, 2nd down=6, etc.).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.spelled_array.SpelledIntervalArray.diatonic_steps" title="pitchtypes.spelled_array.SpelledIntervalArray.diatonic_steps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">diatonic_steps</span></code></a>()</p></td>
+<td><p>Return the diatonic steps of the interval (unison=0, 2nd=1, ..., octave=7, ...).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.spelled_array.SpelledIntervalArray.direction" title="pitchtypes.spelled_array.SpelledIntervalArray.direction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">direction</span></code></a>()</p></td>
+<td><p>Returns the direction of the interval (1=up / 0=neutral / -1=down).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.spelled_array.SpelledIntervalArray.embed" title="pitchtypes.spelled_array.SpelledIntervalArray.embed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">embed</span></code></a>()</p></td>
+<td><p>For interval classes, return an embedding into the interval space in a (type-dependent) default octave.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.spelled_array.SpelledIntervalArray.fifths" title="pitchtypes.spelled_array.SpelledIntervalArray.fifths"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fifths</span></code></a>()</p></td>
+<td><p>Return the position of the interval on the line of fifths.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.spelled_array.SpelledIntervalArray.from_array" title="pitchtypes.spelled_array.SpelledIntervalArray.from_array"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_array</span></code></a>(intervals)</p></td>
+<td><p>Create an interval array from an array of intervals.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.spelled_array.SpelledIntervalArray.from_independent" title="pitchtypes.spelled_array.SpelledIntervalArray.from_independent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_independent</span></code></a>(fifths, octaves)</p></td>
+<td><p>Create an interval array from fifths (interval class) and independent/external octaves.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.spelled_array.SpelledIntervalArray.from_onehot" title="pitchtypes.spelled_array.SpelledIntervalArray.from_onehot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_onehot</span></code></a>(onehot, fifth_low, octave_low)</p></td>
+<td><p>Create a spelled interval array from a one-hot tensor.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.spelled_array.SpelledIntervalArray.from_strings" title="pitchtypes.spelled_array.SpelledIntervalArray.from_strings"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_strings</span></code></a>(strings)</p></td>
+<td><p>Create an interval array from an array of strings (using spelled interval notation).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.spelled_array.SpelledIntervalArray.generic" title="pitchtypes.spelled_array.SpelledIntervalArray.generic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generic</span></code></a>()</p></td>
+<td><p>Return the generic interval, i.e. the number of diatonic steps modulo octave.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.spelled_array.SpelledIntervalArray.ic" title="pitchtypes.spelled_array.SpelledIntervalArray.ic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ic</span></code></a>()</p></td>
+<td><p>Return the interval class that corresponds to this interval.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.spelled_array.SpelledIntervalArray.internal_octaves" title="pitchtypes.spelled_array.SpelledIntervalArray.internal_octaves"><code class="xref py py-obj docutils literal notranslate"><span class="pre">internal_octaves</span></code></a>()</p></td>
+<td><p>Return the internal octave representation of a pitch, which is dependent on the fifths.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.spelled_array.SpelledIntervalArray.is_step" title="pitchtypes.spelled_array.SpelledIntervalArray.is_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_step</span></code></a>()</p></td>
+<td><p>Return True if the interval is considered a step, False otherwise.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.spelled_array.SpelledIntervalArray.name" title="pitchtypes.spelled_array.SpelledIntervalArray.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a>()</p></td>
+<td><p>Returns the names of the objects in the array as an array of strings of the same shape.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.spelled_array.SpelledIntervalArray.octave" title="pitchtypes.spelled_array.SpelledIntervalArray.octave"><code class="xref py py-obj docutils literal notranslate"><span class="pre">octave</span></code></a>(shape)</p></td>
+<td><p>Return an array of the given shape filled with perfect octaves (P1:1).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.spelled_array.SpelledIntervalArray.octaves" title="pitchtypes.spelled_array.SpelledIntervalArray.octaves"><code class="xref py py-obj docutils literal notranslate"><span class="pre">octaves</span></code></a>()</p></td>
+<td><p>For intervals, return the number of octaves the interval spans.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.spelled_array.SpelledIntervalArray.onehot" title="pitchtypes.spelled_array.SpelledIntervalArray.onehot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">onehot</span></code></a>(fifth_range, octave_range[, dtype])</p></td>
+<td><p>Returns a one-hot encoding of the intervals in fifths and independent octaves as the innermost dimensions.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_interval</span></code>(s)</p></td>
+<td><p>Parse a string as a spelled interval or spelled interval class.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.spelled_array.SpelledIntervalArray.semitones" title="pitchtypes.spelled_array.SpelledIntervalArray.semitones"><code class="xref py py-obj docutils literal notranslate"><span class="pre">semitones</span></code></a>()</p></td>
+<td><p>Return the number of semitones corresponding to the interval.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.spelled_array.SpelledIntervalArray.steps" title="pitchtypes.spelled_array.SpelledIntervalArray.steps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">steps</span></code></a>()</p></td>
+<td><p>Return the number of diatonic steps corresponding to the interval.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.spelled_array.SpelledIntervalArray.to_class" title="pitchtypes.spelled_array.SpelledIntervalArray.to_class"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_class</span></code></a>()</p></td>
+<td><p>Alias for ic(), but also supported by pitch types.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.spelled_array.SpelledIntervalArray.unison" title="pitchtypes.spelled_array.SpelledIntervalArray.unison"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unison</span></code></a>(shape)</p></td>
+<td><p>Create an array of the given shape filled with perfect unisons (P1:0).</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.spelled_array.SpelledIntervalArray.__abs__">
+<span class="sig-name descname"><span class="pre">__abs__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.__abs__" title="Link to this definition"></a></dt>
+<dd><p>For downward intervals, return their upward counterpart, otherwise just return the interval itself.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.spelled_array.SpelledIntervalArray.__add__">
+<span class="sig-name descname"><span class="pre">__add__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.__add__" title="Link to this definition"></a></dt>
+<dd><p>Returns the sum of two intervals.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.spelled_array.SpelledIntervalArray.__contains__">
+<span class="sig-name descname"><span class="pre">__contains__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.__contains__" title="Link to this definition"></a></dt>
+<dd><p>Returns true if the array contains the given interval/pitch.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>item</strong> – the potential item to test</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if the array contains <code class="docutils literal notranslate"><span class="pre">item</span></code>, otherwise <code class="docutils literal notranslate"><span class="pre">False</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.spelled_array.SpelledIntervalArray.__eq__">
+<span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.__eq__" title="Link to this definition"></a></dt>
+<dd><p>Element-wise <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code> between two spelled arrays.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> – the spelled array or scalar to compare to</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a boolean array that indicates where this array is <code class="docutils literal notranslate"><span class="pre">==</span> <span class="pre">other</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.spelled_array.SpelledIntervalArray.__ge__">
+<span class="sig-name descname"><span class="pre">__ge__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.__ge__" title="Link to this definition"></a></dt>
+<dd><p>Element-wise <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code> between two spelled arrays.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> – the spelled array or scalar to compare to</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a boolean array that indicates where this array is <code class="docutils literal notranslate"><span class="pre">&gt;=</span> <span class="pre">other</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.spelled_array.SpelledIntervalArray.__getitem__">
+<span class="sig-name descname"><span class="pre">__getitem__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.__getitem__" title="Link to this definition"></a></dt>
+<dd><p>Returns an item or a subarray of the spelled array.
+Supports advanced indexing as on numpy arrays.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>index</strong> – a numpy-compatible index into the array</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a new array or a scalar value (depending on the index)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.spelled_array.SpelledIntervalArray.__gt__">
+<span class="sig-name descname"><span class="pre">__gt__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.__gt__" title="Link to this definition"></a></dt>
+<dd><p>Element-wise <code class="docutils literal notranslate"><span class="pre">&gt;</span></code> between two spelled arrays.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> – the spelled array or scalar to compare to</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a boolean array that indicates where this array is <code class="docutils literal notranslate"><span class="pre">&gt;</span> <span class="pre">other</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pitchtypes.spelled_array.SpelledIntervalArray.__hash__">
+<span class="sig-name descname"><span class="pre">__hash__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.__hash__" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.spelled_array.SpelledIntervalArray.__le__">
+<span class="sig-name descname"><span class="pre">__le__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.__le__" title="Link to this definition"></a></dt>
+<dd><p>Element-wise <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code> between two spelled arrays.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> – the spelled array or scalar to compare to</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a boolean array that indicates where this array is <code class="docutils literal notranslate"><span class="pre">&lt;=</span> <span class="pre">other</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.spelled_array.SpelledIntervalArray.__len__">
+<span class="sig-name descname"><span class="pre">__len__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.__len__" title="Link to this definition"></a></dt>
+<dd><p>Returns the length of the array (first dimension, as in numpy).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the length of the array (1st dimension, integer)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.spelled_array.SpelledIntervalArray.__lt__">
+<span class="sig-name descname"><span class="pre">__lt__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.__lt__" title="Link to this definition"></a></dt>
+<dd><p>Element-wise <code class="docutils literal notranslate"><span class="pre">&lt;</span></code> between two spelled arrays.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> – the spelled array or scalar to compare to</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a boolean array that indicates where this array is <code class="docutils literal notranslate"><span class="pre">&lt;</span> <span class="pre">other</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.spelled_array.SpelledIntervalArray.__mul__">
+<span class="sig-name descname"><span class="pre">__mul__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.__mul__" title="Link to this definition"></a></dt>
+<dd><p>Returns an integer multiple of the interval.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.spelled_array.SpelledIntervalArray.__ne__">
+<span class="sig-name descname"><span class="pre">__ne__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.__ne__" title="Link to this definition"></a></dt>
+<dd><p>Element-wise <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code> between two spelled arrays.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> – the spelled array or scalar to compare to</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a boolean array that indicates where this array is <code class="docutils literal notranslate"><span class="pre">!=</span> <span class="pre">other</span></code></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.spelled_array.SpelledIntervalArray.__neg__">
+<span class="sig-name descname"><span class="pre">__neg__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.__neg__" title="Link to this definition"></a></dt>
+<dd><p>Returns the inversion of the interval (same size in the other direction).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.spelled_array.SpelledIntervalArray.__repr__">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.__repr__" title="Link to this definition"></a></dt>
+<dd><p>Return repr(self).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.spelled_array.SpelledIntervalArray.__rmul__">
+<span class="sig-name descname"><span class="pre">__rmul__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.__rmul__" title="Link to this definition"></a></dt>
+<dd><p>Returns an integer multiple of the interval.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.spelled_array.SpelledIntervalArray.__setitem__">
+<span class="sig-name descname"><span class="pre">__setitem__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.__setitem__" title="Link to this definition"></a></dt>
+<dd><p>Sets the given indices to the given item(s).
+Supports advanced indexing as on numpy arrays.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>index</strong> – a numpy-compatible index into the array</p></li>
+<li><p><strong>item</strong> – an array or a scalar to assign to the indicated sub-array</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.spelled_array.SpelledIntervalArray.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.__str__" title="Link to this definition"></a></dt>
+<dd><p>Return str(self).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.spelled_array.SpelledIntervalArray.__sub__">
+<span class="sig-name descname"><span class="pre">__sub__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.__sub__" title="Link to this definition"></a></dt>
+<dd><p>Returns the difference of two intervals.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pitchtypes.spelled_array.SpelledIntervalArray.__weakref__">
+<span class="sig-name descname"><span class="pre">__weakref__</span></span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.__weakref__" title="Link to this definition"></a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.spelled_array.SpelledIntervalArray.abs">
+<span class="sig-name descname"><span class="pre">abs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.abs" title="Link to this definition"></a></dt>
+<dd><p>For downward intervals, return their upward counterpart, otherwise just return the interval itself.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the absolute interval</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.spelled_array.SpelledIntervalArray.alteration">
+<span class="sig-name descname"><span class="pre">alteration</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.alteration" title="Link to this definition"></a></dt>
+<dd><p>Return the number of semitones by which the interval is altered
+from its the perfect or major variant.
+Positive alteration always indicates augmentation,
+negative alteration indicates diminution (minor or smaller) of the interval’s magnitude.
+For interval classes, alteration refers to the upward version of the interval
+(e.g. for <code class="docutils literal notranslate"><span class="pre">m7</span></code>/<code class="docutils literal notranslate"><span class="pre">-M2</span></code> it is -1).
+For pitches, return the accidentals (positive=sharps, negative=flats, 0=natural).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>an array of alterations (integers)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.spelled_array.SpelledIntervalArray.array_equal">
+<span class="sig-name descname"><span class="pre">array_equal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.array_equal" title="Link to this definition"></a></dt>
+<dd><p>Returns True if self and other are the equal,
+False otherwise.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> – another spelled array of the same type</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if the two arrays are equal, <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.spelled_array.SpelledIntervalArray.chromatic_semitone">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">chromatic_semitone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shape</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.chromatic_semitone" title="Link to this definition"></a></dt>
+<dd><p>Returns an array of the given shape filled with chromatic semitones (a1:0).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>shape</strong> – the shape of the resulting array (tuple of integers)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a <code class="docutils literal notranslate"><span class="pre">SpelledIntervalArray</span></code> of shape <code class="docutils literal notranslate"><span class="pre">shape</span></code> filled with a1:0</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.spelled_array.SpelledIntervalArray.compare">
+<span class="sig-name descname"><span class="pre">compare</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.compare" title="Link to this definition"></a></dt>
+<dd><p>Element-wise comparison between two spelled arrays.</p>
+<p>Returns 0 where the elements are equal,
+1 where the first element is greater,
+and -1 where the second element is greater.</p>
+<p>Spelled intervals use diatonic ordering,
+for example <code class="docutils literal notranslate"><span class="pre">P4:0</span> <span class="pre">&lt;</span> <span class="pre">a4:0</span> <span class="pre">&lt;</span> <span class="pre">aaaa4:0</span> <span class="pre">&lt;</span> <span class="pre">d5:0</span> <span class="pre">&lt;</span> <span class="pre">P5:0</span></code>.</p>
+<p>This method can be indirectly used through binary comparison operators
+(including <code class="docutils literal notranslate"><span class="pre">==</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code> etc.).
+To test the overall equality of two spelled arrays,
+use <a class="reference internal" href="#pitchtypes.spelled_array.SpelledIntervalArray.array_equal" title="pitchtypes.spelled_array.SpelledIntervalArray.array_equal"><code class="xref py py-meth docutils literal notranslate"><span class="pre">array_equal</span></code></a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> – another <code class="docutils literal notranslate"><span class="pre">SpelledIntervalArray</span></code> or <code class="docutils literal notranslate"><span class="pre">SpelledInterval</span></code></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>an array of <code class="docutils literal notranslate"><span class="pre">-1</span></code> / <code class="docutils literal notranslate"><span class="pre">0</span></code> / <code class="docutils literal notranslate"><span class="pre">1</span></code> (integer)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.spelled_array.SpelledIntervalArray.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.copy" title="Link to this definition"></a></dt>
+<dd><p>Returns a shallow copy of the array.
+This also creates copies of the underlying numpy arrays.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>a copy of the array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.spelled_array.SpelledIntervalArray.deepcopy">
+<span class="sig-name descname"><span class="pre">deepcopy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.deepcopy" title="Link to this definition"></a></dt>
+<dd><p>Returns a deep copy of the array.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>a deepcopy of the array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.spelled_array.SpelledIntervalArray.degree">
+<span class="sig-name descname"><span class="pre">degree</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.degree" title="Link to this definition"></a></dt>
+<dd><p>Return the “relative scale degree” (0-6) to which the interval points
+(unison=0, 2nd=1, octave=0, 2nd down=6, etc.).
+For pitches, return the integer that corresponds to the letter (C=0, D=1, …).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>an array of degrees (integers)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.spelled_array.SpelledIntervalArray.diatonic_steps">
+<span class="sig-name descname"><span class="pre">diatonic_steps</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.diatonic_steps" title="Link to this definition"></a></dt>
+<dd><p>Return the diatonic steps of the interval (unison=0, 2nd=1, …, octave=7, …).
+Respects both direction and octaves.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>an array of diatonic steps (integers)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.spelled_array.SpelledIntervalArray.direction">
+<span class="sig-name descname"><span class="pre">direction</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.direction" title="Link to this definition"></a></dt>
+<dd><p>Returns the direction of the interval (1=up / 0=neutral / -1=down).
+The perfect unisons (<code class="docutils literal notranslate"><span class="pre">P1:0</span></code>) is considered neutral.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>an array of <code class="docutils literal notranslate"><span class="pre">-1</span></code> / <code class="docutils literal notranslate"><span class="pre">0</span></code> / <code class="docutils literal notranslate"><span class="pre">1</span></code> (integer)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.spelled_array.SpelledIntervalArray.embed">
+<span class="sig-name descname"><span class="pre">embed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.embed" title="Link to this definition"></a></dt>
+<dd><p>For interval classes, return an embedding into the interval space in a (type-dependent) default octave.
+For non-class intervals, return the interval itself.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>a non-class version of this interval</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.spelled_array.SpelledIntervalArray.fifths">
+<span class="sig-name descname"><span class="pre">fifths</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.fifths" title="Link to this definition"></a></dt>
+<dd><p>Return the position of the interval on the line of fifths.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>an array of fifths (integers)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.spelled_array.SpelledIntervalArray.from_array">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">intervals</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.from_array" title="Link to this definition"></a></dt>
+<dd><p>Create an interval array from an array of intervals.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>intervals</strong> – an array-like of <code class="docutils literal notranslate"><span class="pre">SpelledInterval</span></code></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the corresponding interval array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.spelled_array.SpelledIntervalArray.from_independent">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_independent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fifths</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">octaves</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.from_independent" title="Link to this definition"></a></dt>
+<dd><p>Create an interval array from fifths (interval class) and independent/external octaves.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fifths</strong> – the internal fifths of each interval (numpy array of integers)</p></li>
+<li><p><strong>octaves</strong> – the external/independent octaves of each interval (numpy array of integers)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the corresponding interval array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.spelled_array.SpelledIntervalArray.from_onehot">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_onehot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">onehot</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fifth_low</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">octave_low</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.from_onehot" title="Link to this definition"></a></dt>
+<dd><p>Create a spelled interval array from a one-hot tensor.
+<code class="docutils literal notranslate"><span class="pre">fifth_low</span></code> denotes the lower bound of the fifth range used in the vector,
+<code class="docutils literal notranslate"><span class="pre">octave_low</span></code> the lower bound of the octave range.
+The shape of the resulting array will be equivalent to the first n-2 dimensions of the input tensor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>onehot</strong> – a one-hot tensor representing the intervals (numpy array)</p></li>
+<li><p><strong>fifth_low</strong> – the lowest fifth expressible in the one-hot tensor (integer)</p></li>
+<li><p><strong>octave_low</strong> – the lowest octave expressible in the one-hot tensor (integer)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the corresponding interval array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.spelled_array.SpelledIntervalArray.from_strings">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_strings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">strings</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.from_strings" title="Link to this definition"></a></dt>
+<dd><p>Create an interval array from an array of strings (using spelled interval notation).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>strings</strong> – an array-like of interval notation strings</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the corresponding interval array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.spelled_array.SpelledIntervalArray.generic">
+<span class="sig-name descname"><span class="pre">generic</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.generic" title="Link to this definition"></a></dt>
+<dd><p>Return the generic interval, i.e. the number of diatonic steps modulo octave.
+Unlike degree(), the result respects the sign of the interval
+(unison=0, 2nd up=1, 2nd down=-1).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>an array of generic intervals (integers)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.spelled_array.SpelledIntervalArray.ic">
+<span class="sig-name descname"><span class="pre">ic</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.ic" title="Link to this definition"></a></dt>
+<dd><p>Return the interval class that corresponds to this interval.
+If the interval is already an interval class, it is returned itself.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the interval’s corresponding interval class</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.spelled_array.SpelledIntervalArray.internal_octaves">
+<span class="sig-name descname"><span class="pre">internal_octaves</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.internal_octaves" title="Link to this definition"></a></dt>
+<dd><p>Return the internal octave representation of a pitch,
+which is dependent on the fifths.</p>
+<p>Only use this if you know what you are doing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>an array of internal/dependent octaves (integers)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.spelled_array.SpelledIntervalArray.is_step">
+<span class="sig-name descname"><span class="pre">is_step</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.is_step" title="Link to this definition"></a></dt>
+<dd><p>Return True if the interval is considered a step, False otherwise.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the stepness of the interval (boolean)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.spelled_array.SpelledIntervalArray.name">
+<span class="sig-name descname"><span class="pre">name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.name" title="Link to this definition"></a></dt>
+<dd><p>Returns the names of the objects in the array
+as an array of strings of the same shape.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>an array of notation strings</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.spelled_array.SpelledIntervalArray.octave">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">octave</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shape</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.octave" title="Link to this definition"></a></dt>
+<dd><p>Return an array of the given shape filled with perfect octaves (P1:1).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>shape</strong> – the shape of the resulting array (tuple of integers)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a <code class="docutils literal notranslate"><span class="pre">SpelledIntervalArray</span></code> of shape <code class="docutils literal notranslate"><span class="pre">shape</span></code> filled with P1:0</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.spelled_array.SpelledIntervalArray.octaves">
+<span class="sig-name descname"><span class="pre">octaves</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.octaves" title="Link to this definition"></a></dt>
+<dd><p>For intervals, return the number of octaves the interval spans.
+Negative intervals start with -1, decreasing.
+For pitches, return the absolute octave of the pitch.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>an array of external/independent octaves (integers)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.spelled_array.SpelledIntervalArray.onehot">
+<span class="sig-name descname"><span class="pre">onehot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fifth_range</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">octave_range</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype=&lt;class</span> <span class="pre">'int'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.onehot" title="Link to this definition"></a></dt>
+<dd><p>Returns a one-hot encoding of the intervals in fifths and independent octaves as the innermost dimensions.
+The range of fifths and octaves is given by <code class="docutils literal notranslate"><span class="pre">fifth_range</span></code> and <code class="docutils literal notranslate"><span class="pre">octave_range</span></code> respectively,
+where each is a tuple <code class="docutils literal notranslate"><span class="pre">(lower,</span> <span class="pre">upper)</span></code>.
+The outer shape of the output tensor is identical to the shape of the original array,
+so the resulting shape is <code class="docutils literal notranslate"><span class="pre">original_shape</span> <span class="pre">+</span> <span class="pre">(n_fifths,</span> <span class="pre">n_octaves)</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fifth_range</strong> – the (inclusive) range of fifths (pair of integers)</p></li>
+<li><p><strong>octave_range</strong> – the (inclusive) range of octaves (pair of integers)</p></li>
+<li><p><strong>dtype</strong> – dtype of the resulting array (default: <code class="docutils literal notranslate"><span class="pre">int</span></code>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a one-hot tensor (numpy array)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.spelled_array.SpelledIntervalArray.semitones">
+<span class="sig-name descname"><span class="pre">semitones</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.semitones" title="Link to this definition"></a></dt>
+<dd><p>Return the number of semitones corresponding to the interval.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.spelled_array.SpelledIntervalArray.steps">
+<span class="sig-name descname"><span class="pre">steps</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.steps" title="Link to this definition"></a></dt>
+<dd><p>Return the number of diatonic steps corresponding to the interval.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.spelled_array.SpelledIntervalArray.to_class">
+<span class="sig-name descname"><span class="pre">to_class</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.to_class" title="Link to this definition"></a></dt>
+<dd><p>Alias for ic(), but also supported by pitch types.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the interval’s corresponding interval class</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.spelled_array.SpelledIntervalArray.unison">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">unison</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shape</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledIntervalArray.unison" title="Link to this definition"></a></dt>
+<dd><p>Create an array of the given shape filled with perfect unisons (P1:0).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>shape</strong> – the shape of the resulting array (tuple of integers)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>a <code class="docutils literal notranslate"><span class="pre">SpelledIntervalArray</span></code> of shape <code class="docutils literal notranslate"><span class="pre">shape</span></code> filled with P1:0</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="pitchtypes.spelled_array.SpelledArray.html" class="btn btn-neutral float-left" title="pitchtypes.spelled_array.SpelledArray" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="pitchtypes.spelled_array.SpelledIntervalClassArray.html" class="btn btn-neutral float-right" title="pitchtypes.spelled_array.SpelledIntervalClassArray" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Robert Lieck, Christoph Finkensiep, DCML.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -51,7 +51,67 @@
 <li class="toctree-l1"><a class="reference internal" href="spelled_array.html">Spelled Interval and Pitch Arrays</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Enharmonic Pitch</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#reference">Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#reference">Reference</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pitchtypes.Enharmonic"><code class="docutils literal notranslate"><span class="pre">Enharmonic</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pitchtypes.Enharmonic.Interval"><code class="docutils literal notranslate"><span class="pre">Enharmonic.Interval</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pitchtypes.Enharmonic.IntervalClass"><code class="docutils literal notranslate"><span class="pre">Enharmonic.IntervalClass</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pitchtypes.Enharmonic.Pitch"><code class="docutils literal notranslate"><span class="pre">Enharmonic.Pitch</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pitchtypes.Enharmonic.PitchClass"><code class="docutils literal notranslate"><span class="pre">Enharmonic.PitchClass</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pitchtypes.Enharmonic.compare"><code class="docutils literal notranslate"><span class="pre">Enharmonic.compare()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pitchtypes.Enharmonic.pitch_class_name_from_midi"><code class="docutils literal notranslate"><span class="pre">Enharmonic.pitch_class_name_from_midi()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pitchtypes.EnharmonicPitch"><code class="docutils literal notranslate"><span class="pre">EnharmonicPitch</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pitchtypes.EnharmonicPitch.compare"><code class="docutils literal notranslate"><span class="pre">EnharmonicPitch.compare()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pitchtypes.EnharmonicPitch.embed"><code class="docutils literal notranslate"><span class="pre">EnharmonicPitch.embed()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pitchtypes.EnharmonicPitch.from_semitones"><code class="docutils literal notranslate"><span class="pre">EnharmonicPitch.from_semitones()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pitchtypes.EnharmonicPitch.interval_from"><code class="docutils literal notranslate"><span class="pre">EnharmonicPitch.interval_from()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pitchtypes.EnharmonicPitch.midi"><code class="docutils literal notranslate"><span class="pre">EnharmonicPitch.midi</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pitchtypes.EnharmonicPitch.pc"><code class="docutils literal notranslate"><span class="pre">EnharmonicPitch.pc()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pitchtypes.EnharmonicPitch.semitones"><code class="docutils literal notranslate"><span class="pre">EnharmonicPitch.semitones()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pitchtypes.EnharmonicPitch.steps"><code class="docutils literal notranslate"><span class="pre">EnharmonicPitch.steps()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pitchtypes.EnharmonicPitch.to_class"><code class="docutils literal notranslate"><span class="pre">EnharmonicPitch.to_class()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pitchtypes.EnharmonicInterval"><code class="docutils literal notranslate"><span class="pre">EnharmonicInterval</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pitchtypes.EnharmonicInterval.chromatic_semitone"><code class="docutils literal notranslate"><span class="pre">EnharmonicInterval.chromatic_semitone()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pitchtypes.EnharmonicInterval.compare"><code class="docutils literal notranslate"><span class="pre">EnharmonicInterval.compare()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pitchtypes.EnharmonicInterval.direction"><code class="docutils literal notranslate"><span class="pre">EnharmonicInterval.direction()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pitchtypes.EnharmonicInterval.embed"><code class="docutils literal notranslate"><span class="pre">EnharmonicInterval.embed()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pitchtypes.EnharmonicInterval.from_semitones"><code class="docutils literal notranslate"><span class="pre">EnharmonicInterval.from_semitones()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pitchtypes.EnharmonicInterval.ic"><code class="docutils literal notranslate"><span class="pre">EnharmonicInterval.ic()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pitchtypes.EnharmonicInterval.octave"><code class="docutils literal notranslate"><span class="pre">EnharmonicInterval.octave()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pitchtypes.EnharmonicInterval.semitones"><code class="docutils literal notranslate"><span class="pre">EnharmonicInterval.semitones()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pitchtypes.EnharmonicInterval.steps"><code class="docutils literal notranslate"><span class="pre">EnharmonicInterval.steps()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pitchtypes.EnharmonicInterval.to_class"><code class="docutils literal notranslate"><span class="pre">EnharmonicInterval.to_class()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pitchtypes.EnharmonicInterval.unison"><code class="docutils literal notranslate"><span class="pre">EnharmonicInterval.unison()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pitchtypes.EnharmonicPitchClass"><code class="docutils literal notranslate"><span class="pre">EnharmonicPitchClass</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pitchtypes.EnharmonicPitchClass.compare"><code class="docutils literal notranslate"><span class="pre">EnharmonicPitchClass.compare()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pitchtypes.EnharmonicPitchClass.embed"><code class="docutils literal notranslate"><span class="pre">EnharmonicPitchClass.embed()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pitchtypes.EnharmonicPitchClass.interval_from"><code class="docutils literal notranslate"><span class="pre">EnharmonicPitchClass.interval_from()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pitchtypes.EnharmonicPitchClass.midi"><code class="docutils literal notranslate"><span class="pre">EnharmonicPitchClass.midi()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pitchtypes.EnharmonicPitchClass.pc"><code class="docutils literal notranslate"><span class="pre">EnharmonicPitchClass.pc()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pitchtypes.EnharmonicPitchClass.semitones"><code class="docutils literal notranslate"><span class="pre">EnharmonicPitchClass.semitones()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pitchtypes.EnharmonicPitchClass.steps"><code class="docutils literal notranslate"><span class="pre">EnharmonicPitchClass.steps()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pitchtypes.EnharmonicIntervalClass"><code class="docutils literal notranslate"><span class="pre">EnharmonicIntervalClass</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pitchtypes.EnharmonicIntervalClass.chromatic_semitone"><code class="docutils literal notranslate"><span class="pre">EnharmonicIntervalClass.chromatic_semitone()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pitchtypes.EnharmonicIntervalClass.compare"><code class="docutils literal notranslate"><span class="pre">EnharmonicIntervalClass.compare()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pitchtypes.EnharmonicIntervalClass.direction"><code class="docutils literal notranslate"><span class="pre">EnharmonicIntervalClass.direction()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pitchtypes.EnharmonicIntervalClass.embed"><code class="docutils literal notranslate"><span class="pre">EnharmonicIntervalClass.embed()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pitchtypes.EnharmonicIntervalClass.from_semitones"><code class="docutils literal notranslate"><span class="pre">EnharmonicIntervalClass.from_semitones()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pitchtypes.EnharmonicIntervalClass.ic"><code class="docutils literal notranslate"><span class="pre">EnharmonicIntervalClass.ic()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pitchtypes.EnharmonicIntervalClass.octave"><code class="docutils literal notranslate"><span class="pre">EnharmonicIntervalClass.octave()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pitchtypes.EnharmonicIntervalClass.semitones"><code class="docutils literal notranslate"><span class="pre">EnharmonicIntervalClass.semitones()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pitchtypes.EnharmonicIntervalClass.steps"><code class="docutils literal notranslate"><span class="pre">EnharmonicIntervalClass.steps()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pitchtypes.EnharmonicIntervalClass.unison"><code class="docutils literal notranslate"><span class="pre">EnharmonicIntervalClass.unison()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="frequencies.html">Log-Frequency Pitch</a></li>
@@ -115,6 +175,502 @@ Enharmonic pitches can be easily created using the <cite>Enharmonic*</cite> cons
 </section>
 <section id="reference">
 <h2>Reference<a class="headerlink" href="#reference" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pitchtypes.Enharmonic">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pitchtypes.</span></span><span class="sig-name descname"><span class="pre">Enharmonic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_pitch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_class</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.Enharmonic" title="Link to this definition"></a></dt>
+<dd><dl class="py attribute">
+<dt class="sig sig-object py" id="pitchtypes.Enharmonic.Interval">
+<span class="sig-name descname"><span class="pre">Interval</span></span><a class="headerlink" href="#pitchtypes.Enharmonic.Interval" title="Link to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="../_autosummary/pitchtypes.enharmonic.EnharmonicInterval.html#pitchtypes.enharmonic.EnharmonicInterval" title="pitchtypes.enharmonic.EnharmonicInterval"><code class="xref py py-class docutils literal notranslate"><span class="pre">EnharmonicInterval</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pitchtypes.Enharmonic.IntervalClass">
+<span class="sig-name descname"><span class="pre">IntervalClass</span></span><a class="headerlink" href="#pitchtypes.Enharmonic.IntervalClass" title="Link to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="../_autosummary/pitchtypes.enharmonic.EnharmonicIntervalClass.html#pitchtypes.enharmonic.EnharmonicIntervalClass" title="pitchtypes.enharmonic.EnharmonicIntervalClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">EnharmonicIntervalClass</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pitchtypes.Enharmonic.Pitch">
+<span class="sig-name descname"><span class="pre">Pitch</span></span><a class="headerlink" href="#pitchtypes.Enharmonic.Pitch" title="Link to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="../_autosummary/pitchtypes.enharmonic.EnharmonicPitch.html#pitchtypes.enharmonic.EnharmonicPitch" title="pitchtypes.enharmonic.EnharmonicPitch"><code class="xref py py-class docutils literal notranslate"><span class="pre">EnharmonicPitch</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pitchtypes.Enharmonic.PitchClass">
+<span class="sig-name descname"><span class="pre">PitchClass</span></span><a class="headerlink" href="#pitchtypes.Enharmonic.PitchClass" title="Link to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="../_autosummary/pitchtypes.enharmonic.EnharmonicPitchClass.html#pitchtypes.enharmonic.EnharmonicPitchClass" title="pitchtypes.enharmonic.EnharmonicPitchClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">EnharmonicPitchClass</span></code></a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.Enharmonic.compare">
+<span class="sig-name descname"><span class="pre">compare</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.Enharmonic.compare" title="Link to this definition"></a></dt>
+<dd><p>Comparison between two enharmonic types.</p>
+<p>Returns 0 if the objects are equal,
+1 if the first object (<code class="docutils literal notranslate"><span class="pre">self</span></code>) is greater,
+and -1 if the second object (<code class="docutils literal notranslate"><span class="pre">other</span></code>) is greater.</p>
+<p>This method can be indirectly used through binary comparison operators
+(including <code class="docutils literal notranslate"><span class="pre">==</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code> etc.).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> – an object to compare to (same type as <code class="docutils literal notranslate"><span class="pre">self</span></code>)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">-1</span></code> / <code class="docutils literal notranslate"><span class="pre">0</span></code> / <code class="docutils literal notranslate"><span class="pre">1</span></code> (integer)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.Enharmonic.pitch_class_name_from_midi">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pitch_class_name_from_midi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">midi_pitch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flat_sharp</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.Enharmonic.pitch_class_name_from_midi" title="Link to this definition"></a></dt>
+<dd><p>Return the pitch class name for the given pitch in MIDI integer.
+:type midi_pitch: 
+:param midi_pitch: MIDI pitch
+:type flat_sharp: 
+:param flat_sharp: whether to use flats or sharps for accidentals
+:return: pitch class</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pitchtypes.EnharmonicPitch">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pitchtypes.</span></span><span class="sig-name descname"><span class="pre">EnharmonicPitch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.EnharmonicPitch" title="Link to this definition"></a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.EnharmonicPitch.compare">
+<span class="sig-name descname"><span class="pre">compare</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.EnharmonicPitch.compare" title="Link to this definition"></a></dt>
+<dd><p>Comparison between two enharmonic pitches according to enharmonic semitone ordering.</p>
+<p>Returns 0 if the objects are equal,
+1 if the first pitch (<code class="docutils literal notranslate"><span class="pre">self</span></code>) is higher,
+and -1 if the second pitch (<code class="docutils literal notranslate"><span class="pre">other</span></code>) is higher.</p>
+<p>This method can be indirectly used through binary comparison operators
+(including <code class="docutils literal notranslate"><span class="pre">==</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code> etc.).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> – a pitch to compare to (EnharmonicPitch)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">-1</span></code> / <code class="docutils literal notranslate"><span class="pre">0</span></code> / <code class="docutils literal notranslate"><span class="pre">1</span></code> (integer)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.EnharmonicPitch.embed">
+<span class="sig-name descname"><span class="pre">embed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.EnharmonicPitch.embed" title="Link to this definition"></a></dt>
+<dd><p>For a pitch class, returns the corresponding pitch in a (type-dependent) default octave.
+For non-class pitches, returns the pitch itself.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>a non-class version of this pitch</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.EnharmonicPitch.from_semitones">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_semitones</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">semitones</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.EnharmonicPitch.from_semitones" title="Link to this definition"></a></dt>
+<dd><p>Create a pitch by directly providing its internal semitone value.</p>
+<p>Each pitch is represented relative to C0
+by moving the specified number of semitones upwards
+(or downwards for negative values).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>semitones</strong> – the number of semitones to move from C0</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the resulting pitch (EnharmonicPitch)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.EnharmonicPitch.interval_from">
+<span class="sig-name descname"><span class="pre">interval_from</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.EnharmonicPitch.interval_from" title="Link to this definition"></a></dt>
+<dd><p>Computes the interval from another pitch to this pitch.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> – another pitch</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the interval from other to self</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pitchtypes.EnharmonicPitch.midi">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">midi</span></span><a class="headerlink" href="#pitchtypes.EnharmonicPitch.midi" title="Link to this definition"></a></dt>
+<dd><p>Return the MIDI number corresponding to the pitch.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.EnharmonicPitch.pc">
+<span class="sig-name descname"><span class="pre">pc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.EnharmonicPitch.pc" title="Link to this definition"></a></dt>
+<dd><p>Returns the pitch class corresponding to the pitch.
+For pitch classes, it returns the pitch class itself.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the pitch class that corresponds to this pitch</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.EnharmonicPitch.semitones">
+<span class="sig-name descname"><span class="pre">semitones</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.EnharmonicPitch.semitones" title="Link to this definition"></a></dt>
+<dd><p>Return the number of chromatic semitones corresponding to the pitch.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.EnharmonicPitch.steps">
+<span class="sig-name descname"><span class="pre">steps</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.EnharmonicPitch.steps" title="Link to this definition"></a></dt>
+<dd><p>Return the number of diatonic steps corresponding to the pitch.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.EnharmonicPitch.to_class">
+<span class="sig-name descname"><span class="pre">to_class</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.EnharmonicPitch.to_class" title="Link to this definition"></a></dt>
+<dd><p>Alias for pc(), but also supported by interval types.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the pitch class that corresponds to this pitch</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pitchtypes.EnharmonicInterval">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pitchtypes.</span></span><span class="sig-name descname"><span class="pre">EnharmonicInterval</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.EnharmonicInterval" title="Link to this definition"></a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.EnharmonicInterval.chromatic_semitone">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">chromatic_semitone</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.EnharmonicInterval.chromatic_semitone" title="Link to this definition"></a></dt>
+<dd><p>Create a chromatic semitone.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>a1:0</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.EnharmonicInterval.compare">
+<span class="sig-name descname"><span class="pre">compare</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.EnharmonicInterval.compare" title="Link to this definition"></a></dt>
+<dd><p>Comparison between two enharmonic intervals according to enharmonic semitone ordering.</p>
+<p>Returns 0 if the objects are equal,
+1 if the first interval (<code class="docutils literal notranslate"><span class="pre">self</span></code>) is greater,
+and -1 if the second interval (<code class="docutils literal notranslate"><span class="pre">other</span></code>) is greater.</p>
+<p>This method can be indirectly used through binary comparison operators
+(including <code class="docutils literal notranslate"><span class="pre">==</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code> etc.).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> – an interval to compare to (EnharmonicInterval)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">-1</span></code> / <code class="docutils literal notranslate"><span class="pre">0</span></code> / <code class="docutils literal notranslate"><span class="pre">1</span></code> (integer)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.EnharmonicInterval.direction">
+<span class="sig-name descname"><span class="pre">direction</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.EnharmonicInterval.direction" title="Link to this definition"></a></dt>
+<dd><p>Returns the direction of the interval (1 = up, 0 = neutral, -1 = down).
+Only perfect unisons are considered neutral.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">-1</span></code> / <code class="docutils literal notranslate"><span class="pre">0</span></code> / <code class="docutils literal notranslate"><span class="pre">1</span></code> (integer)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.EnharmonicInterval.embed">
+<span class="sig-name descname"><span class="pre">embed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.EnharmonicInterval.embed" title="Link to this definition"></a></dt>
+<dd><p>For interval classes, return an embedding into the interval space in a (type-dependent) default octave.
+For non-class intervals, return the interval itself.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>a non-class version of this interval</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.EnharmonicInterval.from_semitones">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_semitones</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">semitones</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.EnharmonicInterval.from_semitones" title="Link to this definition"></a></dt>
+<dd><p>Create an interval by directly providing its internal semitone value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>semitones</strong> – the semitones (= interval class) of the interval (integer)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the resulting interval (EnharmonicInterval)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.EnharmonicInterval.ic">
+<span class="sig-name descname"><span class="pre">ic</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.EnharmonicInterval.ic" title="Link to this definition"></a></dt>
+<dd><p>Return the interval class that corresponds to this interval.
+If the interval is already an interval class, it is returned itself.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the interval’s corresponding interval class</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.EnharmonicInterval.octave">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">octave</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.EnharmonicInterval.octave" title="Link to this definition"></a></dt>
+<dd><p>Create a perfect octave.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>P1:1</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.EnharmonicInterval.semitones">
+<span class="sig-name descname"><span class="pre">semitones</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.EnharmonicInterval.semitones" title="Link to this definition"></a></dt>
+<dd><p>Return the number of semitones corresponding to the interval.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.EnharmonicInterval.steps">
+<span class="sig-name descname"><span class="pre">steps</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.EnharmonicInterval.steps" title="Link to this definition"></a></dt>
+<dd><p>Return the number of diatonic steps corresponding to the interval.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.EnharmonicInterval.to_class">
+<span class="sig-name descname"><span class="pre">to_class</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.EnharmonicInterval.to_class" title="Link to this definition"></a></dt>
+<dd><p>Alias for ic(), but also supported by pitch types.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the interval’s corresponding interval class</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.EnharmonicInterval.unison">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">unison</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.EnharmonicInterval.unison" title="Link to this definition"></a></dt>
+<dd><p>Create a perfect unison.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>P1:0</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pitchtypes.EnharmonicPitchClass">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pitchtypes.</span></span><span class="sig-name descname"><span class="pre">EnharmonicPitchClass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.EnharmonicPitchClass" title="Link to this definition"></a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.EnharmonicPitchClass.compare">
+<span class="sig-name descname"><span class="pre">compare</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.EnharmonicPitchClass.compare" title="Link to this definition"></a></dt>
+<dd><p>Comparison between two enharmonic pitch classes according to enharmonic semitone ordering.</p>
+<p>Returns 0 if the objects are equal,
+1 if the first pitch class (<code class="docutils literal notranslate"><span class="pre">self</span></code>) is higher,
+and -1 if the second pitch class (<code class="docutils literal notranslate"><span class="pre">other</span></code>) is higher.</p>
+<p>This method can be indirectly used through binary comparison operators
+(including <code class="docutils literal notranslate"><span class="pre">==</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code> etc.).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> – a pitch class to compare to (EnharmonicPitchClass)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">-1</span></code> / <code class="docutils literal notranslate"><span class="pre">0</span></code> / <code class="docutils literal notranslate"><span class="pre">1</span></code> (integer)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.EnharmonicPitchClass.embed">
+<span class="sig-name descname"><span class="pre">embed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.EnharmonicPitchClass.embed" title="Link to this definition"></a></dt>
+<dd><p>For a pitch class, returns the corresponding pitch in a (type-dependent) default octave.
+For non-class pitches, returns the pitch itself.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>a non-class version of this pitch</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.EnharmonicPitchClass.interval_from">
+<span class="sig-name descname"><span class="pre">interval_from</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.EnharmonicPitchClass.interval_from" title="Link to this definition"></a></dt>
+<dd><p>Computes the interval from another pitch to this pitch.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> – another pitch</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the interval from other to self</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.EnharmonicPitchClass.midi">
+<span class="sig-name descname"><span class="pre">midi</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.EnharmonicPitchClass.midi" title="Link to this definition"></a></dt>
+<dd><p>Return the MIDI value of the pitch class, a value in the range [0, 11].</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.EnharmonicPitchClass.pc">
+<span class="sig-name descname"><span class="pre">pc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.EnharmonicPitchClass.pc" title="Link to this definition"></a></dt>
+<dd><p>Returns the pitch class corresponding to the pitch.
+For pitch classes, it returns the pitch class itself.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the pitch class that corresponds to this pitch</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.EnharmonicPitchClass.semitones">
+<span class="sig-name descname"><span class="pre">semitones</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.EnharmonicPitchClass.semitones" title="Link to this definition"></a></dt>
+<dd><p>Equivalent to the MIDI value of the pitch class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.EnharmonicPitchClass.steps">
+<span class="sig-name descname"><span class="pre">steps</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.EnharmonicPitchClass.steps" title="Link to this definition"></a></dt>
+<dd><p>Return the number of diatonic steps corresponding to the pitch.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pitchtypes.EnharmonicIntervalClass">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pitchtypes.</span></span><span class="sig-name descname"><span class="pre">EnharmonicIntervalClass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.EnharmonicIntervalClass" title="Link to this definition"></a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.EnharmonicIntervalClass.chromatic_semitone">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">chromatic_semitone</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.EnharmonicIntervalClass.chromatic_semitone" title="Link to this definition"></a></dt>
+<dd><p>Return a chromatic semitone</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>a1</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.EnharmonicIntervalClass.compare">
+<span class="sig-name descname"><span class="pre">compare</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.EnharmonicIntervalClass.compare" title="Link to this definition"></a></dt>
+<dd><p>Comparison between two enharmonic interval classes according to enharmonic semitone ordering.</p>
+<p>Returns 0 if the objects are equal,
+1 if the first interval class (<code class="docutils literal notranslate"><span class="pre">self</span></code>) is greater,
+and -1 if the second interval class (<code class="docutils literal notranslate"><span class="pre">other</span></code>) is greater.</p>
+<p>This method can be indirectly used through binary comparison operators
+(including <code class="docutils literal notranslate"><span class="pre">==</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code> etc.).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>other</strong> – an interval class to compare to (EnharmonicIntervalClass)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">-1</span></code> / <code class="docutils literal notranslate"><span class="pre">0</span></code> / <code class="docutils literal notranslate"><span class="pre">1</span></code> (integer)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.EnharmonicIntervalClass.direction">
+<span class="sig-name descname"><span class="pre">direction</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.EnharmonicIntervalClass.direction" title="Link to this definition"></a></dt>
+<dd><p>Returns the direction of the interval (1 = up, 0 = neutral, -1 = down).
+Only perfect unisons are considered neutral.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">-1</span></code> / <code class="docutils literal notranslate"><span class="pre">0</span></code> / <code class="docutils literal notranslate"><span class="pre">1</span></code> (integer)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.EnharmonicIntervalClass.embed">
+<span class="sig-name descname"><span class="pre">embed</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.EnharmonicIntervalClass.embed" title="Link to this definition"></a></dt>
+<dd><p>For interval classes, return an embedding into the interval space in a (type-dependent) default octave.
+For non-class intervals, return the interval itself.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>a non-class version of this interval</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.EnharmonicIntervalClass.from_semitones">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_semitones</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">semitones</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.EnharmonicIntervalClass.from_semitones" title="Link to this definition"></a></dt>
+<dd><p>Create an interval class by directly providing its internal semitones.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>semitones</strong> – the semitones (= interval class) of the interval (integer)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the resulting interval class (EnharmonicIntervalClass)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.EnharmonicIntervalClass.ic">
+<span class="sig-name descname"><span class="pre">ic</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.EnharmonicIntervalClass.ic" title="Link to this definition"></a></dt>
+<dd><p>Return the interval class that corresponds to this interval.
+If the interval is already an interval class, it is returned itself.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>the interval’s corresponding interval class</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.EnharmonicIntervalClass.octave">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">octave</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.EnharmonicIntervalClass.octave" title="Link to this definition"></a></dt>
+<dd><p>Create the octave interval of this type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>an octave interval</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.EnharmonicIntervalClass.semitones">
+<span class="sig-name descname"><span class="pre">semitones</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.EnharmonicIntervalClass.semitones" title="Link to this definition"></a></dt>
+<dd><p>Return the number of semitones corresponding to the interval.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.EnharmonicIntervalClass.steps">
+<span class="sig-name descname"><span class="pre">steps</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.EnharmonicIntervalClass.steps" title="Link to this definition"></a></dt>
+<dd><p>Return the number of diatonic steps corresponding to the interval.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.EnharmonicIntervalClass.unison">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">unison</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.EnharmonicIntervalClass.unison" title="Link to this definition"></a></dt>
+<dd><p>Return a perfect unison.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>P1</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 </section>
 
