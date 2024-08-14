@@ -27,12 +27,11 @@ jobs:
         python -m pip install --upgrade pip
         pip install flake8 pytest pytest-cov coverage
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-        if [[ ${{ matrix.python-version }} == '3.8' ]]; then
-            pip install "numpy<2.0"
+        if [ "${{ matrix.python-version }}" == "3.8" ]; then
+          pip install "numpy<2.0"
         else
-            pip install "numpy>=2.0"
+          pip install "numpy>=2.0"
         fi
-
     - name: Lint with flake8
       run: |
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
