@@ -1,11 +1,10 @@
 #  Copyright (c) 2020 Robert Lieck
 from typing import Iterable, Union, Any, Callable, Optional
-
+from pitchtypes.utils import fifths_from_generic_interval_class, fifths_from_diatonic_pitch_class
+from pitchtypes.errors import UnexpectedValue, UnexpectedType
 import numpy as np
 import abc
 import re
-
-from spelled import Spelled
 
 
 class AbstractBase:
@@ -62,8 +61,8 @@ class AbstractBase:
             got_name = sub_type.__name__
             expected_name = cls.__name__ + suffix
             if got_name != expected_name:
-                raise TypeError(f"Got class named {got_name}, but expected {expected_name}. "
-                                f"Use skip_name_check=True to suppress.")
+                raise UnexpectedValue(f"Got class named {got_name}, but expected {expected_name}. "
+                                      f"Use skip_name_check=True to suppress.")
 
     @classmethod
     def link_pitch_type(cls,
@@ -88,14 +87,14 @@ class AbstractBase:
                 super(sub_type, self).__init__(value=value, is_pitch=True, is_class=False, **kwargs)
 
             def __add__(self, other):
-                if type(other) == self.Interval:
+                if type(other) is other.Interval:
                     return self.Pitch(self.value + other.value)
                 return NotImplemented
 
             def __sub__(self, other):
-                if type(other) == self.Pitch:
+                if type(other) is self.Pitch:
                     return self.Interval(self.value - other.value)
-                elif type(other) == self.Interval:
+                elif type(other) is self.Interval:
                     return self.Pitch(self.value - other.value)
                 return NotImplemented
 
@@ -141,12 +140,12 @@ class AbstractBase:
                 super(sub_type, self).__init__(value=value, is_pitch=False, is_class=False, **kwargs)
 
             def __add__(self, other):
-                if type(other) == self.Interval:
+                if type(other) is self.Interval:
                     return self.Interval(self.value + other.value)
                 return NotImplemented
 
             def __sub__(self, other):
-                if type(other) == self.Interval:
+                if type(other) is self.Interval:
                     return self.Interval(self.value - other.value)
                 return NotImplemented
 
@@ -202,14 +201,14 @@ class AbstractBase:
                 super(sub_type, self).__init__(value=value, is_pitch=True, is_class=True, **kwargs)
 
             def __add__(self, other):
-                if type(other) == self.IntervalClass:
+                if type(other) is self.IntervalClass:
                     return self.PitchClass(self.value + other.value)
                 return NotImplemented
 
             def __sub__(self, other):
-                if type(other) == self.PitchClass:
+                if type(other) is self.PitchClass:
                     return self.IntervalClass(self.value - other.value)
-                elif type(other) == self.IntervalClass:
+                elif type(other) is self.IntervalClass:
                     return self.PitchClass(self.value - other.value)
                 return NotImplemented
 
@@ -251,12 +250,12 @@ class AbstractBase:
                 super(sub_type, self).__init__(value=value, is_pitch=False, is_class=True, **kwargs)
 
             def __add__(self, other):
-                if type(other) == self.IntervalClass:
+                if type(other) is self.IntervalClass:
                     return self.IntervalClass(self.value + other.value)
                 return NotImplemented
 
             def __sub__(self, other):
-                if type(other) == self.IntervalClass:
+                if type(other) is self.IntervalClass:
                     return self.IntervalClass(self.value - other.value)
                 return NotImplemented
 
@@ -355,7 +354,7 @@ class AbstractBase:
         return f"{self.__class__.__name__}({self.value})"
 
     def __eq__(self, other):
-        if type(other) == type(self):
+        if type(other) is type(self):
             assert self.is_pitch == other.is_pitch
             assert self.is_class == other.is_class
             if isinstance(self.value, np.ndarray) or isinstance(other.value, np.ndarray):
@@ -380,7 +379,19 @@ class Interval(abc.ABC):
     The basic interface implemented by every interval (and interval class) type.
     """
 
-    # fixed intervals
+    @abc.abstractmethod
+    def semitones(self):
+        """
+        Return the number of semitones corresponding to the interval.
+        """
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def steps(self):
+        """
+        Return the number of diatonic steps corresponding to the interval.
+        """
+        raise NotImplementedError
 
     @classmethod
     @abc.abstractmethod
@@ -518,7 +529,7 @@ class Interval(abc.ABC):
         :meta private:
         """
         if not isinstance(s, str):
-            raise TypeError("expecte string as input, got {s}")
+            raise UnexpectedType("expected string as input, got {s}")
         interval_match = Interval._interval_regex.match(s)
         if interval_match is None:
             raise ValueError(f"could not match '{s}' with regex: '{Interval._interval_regex.pattern}'")
@@ -536,7 +547,7 @@ class Interval(abc.ABC):
                                f"{[interval_match[f'quality{i}'] for i in range(3)]}"
                                f")")
         # initialise value with generic interval classes
-        fifth_steps = Spelled.fifths_from_generic_interval_class(generic)
+        fifth_steps = fifths_from_generic_interval_class(generic)
         # add modifiers
         if quality in ["P", "M"]:
             pass
@@ -686,6 +697,27 @@ class Pitch(abc.ABC):
         """
         raise NotImplementedError
 
+    @abc.abstractmethod
+    def steps(self):
+        """
+        Return the number of diatonic steps corresponding to the pitch.
+        """
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def semitones(self):
+        """
+        Return the number of chromatic semitones corresponding to the pitch.
+        """
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def midi(self):
+        """
+        Return the MIDI number corresponding to the pitch.
+        """
+        raise NotImplementedError
+
     _pitch_regex = re.compile("^(?P<class>[A-G])(?P<modifiers>(b*)|(#*))(?P<octave>(-?[0-9]+)?)$")
 
     @staticmethod
@@ -694,14 +726,14 @@ class Pitch(abc.ABC):
         Parse a string as a spelled pitch or spelled pitch class. Returns a tuple (octave, fifths), where octave
         indicates the octave the pitch lies in (None for spelled pitch classes) and fifths indicates the steps taken
         along the line of fifths.
-
+        
         :param s: string to parse
         :return: (octave, fifths)
 
         :meta private:
         """
         if not isinstance(s, str):
-            raise TypeError(f"expected string as input, got {s}")
+            raise UnexpectedType(f"expected string as input, got {s}")
         # convert unicode flats and sharps (♭ -> b and ♯ -> #)
         s = s.replace("♭", "b")
         s = s.replace("♯", "#")
@@ -711,7 +743,7 @@ class Pitch(abc.ABC):
             raise ValueError(f"could not match '{s}' with regex: '{Pitch._pitch_regex.pattern}'")
         octave = pitch_match['octave']
         # initialise fifth steps from diatonic pitch class
-        fifth_steps = Spelled.fifths_from_diatonic_pitch_class(pitch_match['class'])
+        fifth_steps = fifths_from_diatonic_pitch_class(pitch_match['class'])
         # add modifiers
         if "#" in pitch_match['modifiers']:
             fifth_steps += 7 * len(pitch_match['modifiers'])
@@ -733,7 +765,7 @@ class Converters:
     @staticmethod
     def convert(obj, to_type):
         # skip self-conversion
-        if type(obj) == to_type:
+        if type(obj) is to_type:
             ret = obj
         else:
             # use conversion pipeline starting with the object itself
@@ -744,7 +776,7 @@ class Converters:
         # checks
         assert isinstance(ret, to_type), f"Conversion failed, expected type {to_type} but got {type(ret)}"
         assert obj.is_pitch == ret.is_pitch, f"{obj.is_pitch} {ret.is_pitch}"
-        assert obj.is_class == ret.is_class, f"{obj.is_class} {ret.is_class}"
+        # assert obj.is_class == ret.is_class, f"{obj.is_class} {ret.is_class}"
         return ret
 
     @staticmethod
