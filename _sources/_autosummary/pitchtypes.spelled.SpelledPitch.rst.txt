@@ -24,14 +24,19 @@ pitchtypes.spelled.SpelledPitch
       ~SpelledPitch.convert_to
       ~SpelledPitch.create_subtypes
       ~SpelledPitch.degree
+      ~SpelledPitch.diatonic_steps_from_fifths
       ~SpelledPitch.embed
       ~SpelledPitch.fifths
+      ~SpelledPitch.fifths_from_diatonic_pitch_class
+      ~SpelledPitch.fifths_from_generic_interval_class
       ~SpelledPitch.from_fifths_and_octaves
       ~SpelledPitch.from_independent
       ~SpelledPitch.from_onehot
+      ~SpelledPitch.generic_interval_class_from_fifths
       ~SpelledPitch.internal_octaves
       ~SpelledPitch.interval_class_from_fifths
       ~SpelledPitch.interval_from
+      ~SpelledPitch.interval_quality_from_fifths
       ~SpelledPitch.interval_to
       ~SpelledPitch.letter
       ~SpelledPitch.link_interval_class_type

@@ -134,7 +134,7 @@ where d and a can be repeated.</p>
 <td><p>For downward intervals, return their upward counterpart, otherwise just return the interval itself.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledInterval.alteration" title="pitchtypes.spelled.SpelledInterval.alteration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">alteration</span></code></a>()</p></td>
-<td><p>Return the number of semitones by which the interval is altered from its perfect or major variant.</p></td>
+<td><p>Return the number of semitones by which the interval is altered from its the perfect or major variant.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledInterval.chromatic_semitone" title="pitchtypes.spelled.SpelledInterval.chromatic_semitone"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chromatic_semitone</span></code></a>()</p></td>
 <td><p>Create a chromatic semitone.</p></td>
@@ -154,26 +154,38 @@ where d and a can be repeated.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledInterval.diatonic_steps" title="pitchtypes.spelled.SpelledInterval.diatonic_steps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">diatonic_steps</span></code></a>()</p></td>
 <td><p>Return the diatonic steps of the interval (unison=0, 2nd=1, ..., octave=7, ...).</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledInterval.direction" title="pitchtypes.spelled.SpelledInterval.direction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">direction</span></code></a>()</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">diatonic_steps_from_fifths</span></code>(fifth_steps)</p></td>
+<td><p>Return the number of diatonic steps corresponding to the number of steps on the line of fifths (<cite>4 * fifth_steps</cite>).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledInterval.direction" title="pitchtypes.spelled.SpelledInterval.direction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">direction</span></code></a>()</p></td>
 <td><p>Returns the direction of the interval (1 = up, 0 = neutral, -1 = down).</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledInterval.embed" title="pitchtypes.spelled.SpelledInterval.embed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">embed</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledInterval.embed" title="pitchtypes.spelled.SpelledInterval.embed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">embed</span></code></a>()</p></td>
 <td><p>For interval classes, return an embedding into the interval space in a (type-dependent) default octave.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledInterval.fifths" title="pitchtypes.spelled.SpelledInterval.fifths"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fifths</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledInterval.fifths" title="pitchtypes.spelled.SpelledInterval.fifths"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fifths</span></code></a>()</p></td>
 <td><p>Return the position of the interval on the line of fifths.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledInterval.from_fifths_and_octaves" title="pitchtypes.spelled.SpelledInterval.from_fifths_and_octaves"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_fifths_and_octaves</span></code></a>(fifths, octaves)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fifths_from_diatonic_pitch_class</span></code>(pitch_class)</p></td>
+<td><p>Return the number of steps along the line of fifths corresponding to a diatonic pitch class.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fifths_from_generic_interval_class</span></code>(generic)</p></td>
+<td><p>Return the number of steps along the line of fifths corresponding to the given generic interval: (2 * generic - 1) % 7 - 1.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledInterval.from_fifths_and_octaves" title="pitchtypes.spelled.SpelledInterval.from_fifths_and_octaves"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_fifths_and_octaves</span></code></a>(fifths, octaves)</p></td>
 <td><p>Create an interval by directly providing its internal fifths and octaves.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledInterval.from_independent" title="pitchtypes.spelled.SpelledInterval.from_independent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_independent</span></code></a>(fifths, octaves)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledInterval.from_independent" title="pitchtypes.spelled.SpelledInterval.from_independent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_independent</span></code></a>(fifths, octaves)</p></td>
 <td><p>Create an interval from fifths (interval class) and independent/external octaves.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledInterval.from_onehot" title="pitchtypes.spelled.SpelledInterval.from_onehot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_onehot</span></code></a>(onehot, fifth_low, octave_low)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledInterval.from_onehot" title="pitchtypes.spelled.SpelledInterval.from_onehot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_onehot</span></code></a>(onehot, fifth_low, octave_low)</p></td>
 <td><p>Create a spelled interval from a one-hot matrix.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledInterval.generic" title="pitchtypes.spelled.SpelledInterval.generic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generic</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledInterval.generic" title="pitchtypes.spelled.SpelledInterval.generic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generic</span></code></a>()</p></td>
 <td><p>Return the generic interval, i.e. the number of diatonic steps modulo octave.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">generic_interval_class_from_fifths</span></code>(fifth_steps)</p></td>
+<td><p>Return the generic interval class corresponding to the given number of fifths.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledInterval.ic" title="pitchtypes.spelled.SpelledInterval.ic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ic</span></code></a>()</p></td>
 <td><p>Return the interval class that corresponds to this interval.</p></td>
@@ -181,55 +193,58 @@ where d and a can be repeated.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledInterval.internal_octaves" title="pitchtypes.spelled.SpelledInterval.internal_octaves"><code class="xref py py-obj docutils literal notranslate"><span class="pre">internal_octaves</span></code></a>()</p></td>
 <td><p>Return the internal octave representation of a pitch, which is dependent on the fifths.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledInterval.interval_class_from_fifths" title="pitchtypes.spelled.SpelledInterval.interval_class_from_fifths"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interval_class_from_fifths</span></code></a>(fifths[, inverse])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">interval_class_from_fifths</span></code>(fifths[, inverse])</p></td>
 <td><p>Return the interval class corresponding to the given number of steps along the line of fifths.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledInterval.is_step" title="pitchtypes.spelled.SpelledInterval.is_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_step</span></code></a>()</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">interval_quality_from_fifths</span></code>(fifth_steps)</p></td>
+<td><p>Return the interval quality (major, minor, perfect, augmented, diminished, doubly-augmented etc) given the number of steps along the line of fifths.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledInterval.is_step" title="pitchtypes.spelled.SpelledInterval.is_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_step</span></code></a>()</p></td>
 <td><p>Return True if the interval is considered a step, False otherwise.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">link_interval_class_type</span></code>([skip_name_check, ...])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">link_interval_class_type</span></code>([skip_name_check, ...])</p></td>
 <td><p>A decorator to link an interval class type to its base type.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">link_interval_type</span></code>([skip_name_check, ...])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">link_interval_type</span></code>([skip_name_check, ...])</p></td>
 <td><p>A decorator to link an interval type to its base type.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">link_pitch_class_type</span></code>([skip_name_check, ...])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">link_pitch_class_type</span></code>([skip_name_check, ...])</p></td>
 <td><p>A decorator to link a pitch class type to its base type.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">link_pitch_type</span></code>([skip_name_check, ...])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">link_pitch_type</span></code>([skip_name_check, ...])</p></td>
 <td><p>A decorator to link a pitch type to its base type.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledInterval.name" title="pitchtypes.spelled.SpelledInterval.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledInterval.name" title="pitchtypes.spelled.SpelledInterval.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a>()</p></td>
 <td><p>The name of the pitch or interval in string notation</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">name_check</span></code>(cls, sub_type, suffix, ...)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">name_check</span></code>(cls, sub_type, suffix, ...)</p></td>
 <td><p>Check if <code class="docutils literal notranslate"><span class="pre">sub_type</span></code> follows the standard naming convention.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledInterval.octave" title="pitchtypes.spelled.SpelledInterval.octave"><code class="xref py py-obj docutils literal notranslate"><span class="pre">octave</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledInterval.octave" title="pitchtypes.spelled.SpelledInterval.octave"><code class="xref py py-obj docutils literal notranslate"><span class="pre">octave</span></code></a>()</p></td>
 <td><p>Create a perfect octave.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledInterval.octaves" title="pitchtypes.spelled.SpelledInterval.octaves"><code class="xref py py-obj docutils literal notranslate"><span class="pre">octaves</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledInterval.octaves" title="pitchtypes.spelled.SpelledInterval.octaves"><code class="xref py py-obj docutils literal notranslate"><span class="pre">octaves</span></code></a>()</p></td>
 <td><p>For intervals, return the number of octaves the interval spans.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledInterval.onehot" title="pitchtypes.spelled.SpelledInterval.onehot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">onehot</span></code></a>(fifth_range, octave_range[, dtype])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledInterval.onehot" title="pitchtypes.spelled.SpelledInterval.onehot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">onehot</span></code></a>(fifth_range, octave_range[, dtype])</p></td>
 <td><p>Returns a one-hot encoding of the interval in fifths (first dimension) and independent octaves (second dimension).</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledInterval.parse_interval" title="pitchtypes.spelled.SpelledInterval.parse_interval"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_interval</span></code></a>(s)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_interval</span></code>(s)</p></td>
 <td><p>Parse a string as a spelled interval or spelled interval class.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledInterval.parse_pitch" title="pitchtypes.spelled.SpelledInterval.parse_pitch"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_pitch</span></code></a>(s)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_pitch</span></code>(s)</p></td>
 <td><p>Parse a string as a spelled pitch or spelled pitch class.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledInterval.pitch_class_from_fifths" title="pitchtypes.spelled.SpelledInterval.pitch_class_from_fifths"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pitch_class_from_fifths</span></code></a>(fifth_steps)</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pitch_class_from_fifths</span></code>(fifth_steps)</p></td>
 <td><p>Return the pitch class given the number of steps along the line of fifths</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_func_attr</span></code>(sub_type, flags, names, funcs)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_func_attr</span></code>(sub_type, flags, names, funcs)</p></td>
 <td><p>Add functions <code class="docutils literal notranslate"><span class="pre">funcs</span></code> as methods with <code class="docutils literal notranslate"><span class="pre">names</span></code> to class <code class="docutils literal notranslate"><span class="pre">sub_type</span></code>, controlled by <code class="docutils literal notranslate"><span class="pre">flags</span></code>.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledInterval.to_class" title="pitchtypes.spelled.SpelledInterval.to_class"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_class</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledInterval.to_class" title="pitchtypes.spelled.SpelledInterval.to_class"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_class</span></code></a>()</p></td>
 <td><p>Alias for ic(), but also supported by pitch types.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledInterval.unison" title="pitchtypes.spelled.SpelledInterval.unison"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unison</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledInterval.unison" title="pitchtypes.spelled.SpelledInterval.unison"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unison</span></code></a>()</p></td>
 <td><p>Create a perfect unison.</p></td>
 </tr>
 </tbody>
@@ -361,7 +376,7 @@ where d and a can be repeated.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pitchtypes.spelled.SpelledInterval.alteration">
 <span class="sig-name descname"><span class="pre">alteration</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled.SpelledInterval.alteration" title="Link to this definition"></a></dt>
-<dd><p>Return the number of semitones by which the interval is altered from its perfect or major variant.
+<dd><p>Return the number of semitones by which the interval is altered from its the perfect or major variant.
 Positive alteration always indicates augmentation,
 negative alteration indicates diminution (minor or smaller) of the interval.
 For pitches, return the accidentals (positive=sharps, negative=flats, 0=natural).</p>
@@ -554,25 +569,6 @@ which is dependent on the fifths.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pitchtypes.spelled.SpelledInterval.interval_class_from_fifths">
-<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">interval_class_from_fifths</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fifths</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inverse</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled.SpelledInterval.interval_class_from_fifths" title="Link to this definition"></a></dt>
-<dd><p>Return the interval class corresponding to the given number of steps along the line of fifths. This function
-combines Spelled.interval_quality_from_fifths and Spelled.generic_interval_class_from_fifths. Specifying
-inverse=True (default is False) returns the inverse interval class (m2 for M7, aa4 for dd5 etc.).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>fifths</strong> – number of fifth steps</p></li>
-<li><p><strong>inverse</strong> – whether to return the inverse interval class</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>the interval class (p1, M3, aa6 etc.)</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="pitchtypes.spelled.SpelledInterval.is_step">
 <span class="sig-name descname"><span class="pre">is_step</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled.SpelledInterval.is_step" title="Link to this definition"></a></dt>
 <dd><p>Return True if the interval is considered a step, False otherwise.</p>
@@ -621,8 +617,7 @@ For pitches, return the absolute octave of the pitch.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pitchtypes.spelled.SpelledInterval.onehot">
 <span class="sig-name descname"><span class="pre">onehot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fifth_range</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">octave_range</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype=&lt;class</span> <span class="pre">'int'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled.SpelledInterval.onehot" title="Link to this definition"></a></dt>
-<dd><p>Returns a one-hot encoding of the interval in fifths (first dimension)
-and independent octaves (second dimension).
+<dd><p>Returns a one-hot encoding of the interval in fifths (first dimension) and independent octaves (second dimension).
 The range of fifths and octaves is given by <code class="docutils literal notranslate"><span class="pre">fifth_range</span></code> and <code class="docutils literal notranslate"><span class="pre">octave_range</span></code> respectively,
 where each is a tuple <code class="docutils literal notranslate"><span class="pre">(lower,</span> <span class="pre">upper)</span></code>.</p>
 <dl class="field-list simple">
@@ -635,56 +630,6 @@ where each is a tuple <code class="docutils literal notranslate"><span class="pr
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>a one-hot matrix (numpy array)</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pitchtypes.spelled.SpelledInterval.parse_interval">
-<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parse_interval</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled.SpelledInterval.parse_interval" title="Link to this definition"></a></dt>
-<dd><p>Parse a string as a spelled interval or spelled interval class. Returns a tuple (sign, octave, fifths), where
-sign is +1 or -1 and indicates the sign given in the string (no sign means positive), octave indicates the
-number of full octave steps (in positive or negative direction; None for spelled interval classes), and fifths
-indicates the steps taken along the line of fifths (i.e. not actual fifth steps that would add to the octaves).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>s</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – string to parse</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]</span></p>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>(sign, octave, fifths)</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pitchtypes.spelled.SpelledInterval.parse_pitch">
-<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parse_pitch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled.SpelledInterval.parse_pitch" title="Link to this definition"></a></dt>
-<dd><p>Parse a string as a spelled pitch or spelled pitch class. Returns a tuple (octave, fifths), where octave
-indicates the octave the pitch lies in (None for spelled pitch classes) and fifths indicates the steps taken
-along the line of fifths.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>s</strong> – string to parse</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>(octave, fifths)</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pitchtypes.spelled.SpelledInterval.pitch_class_from_fifths">
-<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pitch_class_from_fifths</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fifth_steps</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled.SpelledInterval.pitch_class_from_fifths" title="Link to this definition"></a></dt>
-<dd><p>Return the pitch class given the number of steps along the line of fifths</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>fifth_steps</strong> – number of steps along the line of fifths</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>pitch class (e.g. C, Bb, F##, Abbb etc.)</p>
 </dd>
 </dl>
 </dd></dl>

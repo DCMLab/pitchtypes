@@ -30,6 +30,7 @@ pitchtypes.enharmonic.EnharmonicPitch
       ~EnharmonicPitch.name
       ~EnharmonicPitch.name_check
       ~EnharmonicPitch.octaves
+      ~EnharmonicPitch.pc
       ~EnharmonicPitch.pitch_class_name_from_midi
       ~EnharmonicPitch.print_options
       ~EnharmonicPitch.set_func_attr

@@ -27,15 +27,20 @@ pitchtypes.spelled.SpelledIntervalClass
       ~SpelledIntervalClass.create_subtypes
       ~SpelledIntervalClass.degree
       ~SpelledIntervalClass.diatonic_steps
+      ~SpelledIntervalClass.diatonic_steps_from_fifths
       ~SpelledIntervalClass.direction
       ~SpelledIntervalClass.embed
       ~SpelledIntervalClass.fifths
+      ~SpelledIntervalClass.fifths_from_diatonic_pitch_class
+      ~SpelledIntervalClass.fifths_from_generic_interval_class
       ~SpelledIntervalClass.from_fifths
       ~SpelledIntervalClass.from_onehot
       ~SpelledIntervalClass.generic
+      ~SpelledIntervalClass.generic_interval_class_from_fifths
       ~SpelledIntervalClass.ic
       ~SpelledIntervalClass.internal_octaves
       ~SpelledIntervalClass.interval_class_from_fifths
+      ~SpelledIntervalClass.interval_quality_from_fifths
       ~SpelledIntervalClass.is_step
       ~SpelledIntervalClass.link_interval_class_type
       ~SpelledIntervalClass.link_interval_type
