@@ -24,9 +24,6 @@ pitchtypes.basetypes.Interval
       ~Interval.embed
       ~Interval.ic
       ~Interval.octave
-      ~Interval.parse_interval
-      ~Interval.semitones
-      ~Interval.steps
       ~Interval.to_class
       ~Interval.unison
    

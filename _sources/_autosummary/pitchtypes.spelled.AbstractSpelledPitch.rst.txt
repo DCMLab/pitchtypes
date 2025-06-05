@@ -19,16 +19,7 @@ pitchtypes.spelled.AbstractSpelledPitch
    .. autosummary::
    
       ~AbstractSpelledPitch.__init__
-      ~AbstractSpelledPitch.alteration
-      ~AbstractSpelledPitch.compare
-      ~AbstractSpelledPitch.embed
-      ~AbstractSpelledPitch.fifths
-      ~AbstractSpelledPitch.internal_octaves
       ~AbstractSpelledPitch.letter
-      ~AbstractSpelledPitch.midi
-      ~AbstractSpelledPitch.name
-      ~AbstractSpelledPitch.octaves
-      ~AbstractSpelledPitch.onehot
    
    
 

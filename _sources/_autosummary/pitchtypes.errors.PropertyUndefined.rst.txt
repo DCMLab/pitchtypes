@@ -1,6 +1,0 @@
-pitchtypes.errors.PropertyUndefined
-===================================
-
-.. currentmodule:: pitchtypes.errors
-
-.. autoexception:: PropertyUndefined

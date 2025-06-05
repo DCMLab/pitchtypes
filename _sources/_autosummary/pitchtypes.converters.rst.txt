@@ -15,8 +15,6 @@ pitchtypes.converters
       :toctree:
    
       convert_spelled_to_enharmonic
-      convert_spelled_to_generic
-      convert_to_class
    
    
 

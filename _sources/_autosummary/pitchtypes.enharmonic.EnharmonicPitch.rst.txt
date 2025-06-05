@@ -19,15 +19,10 @@ pitchtypes.enharmonic.EnharmonicPitch
    .. autosummary::
    
       ~EnharmonicPitch.__init__
-      ~EnharmonicPitch.compare
       ~EnharmonicPitch.convert_to
       ~EnharmonicPitch.convert_to_logfreq
       ~EnharmonicPitch.create_subtypes
-      ~EnharmonicPitch.embed
       ~EnharmonicPitch.freq
-      ~EnharmonicPitch.from_semitones
-      ~EnharmonicPitch.interval_from
-      ~EnharmonicPitch.interval_to
       ~EnharmonicPitch.link_interval_class_type
       ~EnharmonicPitch.link_interval_type
       ~EnharmonicPitch.link_pitch_class_type
@@ -35,13 +30,9 @@ pitchtypes.enharmonic.EnharmonicPitch
       ~EnharmonicPitch.name
       ~EnharmonicPitch.name_check
       ~EnharmonicPitch.octaves
-      ~EnharmonicPitch.parse_pitch
-      ~EnharmonicPitch.pc
       ~EnharmonicPitch.pitch_class_name_from_midi
       ~EnharmonicPitch.print_options
-      ~EnharmonicPitch.semitones
       ~EnharmonicPitch.set_func_attr
-      ~EnharmonicPitch.steps
       ~EnharmonicPitch.to_class
    
    

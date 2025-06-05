@@ -1,6 +1,0 @@
-pitchtypes.errors.UnexpectedValue
-=================================
-
-.. currentmodule:: pitchtypes.errors
-
-.. autoexception:: UnexpectedValue

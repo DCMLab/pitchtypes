@@ -31,11 +31,8 @@
    basetypes
    converters
    enharmonic
-   errors
-   generic
    harmonic
    logfreq
    spelled
    spelled_array
-   utils
 

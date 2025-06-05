@@ -19,16 +19,8 @@ pitchtypes.spelled.AbstractSpelledInterval
    .. autosummary::
    
       ~AbstractSpelledInterval.__init__
-      ~AbstractSpelledInterval.alteration
-      ~AbstractSpelledInterval.compare
       ~AbstractSpelledInterval.diatonic_steps
-      ~AbstractSpelledInterval.embed
-      ~AbstractSpelledInterval.fifths
       ~AbstractSpelledInterval.generic
-      ~AbstractSpelledInterval.internal_octaves
-      ~AbstractSpelledInterval.name
-      ~AbstractSpelledInterval.octaves
-      ~AbstractSpelledInterval.onehot
    
    
 

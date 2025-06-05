@@ -29,28 +29,24 @@ pitchtypes.spelled.SpelledPitch
       ~SpelledPitch.from_fifths_and_octaves
       ~SpelledPitch.from_independent
       ~SpelledPitch.from_onehot
-      ~SpelledPitch.generic_interval_class_from_fifths
       ~SpelledPitch.internal_octaves
       ~SpelledPitch.interval_class_from_fifths
       ~SpelledPitch.interval_from
-      ~SpelledPitch.interval_quality_from_fifths
       ~SpelledPitch.interval_to
       ~SpelledPitch.letter
       ~SpelledPitch.link_interval_class_type
       ~SpelledPitch.link_interval_type
       ~SpelledPitch.link_pitch_class_type
       ~SpelledPitch.link_pitch_type
-      ~SpelledPitch.midi
       ~SpelledPitch.name
       ~SpelledPitch.name_check
       ~SpelledPitch.octaves
       ~SpelledPitch.onehot
+      ~SpelledPitch.parse_interval
       ~SpelledPitch.parse_pitch
       ~SpelledPitch.pc
       ~SpelledPitch.pitch_class_from_fifths
-      ~SpelledPitch.semitones
       ~SpelledPitch.set_func_attr
-      ~SpelledPitch.steps
       ~SpelledPitch.to_class
    
    

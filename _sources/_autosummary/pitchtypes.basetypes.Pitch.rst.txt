@@ -22,11 +22,7 @@ pitchtypes.basetypes.Pitch
       ~Pitch.embed
       ~Pitch.interval_from
       ~Pitch.interval_to
-      ~Pitch.midi
-      ~Pitch.parse_pitch
       ~Pitch.pc
-      ~Pitch.semitones
-      ~Pitch.steps
       ~Pitch.to_class
    
    

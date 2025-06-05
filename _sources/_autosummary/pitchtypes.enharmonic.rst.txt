@@ -19,8 +19,6 @@ pitchtypes.enharmonic
       :toctree:
       :template: custom-class-template.rst
    
-      AbstractEnharmonicInterval
-      AbstractEnharmonicPitch
       Enharmonic
       EnharmonicInterval
       EnharmonicIntervalClass

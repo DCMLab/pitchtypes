@@ -1,6 +1,0 @@
-pitchtypes.utils.diatonic\_steps\_from\_fifths
-==============================================
-
-.. currentmodule:: pitchtypes.utils
-
-.. autofunction:: diatonic_steps_from_fifths

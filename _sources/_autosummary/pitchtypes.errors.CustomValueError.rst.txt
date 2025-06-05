@@ -1,6 +1,0 @@
-pitchtypes.errors.CustomValueError
-==================================
-
-.. currentmodule:: pitchtypes.errors
-
-.. autoexception:: CustomValueError

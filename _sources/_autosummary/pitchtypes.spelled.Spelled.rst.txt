@@ -25,10 +25,8 @@ pitchtypes.spelled.Spelled
       ~Spelled.create_subtypes
       ~Spelled.degree
       ~Spelled.fifths
-      ~Spelled.generic_interval_class_from_fifths
       ~Spelled.internal_octaves
       ~Spelled.interval_class_from_fifths
-      ~Spelled.interval_quality_from_fifths
       ~Spelled.link_interval_class_type
       ~Spelled.link_interval_type
       ~Spelled.link_pitch_class_type
@@ -37,6 +35,8 @@ pitchtypes.spelled.Spelled
       ~Spelled.name_check
       ~Spelled.octaves
       ~Spelled.onehot
+      ~Spelled.parse_interval
+      ~Spelled.parse_pitch
       ~Spelled.pitch_class_from_fifths
       ~Spelled.set_func_attr
    

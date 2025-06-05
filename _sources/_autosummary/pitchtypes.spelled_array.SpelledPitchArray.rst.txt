@@ -35,14 +35,10 @@ pitchtypes.spelled\_array.SpelledPitchArray
       ~SpelledPitchArray.interval_from
       ~SpelledPitchArray.interval_to
       ~SpelledPitchArray.letter
-      ~SpelledPitchArray.midi
       ~SpelledPitchArray.name
       ~SpelledPitchArray.octaves
       ~SpelledPitchArray.onehot
-      ~SpelledPitchArray.parse_pitch
       ~SpelledPitchArray.pc
-      ~SpelledPitchArray.semitones
-      ~SpelledPitchArray.steps
       ~SpelledPitchArray.to_class
    
    

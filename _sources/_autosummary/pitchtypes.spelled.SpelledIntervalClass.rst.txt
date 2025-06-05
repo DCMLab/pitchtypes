@@ -33,11 +33,9 @@ pitchtypes.spelled.SpelledIntervalClass
       ~SpelledIntervalClass.from_fifths
       ~SpelledIntervalClass.from_onehot
       ~SpelledIntervalClass.generic
-      ~SpelledIntervalClass.generic_interval_class_from_fifths
       ~SpelledIntervalClass.ic
       ~SpelledIntervalClass.internal_octaves
       ~SpelledIntervalClass.interval_class_from_fifths
-      ~SpelledIntervalClass.interval_quality_from_fifths
       ~SpelledIntervalClass.is_step
       ~SpelledIntervalClass.link_interval_class_type
       ~SpelledIntervalClass.link_interval_type
@@ -49,10 +47,9 @@ pitchtypes.spelled.SpelledIntervalClass
       ~SpelledIntervalClass.octaves
       ~SpelledIntervalClass.onehot
       ~SpelledIntervalClass.parse_interval
+      ~SpelledIntervalClass.parse_pitch
       ~SpelledIntervalClass.pitch_class_from_fifths
-      ~SpelledIntervalClass.semitones
       ~SpelledIntervalClass.set_func_attr
-      ~SpelledIntervalClass.steps
       ~SpelledIntervalClass.to_class
       ~SpelledIntervalClass.unison
    

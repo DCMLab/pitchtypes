@@ -42,9 +42,6 @@ pitchtypes.spelled\_array.SpelledIntervalClassArray
       ~SpelledIntervalClassArray.octave
       ~SpelledIntervalClassArray.octaves
       ~SpelledIntervalClassArray.onehot
-      ~SpelledIntervalClassArray.parse_interval
-      ~SpelledIntervalClassArray.semitones
-      ~SpelledIntervalClassArray.steps
       ~SpelledIntervalClassArray.to_class
       ~SpelledIntervalClassArray.unison
    
