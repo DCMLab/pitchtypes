@@ -148,6 +148,13 @@ class EnharmonicPitchClass(Enharmonic):
     def convert_to_logfreq(self):
         return LogFreq.PitchClass(2 ** ((self.value - 69) / 12) * 440, is_freq=True)
 
+    def pc(self):
+        """
+        Return the pitch class itself.
+        :return: EnharmonicPitch
+        """
+        return self
+
 
 @Enharmonic.link_interval_class_type()
 class EnharmonicIntervalClass(Enharmonic):
