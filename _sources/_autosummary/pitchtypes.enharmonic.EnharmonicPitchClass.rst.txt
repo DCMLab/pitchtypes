@@ -28,6 +28,7 @@ pitchtypes.enharmonic.EnharmonicPitchClass
       ~EnharmonicPitchClass.link_pitch_type
       ~EnharmonicPitchClass.name
       ~EnharmonicPitchClass.name_check
+      ~EnharmonicPitchClass.pc
       ~EnharmonicPitchClass.pitch_class_name_from_midi
       ~EnharmonicPitchClass.print_options
       ~EnharmonicPitchClass.set_func_attr

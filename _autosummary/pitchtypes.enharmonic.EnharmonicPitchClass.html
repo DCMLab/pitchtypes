@@ -143,13 +143,16 @@
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">name_check</span></code>(cls, sub_type, suffix, ...)</p></td>
 <td><p>Check if <code class="docutils literal notranslate"><span class="pre">sub_type</span></code> follows the standard naming convention.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.enharmonic.EnharmonicPitchClass.pitch_class_name_from_midi" title="pitchtypes.enharmonic.EnharmonicPitchClass.pitch_class_name_from_midi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pitch_class_name_from_midi</span></code></a>(midi_pitch, ...)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.enharmonic.EnharmonicPitchClass.pc" title="pitchtypes.enharmonic.EnharmonicPitchClass.pc"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pc</span></code></a>()</p></td>
+<td><p>Return the pitch class itself.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.enharmonic.EnharmonicPitchClass.pitch_class_name_from_midi" title="pitchtypes.enharmonic.EnharmonicPitchClass.pitch_class_name_from_midi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pitch_class_name_from_midi</span></code></a>(midi_pitch, ...)</p></td>
 <td><p>Return the pitch class name for the given pitch in MIDI integer.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_options</span></code>([as_int, flat_sharp])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_options</span></code>([as_int, flat_sharp])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_func_attr</span></code>(sub_type, flags, names, funcs)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_func_attr</span></code>(sub_type, flags, names, funcs)</p></td>
 <td><p>Add functions <code class="docutils literal notranslate"><span class="pre">funcs</span></code> as methods with <code class="docutils literal notranslate"><span class="pre">names</span></code> to class <code class="docutils literal notranslate"><span class="pre">sub_type</span></code>, controlled by <code class="docutils literal notranslate"><span class="pre">flags</span></code>.</p></td>
 </tr>
 </tbody>
@@ -206,6 +209,13 @@
 <dt class="sig sig-object py" id="pitchtypes.enharmonic.EnharmonicPitchClass.__weakref__">
 <span class="sig-name descname"><span class="pre">__weakref__</span></span><a class="headerlink" href="#pitchtypes.enharmonic.EnharmonicPitchClass.__weakref__" title="Link to this definition"></a></dt>
 <dd><p>list of weak references to the object</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.enharmonic.EnharmonicPitchClass.pc">
+<span class="sig-name descname"><span class="pre">pc</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.enharmonic.EnharmonicPitchClass.pc" title="Link to this definition"></a></dt>
+<dd><p>Return the pitch class itself.
+:return: EnharmonicPitch</p>
 </dd></dl>
 
 <dl class="py method">
