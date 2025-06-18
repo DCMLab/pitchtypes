@@ -277,6 +277,14 @@ where d and a can be repeated.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.spelled.SpelledInterval.__getattr__">
+<span class="sig-name descname"><span class="pre">__getattr__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled.SpelledInterval.__getattr__" title="Link to this definition"></a></dt>
+<dd><p>This method is called when an attribute is not found in the instance’s __dict__.
+It allows to access the linked Pitch, Interval, PitchClass, and IntervalClass types
+via the base type.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pitchtypes.spelled.SpelledInterval.__gt__">
 <span class="sig-name descname"><span class="pre">__gt__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled.SpelledInterval.__gt__" title="Link to this definition"></a></dt>
 <dd><p>Return a &gt; b.  Computed by &#64;total_ordering from (not a &lt; b) and (a != b).</p>

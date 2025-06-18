@@ -149,22 +149,18 @@
 <dd><p>alias of <a class="reference internal" href="pitchtypes.harmonic.HarmonicIntervalClass.html#pitchtypes.harmonic.HarmonicIntervalClass" title="pitchtypes.harmonic.HarmonicIntervalClass"><code class="xref py py-class docutils literal notranslate"><span class="pre">HarmonicIntervalClass</span></code></a></p>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pitchtypes.harmonic.Harmonic.Pitch">
-<span class="sig-name descname"><span class="pre">Pitch</span></span><a class="headerlink" href="#pitchtypes.harmonic.Harmonic.Pitch" title="Link to this definition"></a></dt>
-<dd><p>alias of <code class="xref py py-obj docutils literal notranslate"><span class="pre">Any</span></code></p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pitchtypes.harmonic.Harmonic.PitchClass">
-<span class="sig-name descname"><span class="pre">PitchClass</span></span><a class="headerlink" href="#pitchtypes.harmonic.Harmonic.PitchClass" title="Link to this definition"></a></dt>
-<dd><p>alias of <code class="xref py py-obj docutils literal notranslate"><span class="pre">Any</span></code></p>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="pitchtypes.harmonic.Harmonic.__eq__">
 <span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.harmonic.Harmonic.__eq__" title="Link to this definition"></a></dt>
 <dd><p>Return self==value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.harmonic.Harmonic.__getattr__">
+<span class="sig-name descname"><span class="pre">__getattr__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.harmonic.Harmonic.__getattr__" title="Link to this definition"></a></dt>
+<dd><p>This method is called when an attribute is not found in the instance’s __dict__.
+It allows to access the linked Pitch, Interval, PitchClass, and IntervalClass types
+via the base type.</p>
 </dd></dl>
 
 <dl class="py method">

@@ -140,34 +140,18 @@ more detailed explanations.</p>
 </tr>
 </tbody>
 </table>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pitchtypes.basetypes.AbstractBase.Interval">
-<span class="sig-name descname"><span class="pre">Interval</span></span><a class="headerlink" href="#pitchtypes.basetypes.AbstractBase.Interval" title="Link to this definition"></a></dt>
-<dd><p>alias of <code class="xref py py-obj docutils literal notranslate"><span class="pre">Any</span></code></p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pitchtypes.basetypes.AbstractBase.IntervalClass">
-<span class="sig-name descname"><span class="pre">IntervalClass</span></span><a class="headerlink" href="#pitchtypes.basetypes.AbstractBase.IntervalClass" title="Link to this definition"></a></dt>
-<dd><p>alias of <code class="xref py py-obj docutils literal notranslate"><span class="pre">Any</span></code></p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pitchtypes.basetypes.AbstractBase.Pitch">
-<span class="sig-name descname"><span class="pre">Pitch</span></span><a class="headerlink" href="#pitchtypes.basetypes.AbstractBase.Pitch" title="Link to this definition"></a></dt>
-<dd><p>alias of <code class="xref py py-obj docutils literal notranslate"><span class="pre">Any</span></code></p>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pitchtypes.basetypes.AbstractBase.PitchClass">
-<span class="sig-name descname"><span class="pre">PitchClass</span></span><a class="headerlink" href="#pitchtypes.basetypes.AbstractBase.PitchClass" title="Link to this definition"></a></dt>
-<dd><p>alias of <code class="xref py py-obj docutils literal notranslate"><span class="pre">Any</span></code></p>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="pitchtypes.basetypes.AbstractBase.__eq__">
 <span class="sig-name descname"><span class="pre">__eq__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">other</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.basetypes.AbstractBase.__eq__" title="Link to this definition"></a></dt>
 <dd><p>Return self==value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.basetypes.AbstractBase.__getattr__">
+<span class="sig-name descname"><span class="pre">__getattr__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">item</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.basetypes.AbstractBase.__getattr__" title="Link to this definition"></a></dt>
+<dd><p>This method is called when an attribute is not found in the instance’s __dict__.
+It allows to access the linked Pitch, Interval, PitchClass, and IntervalClass types
+via the base type.</p>
 </dd></dl>
 
 <dl class="py method">
