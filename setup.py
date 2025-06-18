@@ -15,7 +15,7 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/DCMLab/pitchtypes",
-    packages=setuptools.find_packages(exclude=['tests']),
+    packages=setuptools.find_packages(exclude=["tests"]),
     install_requires=install_requires,
     include_package_data=True,
     classifiers=[
@@ -23,6 +23,5 @@ setuptools.setup(
         "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
         "Operating System :: OS Independent",
     ],
-    python_requires='>=3.6',
+    python_requires=">=3.9",
 )
-

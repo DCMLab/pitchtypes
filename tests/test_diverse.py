@@ -7,9 +7,10 @@ class TestConverters(TestCase):
 
     def test_implementing_new_type(self):
 
-        # define new type with sub-types
+        # Define new type with subtypes
         @AbstractBase.create_subtypes()
-        class New(AbstractBase): pass
+        class New(AbstractBase):
+            pass
 
         # make sure the types are linking correctly
         self.assertRaises(AttributeError, lambda: New._base_type)

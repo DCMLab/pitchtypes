@@ -1,47 +1,54 @@
-from unittest import TestCase
 from itertools import product
+from unittest import TestCase
 
 import numpy as np
 
 from pitchtypes import AbstractBase
 
-class TestAbstractPitch(TestCase):
 
-    def create_derived(self, value, is_pitch, is_class):
-        if is_pitch:
-            if is_class:
-                return AbstractBase.PitchClass(value=value)
-            else:
-                return AbstractBase.Pitch(value=value)
+def create_derived(value, is_pitch, is_class):
+    if is_pitch:
+        if is_class:
+            return AbstractBase.PitchClass(value=value)
         else:
-            if is_class:
-                return AbstractBase.IntervalClass(value=value)
-            else:
-                return AbstractBase.Interval(value=value)
+            return AbstractBase.Pitch(value=value)
+    else:
+        if is_class:
+            return AbstractBase.IntervalClass(value=value)
+        else:
+            return AbstractBase.Interval(value=value)
+
+
+# noinspection PyUnresolvedReferences,DuplicatedCode
+class TestAbstractPitch(TestCase):
 
     def test_implementing_subtypes(self):
         # create a new base type
         class NewType(AbstractBase):
             pass
 
-        # create new sub-types with non-standard names; assert normal linking fails but can be forced
+        # create new subtypes with non-standard names; assert normal linking fails but can be forced
         class WrongNewTypePitch(NewType):
             pass
+
         self.assertRaises(TypeError, lambda: NewType.link_pitch_type()(WrongNewTypePitch))
         NewType.link_pitch_type(skip_name_check=True)(WrongNewTypePitch)
 
         class WrongNewTypeInterval(NewType):
             pass
+
         self.assertRaises(TypeError, lambda: NewType.link_interval_type()(WrongNewTypeInterval))
         NewType.link_interval_type(skip_name_check=True)(WrongNewTypeInterval)
 
         class WrongNewTypePitchClass(NewType):
             pass
+
         self.assertRaises(TypeError, lambda: NewType.link_pitch_class_type()(WrongNewTypePitchClass))
         NewType.link_pitch_class_type(skip_name_check=True)(WrongNewTypePitchClass)
 
         class WrongNewTypeIntervalClass(NewType):
             pass
+
         self.assertRaises(TypeError, lambda: NewType.link_interval_class_type()(WrongNewTypeIntervalClass))
         NewType.link_interval_class_type(skip_name_check=True)(WrongNewTypeIntervalClass)
 
@@ -104,9 +111,11 @@ class TestAbstractPitch(TestCase):
         # construct pitch with non-frozen array as value
         arr = np.array([1, 2, 3])
         p = AbstractBase(value=arr, is_pitch=True, is_class=True)
+
         # try to set value (should raise AttributeError)
         def f():
             p.value = "x"
+
         self.assertRaises(AttributeError, f)
         # try to get hash (should raise AssertionError because value is non-frozen numpy array)
         self.assertRaises(AssertionError, lambda: hash(p))
@@ -135,13 +144,13 @@ class TestAbstractPitch(TestCase):
 
     def test_arithmetics(self):
 
-        # create abstract sub-types to allow for checks
+        # create abstract subtypes to allow for checks
         AbstractBase.create_subtypes()(AbstractBase)
 
         for v_1, v_2, v_3 in np.random.randint(-2, 3, (10, 3)):
             for is_pitch_1, is_pitch_2, is_class_1, is_class_2 in product(*([[True, False]] * 4)):
-                pi_1 = self.create_derived(v_1, is_pitch_1, is_class_1)
-                pi_2 = self.create_derived(v_2, is_pitch_2, is_class_2)
+                pi_1 = create_derived(v_1, is_pitch_1, is_class_1)
+                pi_2 = create_derived(v_2, is_pitch_2, is_class_2)
                 # addition and subtraction are not defined for mixed class and non-class types
                 if is_class_1 != is_class_2:
                     self.assertRaises(TypeError, lambda: pi_1 + pi_2)
@@ -214,10 +223,10 @@ class TestAbstractPitch(TestCase):
 
     def test_hashing(self):
 
-        for v_1, v_2, in np.random.randint(0, 2, (10, 2)):
+        for v_1, v_2 in np.random.randint(0, 2, (10, 2)):
             for is_pitch_1, is_pitch_2, is_class_1, is_class_2 in product(*([[True, False]] * 4)):
-                pi_1 = self.create_derived(value=v_1, is_pitch=is_pitch_1, is_class=is_class_1)
-                pi_2 = self.create_derived(value=v_2, is_pitch=is_pitch_2, is_class=is_class_2)
+                pi_1 = create_derived(value=v_1, is_pitch=is_pitch_1, is_class=is_class_1)
+                pi_2 = create_derived(value=v_2, is_pitch=is_pitch_2, is_class=is_class_2)
                 s = set()
                 self.assertFalse(pi_1 in s)
                 s.add(pi_1)
@@ -231,4 +240,3 @@ class TestAbstractPitch(TestCase):
                     self.assertFalse(pi_2 in s)
                     s.add(pi_2)
                     self.assertTrue(pi_2 in s)
-

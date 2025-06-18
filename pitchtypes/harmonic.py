@@ -16,7 +16,7 @@ class Harmonic(AbstractBase):
             if not (exponents_.startswith("[") and exponents_.endswith("]")):
                 raise ValueError(f"'exponents' has to start and end with '[' and ']', respectively")
             try:
-                exponents = np.array(exponents_[1:-1].split(','), dtype=int)
+                exponents = np.array(exponents_[1:-1].split(","), dtype=int)
             except ValueError as e:
                 raise ValueError(f"Could not interpret {exponents} as array of integers: {e}")
         else:
@@ -30,12 +30,10 @@ class Harmonic(AbstractBase):
 @Harmonic.link_interval_type()
 class HarmonicInterval(Harmonic):
     def __init__(self, exponents):
-        super().__init__(value=self.parse_exponents(exponents=exponents),
-                         is_pitch=False,
-                         is_class=False)
+        super().__init__(value=self.parse_exponents(exponents=exponents), is_pitch=False, is_class=False)
 
     def __repr__(self):
-        return f"{self.__class__.__name__}({list(self.value)})"
+        return f"{self.__class__.__name__}({[int(v) for v in self.value]})"
 
     def to_class(self):
         return self.IntervalClass(exponents=self.value[1:].copy())
@@ -44,9 +42,7 @@ class HarmonicInterval(Harmonic):
 @Harmonic.link_interval_class_type()
 class HarmonicIntervalClass(Harmonic):
     def __init__(self, exponents):
-        super().__init__(value=self.parse_exponents(exponents=exponents),
-                         is_pitch=False,
-                         is_class=True)
+        super().__init__(value=self.parse_exponents(exponents=exponents), is_pitch=False, is_class=True)
 
     def __repr__(self):
-        return f"{self.__class__.__name__}({[None] + list(self.value)})"
+        return f"{self.__class__.__name__}({[None] + [int(v) for v in self.value]})"

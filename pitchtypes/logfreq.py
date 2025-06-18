@@ -1,7 +1,5 @@
 #  Copyright (c) 2021 Robert Lieck
 
-import numbers
-
 import numpy as np
 
 from pitchtypes import AbstractBase
@@ -18,7 +16,7 @@ class LogFreq(AbstractBase):
     @classmethod
     def print_precision(cls, precision=None):
         if precision is not None:
-            if not isinstance(precision, numbers.Integral):
+            if not isinstance(precision, int):
                 raise ValueError(f"precision has to be an integer, got {precision}")
             if cls == LogFreq:
                 for sub_cls in [LogFreq.Pitch, LogFreq.Interval, LogFreq.PitchClass, LogFreq.IntervalClass]:
