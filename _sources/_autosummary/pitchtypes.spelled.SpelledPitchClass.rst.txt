@@ -24,18 +24,13 @@ pitchtypes.spelled.SpelledPitchClass
       ~SpelledPitchClass.convert_to
       ~SpelledPitchClass.create_subtypes
       ~SpelledPitchClass.degree
-      ~SpelledPitchClass.diatonic_steps_from_fifths
       ~SpelledPitchClass.embed
       ~SpelledPitchClass.fifths
-      ~SpelledPitchClass.fifths_from_diatonic_pitch_class
-      ~SpelledPitchClass.fifths_from_generic_interval_class
       ~SpelledPitchClass.from_fifths
       ~SpelledPitchClass.from_onehot
-      ~SpelledPitchClass.generic_interval_class_from_fifths
       ~SpelledPitchClass.internal_octaves
       ~SpelledPitchClass.interval_class_from_fifths
       ~SpelledPitchClass.interval_from
-      ~SpelledPitchClass.interval_quality_from_fifths
       ~SpelledPitchClass.interval_to
       ~SpelledPitchClass.letter
       ~SpelledPitchClass.link_interval_class_type
@@ -43,14 +38,12 @@ pitchtypes.spelled.SpelledPitchClass
       ~SpelledPitchClass.link_pitch_class_type
       ~SpelledPitchClass.link_pitch_type
       ~SpelledPitchClass.name
-      ~SpelledPitchClass.name_check
       ~SpelledPitchClass.octaves
       ~SpelledPitchClass.onehot
       ~SpelledPitchClass.parse_interval
       ~SpelledPitchClass.parse_pitch
       ~SpelledPitchClass.pc
       ~SpelledPitchClass.pitch_class_from_fifths
-      ~SpelledPitchClass.set_func_attr
       ~SpelledPitchClass.to_class
    
    

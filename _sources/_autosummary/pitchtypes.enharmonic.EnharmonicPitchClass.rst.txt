@@ -20,18 +20,16 @@ pitchtypes.enharmonic.EnharmonicPitchClass
    
       ~EnharmonicPitchClass.__init__
       ~EnharmonicPitchClass.convert_to
-      ~EnharmonicPitchClass.convert_to_logfreq
+      ~EnharmonicPitchClass.convert_to_log_freq
       ~EnharmonicPitchClass.create_subtypes
       ~EnharmonicPitchClass.link_interval_class_type
       ~EnharmonicPitchClass.link_interval_type
       ~EnharmonicPitchClass.link_pitch_class_type
       ~EnharmonicPitchClass.link_pitch_type
       ~EnharmonicPitchClass.name
-      ~EnharmonicPitchClass.name_check
       ~EnharmonicPitchClass.pc
       ~EnharmonicPitchClass.pitch_class_name_from_midi
       ~EnharmonicPitchClass.print_options
-      ~EnharmonicPitchClass.set_func_attr
    
    
 

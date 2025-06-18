@@ -138,7 +138,9 @@
 <dt class="sig sig-object py" id="pitchtypes.basetypes.Converters.register_converter">
 <em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">register_converter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">from_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conv_func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite_explicit_converters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite_implicit_converters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_implicit_converters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.basetypes.Converters.register_converter" title="Link to this definition"></a></dt>
 <dd><p>Register a converter from from_type to other type. The converter function should be function taking as its
-single argument an from_type object and returning an other_type object.
+single argument a from_type object and returning an other_type object.
+:type from_type: 
+:param from_type: type derived from AbstractBase, which the converter function converts from
 :type to_type: 
 :param to_type: other type derived from AbstractBase, which the converter function converts to
 :type conv_func: 
@@ -148,8 +150,8 @@ single argument an from_type object and returning an other_type object.
 explicit converter (i.e. the list of converter functions is of length 1), replace it by this converter function;
 if False raise a ValueError if an explicit converter exists
 :type overwrite_implicit_converters: 
-:param overwrite_implicit_converters: if there exists an implicit converter (i.e. the list of converter functions
-is of length greater than 1) replace it by this converter function
+:param overwrite_implicit_converters: if there exists an implicit converter
+(i.e. the list of converter functions is of length greater than 1) replace it by this converter function
 :type create_implicit_converters: 
 :param create_implicit_converters: if there is an (explicit or implicit) converter from type X to type
 from_type, add an implicit converter from type X to other_type by extending the list of converter functions from
@@ -172,7 +174,7 @@ other_type, it will not be overwritten</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021, Robert Lieck, Christoph Finkensiep, DCML.</p>
+    <p>&#169; Copyright Robert Lieck, Christoph Finkensiep, DCML.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

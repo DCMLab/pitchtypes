@@ -25,9 +25,7 @@ pitchtypes.harmonic.Harmonic
       ~Harmonic.link_interval_type
       ~Harmonic.link_pitch_class_type
       ~Harmonic.link_pitch_type
-      ~Harmonic.name_check
       ~Harmonic.parse_exponents
-      ~Harmonic.set_func_attr
    
    
 

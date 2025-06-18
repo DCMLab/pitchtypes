@@ -26,9 +26,7 @@ pitchtypes.logfreq.LogFreqPitchClass
       ~LogFreqPitchClass.link_interval_type
       ~LogFreqPitchClass.link_pitch_class_type
       ~LogFreqPitchClass.link_pitch_type
-      ~LogFreqPitchClass.name_check
       ~LogFreqPitchClass.print_precision
-      ~LogFreqPitchClass.set_func_attr
    
    
 

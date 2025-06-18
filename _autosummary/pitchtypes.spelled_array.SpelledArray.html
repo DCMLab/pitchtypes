@@ -125,7 +125,7 @@ Uses the same interface as the Spelled types.</p>
 <td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.spelled_array.SpelledArray.alteration" title="pitchtypes.spelled_array.SpelledArray.alteration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">alteration</span></code></a>()</p></td>
-<td><p>Return the number of semitones by which the interval is altered from its the perfect or major variant.</p></td>
+<td><p>Return the number of semitones by which the interval is altered from its perfect or major variant.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.spelled_array.SpelledArray.array_equal" title="pitchtypes.spelled_array.SpelledArray.array_equal"><code class="xref py py-obj docutils literal notranslate"><span class="pre">array_equal</span></code></a>(other)</p></td>
 <td><p>Returns True if self and other are the equal, False otherwise.</p></td>
@@ -327,8 +327,7 @@ Supports advanced indexing as on numpy arrays.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pitchtypes.spelled_array.SpelledArray.alteration">
 <em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">alteration</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledArray.alteration" title="Link to this definition"></a></dt>
-<dd><p>Return the number of semitones by which the interval is altered
-from its the perfect or major variant.
+<dd><p>Return the number of semitones by which the interval is altered from its perfect or major variant.
 Positive alteration always indicates augmentation,
 negative alteration indicates diminution (minor or smaller) of the interval’s magnitude.
 For interval classes, alteration refers to the upward version of the interval
@@ -492,7 +491,7 @@ Specialized versions of this method take ranges for their respective dimensions.
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021, Robert Lieck, Christoph Finkensiep, DCML.</p>
+    <p>&#169; Copyright Robert Lieck, Christoph Finkensiep, DCML.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

@@ -20,18 +20,16 @@ pitchtypes.enharmonic.EnharmonicInterval
    
       ~EnharmonicInterval.__init__
       ~EnharmonicInterval.convert_to
-      ~EnharmonicInterval.convert_to_logfreq
+      ~EnharmonicInterval.convert_to_log_freq
       ~EnharmonicInterval.create_subtypes
       ~EnharmonicInterval.link_interval_class_type
       ~EnharmonicInterval.link_interval_type
       ~EnharmonicInterval.link_pitch_class_type
       ~EnharmonicInterval.link_pitch_type
       ~EnharmonicInterval.name
-      ~EnharmonicInterval.name_check
       ~EnharmonicInterval.octaves
       ~EnharmonicInterval.pitch_class_name_from_midi
       ~EnharmonicInterval.print_options
-      ~EnharmonicInterval.set_func_attr
       ~EnharmonicInterval.to_class
    
    

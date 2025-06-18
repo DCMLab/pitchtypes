@@ -114,8 +114,9 @@
 <dd><p>Takes a string consisting of the form
 <code class="docutils literal notranslate"><span class="pre">-?&lt;quality&gt;&lt;generic-size&gt;</span></code>,
 e.g. <code class="docutils literal notranslate"><span class="pre">&quot;M6&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;-m3&quot;</span></code>, or <code class="docutils literal notranslate"><span class="pre">&quot;aa2&quot;</span></code>,
-which stand for a major sixth, a minor third down (= major sixth up), and a double-augmented second, respectively.
-possible qualities are d (diminished), m (minor), M (major), P (perfect), and a (augmented),
+which stand for a major sixth, a minor third down (= major sixth up),
+and a double-augmented second, respectively.
+Possible qualities are d (diminished), m (minor), M (major), P (perfect), and a (augmented),
 where d and a can be repeated.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -134,7 +135,7 @@ where d and a can be repeated.</p>
 <td><p>For downward intervals, return their upward counterpart, otherwise just return the interval itself.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledIntervalClass.alteration" title="pitchtypes.spelled.SpelledIntervalClass.alteration"><code class="xref py py-obj docutils literal notranslate"><span class="pre">alteration</span></code></a>()</p></td>
-<td><p>Return the number of semitones by which the interval is altered from its the perfect or major variant.</p></td>
+<td><p>Return the number of semitones by which the interval is altered from its perfect or major variant.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledIntervalClass.chromatic_semitone" title="pitchtypes.spelled.SpelledIntervalClass.chromatic_semitone"><code class="xref py py-obj docutils literal notranslate"><span class="pre">chromatic_semitone</span></code></a>()</p></td>
 <td><p>Return a chromatic semitone</p></td>
@@ -154,35 +155,23 @@ where d and a can be repeated.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledIntervalClass.diatonic_steps" title="pitchtypes.spelled.SpelledIntervalClass.diatonic_steps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">diatonic_steps</span></code></a>()</p></td>
 <td><p>Return the diatonic steps of the interval (unison=0, 2nd=1, ..., octave=7, ...).</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">diatonic_steps_from_fifths</span></code>(fifth_steps)</p></td>
-<td><p>Return the number of diatonic steps corresponding to the number of steps on the line of fifths (<cite>4 * fifth_steps</cite>).</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledIntervalClass.direction" title="pitchtypes.spelled.SpelledIntervalClass.direction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">direction</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledIntervalClass.direction" title="pitchtypes.spelled.SpelledIntervalClass.direction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">direction</span></code></a>()</p></td>
 <td><p>Returns the direction of smallest realization of the interval class (1 = up, 0 = neutral, -1 = down).</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledIntervalClass.embed" title="pitchtypes.spelled.SpelledIntervalClass.embed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">embed</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledIntervalClass.embed" title="pitchtypes.spelled.SpelledIntervalClass.embed"><code class="xref py py-obj docutils literal notranslate"><span class="pre">embed</span></code></a>()</p></td>
 <td><p>For interval classes, return an embedding into the interval space in a (type-dependent) default octave.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledIntervalClass.fifths" title="pitchtypes.spelled.SpelledIntervalClass.fifths"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fifths</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledIntervalClass.fifths" title="pitchtypes.spelled.SpelledIntervalClass.fifths"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fifths</span></code></a>()</p></td>
 <td><p>Return the position of the interval on the line of fifths.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fifths_from_diatonic_pitch_class</span></code>(pitch_class)</p></td>
-<td><p>Return the number of steps along the line of fifths corresponding to a diatonic pitch class.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fifths_from_generic_interval_class</span></code>(generic)</p></td>
-<td><p>Return the number of steps along the line of fifths corresponding to the given generic interval: (2 * generic - 1) % 7 - 1.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledIntervalClass.from_fifths" title="pitchtypes.spelled.SpelledIntervalClass.from_fifths"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_fifths</span></code></a>(fifths)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledIntervalClass.from_fifths" title="pitchtypes.spelled.SpelledIntervalClass.from_fifths"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_fifths</span></code></a>(fifths)</p></td>
 <td><p>Create an interval class by directly providing its internal fifths.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledIntervalClass.from_onehot" title="pitchtypes.spelled.SpelledIntervalClass.from_onehot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_onehot</span></code></a>(onehot, low)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledIntervalClass.from_onehot" title="pitchtypes.spelled.SpelledIntervalClass.from_onehot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_onehot</span></code></a>(onehot, fifth_low)</p></td>
 <td><p>Create a spelled interval class from a one-hot vector.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledIntervalClass.generic" title="pitchtypes.spelled.SpelledIntervalClass.generic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generic</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledIntervalClass.generic" title="pitchtypes.spelled.SpelledIntervalClass.generic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">generic</span></code></a>()</p></td>
 <td><p>Return the generic interval, i.e. the number of diatonic steps modulo octave.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">generic_interval_class_from_fifths</span></code>(fifth_steps)</p></td>
-<td><p>Return the generic interval class corresponding to the given number of fifths.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledIntervalClass.ic" title="pitchtypes.spelled.SpelledIntervalClass.ic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ic</span></code></a>()</p></td>
 <td><p>Return the interval class that corresponds to this interval.</p></td>
@@ -193,29 +182,23 @@ where d and a can be repeated.</p>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">interval_class_from_fifths</span></code>(fifths[, inverse])</p></td>
 <td><p>Return the interval class corresponding to the given number of steps along the line of fifths.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">interval_quality_from_fifths</span></code>(fifth_steps)</p></td>
-<td><p>Return the interval quality (major, minor, perfect, augmented, diminished, doubly-augmented etc) given the number of steps along the line of fifths.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledIntervalClass.is_step" title="pitchtypes.spelled.SpelledIntervalClass.is_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_step</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledIntervalClass.is_step" title="pitchtypes.spelled.SpelledIntervalClass.is_step"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_step</span></code></a>()</p></td>
 <td><p>Return True if the interval is considered a step, False otherwise.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">link_interval_class_type</span></code>([skip_name_check, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledIntervalClass.link_interval_class_type" title="pitchtypes.spelled.SpelledIntervalClass.link_interval_class_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">link_interval_class_type</span></code></a>([skip_name_check, ...])</p></td>
 <td><p>A decorator to link an interval class type to its base type.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">link_interval_type</span></code>([skip_name_check, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledIntervalClass.link_interval_type" title="pitchtypes.spelled.SpelledIntervalClass.link_interval_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">link_interval_type</span></code></a>([skip_name_check, ...])</p></td>
 <td><p>A decorator to link an interval type to its base type.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">link_pitch_class_type</span></code>([skip_name_check, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledIntervalClass.link_pitch_class_type" title="pitchtypes.spelled.SpelledIntervalClass.link_pitch_class_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">link_pitch_class_type</span></code></a>([skip_name_check, ...])</p></td>
 <td><p>A decorator to link a pitch class type to its base type.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">link_pitch_type</span></code>([skip_name_check, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledIntervalClass.link_pitch_type" title="pitchtypes.spelled.SpelledIntervalClass.link_pitch_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">link_pitch_type</span></code></a>([skip_name_check, ...])</p></td>
 <td><p>A decorator to link a pitch type to its base type.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledIntervalClass.name" title="pitchtypes.spelled.SpelledIntervalClass.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a>([inverse])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledIntervalClass.name" title="pitchtypes.spelled.SpelledIntervalClass.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a>([inverse])</p></td>
 <td><p>The name of the pitch or interval in string notation</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">name_check</span></code>(cls, sub_type, suffix, ...)</p></td>
-<td><p>Check if <code class="docutils literal notranslate"><span class="pre">sub_type</span></code> follows the standard naming convention.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledIntervalClass.octave" title="pitchtypes.spelled.SpelledIntervalClass.octave"><code class="xref py py-obj docutils literal notranslate"><span class="pre">octave</span></code></a>()</p></td>
 <td><p>Return a perfect unison, which is the same as an octave for interval classes.</p></td>
@@ -235,13 +218,10 @@ where d and a can be repeated.</p>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">pitch_class_from_fifths</span></code>(fifth_steps)</p></td>
 <td><p>Return the pitch class given the number of steps along the line of fifths</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_func_attr</span></code>(sub_type, flags, names, funcs)</p></td>
-<td><p>Add functions <code class="docutils literal notranslate"><span class="pre">funcs</span></code> as methods with <code class="docutils literal notranslate"><span class="pre">names</span></code> to class <code class="docutils literal notranslate"><span class="pre">sub_type</span></code>, controlled by <code class="docutils literal notranslate"><span class="pre">flags</span></code>.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledIntervalClass.to_class" title="pitchtypes.spelled.SpelledIntervalClass.to_class"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_class</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledIntervalClass.to_class" title="pitchtypes.spelled.SpelledIntervalClass.to_class"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_class</span></code></a>()</p></td>
 <td><p>Alias for ic(), but also supported by pitch types.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledIntervalClass.unison" title="pitchtypes.spelled.SpelledIntervalClass.unison"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unison</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledIntervalClass.unison" title="pitchtypes.spelled.SpelledIntervalClass.unison"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unison</span></code></a>()</p></td>
 <td><p>Return a perfect unison.</p></td>
 </tr>
 </tbody>
@@ -373,7 +353,7 @@ where d and a can be repeated.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pitchtypes.spelled.SpelledIntervalClass.alteration">
 <span class="sig-name descname"><span class="pre">alteration</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled.SpelledIntervalClass.alteration" title="Link to this definition"></a></dt>
-<dd><p>Return the number of semitones by which the interval is altered from its the perfect or major variant.
+<dd><p>Return the number of semitones by which the interval is altered from its perfect or major variant.
 Positive alteration always indicates augmentation,
 negative alteration indicates diminution (minor or smaller) of the interval.
 For pitches, return the accidentals (positive=sharps, negative=flats, 0=natural).</p>
@@ -491,7 +471,7 @@ For non-class intervals, return the interval itself.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pitchtypes.spelled.SpelledIntervalClass.from_onehot">
-<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_onehot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">onehot</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">low</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled.SpelledIntervalClass.from_onehot" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_onehot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">onehot</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fifth_low</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled.SpelledIntervalClass.from_onehot" title="Link to this definition"></a></dt>
 <dd><p>Create a spelled interval class from a one-hot vector.</p>
 <p>Requires the lower bounds of the fifth range used by the one-hot vector.</p>
 <dl class="field-list simple">
@@ -554,6 +534,83 @@ which is dependent on the fifths.</p>
 <dd class="field-odd"><p>the stepness of the interval (boolean)</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.spelled.SpelledIntervalClass.link_interval_class_type">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">link_interval_class_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">skip_name_check</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_init</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_add</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_sub</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_mul</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_div</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_neg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled.SpelledIntervalClass.link_interval_class_type" title="Link to this definition"></a></dt>
+<dd><p>A decorator to link an interval class type to its base type.
+:type skip_name_check: <span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span>
+:param skip_name_check: skip the name check and don’t raise
+:type create_init: <span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]</span>
+:param create_init: if True, create a default __init__ method
+:type create_add: <span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]</span>
+:param create_add: if True, create a default __add__ method
+:type create_sub: <span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]</span>
+:param create_sub: if True, create a default __sub__ method
+:type create_mul: <span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]</span>
+:param create_mul: if True, create a default __mul__ method
+:type create_div: <span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]</span>
+:param create_div: if True, create a default __truediv__ method
+:type create_neg: <span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]</span>
+:param create_neg: if True, create a default __neg__ method
+:meta private:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.spelled.SpelledIntervalClass.link_interval_type">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">link_interval_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">skip_name_check</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_init</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_add</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_sub</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_mul</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_div</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_neg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_to_class</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled.SpelledIntervalClass.link_interval_type" title="Link to this definition"></a></dt>
+<dd><p>A decorator to link an interval type to its base type.
+:type skip_name_check: <span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span>
+:param skip_name_check: skip the name check and don’t raise
+:type create_init: <span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]</span>
+:param create_init: if True, create a default __init__ method
+:type create_add: <span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]</span>
+:param create_add: if True, create a default __add__ method
+:type create_sub: <span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]</span>
+:param create_sub: if True, create a default __sub__ method
+:type create_mul: <span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]</span>
+:param create_mul: if True, create a default __mul__ method
+:type create_div: <span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]</span>
+:param create_div: if True, create a default __truediv__ method
+:type create_neg: <span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]</span>
+:param create_neg: if True, create a default __neg__ method
+:type create_to_class: <span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]</span>
+:param create_to_class: if True, create a default to_class method
+:meta private:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.spelled.SpelledIntervalClass.link_pitch_class_type">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">link_pitch_class_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">skip_name_check</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_init</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_add</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_sub</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled.SpelledIntervalClass.link_pitch_class_type" title="Link to this definition"></a></dt>
+<dd><p>A decorator to link a pitch class type to its base type.
+:type skip_name_check: <span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span>
+:param skip_name_check: skip the name check and don’t raise
+:type create_init: <span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]</span>
+:param create_init: if True, create a default __init__ method
+:type create_add: <span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]</span>
+:param create_add: if True, create a default __add__ method
+:type create_sub: <span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]</span>
+:param create_sub: if True, create a default __sub__ method
+:return: a decorator that links the pitch class type to the base type
+:meta private:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.spelled.SpelledIntervalClass.link_pitch_type">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">link_pitch_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">skip_name_check</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_init</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_add</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_sub</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_to_class</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled.SpelledIntervalClass.link_pitch_type" title="Link to this definition"></a></dt>
+<dd><p>A decorator to link a pitch type to its base type.
+:type skip_name_check: <span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span>
+:param skip_name_check: skip the name check and don’t raise
+:type create_init: <span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]</span>
+:param create_init: if True, create a default __init__ method
+:type create_add: <span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]</span>
+:param create_add: if True, create a default __add__ method
+:type create_sub: <span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]</span>
+:param create_sub: if True, create a default __sub__ method
+:type create_to_class: <span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]</span>
+:param create_to_class: if True, create a default to_class method
+:meta private:</p>
 </dd></dl>
 
 <dl class="py method">
@@ -646,7 +703,7 @@ The range of fifths is given by <code class="docutils literal notranslate"><span
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021, Robert Lieck, Christoph Finkensiep, DCML.</p>
+    <p>&#169; Copyright Robert Lieck, Christoph Finkensiep, DCML.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

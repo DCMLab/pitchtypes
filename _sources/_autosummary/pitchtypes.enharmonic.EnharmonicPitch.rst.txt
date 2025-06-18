@@ -20,7 +20,7 @@ pitchtypes.enharmonic.EnharmonicPitch
    
       ~EnharmonicPitch.__init__
       ~EnharmonicPitch.convert_to
-      ~EnharmonicPitch.convert_to_logfreq
+      ~EnharmonicPitch.convert_to_log_freq
       ~EnharmonicPitch.create_subtypes
       ~EnharmonicPitch.freq
       ~EnharmonicPitch.link_interval_class_type
@@ -28,12 +28,10 @@ pitchtypes.enharmonic.EnharmonicPitch
       ~EnharmonicPitch.link_pitch_class_type
       ~EnharmonicPitch.link_pitch_type
       ~EnharmonicPitch.name
-      ~EnharmonicPitch.name_check
       ~EnharmonicPitch.octaves
       ~EnharmonicPitch.pc
       ~EnharmonicPitch.pitch_class_name_from_midi
       ~EnharmonicPitch.print_options
-      ~EnharmonicPitch.set_func_attr
       ~EnharmonicPitch.to_class
    
    

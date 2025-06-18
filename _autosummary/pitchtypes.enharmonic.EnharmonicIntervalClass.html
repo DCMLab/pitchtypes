@@ -119,38 +119,32 @@
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">convert_to</span></code>(other_type)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">convert_to_logfreq</span></code>()</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">convert_to_log_freq</span></code>()</p></td>
 <td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">create_subtypes</span></code>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">link_interval_class_type</span></code>([skip_name_check, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.enharmonic.EnharmonicIntervalClass.link_interval_class_type" title="pitchtypes.enharmonic.EnharmonicIntervalClass.link_interval_class_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">link_interval_class_type</span></code></a>([skip_name_check, ...])</p></td>
 <td><p>A decorator to link an interval class type to its base type.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">link_interval_type</span></code>([skip_name_check, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.enharmonic.EnharmonicIntervalClass.link_interval_type" title="pitchtypes.enharmonic.EnharmonicIntervalClass.link_interval_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">link_interval_type</span></code></a>([skip_name_check, ...])</p></td>
 <td><p>A decorator to link an interval type to its base type.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">link_pitch_class_type</span></code>([skip_name_check, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.enharmonic.EnharmonicIntervalClass.link_pitch_class_type" title="pitchtypes.enharmonic.EnharmonicIntervalClass.link_pitch_class_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">link_pitch_class_type</span></code></a>([skip_name_check, ...])</p></td>
 <td><p>A decorator to link a pitch class type to its base type.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">link_pitch_type</span></code>([skip_name_check, ...])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.enharmonic.EnharmonicIntervalClass.link_pitch_type" title="pitchtypes.enharmonic.EnharmonicIntervalClass.link_pitch_type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">link_pitch_type</span></code></a>([skip_name_check, ...])</p></td>
 <td><p>A decorator to link a pitch type to its base type.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code>()</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">name_check</span></code>(cls, sub_type, suffix, ...)</p></td>
-<td><p>Check if <code class="docutils literal notranslate"><span class="pre">sub_type</span></code> follows the standard naming convention.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.enharmonic.EnharmonicIntervalClass.pitch_class_name_from_midi" title="pitchtypes.enharmonic.EnharmonicIntervalClass.pitch_class_name_from_midi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pitch_class_name_from_midi</span></code></a>(midi_pitch, ...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.enharmonic.EnharmonicIntervalClass.pitch_class_name_from_midi" title="pitchtypes.enharmonic.EnharmonicIntervalClass.pitch_class_name_from_midi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pitch_class_name_from_midi</span></code></a>(midi_pitch, ...)</p></td>
 <td><p>Return the pitch class name for the given pitch in MIDI integer.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_options</span></code>([as_int, flat_sharp])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">print_options</span></code>([as_int, flat_sharp])</p></td>
 <td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_func_attr</span></code>(sub_type, flags, names, funcs)</p></td>
-<td><p>Add functions <code class="docutils literal notranslate"><span class="pre">funcs</span></code> as methods with <code class="docutils literal notranslate"><span class="pre">names</span></code> to class <code class="docutils literal notranslate"><span class="pre">sub_type</span></code>, controlled by <code class="docutils literal notranslate"><span class="pre">flags</span></code>.</p></td>
 </tr>
 </tbody>
 </table>
@@ -209,6 +203,83 @@
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.enharmonic.EnharmonicIntervalClass.link_interval_class_type">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">link_interval_class_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">skip_name_check</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_init</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_add</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_sub</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_mul</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_div</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_neg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.enharmonic.EnharmonicIntervalClass.link_interval_class_type" title="Link to this definition"></a></dt>
+<dd><p>A decorator to link an interval class type to its base type.
+:type skip_name_check: <span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span>
+:param skip_name_check: skip the name check and don’t raise
+:type create_init: <span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]</span>
+:param create_init: if True, create a default __init__ method
+:type create_add: <span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]</span>
+:param create_add: if True, create a default __add__ method
+:type create_sub: <span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]</span>
+:param create_sub: if True, create a default __sub__ method
+:type create_mul: <span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]</span>
+:param create_mul: if True, create a default __mul__ method
+:type create_div: <span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]</span>
+:param create_div: if True, create a default __truediv__ method
+:type create_neg: <span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]</span>
+:param create_neg: if True, create a default __neg__ method
+:meta private:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.enharmonic.EnharmonicIntervalClass.link_interval_type">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">link_interval_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">skip_name_check</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_init</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_add</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_sub</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_mul</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_div</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_neg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_to_class</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.enharmonic.EnharmonicIntervalClass.link_interval_type" title="Link to this definition"></a></dt>
+<dd><p>A decorator to link an interval type to its base type.
+:type skip_name_check: <span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span>
+:param skip_name_check: skip the name check and don’t raise
+:type create_init: <span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]</span>
+:param create_init: if True, create a default __init__ method
+:type create_add: <span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]</span>
+:param create_add: if True, create a default __add__ method
+:type create_sub: <span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]</span>
+:param create_sub: if True, create a default __sub__ method
+:type create_mul: <span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]</span>
+:param create_mul: if True, create a default __mul__ method
+:type create_div: <span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]</span>
+:param create_div: if True, create a default __truediv__ method
+:type create_neg: <span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]</span>
+:param create_neg: if True, create a default __neg__ method
+:type create_to_class: <span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]</span>
+:param create_to_class: if True, create a default to_class method
+:meta private:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.enharmonic.EnharmonicIntervalClass.link_pitch_class_type">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">link_pitch_class_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">skip_name_check</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_init</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_add</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_sub</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.enharmonic.EnharmonicIntervalClass.link_pitch_class_type" title="Link to this definition"></a></dt>
+<dd><p>A decorator to link a pitch class type to its base type.
+:type skip_name_check: <span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span>
+:param skip_name_check: skip the name check and don’t raise
+:type create_init: <span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]</span>
+:param create_init: if True, create a default __init__ method
+:type create_add: <span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]</span>
+:param create_add: if True, create a default __add__ method
+:type create_sub: <span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]</span>
+:param create_sub: if True, create a default __sub__ method
+:return: a decorator that links the pitch class type to the base type
+:meta private:</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pitchtypes.enharmonic.EnharmonicIntervalClass.link_pitch_type">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">link_pitch_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">skip_name_check</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_init</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_add</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_sub</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create_to_class</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.enharmonic.EnharmonicIntervalClass.link_pitch_type" title="Link to this definition"></a></dt>
+<dd><p>A decorator to link a pitch type to its base type.
+:type skip_name_check: <span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span>
+:param skip_name_check: skip the name check and don’t raise
+:type create_init: <span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]</span>
+:param create_init: if True, create a default __init__ method
+:type create_add: <span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]</span>
+:param create_add: if True, create a default __add__ method
+:type create_sub: <span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]</span>
+:param create_sub: if True, create a default __sub__ method
+:type create_to_class: <span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]</span>
+:param create_to_class: if True, create a default to_class method
+:meta private:</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="pitchtypes.enharmonic.EnharmonicIntervalClass.pitch_class_name_from_midi">
 <em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pitch_class_name_from_midi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">midi_pitch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flat_sharp</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.enharmonic.EnharmonicIntervalClass.pitch_class_name_from_midi" title="Link to this definition"></a></dt>
 <dd><p>Return the pitch class name for the given pitch in MIDI integer.
@@ -234,7 +305,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021, Robert Lieck, Christoph Finkensiep, DCML.</p>
+    <p>&#169; Copyright Robert Lieck, Christoph Finkensiep, DCML.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

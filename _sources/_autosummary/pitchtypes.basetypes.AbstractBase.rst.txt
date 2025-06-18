@@ -25,8 +25,6 @@ pitchtypes.basetypes.AbstractBase
       ~AbstractBase.link_interval_type
       ~AbstractBase.link_pitch_class_type
       ~AbstractBase.link_pitch_type
-      ~AbstractBase.name_check
-      ~AbstractBase.set_func_attr
    
    
 
