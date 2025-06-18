@@ -1,6 +1,5 @@
 #  Copyright (c) 2021 Robert Lieck
 
-import numbers
 from typing import SupportsInt
 
 from pitchtypes.basetypes import AbstractBase

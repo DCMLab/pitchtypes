@@ -1,7 +1,5 @@
 #  Copyright (c) 2021 Robert Lieck
 
-import numbers
-
 import numpy as np
 
 from pitchtypes import AbstractBase

@@ -8,7 +8,7 @@ from typing import Tuple, Optional
 
 import numpy as np
 
-from pitchtypes.basetypes import AbstractBase, Pitch, Interval, Diatonic, Chromatic
+from pitchtypes.basetypes import AbstractBase, AbstractPitch, AbstractInterval, Diatonic, Chromatic
 
 
 @functools.total_ordering
@@ -384,7 +384,7 @@ class AbstractSpelledPitch(abc.ABC):
 
 
 @Spelled.link_pitch_type()
-class SpelledPitch(Spelled, AbstractSpelledPitch, Pitch):
+class SpelledPitch(Spelled, AbstractSpelledPitch, AbstractPitch):
     """
     Represents a spelled pitch.
     """
@@ -540,7 +540,7 @@ class SpelledPitch(Spelled, AbstractSpelledPitch, Pitch):
 
 
 @Spelled.link_interval_type()
-class SpelledInterval(Spelled, AbstractSpelledInterval, Interval, Diatonic, Chromatic):
+class SpelledInterval(Spelled, AbstractSpelledInterval, AbstractInterval, Diatonic, Chromatic):
     """
     Represents a spelled interval.
     """
@@ -559,7 +559,7 @@ class SpelledInterval(Spelled, AbstractSpelledInterval, Interval, Diatonic, Chro
         if isinstance(value, str):
             sign, octaves, fifths = self.parse_interval(value)
             assert isinstance(sign, numbers.Integral)
-            assert isinstance(octaves, numbers.Integral)
+            assert isinstance(octaves, int)
             assert isinstance(fifths, numbers.Integral)
             assert abs(sign) == 1
             assert octaves >= 0
@@ -770,7 +770,7 @@ class SpelledInterval(Spelled, AbstractSpelledInterval, Interval, Diatonic, Chro
 
 
 @Spelled.link_pitch_class_type()
-class SpelledPitchClass(Spelled, AbstractSpelledPitch, Pitch):
+class SpelledPitchClass(Spelled, AbstractSpelledPitch, AbstractPitch):
     """
     Represents a spelled pitch class, i.e. a pitch without octave information.
     """
@@ -890,7 +890,7 @@ class SpelledPitchClass(Spelled, AbstractSpelledPitch, Pitch):
 
 
 @Spelled.link_interval_class_type()
-class SpelledIntervalClass(Spelled, AbstractSpelledInterval, Interval, Diatonic, Chromatic):
+class SpelledIntervalClass(Spelled, AbstractSpelledInterval, AbstractInterval, Diatonic, Chromatic):
     """
     Represents a spelled interval class, i.e. an interval without octave information.
     """

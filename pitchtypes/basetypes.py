@@ -12,6 +12,12 @@ class AbstractBase:
     more detailed explanations.
     """
 
+    # The following attributes are set by the decorators
+    Pitch = Any
+    PitchClass = Any
+    Interval = Any
+    IntervalClass = Any
+
     @staticmethod
     def _set_func_attr(
         sub_type: Any, flags: Iterable[Union[bool, None]], names: Iterable[str], funcs: Iterable[Callable]
@@ -402,7 +408,7 @@ class AbstractBase:
         return Converters.convert(self, other_type)
 
 
-class Interval(abc.ABC):
+class AbstractInterval(abc.ABC):
     """
     The basic interface implemented by every interval (and interval class) type.
     """
@@ -557,7 +563,7 @@ class Diatonic(abc.ABC):
         raise NotImplementedError
 
 
-class Pitch(abc.ABC):
+class AbstractPitch(abc.ABC):
     """
     The basic interface that is implemented by every pitch (and pitch class) type.
     """
@@ -587,12 +593,12 @@ class Pitch(abc.ABC):
         :return: if ``other`` is an interval, the transposed pitch;
                  if ``other`` is a pitch, the interval between both pitches
         """
-        if isinstance(other, Pitch):
+        if isinstance(other, AbstractPitch):
             try:
                 return self.interval_from(other)
             except TypeError | NotImplementedError:
                 return NotImplemented
-        elif isinstance(other, Interval):
+        elif isinstance(other, AbstractInterval):
             return self + (-other)
         else:
             return NotImplemented

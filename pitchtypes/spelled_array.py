@@ -6,7 +6,7 @@ import numbers
 
 import numpy as np
 
-from pitchtypes.basetypes import Pitch, Interval, Diatonic, Chromatic
+from pitchtypes.basetypes import AbstractPitch, AbstractInterval, Diatonic, Chromatic
 from pitchtypes.spelled import Spelled, SpelledInterval, SpelledIntervalClass, SpelledPitch, SpelledPitchClass
 
 
@@ -339,7 +339,7 @@ class AbstractSpelledArrayPitch(abc.ABC):
         raise NotImplementedError
 
 
-class SpelledIntervalArray(SpelledArray, AbstractSpelledArrayInterval, Interval, Diatonic, Chromatic):
+class SpelledIntervalArray(SpelledArray, AbstractSpelledArrayInterval, AbstractInterval, Diatonic, Chromatic):
     """
     Represents an array of spelled intervals.
     """
@@ -460,7 +460,9 @@ class SpelledIntervalArray(SpelledArray, AbstractSpelledArrayInterval, Interval,
 
     def __contains__(self, item):
         if isinstance(item, SpelledInterval):
-            return ((self.fifths() == item.fifths()) & (self.internal_octaves() == item.internal_octaves())).any()
+            return np.logical_and(
+                (self.fifths() == item.fifths()), (self.internal_octaves() == item.internal_octaves())
+            ).any()
         else:
             return False
 
@@ -546,7 +548,7 @@ class SpelledIntervalArray(SpelledArray, AbstractSpelledArrayInterval, Interval,
         downs = self.direction() < 0
         abs_fifths = self.fifths().copy()
         abs_octaves = self.internal_octaves().copy()
-        # manually invert the intervals that point downwards
+        # Manually invert the intervals that point downwards
         abs_fifths[downs] = -abs_fifths[downs]
         abs_octaves[downs] = -abs_octaves[downs]
         return SpelledIntervalArray(abs_fifths, abs_octaves)
@@ -645,9 +647,9 @@ class SpelledIntervalArray(SpelledArray, AbstractSpelledArrayInterval, Interval,
         octave_low, octave_high = octave_range
         f = self.fifths()
         o = self.octaves()
-        if (f < fifth_low).any() or (f > fifth_high).any():
+        if np.any(f < fifth_low) or np.any(f > fifth_high):
             raise ValueError(f"The interval {self} is outside the given fifth range {fifth_range}.")
-        if (o < octave_low).any() or (o > octave_high).any():
+        if np.any(o < octave_low) or np.any(o > octave_high):
             raise ValueError(f"The interval {self} is outside the given octave range {octave_range}.")
         # translate fifths and octaves to 0-based indices (from [low,high] to [0,high-low])
         f = f - fifth_low
@@ -667,7 +669,7 @@ class SpelledIntervalArray(SpelledArray, AbstractSpelledArrayInterval, Interval,
         return out
 
 
-class SpelledIntervalClassArray(SpelledArray, AbstractSpelledArrayInterval, Interval, Diatonic, Chromatic):
+class SpelledIntervalClassArray(SpelledArray, AbstractSpelledArrayInterval, AbstractInterval, Diatonic, Chromatic):
     """
     Represents an array of spelled interval classes, i.e. intervals without octave information.
     """
@@ -692,10 +694,10 @@ class SpelledIntervalClassArray(SpelledArray, AbstractSpelledArrayInterval, Inte
         """
 
         def parse_ic(string):
-            sign, octave, fifth = Spelled.parse_interval(string)
+            sign_, octave, fifth = Spelled.parse_interval(string)
             if octave is not None:
                 raise ValueError(f"Interval classes cannot have octave specifiers ({string}).")
-            return sign, fifth
+            return sign_, fifth
 
         sign, fifths = np.vectorize(parse_ic, otypes=[np.int_, np.int_])(strings)
         return SpelledIntervalClassArray(fifths * sign)
@@ -927,7 +929,7 @@ class SpelledIntervalClassArray(SpelledArray, AbstractSpelledArrayInterval, Inte
         """
         fifth_low, fifth_high = fifth_range
         f = self.fifths()
-        if (f < fifth_low).any() or (f > fifth_high).any():
+        if np.any(f < fifth_low) or np.any(f > fifth_high):
             raise ValueError(f"The interval {self} is outside the given fifth range {fifth_range}.")
         # translate fifths and octaves to 0-based indices (from [low,high] to [0,high-low])
         f = f - fifth_low
@@ -946,7 +948,7 @@ class SpelledIntervalClassArray(SpelledArray, AbstractSpelledArrayInterval, Inte
         return out
 
 
-class SpelledPitchArray(SpelledArray, AbstractSpelledArrayPitch, Pitch):
+class SpelledPitchArray(SpelledArray, AbstractSpelledArrayPitch, AbstractPitch):
     """
     Represents an array of spelled pitches.
     """
@@ -1073,7 +1075,9 @@ class SpelledPitchArray(SpelledArray, AbstractSpelledArrayPitch, Pitch):
 
     def __contains__(self, item):
         if isinstance(item, SpelledPitch):
-            return ((self.fifths() == item.fifths()) & (self.internal_octaves() == item.internal_octaves())).any()
+            return np.logical_and(
+                (self.fifths() == item.fifths()), (self.internal_octaves() == item.internal_octaves())
+            ).any()
         else:
             return False
 
@@ -1181,9 +1185,9 @@ class SpelledPitchArray(SpelledArray, AbstractSpelledArrayPitch, Pitch):
         octave_low, octave_high = octave_range
         f = self.fifths()
         o = self.octaves()
-        if (f < fifth_low).any() or (f > fifth_high).any():
+        if np.any(f < fifth_low) or np.any(f > fifth_high):
             raise ValueError(f"The pitch {self} is outside the given fifth range {fifth_range}.")
-        if (o < octave_low).any() or (o > octave_high).any():
+        if np.any(o < octave_low) or np.any(o > octave_high):
             raise ValueError(f"The pitch {self} is outside the given octave range {octave_range}.")
         # translate fifths and octaves to 0-based indices (from [low,high] to [0,high-low])
         f = f - fifth_low
@@ -1203,7 +1207,7 @@ class SpelledPitchArray(SpelledArray, AbstractSpelledArrayPitch, Pitch):
         return out
 
 
-class SpelledPitchClassArray(SpelledArray, AbstractSpelledArrayPitch, Pitch):
+class SpelledPitchClassArray(SpelledArray, AbstractSpelledArrayPitch, AbstractPitch):
     """
     Represents a spelled pitch class, i.e. a pitch without octave information.
     """
@@ -1394,7 +1398,7 @@ class SpelledPitchClassArray(SpelledArray, AbstractSpelledArrayPitch, Pitch):
         """
         fifth_low, fifth_high = fifth_range
         f = self.fifths()
-        if (f < fifth_low).any() or (f > fifth_high).any():
+        if np.any(f < fifth_low) or np.any(f > fifth_high):
             raise ValueError(f"The interval {self} is outside the given fifth range {fifth_range}.")
         # translate fifths and octaves to 0-based indices (from [low,high] to [0,high-low])
         f = f - fifth_low
