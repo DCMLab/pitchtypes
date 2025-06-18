@@ -7,8 +7,7 @@ import numbers
 import numpy as np
 
 from pitchtypes.basetypes import Pitch, Interval, Diatonic, Chromatic
-from pitchtypes.spelled import Spelled, SpelledInterval, SpelledIntervalClass, \
-    SpelledPitch, SpelledPitchClass
+from pitchtypes.spelled import Spelled, SpelledInterval, SpelledIntervalClass, SpelledPitch, SpelledPitchClass
 
 
 class SpelledArray(abc.ABC):
@@ -20,7 +19,7 @@ class SpelledArray(abc.ABC):
     # constructors
 
     @staticmethod
-    def from_onehot():
+    def from_onehot(**kwargs):
         raise NotImplementedError
 
     # printing
@@ -288,7 +287,7 @@ class SpelledArray(abc.ABC):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def onehot(self):
+    def onehot(self, **kwargs):
         """
         Return a one-hot encoded tensor representing the elements of the array.
         Specialized versions of this method take ranges for their respective dimensions.
@@ -427,13 +426,13 @@ class SpelledIntervalArray(SpelledArray, AbstractSpelledArrayInterval, Interval,
         ones = np.where(onehot == 1)
         indices = ones[:-2]  # first n-2 dimensions are indices
         fifths_values = ones[-2] + fifth_low
-        octs_values = ones[-1] + octave_low
+        octaves_values = ones[-1] + octave_low
 
         new_shape = onehot.shape[:-2]
         new_fifths = np.zeros(new_shape, dtype=int)
         new_fifths[indices] = fifths_values
         new_octaves = np.zeros(new_shape, dtype=int)
-        new_octaves[indices] = octs_values
+        new_octaves[indices] = octaves_values
         return SpelledIntervalArray.from_independent(new_fifths, new_octaves)
 
     # collection interface
@@ -642,17 +641,17 @@ class SpelledIntervalArray(SpelledArray, AbstractSpelledArrayInterval, Interval,
         :param dtype: dtype of the resulting array (default: ``int``)
         :return: a one-hot tensor (numpy array)
         """
-        flow, fhigh = fifth_range
-        olow, ohigh = octave_range
+        fifth_low, fifth_high = fifth_range
+        octave_low, octave_high = octave_range
         f = self.fifths()
         o = self.octaves()
-        if (f < flow).any() or (f > fhigh).any():
+        if (f < fifth_low).any() or (f > fifth_high).any():
             raise ValueError(f"The interval {self} is outside the given fifth range {fifth_range}.")
-        if (o < olow).any() or (o > ohigh).any():
+        if (o < octave_low).any() or (o > octave_high).any():
             raise ValueError(f"The interval {self} is outside the given octave range {octave_range}.")
         # translate fifths and octaves to 0-based indices (from [low,high] to [0,high-low])
-        f = f - flow
-        o = o - olow
+        f = f - fifth_low
+        o = o - octave_low
 
         # compute one-hot indices
         inner_shape = f.shape
@@ -662,7 +661,7 @@ class SpelledIntervalArray(SpelledArray, AbstractSpelledArrayInterval, Interval,
         indices = tuple(np.indices(inner_shape)) + (f, o)
 
         # initialize one-hot tensor with 0s
-        out = np.zeros(inner_shape + (fhigh - flow + 1, ohigh - olow + 1), dtype=dtype)
+        out = np.zeros(inner_shape + (fifth_high - fifth_low + 1, octave_high - octave_low + 1), dtype=dtype)
         # set all elements picked by the indices to 1
         out[indices] = 1
         return out
@@ -868,10 +867,10 @@ class SpelledIntervalClassArray(SpelledArray, AbstractSpelledArrayInterval, Inte
     # spelled interface
 
     def name(self):
-        def intervalclass_name(fifths):
+        def interval_class_name(fifths):
             return Spelled.interval_class_from_fifths(fifths)
 
-        return np.vectorize(intervalclass_name, otypes=[np.str_])(self.fifths())
+        return np.vectorize(interval_class_name, otypes=[np.str_])(self.fifths())
 
     def compare(self, other):
         """
@@ -887,7 +886,7 @@ class SpelledIntervalClassArray(SpelledArray, AbstractSpelledArrayInterval, Inte
         This method can be indirectly used through binary comparison operators
         (including ``==``, ``<`` etc.).
         To test the overall equality of two spelled arrays,
-        use :py:meth:`array_equal <SpelledIntervalClasssArray.array_equal>`
+        use :py:meth:`array_equal <SpelledIntervalClassArray.array_equal>`
 
         :param other: another ``SpelledIntervalClassArray`` or ``SpelledIntervalClass``
         :return: an array of ``-1`` / ``0`` / ``1`` (integer)
@@ -926,12 +925,12 @@ class SpelledIntervalClassArray(SpelledArray, AbstractSpelledArrayInterval, Inte
         :param dtype: dtype of the resulting array (default: ``int``)
         :return: a one-hot tensor (numpy array)
         """
-        flow, fhigh = fifth_range
+        fifth_low, fifth_high = fifth_range
         f = self.fifths()
-        if (f < flow).any() or (f > fhigh).any():
+        if (f < fifth_low).any() or (f > fifth_high).any():
             raise ValueError(f"The interval {self} is outside the given fifth range {fifth_range}.")
         # translate fifths and octaves to 0-based indices (from [low,high] to [0,high-low])
-        f = f - flow
+        f = f - fifth_low
 
         # compute one-hot indices
         inner_shape = f.shape
@@ -941,7 +940,7 @@ class SpelledIntervalClassArray(SpelledArray, AbstractSpelledArrayInterval, Inte
         indices = tuple(np.indices(inner_shape)) + (f,)
 
         # initialize one-hot tensor with 0s
-        out = np.zeros(inner_shape + (fhigh - flow + 1,), dtype=dtype)
+        out = np.zeros(inner_shape + (fifth_high - fifth_low + 1,), dtype=dtype)
         # set all elements picked by the indices to 1
         out[indices] = 1
         return out
@@ -977,7 +976,7 @@ class SpelledPitchArray(SpelledArray, AbstractSpelledArrayPitch, Pitch):
     @staticmethod
     def from_independent(fifths, octaves):
         """
-        Create a pitch array from fifths and indenpendent octaves.
+        Create a pitch array from fifths and independent octaves.
         The fifths indicate the names of the pitches
         while the octaves indicate their octave numbers.
 
@@ -1011,7 +1010,7 @@ class SpelledPitchArray(SpelledArray, AbstractSpelledArrayPitch, Pitch):
         """
         Create a pitch array from an array of pitches.
 
-        :param intervals: an array-like of ``SpelledPitch``
+        :param pitches: an array-like of ``SpelledPitch``
         :return: the corresponding pitch array
         """
 
@@ -1040,13 +1039,13 @@ class SpelledPitchArray(SpelledArray, AbstractSpelledArrayPitch, Pitch):
         ones = np.where(onehot == 1)
         indices = ones[:-2]  # first n-2 dimensions are indices
         fifths_values = ones[-2] + fifth_low
-        octs_values = ones[-1] + octave_low
+        octaves_values = ones[-1] + octave_low
 
         new_shape = onehot.shape[:-2]
         new_fifths = np.zeros(new_shape, dtype=int)
         new_fifths[indices] = fifths_values
         new_octaves = np.zeros(new_shape, dtype=int)
-        new_octaves[indices] = octs_values
+        new_octaves[indices] = octaves_values
         return SpelledPitchArray.from_independent(new_fifths, new_octaves)
 
     # collection interface
@@ -1178,17 +1177,17 @@ class SpelledPitchArray(SpelledArray, AbstractSpelledArrayPitch, Pitch):
         :param dtype: dtype of the resulting array (default: ``int``)
         :return: a one-hot tensor (numpy array)
         """
-        flow, fhigh = fifth_range
-        olow, ohigh = octave_range
+        fifth_low, fifth_high = fifth_range
+        octave_low, octave_high = octave_range
         f = self.fifths()
         o = self.octaves()
-        if (f < flow).any() or (f > fhigh).any():
+        if (f < fifth_low).any() or (f > fifth_high).any():
             raise ValueError(f"The pitch {self} is outside the given fifth range {fifth_range}.")
-        if (o < olow).any() or (o > ohigh).any():
+        if (o < octave_low).any() or (o > octave_high).any():
             raise ValueError(f"The pitch {self} is outside the given octave range {octave_range}.")
         # translate fifths and octaves to 0-based indices (from [low,high] to [0,high-low])
-        f = f - flow
-        o = o - olow
+        f = f - fifth_low
+        o = o - octave_low
 
         # compute one-hot indices
         inner_shape = f.shape
@@ -1198,7 +1197,7 @@ class SpelledPitchArray(SpelledArray, AbstractSpelledArrayPitch, Pitch):
         indices = tuple(np.indices(inner_shape)) + (f, o)
 
         # initialize one-hot tensor with 0s
-        out = np.zeros(inner_shape + (fhigh - flow + 1, ohigh - olow + 1), dtype=dtype)
+        out = np.zeros(inner_shape + (fifth_high - fifth_low + 1, octave_high - octave_low + 1), dtype=dtype)
         # set all elements picked by the indices to 1
         out[indices] = 1
         return out
@@ -1242,7 +1241,7 @@ class SpelledPitchClassArray(SpelledArray, AbstractSpelledArrayPitch, Pitch):
         """
         Create a pitch class array from an array of pitch classes.
 
-        :param intervals: an array-like of ``SpelledPitchClass``
+        :param pitches: an array-like of ``SpelledPitchClass``
         :return: the corresponding pitch-class array
         """
         fifths = np.vectorize(lambda i: i.fifths(), otypes=[np.int_])(pitches)
@@ -1338,10 +1337,10 @@ class SpelledPitchClassArray(SpelledArray, AbstractSpelledArrayPitch, Pitch):
     # spelled interface
 
     def name(self):
-        def pitchclass_name(fifths):
+        def pitch_class_name(fifths):
             return Spelled.pitch_class_from_fifths(fifths)
 
-        return np.vectorize(pitchclass_name, otypes=[np.str_])(self.fifths())
+        return np.vectorize(pitch_class_name, otypes=[np.str_])(self.fifths())
 
     def compare(self, other):
         """
@@ -1393,12 +1392,12 @@ class SpelledPitchClassArray(SpelledArray, AbstractSpelledArrayPitch, Pitch):
         :param dtype: dtype of the resulting array (default: ``int``)
         :return: a one-hot tensor (numpy array)
         """
-        flow, fhigh = fifth_range
+        fifth_low, fifth_high = fifth_range
         f = self.fifths()
-        if (f < flow).any() or (f > fhigh).any():
+        if (f < fifth_low).any() or (f > fifth_high).any():
             raise ValueError(f"The interval {self} is outside the given fifth range {fifth_range}.")
         # translate fifths and octaves to 0-based indices (from [low,high] to [0,high-low])
-        f = f - flow
+        f = f - fifth_low
 
         # compute one-hot indices
         inner_shape = f.shape
@@ -1408,7 +1407,7 @@ class SpelledPitchClassArray(SpelledArray, AbstractSpelledArrayPitch, Pitch):
         indices = tuple(np.indices(inner_shape)) + (f,)
 
         # initialize one-hot tensor with 0s
-        out = np.zeros(inner_shape + (fhigh - flow + 1,), dtype=dtype)
+        out = np.zeros(inner_shape + (fifth_high - fifth_low + 1,), dtype=dtype)
         # set all elements picked by the indices to 1
         out[indices] = 1
         return out

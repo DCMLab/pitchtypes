@@ -411,7 +411,7 @@ class Interval(abc.ABC):
 
     @classmethod
     @abc.abstractmethod
-    def unison(cls):
+    def unison(cls, **kwargs):
         """
         Create the unison interval of this type.
 
@@ -421,7 +421,7 @@ class Interval(abc.ABC):
 
     @classmethod
     @abc.abstractmethod
-    def octave(cls):
+    def octave(cls, **kwargs):
         """
         Create the octave interval of this type.
 
@@ -533,7 +533,7 @@ class Chromatic(abc.ABC):
 
     @classmethod
     @abc.abstractmethod
-    def chromatic_semitone(cls):
+    def chromatic_semitone(cls, **kwargs):
         """
         Return a chromatic semitone (augmented unison) of this type.
 

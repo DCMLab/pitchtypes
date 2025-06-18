@@ -26,5 +26,5 @@ class TestExamples(TestCase):
         from pitchtypes import EnharmonicPitch, LogFreqPitch
 
         enharmonic = EnharmonicPitch("A4")
-        logfreq = enharmonic.convert_to(LogFreqPitch)
-        print(logfreq)
+        log_freq = enharmonic.convert_to(LogFreqPitch)
+        print(log_freq)

@@ -4,6 +4,7 @@ import abc
 import functools
 import numbers
 import re
+from typing import Tuple, Optional
 
 import numpy as np
 
@@ -61,7 +62,7 @@ class Spelled(AbstractBase):
             return int(octave), fifth_steps
 
     @staticmethod
-    def parse_interval(s):
+    def parse_interval(s) -> Tuple[int, Optional[int], int]:
         """
         Parse a string as a spelled interval or spelled interval class. Returns a tuple (sign, octave, fifths), where
         sign is +1 or -1 and indicates the sign given in the string (no sign means positive), octave indicates the
@@ -330,7 +331,7 @@ class Spelled(AbstractBase):
         """
         raise NotImplementedError
 
-    def onehot(self):
+    def onehot(self, **kwargs):
         """
         Return a one-hot encoded tensor representing the object.
         Specialized versions of this method take ranges for their respective dimensions.
@@ -525,16 +526,16 @@ class SpelledPitch(Spelled, AbstractSpelledPitch, Pitch):
         :param dtype: dtype of the resulting array
         :return: a one-hot matrix (numpy array)
         """
-        flow, fhigh = fifth_range
-        olow, ohigh = octave_range
+        fifth_low, fifth_high = fifth_range
+        octave_low, octave_high = octave_range
         f = self.fifths()
         o = self.octaves()
-        if f < flow or f > fhigh:
+        if f < fifth_low or f > fifth_high:
             raise ValueError(f"The pitch {self} is outside the given fifth range {fifth_range}.")
-        if o < olow or o > ohigh:
+        if o < octave_low or o > octave_high:
             raise ValueError(f"The pitch {self} is outside the given octave range {octave_range}.")
-        out = np.zeros((fhigh - flow + 1, ohigh - olow + 1), dtype=dtype)
-        out[f - flow, o - olow] = 1
+        out = np.zeros((fifth_high - fifth_low + 1, octave_high - octave_low + 1), dtype=dtype)
+        out[f - fifth_low, o - octave_low] = 1
         return out
 
 
@@ -755,16 +756,16 @@ class SpelledInterval(Spelled, AbstractSpelledInterval, Interval, Diatonic, Chro
         :param dtype: dtype of the resulting array
         :return: a one-hot matrix (numpy array)
         """
-        flow, fhigh = fifth_range
-        olow, ohigh = octave_range
+        fifth_low, fifth_high = fifth_range
+        octave_low, octave_high = octave_range
         f = self.fifths()
         o = self.octaves()
-        if f < flow or f > fhigh:
+        if f < fifth_low or f > fifth_high:
             raise ValueError(f"The interval {self} is outside the given fifth range {fifth_range}.")
-        if o < olow or o > ohigh:
+        if o < octave_low or o > octave_high:
             raise ValueError(f"The interval {self} is outside the given octave range {octave_range}.")
-        out = np.zeros((fhigh - flow + 1, ohigh - olow + 1), dtype=dtype)
-        out[f - flow, o - olow] = 1
+        out = np.zeros((fifth_high - fifth_low + 1, octave_high - octave_low + 1), dtype=dtype)
+        out[f - fifth_low, o - octave_low] = 1
         return out
 
 

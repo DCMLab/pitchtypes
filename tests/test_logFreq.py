@@ -2,8 +2,7 @@ from unittest import TestCase
 
 import numpy as np
 
-from pitchtypes import LogFreq, LogFreqPitch, LogFreqInterval, LogFreqPitchClass, \
-    LogFreqIntervalClass, EnharmonicPitch
+from pitchtypes import LogFreq, LogFreqPitch, LogFreqInterval, LogFreqPitchClass, LogFreqIntervalClass, EnharmonicPitch
 
 
 class TestLogFreq(TestCase):
@@ -83,7 +82,7 @@ class TestLogFreq(TestCase):
         self.assertEqual("1.111Hz", str(pc))
         self.assertEqual("2.345", str(i))
         self.assertEqual("1.234", str(ic))
-        # change for all simultaneouly
+        # change for all simultaneously
         self.assertEqual(2, LogFreq.print_precision())
         LogFreq.print_precision(1)
         self.assertEqual(1, LogFreq.print_precision())

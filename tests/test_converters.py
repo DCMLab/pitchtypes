@@ -25,20 +25,20 @@ class TestConverters(TestCase):
         # C|     |
 
         # register converter A --> B
-        Converters.register_converter(from_type=TypeA,
-                                      to_type=TypeB,
-                                      conv_func=lambda pitch_a: TypeB(pitch_a.value,
-                                                                      pitch_a.is_pitch,
-                                                                      pitch_a.is_class))
+        Converters.register_converter(
+            from_type=TypeA,
+            to_type=TypeB,
+            conv_func=lambda pitch_a: TypeB(pitch_a.value, pitch_a.is_pitch, pitch_a.is_class),
+        )
         # check conversion works
         self.assertEqual(TypeA("foo", True, False).convert_to(TypeB), TypeB("foo", True, False))
 
         # register converter B --> C
-        Converters.register_converter(from_type=TypeB,
-                                      to_type=TypeC,
-                                      conv_func=lambda pitch_b: TypeC(pitch_b.value,
-                                                                      pitch_b.is_pitch,
-                                                                      pitch_b.is_class))
+        Converters.register_converter(
+            from_type=TypeB,
+            to_type=TypeC,
+            conv_func=lambda pitch_b: TypeC(pitch_b.value, pitch_b.is_pitch, pitch_b.is_class),
+        )
         # check conversion works
         self.assertEqual(TypeB("bar", True, False).convert_to(TypeC), TypeC("bar", True, False))
 
@@ -53,22 +53,22 @@ class TestConverters(TestCase):
         # C|I E  |
 
         # register conversion C --> B
-        Converters.register_converter(from_type=TypeC,
-                                      to_type=TypeB,
-                                      conv_func=lambda pitch_c: TypeB(pitch_c.value,
-                                                                      pitch_c.is_pitch,
-                                                                      pitch_c.is_class))
+        Converters.register_converter(
+            from_type=TypeC,
+            to_type=TypeB,
+            conv_func=lambda pitch_c: TypeB(pitch_c.value, pitch_c.is_pitch, pitch_c.is_class),
+        )
         # check that conversion C --> B works
         self.assertEqual(TypeC("foo", True, False).convert_to(TypeB), TypeB("foo", True, False))
 
         # register conversion B --> A
         # CREATE implicit converter C --> A
-        Converters.register_converter(from_type=TypeB,
-                                      to_type=TypeA,
-                                      conv_func=lambda pitch_b: TypeA(pitch_b.value,
-                                                                      pitch_b.is_pitch,
-                                                                      pitch_b.is_class),
-                                      create_implicit_converters=True)  # CREATE HERE
+        Converters.register_converter(
+            from_type=TypeB,
+            to_type=TypeA,
+            conv_func=lambda pitch_b: TypeA(pitch_b.value, pitch_b.is_pitch, pitch_b.is_class),
+            create_implicit_converters=True,
+        )  # CREATE HERE
         # check that conversion B --> A works
         self.assertEqual(TypeB("bar", True, False).convert_to(TypeA), TypeA("bar", True, False))
 
@@ -83,36 +83,40 @@ class TestConverters(TestCase):
         # A|  e  |
         # B|e   e|
         # C|E e  |
-        self.assertRaises(ValueError,
-                          lambda: Converters.register_converter(from_type=TypeC,
-                                                                to_type=TypeA,
-                                                                conv_func=lambda pitch_c: TypeA(pitch_c.value,
-                                                                                                pitch_c.is_pitch,
-                                                                                                pitch_c.is_class),
-                                                                overwrite_explicit_converters=True))
-        Converters.register_converter(from_type=TypeC,
-                                      to_type=TypeA,
-                                      conv_func=lambda pitch_c: TypeA(pitch_c.value,
-                                                                      pitch_c.is_pitch,
-                                                                      pitch_c.is_class),
-                                      overwrite_implicit_converters=True)
+        self.assertRaises(
+            ValueError,
+            lambda: Converters.register_converter(
+                from_type=TypeC,
+                to_type=TypeA,
+                conv_func=lambda pitch_c: TypeA(pitch_c.value, pitch_c.is_pitch, pitch_c.is_class),
+                overwrite_explicit_converters=True,
+            ),
+        )
+        Converters.register_converter(
+            from_type=TypeC,
+            to_type=TypeA,
+            conv_func=lambda pitch_c: TypeA(pitch_c.value, pitch_c.is_pitch, pitch_c.is_class),
+            overwrite_implicit_converters=True,
+        )
 
         # overwrite explicit converter just created
         # - raise ValueError if not explicitly requested
         # - since the existing converter is explicit, requesting implicit converter to be overwritten does not help
-        self.assertRaises(ValueError,
-                          lambda: Converters.register_converter(from_type=TypeC,
-                                                                to_type=TypeA,
-                                                                conv_func=lambda pitch_c: TypeA(pitch_c.value,
-                                                                                                pitch_c.is_pitch,
-                                                                                                pitch_c.is_class),
-                                                                overwrite_implicit_converters=True))
-        Converters.register_converter(from_type=TypeC,
-                                      to_type=TypeA,
-                                      conv_func=lambda pitch_c: TypeA(pitch_c.value,
-                                                                      pitch_c.is_pitch,
-                                                                      pitch_c.is_class),
-                                      overwrite_explicit_converters=True)
+        self.assertRaises(
+            ValueError,
+            lambda: Converters.register_converter(
+                from_type=TypeC,
+                to_type=TypeA,
+                conv_func=lambda pitch_c: TypeA(pitch_c.value, pitch_c.is_pitch, pitch_c.is_class),
+                overwrite_implicit_converters=True,
+            ),
+        )
+        Converters.register_converter(
+            from_type=TypeC,
+            to_type=TypeA,
+            conv_func=lambda pitch_c: TypeA(pitch_c.value, pitch_c.is_pitch, pitch_c.is_class),
+            overwrite_explicit_converters=True,
+        )
 
         # add converter to yet another type to check extending implicit converters
         # - add TypeD --> TypeC
@@ -126,12 +130,12 @@ class TestConverters(TestCase):
         class TypeD(AbstractBase):
             pass
 
-        Converters.register_converter(from_type=TypeD,
-                                      to_type=TypeC,
-                                      conv_func=lambda pitch_d: TypeC(pitch_d.value,
-                                                                      pitch_d.is_pitch,
-                                                                      pitch_d.is_class),
-                                      create_implicit_converters=True)
+        Converters.register_converter(
+            from_type=TypeD,
+            to_type=TypeC,
+            conv_func=lambda pitch_d: TypeC(pitch_d.value, pitch_d.is_pitch, pitch_d.is_class),
+            create_implicit_converters=True,
+        )
         self.assertEqual(TypeD("bar", True, False).convert_to(TypeC), TypeC("bar", True, False))
         self.assertEqual(TypeD("bar", True, False).convert_to(TypeA), TypeA("bar", True, False))
         self.assertEqual(TypeD("bar", True, False).convert_to(TypeB), TypeB("bar", True, False))
@@ -147,18 +151,18 @@ class TestConverters(TestCase):
         # C|e e    |
         # D|i i e  |
         self.assertRaises(NotImplementedError, lambda: Converters.get_converter(TypeA, TypeA))
-        Converters.register_converter(from_type=TypeA,
-                                      to_type=TypeD,
-                                      conv_func=lambda pitch_a: TypeD(pitch_a.value,
-                                                                      pitch_a.is_pitch,
-                                                                      pitch_a.is_class))
-        Converters.register_converter(from_type=TypeD,
-                                      to_type=TypeA,
-                                      conv_func=lambda pitch_d: TypeA(pitch_d.value,
-                                                                      pitch_d.is_pitch,
-                                                                      pitch_d.is_class),
-                                      create_implicit_converters=True,
-                                      overwrite_implicit_converters=True)
+        Converters.register_converter(
+            from_type=TypeA,
+            to_type=TypeD,
+            conv_func=lambda pitch_a: TypeD(pitch_a.value, pitch_a.is_pitch, pitch_a.is_class),
+        )
+        Converters.register_converter(
+            from_type=TypeD,
+            to_type=TypeA,
+            conv_func=lambda pitch_d: TypeA(pitch_d.value, pitch_d.is_pitch, pitch_d.is_class),
+            create_implicit_converters=True,
+            overwrite_implicit_converters=True,
+        )
         # still not implemented
         self.assertRaises(NotImplementedError, lambda: Converters.get_converter(TypeA, TypeA))
         self.assertRaises(NotImplementedError, lambda: Converters.get_converter(TypeD, TypeD))

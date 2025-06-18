@@ -20,6 +20,7 @@ class TestSpelled(TestCase):
     def arrayEqual(self, a, b):
         if not np.array_equal(a, b):
             raise self.failureException(f"{a} is not equal to {b}")
+
     # fmt: off
     line_of_fifths = [
         "Dbbbb", "Abbbb", "Ebbbb", "Bbbbb",

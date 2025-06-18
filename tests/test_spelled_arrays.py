@@ -50,9 +50,9 @@ class TestSpelledArray(TestCase):
         self.arrayEqual(i.degree(), [2, 5])
         self.arrayEqual(i.generic(), [2, -2])
         self.arrayEqual(i.diatonic_steps(), [9, -9])
-        manyis = ["M3:1", "-M3:1", "-P4:0", "-M7:0", "a4:0", "m7:0", "-a4:0", "-m7:0", "a1:0", "-a1:0"]
-        self.arrayEqual(asi(manyis).alteration(), [0, 0, 0, 0, 1, -1, 1, -1, 1, 1])
-        self.arrayEqual(asi(manyis).name(), manyis)
+        many_is = ["M3:1", "-M3:1", "-P4:0", "-M7:0", "a4:0", "m7:0", "-a4:0", "-m7:0", "a1:0", "-a1:0"]
+        self.arrayEqual(asi(many_is).alteration(), [0, 0, 0, 0, 1, -1, 1, -1, 1, 1])
+        self.arrayEqual(asi(many_is).name(), many_is)
 
         ic = asic(["a5", "d4"])
         self.arrayEqual(ic.octaves(), [0, 0])
@@ -61,29 +61,29 @@ class TestSpelledArray(TestCase):
         self.arrayEqual(ic.degree(), [4, 3])
         self.arrayEqual(ic.generic(), [4, 3])
         self.arrayEqual(ic.diatonic_steps(), [4, 3])
-        manyics = ["a5", "d4", "P4", "M7", "a4", "m7", "a1", "d1"]
-        self.arrayEqual(asic(manyics).alteration(), [1, -1, 0, 0, 1, -1, 1, -1])
-        self.arrayEqual(asic(manyics).name(), manyics)
+        many_ics = ["a5", "d4", "P4", "M7", "a4", "m7", "a1", "d1"]
+        self.arrayEqual(asic(many_ics).alteration(), [1, -1, 0, 0, 1, -1, 1, -1])
+        self.arrayEqual(asic(many_ics).name(), many_ics)
 
         p = asp(["Ebb5", "D#-1"])
         self.arrayEqual(p.octaves(), [5, -1])
         self.arrayEqual(p.internal_octaves(), [11, -6])
         self.arrayEqual(p.fifths(), [-10, 9])
         self.arrayEqual(p.degree(), [2, 1])
-        manyps = ["Ebb5", "D#-1", "F4", "B3", "F#4", "Bb3", "C#-1", "Cb-1"]
-        self.arrayEqual(asp(manyps).alteration(), [-2, 1, 0, 0, 1, -1, 1, -1])
-        self.arrayEqual(asp(manyps).name(), manyps)
-        self.arrayEqual(asp(manyps).letter(), ["E", "D", "F", "B", "F", "B", "C", "C"])
+        many_ps = ["Ebb5", "D#-1", "F4", "B3", "F#4", "Bb3", "C#-1", "Cb-1"]
+        self.arrayEqual(asp(many_ps).alteration(), [-2, 1, 0, 0, 1, -1, 1, -1])
+        self.arrayEqual(asp(many_ps).name(), many_ps)
+        self.arrayEqual(asp(many_ps).letter(), ["E", "D", "F", "B", "F", "B", "C", "C"])
 
         pc = aspc(["Ebb", "D#"])
         self.arrayEqual(pc.octaves(), [0, 0])
         self.arrayEqual(pc.internal_octaves(), [0, 0])
         self.arrayEqual(pc.fifths(), [-10, 9])
         self.arrayEqual(pc.degree(), [2, 1])
-        manypcs = ["Ebb", "D#", "F", "B", "F#", "Bb", "C#", "Cb"]
-        self.arrayEqual(aspc(manypcs).alteration(), [-2, 1, 0, 0, 1, -1, 1, -1])
-        self.arrayEqual(aspc(manypcs).name(), manypcs)
-        self.arrayEqual(aspc(manypcs).letter(), ["E", "D", "F", "B", "F", "B", "C", "C"])
+        many_pcs = ["Ebb", "D#", "F", "B", "F#", "Bb", "C#", "Cb"]
+        self.arrayEqual(aspc(many_pcs).alteration(), [-2, 1, 0, 0, 1, -1, 1, -1])
+        self.arrayEqual(aspc(many_pcs).name(), many_pcs)
+        self.arrayEqual(aspc(many_pcs).letter(), ["E", "D", "F", "B", "F", "B", "C", "C"])
 
     def test_printing(self):
         self.assertEqual(str(asi(["m3:1", "-m7:0"])), "[m3:1 -m7:0]")
@@ -396,10 +396,10 @@ class TestSpelledArray(TestCase):
         self.assertRaises(ValueError, lambda: asi(["m2:3"]).onehot((-10, 10), (-1, 1)))  # outside of octave range
 
         ic = asic([["M6", "M3", "M2"], ["-M6", "-M3", "P1"]])
-        icoh = ic.onehot((-7, 7))
-        self.spelledEqual(SpelledIntervalClassArray.from_onehot(icoh, -7), ic)
-        self.arrayEqual(icoh, np.array(list(map(lambda arr: arr.onehot((-7, 7)), ic))))
-        self.arrayEqual(icoh, np.array(list(map(lambda arr: list(map(lambda x: x.onehot((-7, 7)), arr)), ic))))
+        ic_oh = ic.onehot((-7, 7))
+        self.spelledEqual(SpelledIntervalClassArray.from_onehot(ic_oh, -7), ic)
+        self.arrayEqual(ic_oh, np.array(list(map(lambda arr: arr.onehot((-7, 7)), ic))))
+        self.arrayEqual(ic_oh, np.array(list(map(lambda arr: list(map(lambda x: x.onehot((-7, 7)), arr)), ic))))
         self.assertRaises(ValueError, lambda: SpelledIntervalClassArray.from_onehot(np.array([[1, 1]]), 0))
         self.assertRaises(ValueError, lambda: asic(["M7"]).onehot((-1, 1)))  # outside of fifth range
 
@@ -413,10 +413,10 @@ class TestSpelledArray(TestCase):
         self.assertRaises(ValueError, lambda: asp(["G8"]).onehot((-10, 10), (-1, 1)))  # outside of octave range
 
         pc = aspc([["A", "Eb", "D"], ["E", "Ab", "C"]])
-        pcoh = pc.onehot((-7, 7))
-        self.spelledEqual(SpelledPitchClassArray.from_onehot(pcoh, -7), pc)
-        self.arrayEqual(pcoh, np.array(list(map(lambda arr: arr.onehot((-7, 7)), pc))))
-        self.arrayEqual(pcoh, np.array(list(map(lambda arr: list(map(lambda x: x.onehot((-7, 7)), arr)), pc))))
+        pc_oh = pc.onehot((-7, 7))
+        self.spelledEqual(SpelledPitchClassArray.from_onehot(pc_oh, -7), pc)
+        self.arrayEqual(pc_oh, np.array(list(map(lambda arr: arr.onehot((-7, 7)), pc))))
+        self.arrayEqual(pc_oh, np.array(list(map(lambda arr: list(map(lambda x: x.onehot((-7, 7)), arr)), pc))))
         self.assertRaises(ValueError, lambda: SpelledPitchClassArray.from_onehot(np.array([[1, 1]]), 0))
         self.assertRaises(ValueError, lambda: aspc(["C#"]).onehot((-1, 1)))  # outside of fifth range
 
