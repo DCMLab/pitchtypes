@@ -84,9 +84,15 @@ class Enharmonic(AbstractBase):
 
 @Enharmonic.link_pitch_type()
 class EnharmonicPitch(Enharmonic):
-
     def to_class(self):
         return self.PitchClass(value=self.value % 12)
+
+    def pc(self):
+        """
+        Convert the pitch to a PitchClass.
+        :return: EnharmonicPitchClass
+        """
+        return self.to_class()
 
     def name(self, as_int=None, flat_sharp=None):
         if as_int is None:
@@ -141,6 +147,13 @@ class EnharmonicPitchClass(Enharmonic):
 
     def convert_to_logfreq(self):
         return LogFreq.PitchClass(2 ** ((self.value - 69) / 12) * 440, is_freq=True)
+
+    def pc(self):
+        """
+        Return the pitch class itself.
+        :return: EnharmonicPitch
+        """
+        return self
 
 
 @Enharmonic.link_interval_class_type()
