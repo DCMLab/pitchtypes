@@ -813,10 +813,9 @@ For pitches, return the accidentals (positive=sharps, negative=flats, 0=natural)
 <dl class="py method">
 <dt class="sig sig-object py" id="pitchtypes.SpelledInterval.onehot">
 <span class="sig-name descname"><span class="pre">onehot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fifth_range</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">octave_range</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype=&lt;class</span> <span class="pre">'int'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledInterval.onehot" title="Link to this definition"></a></dt>
-<dd><p>Returns a one-hot encoding of the interval in fifths (first dimension)
-and independent octaves (second dimension).
+<dd><p>Returns a one-hot encoding of the pitch in fifths (first dimension) and external octaves (second dimension).
 The range of fifths and octaves is given by <code class="docutils literal notranslate"><span class="pre">fifth_range</span></code> and <code class="docutils literal notranslate"><span class="pre">octave_range</span></code> respectively,
-where each is a tuple <code class="docutils literal notranslate"><span class="pre">(lower,</span> <span class="pre">upper)</span></code>.</p>
+where each is a pair <code class="docutils literal notranslate"><span class="pre">(lower,</span> <span class="pre">upper)</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">

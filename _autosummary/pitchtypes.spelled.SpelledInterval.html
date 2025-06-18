@@ -209,7 +209,7 @@ where d and a can be repeated.</p>
 <td><p>For intervals, return the number of octaves the interval spans.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.spelled.SpelledInterval.onehot" title="pitchtypes.spelled.SpelledInterval.onehot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">onehot</span></code></a>(fifth_range, octave_range[, dtype])</p></td>
-<td><p>Returns a one-hot encoding of the interval in fifths (first dimension) and independent octaves (second dimension).</p></td>
+<td><p>Returns a one-hot encoding of the pitch in fifths (first dimension) and external octaves (second dimension).</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">parse_interval</span></code>(s)</p></td>
 <td><p>Parse a string as a spelled interval or spelled interval class.</p></td>
@@ -673,10 +673,9 @@ For pitches, return the absolute octave of the pitch.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pitchtypes.spelled.SpelledInterval.onehot">
 <span class="sig-name descname"><span class="pre">onehot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fifth_range</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">octave_range</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype=&lt;class</span> <span class="pre">'int'&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled.SpelledInterval.onehot" title="Link to this definition"></a></dt>
-<dd><p>Returns a one-hot encoding of the interval in fifths (first dimension)
-and independent octaves (second dimension).
+<dd><p>Returns a one-hot encoding of the pitch in fifths (first dimension) and external octaves (second dimension).
 The range of fifths and octaves is given by <code class="docutils literal notranslate"><span class="pre">fifth_range</span></code> and <code class="docutils literal notranslate"><span class="pre">octave_range</span></code> respectively,
-where each is a tuple <code class="docutils literal notranslate"><span class="pre">(lower,</span> <span class="pre">upper)</span></code>.</p>
+where each is a pair <code class="docutils literal notranslate"><span class="pre">(lower,</span> <span class="pre">upper)</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
