@@ -93,7 +93,7 @@ class TestValueTables(TestCase):
                     # go through all values (if the first dimension is of length 1; it's a row vector)
                     valid_values = False
                     for idx in range(arr.shape[0]):
-                        val: str = arr[idx, 0]
+                        val = str(arr[idx, 0])
                         if val == "" and ignore_empty:
                             continue
                         valid_values = True

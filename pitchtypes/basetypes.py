@@ -12,11 +12,18 @@ class AbstractBase:
     more detailed explanations.
     """
 
-    # The following attributes are set by the decorators
-    Pitch = Any
-    PitchClass = Any
-    Interval = Any
-    IntervalClass = Any
+    def __getattr__(self, item):
+        """
+        This method is called when an attribute is not found in the instance's __dict__.
+        It allows to access the linked Pitch, Interval, PitchClass, and IntervalClass types
+        via the base type.
+        """
+        if item in ["Pitch", "Interval", "PitchClass", "IntervalClass", "_base_type"]:
+            # return the linked type
+            return getattr(self, item)
+        else:
+            # raise AttributeError for any other attribute
+            raise AttributeError(f"{self.__class__.__name__} has no attribute '{item}'")
 
     @staticmethod
     def _set_func_attr(

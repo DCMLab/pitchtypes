@@ -796,6 +796,7 @@ class SpelledInterval(Spelled, AbstractSpelledInterval, AbstractInterval, Diaton
             self.fifths(), self.octaves(), fifth_range, octave_range, dtype, label=str(self), context="interval"
         )
 
+
 @Spelled.link_pitch_class_type()
 class SpelledPitchClass(Spelled, AbstractSpelledPitch, AbstractPitch):
     """
@@ -1087,6 +1088,4 @@ class SpelledIntervalClass(Spelled, AbstractSpelledInterval, AbstractInterval, D
         :param dtype: dtype of the resulting array
         :return: a one-hot vector (numpy array)
         """
-        return _spelled_onehot_from_fifths(
-            self.fifths(), fifth_range, dtype, label=str(self), context="interval class"
-        )
+        return _spelled_onehot_from_fifths(self.fifths(), fifth_range, dtype, label=str(self), context="interval class")

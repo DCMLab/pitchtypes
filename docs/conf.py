@@ -19,6 +19,7 @@ sys.path.insert(0, os.path.abspath("../"))
 # -- Project information -----------------------------------------------------
 
 project = "pitchtypes"
+# noinspection PyShadowingBuiltins
 copyright = "Robert Lieck, Christoph Finkensiep, DCML"
 author = "Robert Lieck, Christoph Finkensiep, DCML"
 
