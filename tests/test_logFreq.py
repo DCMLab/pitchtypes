@@ -5,6 +5,7 @@ import numpy as np
 from pitchtypes import LogFreq, LogFreqPitch, LogFreqInterval, LogFreqPitchClass, LogFreqIntervalClass, EnharmonicPitch
 
 
+# noinspection DuplicatedCode
 class TestLogFreq(TestCase):
 
     def test_against_MIDI(self):

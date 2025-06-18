@@ -1,13 +1,13 @@
 from unittest import TestCase
 from unittest.mock import patch
 
-import numpy as np
 import numpy.testing as nptest
 
 from pitchtypes.spelled_array import *
 
 
 # adapted from test_spelled.jl in Pitches.jl
+# noinspection DuplicatedCode
 class TestSpelledArray(TestCase):
     def arrayEqual(self, a, b):
         return self.assertIsNone(nptest.assert_array_equal(a, b))

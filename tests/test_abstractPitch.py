@@ -19,6 +19,7 @@ def create_derived(value, is_pitch, is_class):
             return AbstractBase.Interval(value=value)
 
 
+# noinspection PyUnresolvedReferences,DuplicatedCode
 class TestAbstractPitch(TestCase):
 
     def test_implementing_subtypes(self):

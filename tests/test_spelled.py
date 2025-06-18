@@ -16,6 +16,7 @@ from pitchtypes import (
 )
 
 
+# noinspection DuplicatedCode
 class TestSpelled(TestCase):
     def arrayEqual(self, a, b):
         if not np.array_equal(a, b):
@@ -81,6 +82,7 @@ class TestSpelled(TestCase):
         for is_class in [True, False]:
             # create pitch (class) objects
             for idx, p in enumerate(self.line_of_fifths):
+                pp = None
                 if is_class:
                     pp = SpelledPitchClass(p)
                     # test factory functions
@@ -128,6 +130,8 @@ class TestSpelled(TestCase):
             for idx, (interval_class_str, inverse_interval_class_str) in enumerate(
                 zip(self.line_of_intervals, reversed(self.line_of_intervals))
             ):
+                interval = None
+                inverse_interval = None
                 inverse_interval_class_str = "-" + inverse_interval_class_str
                 if is_class:
                     # create objects
@@ -152,7 +156,7 @@ class TestSpelled(TestCase):
                     self.assertEqual(interval_class_str, str(interval))
                     self.assertEqual(interval_class_str, interval.name())
                 else:
-                    for octave in range(0, 10):
+                    for octave in range(10):
                         # add octave for non-class
                         interval_str = interval_class_str + f":{octave}"
                         inverse_interval_str = inverse_interval_class_str + f":{octave}"

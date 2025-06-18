@@ -4,6 +4,7 @@ from unittest import TestCase
 from pitchtypes import AbstractBase, Converters
 
 
+# noinspection GrazieInspection,DuplicatedCode
 class TestConverters(TestCase):
 
     def test_converters(self):

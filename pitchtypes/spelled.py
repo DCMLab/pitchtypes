@@ -11,6 +11,51 @@ import numpy as np
 from pitchtypes.basetypes import AbstractBase, AbstractPitch, AbstractInterval, Diatonic, Chromatic
 
 
+def _spelled_onehot_from_fifths_octaves(f, o, fifth_range, octave_range, dtype, label="<unknown>", context="pitch"):
+    """
+    Compute a one-hot encoding at the (fifth, octave) position, with error checking.
+
+    :param f: Fifth coordinate (int)
+    :param o: Octave coordinate (int)
+    :param fifth_range: (low, high) inclusive range for fifths
+    :param octave_range: (low, high) inclusive range for octaves
+    :param dtype: Output array dtype
+    :param label: Label used in error messages, typically `str(self)`
+    :param context: String to describe the type (e.g., "pitch", "interval") in error messages
+    :return: numpy array with one-hot encoding
+    """
+    fifth_low, fifth_high = fifth_range
+    octave_low, octave_high = octave_range
+
+    if f < fifth_low or f > fifth_high:
+        raise ValueError(f"The {context} {label} is outside the given fifth range {fifth_range}.")
+    if o < octave_low or o > octave_high:
+        raise ValueError(f"The {context} {label} is outside the given octave range {octave_range}.")
+
+    out = np.zeros((fifth_high - fifth_low + 1, octave_high - octave_low + 1), dtype=dtype)
+    out[f - fifth_low, o - octave_low] = 1
+    return out
+
+
+def _spelled_onehot_from_fifths(f, fifth_range, dtype, label="<unknown>", context="pitch class"):
+    """
+    Compute a one-hot encoding at the fifth position, with error checking.
+
+    :param f: Fifth coordinate (int)
+    :param fifth_range: (low, high) inclusive range for fifths
+    :param dtype: Output array dtype
+    :param label: Label used in error messages, typically `str(self)`
+    :param context: String to describe the type (e.g., "pitch", "interval") in error messages
+    :return: numpy array with one-hot encoding
+    """
+    low, high = fifth_range
+    if f < low or f > high:
+        raise ValueError(f"The {context} {label} is outside the given fifths range {fifth_range}.")
+    out = np.zeros(high - low + 1, dtype=dtype)
+    out[f - low] = 1
+    return out
+
+
 @functools.total_ordering
 class Spelled(AbstractBase):
     """
@@ -526,17 +571,9 @@ class SpelledPitch(Spelled, AbstractSpelledPitch, AbstractPitch):
         :param dtype: dtype of the resulting array
         :return: a one-hot matrix (numpy array)
         """
-        fifth_low, fifth_high = fifth_range
-        octave_low, octave_high = octave_range
-        f = self.fifths()
-        o = self.octaves()
-        if f < fifth_low or f > fifth_high:
-            raise ValueError(f"The pitch {self} is outside the given fifth range {fifth_range}.")
-        if o < octave_low or o > octave_high:
-            raise ValueError(f"The pitch {self} is outside the given octave range {octave_range}.")
-        out = np.zeros((fifth_high - fifth_low + 1, octave_high - octave_low + 1), dtype=dtype)
-        out[f - fifth_low, o - octave_low] = 1
-        return out
+        return _spelled_onehot_from_fifths_octaves(
+            self.fifths(), self.octaves(), fifth_range, octave_range, dtype, label=str(self), context="pitch"
+        )
 
 
 @Spelled.link_interval_type()
@@ -746,28 +783,18 @@ class SpelledInterval(Spelled, AbstractSpelledInterval, AbstractInterval, Diaton
 
     def onehot(self, fifth_range, octave_range, dtype=int):
         """
-        Returns a one-hot encoding of the interval in fifths (first dimension)
-        and independent octaves (second dimension).
+        Returns a one-hot encoding of the pitch in fifths (first dimension) and external octaves (second dimension).
         The range of fifths and octaves is given by ``fifth_range`` and ``octave_range`` respectively,
-        where each is a tuple ``(lower, upper)``.
+        where each is a pair ``(lower, upper)``.
 
         :param fifth_range: the (inclusive) range of fifths (pair of integers)
         :param octave_range: the (inclusive) range of octaves (pair of integers)
         :param dtype: dtype of the resulting array
         :return: a one-hot matrix (numpy array)
         """
-        fifth_low, fifth_high = fifth_range
-        octave_low, octave_high = octave_range
-        f = self.fifths()
-        o = self.octaves()
-        if f < fifth_low or f > fifth_high:
-            raise ValueError(f"The interval {self} is outside the given fifth range {fifth_range}.")
-        if o < octave_low or o > octave_high:
-            raise ValueError(f"The interval {self} is outside the given octave range {octave_range}.")
-        out = np.zeros((fifth_high - fifth_low + 1, octave_high - octave_low + 1), dtype=dtype)
-        out[f - fifth_low, o - octave_low] = 1
-        return out
-
+        return _spelled_onehot_from_fifths_octaves(
+            self.fifths(), self.octaves(), fifth_range, octave_range, dtype, label=str(self), context="interval"
+        )
 
 @Spelled.link_pitch_class_type()
 class SpelledPitchClass(Spelled, AbstractSpelledPitch, AbstractPitch):
@@ -880,13 +907,7 @@ class SpelledPitchClass(Spelled, AbstractSpelledPitch, AbstractPitch):
         :param dtype: dtype of the resulting array
         :return: a one-hot vector (numpy array)
         """
-        low, high = fifth_range
-        f = self.fifths()
-        if f < low or f > high:
-            raise ValueError(f"The pitch class {self} is outside the given fifths range {fifth_range}.")
-        out = np.zeros(high - low + 1, dtype=dtype)
-        out[f - low] = 1
-        return out
+        return _spelled_onehot_from_fifths(self.fifths(), fifth_range, dtype, label=str(self), context="pitch class")
 
 
 @Spelled.link_interval_class_type()
@@ -1066,10 +1087,6 @@ class SpelledIntervalClass(Spelled, AbstractSpelledInterval, AbstractInterval, D
         :param dtype: dtype of the resulting array
         :return: a one-hot vector (numpy array)
         """
-        low, high = fifth_range
-        f = self.fifths()
-        if f < low or f > high:
-            raise ValueError(f"The pitch class {self} is outside the given fifths range {fifth_range}.")
-        out = np.zeros(high - low + 1, dtype=dtype)
-        out[f - low] = 1
-        return out
+        return _spelled_onehot_from_fifths(
+            self.fifths(), fifth_range, dtype, label=str(self), context="interval class"
+        )

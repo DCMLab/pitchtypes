@@ -5,6 +5,7 @@ from unittest import TestCase
 from pitchtypes import Enharmonic, EnharmonicPitch, EnharmonicInterval, EnharmonicPitchClass, EnharmonicIntervalClass
 
 
+# noinspection DuplicatedCode
 class TestEnharmonic(TestCase):
 
     def test_types(self):

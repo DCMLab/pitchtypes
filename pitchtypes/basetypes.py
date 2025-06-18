@@ -91,7 +91,10 @@ class AbstractBase:
 
             # create default functions
             def __init__(self, value, **kwargs):
-                super(sub_type, self).__init__(value=value, is_pitch=True, is_class=False, **kwargs)
+                kwargs["value"] = value
+                kwargs["is_pitch"] = True
+                kwargs["is_class"] = False
+                super(sub_type, self).__init__(**kwargs)
 
             def __add__(self, other):
                 if type(other) is self.Interval:
@@ -155,7 +158,10 @@ class AbstractBase:
 
             # create default functions
             def __init__(self, value, **kwargs):
-                super(sub_type, self).__init__(value=value, is_pitch=False, is_class=False, **kwargs)
+                kwargs["value"] = value
+                kwargs["is_pitch"] = False
+                kwargs["is_class"] = False
+                super(sub_type, self).__init__(**kwargs)
 
             def __add__(self, other):
                 if type(other) is self.Interval:
@@ -222,7 +228,10 @@ class AbstractBase:
 
             # create default functions
             def __init__(self, value, **kwargs):
-                super(sub_type, self).__init__(value=value, is_pitch=True, is_class=True, **kwargs)
+                kwargs["value"] = value
+                kwargs["is_pitch"] = True
+                kwargs["is_class"] = True
+                super(sub_type, self).__init__(**kwargs)
 
             def __add__(self, other):
                 if type(other) is self.IntervalClass:
@@ -281,7 +290,10 @@ class AbstractBase:
 
             # create default functions
             def __init__(self, value, **kwargs):
-                super(sub_type, self).__init__(value=value, is_pitch=False, is_class=True, **kwargs)
+                kwargs["value"] = value
+                kwargs["is_pitch"] = False
+                kwargs["is_class"] = True
+                super(sub_type, self).__init__(**kwargs)
 
             def __add__(self, other):
                 if type(other) is self.IntervalClass:
