@@ -145,7 +145,7 @@ Uses the same interface as the Spelled types.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.spelled_array.SpelledArray.fifths" title="pitchtypes.spelled_array.SpelledArray.fifths"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fifths</span></code></a>()</p></td>
 <td><p>Return the position of the interval on the line of fifths.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_onehot</span></code>()</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_onehot</span></code>(**kwargs)</p></td>
 <td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.spelled_array.SpelledArray.internal_octaves" title="pitchtypes.spelled_array.SpelledArray.internal_octaves"><code class="xref py py-obj docutils literal notranslate"><span class="pre">internal_octaves</span></code></a>()</p></td>
@@ -157,7 +157,7 @@ Uses the same interface as the Spelled types.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.spelled_array.SpelledArray.octaves" title="pitchtypes.spelled_array.SpelledArray.octaves"><code class="xref py py-obj docutils literal notranslate"><span class="pre">octaves</span></code></a>()</p></td>
 <td><p>For intervals, return the number of octaves the interval spans.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.spelled_array.SpelledArray.onehot" title="pitchtypes.spelled_array.SpelledArray.onehot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">onehot</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.spelled_array.SpelledArray.onehot" title="pitchtypes.spelled_array.SpelledArray.onehot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">onehot</span></code></a>(**kwargs)</p></td>
 <td><p>Return a one-hot encoded tensor representing the elements of the array.</p></td>
 </tr>
 </tbody>
@@ -466,7 +466,7 @@ For pitches, return the absolute octave of the pitch.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pitchtypes.spelled_array.SpelledArray.onehot">
-<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">onehot</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledArray.onehot" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">onehot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.spelled_array.SpelledArray.onehot" title="Link to this definition"></a></dt>
 <dd><p>Return a one-hot encoded tensor representing the elements of the array.
 Specialized versions of this method take ranges for their respective dimensions.</p>
 <dl class="field-list simple">

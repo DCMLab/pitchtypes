@@ -130,13 +130,13 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.basetypes.Interval.ic" title="pitchtypes.basetypes.Interval.ic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ic</span></code></a>()</p></td>
 <td><p>Return the interval class that corresponds to this interval.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.basetypes.Interval.octave" title="pitchtypes.basetypes.Interval.octave"><code class="xref py py-obj docutils literal notranslate"><span class="pre">octave</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.basetypes.Interval.octave" title="pitchtypes.basetypes.Interval.octave"><code class="xref py py-obj docutils literal notranslate"><span class="pre">octave</span></code></a>(**kwargs)</p></td>
 <td><p>Create the octave interval of this type.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pitchtypes.basetypes.Interval.to_class" title="pitchtypes.basetypes.Interval.to_class"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_class</span></code></a>()</p></td>
 <td><p>Alias for ic(), but also supported by pitch types.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.basetypes.Interval.unison" title="pitchtypes.basetypes.Interval.unison"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unison</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pitchtypes.basetypes.Interval.unison" title="pitchtypes.basetypes.Interval.unison"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unison</span></code></a>(**kwargs)</p></td>
 <td><p>Create the unison interval of this type.</p></td>
 </tr>
 </tbody>
@@ -244,7 +244,7 @@ If the interval is already an interval class, it is returned itself.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pitchtypes.basetypes.Interval.octave">
-<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">octave</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.basetypes.Interval.octave" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">octave</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.basetypes.Interval.octave" title="Link to this definition"></a></dt>
 <dd><p>Create the octave interval of this type.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -266,7 +266,7 @@ If the interval is already an interval class, it is returned itself.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pitchtypes.basetypes.Interval.unison">
-<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">unison</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.basetypes.Interval.unison" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">unison</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.basetypes.Interval.unison" title="Link to this definition"></a></dt>
 <dd><p>Create the unison interval of this type.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>

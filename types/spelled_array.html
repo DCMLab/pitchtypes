@@ -626,7 +626,7 @@ For pitches, return the accidentals (positive=sharps, negative=flats, 0=natural)
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pitchtypes.SpelledArray.onehot">
-<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">onehot</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledArray.onehot" title="Link to this definition"></a></dt>
+<em class="property"><span class="k"><span class="pre">abstractmethod</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">onehot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledArray.onehot" title="Link to this definition"></a></dt>
 <dd><p>Return a one-hot encoded tensor representing the elements of the array.
 Specialized versions of this method take ranges for their respective dimensions.</p>
 <dl class="field-list simple">
@@ -1097,7 +1097,7 @@ both as integers.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pitchtypes.SpelledPitchArray.from_independent">
 <em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_independent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fifths</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">octaves</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pitchtypes.SpelledPitchArray.from_independent" title="Link to this definition"></a></dt>
-<dd><p>Create a pitch array from fifths and indenpendent octaves.
+<dd><p>Create a pitch array from fifths and independent octaves.
 The fifths indicate the names of the pitches
 while the octaves indicate their octave numbers.</p>
 <dl class="field-list simple">
@@ -1133,7 +1133,7 @@ while the octaves indicate their octave numbers.</p>
 <dd><p>Create a pitch array from an array of pitches.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>intervals</strong> – an array-like of <code class="docutils literal notranslate"><span class="pre">SpelledPitch</span></code></p>
+<dd class="field-odd"><p><strong>pitches</strong> – an array-like of <code class="docutils literal notranslate"><span class="pre">SpelledPitch</span></code></p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>the corresponding pitch array</p>
@@ -1579,7 +1579,7 @@ for example <code class="docutils literal notranslate"><span class="pre">P4</spa
 <p>This method can be indirectly used through binary comparison operators
 (including <code class="docutils literal notranslate"><span class="pre">==</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code> etc.).
 To test the overall equality of two spelled arrays,
-use <code class="xref py py-meth docutils literal notranslate"><span class="pre">array_equal</span></code></p>
+use <a class="reference internal" href="#pitchtypes.SpelledIntervalClassArray.array_equal" title="pitchtypes.SpelledIntervalClassArray.array_equal"><code class="xref py py-meth docutils literal notranslate"><span class="pre">array_equal</span></code></a></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>other</strong> – another <code class="docutils literal notranslate"><span class="pre">SpelledIntervalClassArray</span></code> or <code class="docutils literal notranslate"><span class="pre">SpelledIntervalClass</span></code></p>
@@ -1798,7 +1798,7 @@ For pitches, return the integer that corresponds to the letter (C=0, D=1, …).<
 <dd><p>Create a pitch class array from an array of pitch classes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>intervals</strong> – an array-like of <code class="docutils literal notranslate"><span class="pre">SpelledPitchClass</span></code></p>
+<dd class="field-odd"><p><strong>pitches</strong> – an array-like of <code class="docutils literal notranslate"><span class="pre">SpelledPitchClass</span></code></p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>the corresponding pitch-class array</p>
