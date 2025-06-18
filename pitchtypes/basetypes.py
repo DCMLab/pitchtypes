@@ -1,8 +1,9 @@
 #  Copyright (c) 2020 Robert Lieck
+import abc
 from typing import Iterable, Union, Any, Callable, Optional
 
 import numpy as np
-import abc
+
 
 class AbstractBase:
     """
@@ -12,10 +13,9 @@ class AbstractBase:
     """
 
     @staticmethod
-    def set_func_attr(sub_type: Any,
-                      flags: Iterable[Union[bool,None]],
-                      names: Iterable[str],
-                      funcs: Iterable[Callable]):
+    def _set_func_attr(
+        sub_type: Any, flags: Iterable[Union[bool, None]], names: Iterable[str], funcs: Iterable[Callable]
+    ):
         """
         Add functions ``funcs`` as methods with ``names`` to class ``sub_type``, controlled by ``flags``.
         This is used by the decorators
@@ -26,53 +26,58 @@ class AbstractBase:
         :param flags: Iterable of flags that control whether a particular method is added or not:
          if `True`, add the method, even if it already exists (i.e. overwrite existing methods);
          if `False`, don't add the method, even if it does not exist;
-         if `None`, add the method if does not exist, otherwise do not add it
+         if `None`, add the method if it does not exist, otherwise do not add it
          (i.e. try to add but don't overwrite existing methods)
         :param names: name of the methods; if added, they will be accessible as via `*.name`
         :param funcs: callables (i.e. implementations of the methods)
-
-        :meta private:
         """
         for flag, name, func in zip(flags, names, funcs):
             if flag or flag is None and name not in vars(sub_type):
                 setattr(sub_type, name, func)
 
     @staticmethod
-    def name_check(cls: Any, sub_type: Any, suffix: str, skip_name_check: bool):
+    def _name_check(cls: Any, sub_type: Any, suffix: str, skip_name_check: bool):
         """
         Check if ``sub_type`` follows the standard naming convention. The `Pitch`, `Interval`, `PitchClass` and
-        `IntervalClass` sub-type of a `Basetype` should be called `BasetypePitch`, `BasetypeInterval`,
+        `IntervalClass` subtype of a `Basetype` should be called `BasetypePitch`, `BasetypeInterval`,
         `BasetypePitchClass` and `BasetypeIntervalClass`. This is used by the decorators
         :meth:`link_pitch_type`, :meth:`link_interval_type`,
         :meth:`link_pitch_class_type` and :meth:`link_interval_class_type`.
 
         :param cls: base type
-        :param sub_type: sub-type
+        :param sub_type: subtype
         :param suffix: expected suffix (`Pitch`, `Interval`, `PitchClass`, or `IntervalClass`)
         :param skip_name_check: skip the check and don't raise
         :raises TypeError: if `sub_type.__name__` does not match `cls.__name__ + suffix`
-
-        :meta private:
         """
         if not skip_name_check:
             got_name = sub_type.__name__
             expected_name = cls.__name__ + suffix
             if got_name != expected_name:
-                raise TypeError(f"Got class named {got_name}, but expected {expected_name}. "
-                                f"Use skip_name_check=True to suppress.")
+                raise TypeError(
+                    f"Got class named {got_name}, but expected {expected_name}. "
+                    f"Use skip_name_check=True to suppress."
+                )
 
     @classmethod
-    def link_pitch_type(cls,
-                        skip_name_check: bool = False,
-                        create_init: Optional[bool] = None,
-                        create_add: Optional[bool] = None,
-                        create_sub: Optional[bool] = None,
-                        create_to_class: Optional[bool] = None):
+    def link_pitch_type(
+        cls,
+        skip_name_check: bool = False,
+        create_init: Optional[bool] = None,
+        create_add: Optional[bool] = None,
+        create_sub: Optional[bool] = None,
+        create_to_class: Optional[bool] = None,
+    ):
         """
         A decorator to link a pitch type to its base type.
-
+        :param skip_name_check: skip the name check and don't raise
+        :param create_init: if True, create a default __init__ method
+        :param create_add: if True, create a default __add__ method
+        :param create_sub: if True, create a default __sub__ method
+        :param create_to_class: if True, create a default to_class method
         :meta private:
         """
+
         def decorator(sub_type):
             # link types
             cls.Pitch = sub_type
@@ -83,14 +88,14 @@ class AbstractBase:
                 super(sub_type, self).__init__(value=value, is_pitch=True, is_class=False, **kwargs)
 
             def __add__(self, other):
-                if type(other) == self.Interval:
+                if type(other) is self.Interval:
                     return self.Pitch(self.value + other.value)
                 return NotImplemented
 
             def __sub__(self, other):
-                if type(other) == self.Pitch:
+                if type(other) is self.Pitch:
                     return self.Interval(self.value - other.value)
-                elif type(other) == self.Interval:
+                elif type(other) is self.Interval:
                     return self.Pitch(self.value - other.value)
                 return NotImplemented
 
@@ -98,32 +103,45 @@ class AbstractBase:
                 return self.PitchClass(self.value)
 
             # set default functions
-            AbstractBase.set_func_attr(sub_type,
-                                       [create_init, create_add, create_sub, create_to_class],
-                                       ['__init__', '__add__', '__sub__', 'to_class'],
-                                       [__init__, __add__, __sub__, to_class])
+            AbstractBase._set_func_attr(
+                sub_type,
+                [create_init, create_add, create_sub, create_to_class],
+                ["__init__", "__add__", "__sub__", "to_class"],
+                [__init__, __add__, __sub__, to_class],
+            )
 
             # check name
-            AbstractBase.name_check(cls, sub_type, "Pitch", skip_name_check)
+            AbstractBase._name_check(cls, sub_type, "Pitch", skip_name_check)
 
             return sub_type
+
         return decorator
 
     @classmethod
-    def link_interval_type(cls,
-                           skip_name_check: bool = False,
-                           create_init: Optional[bool] = None,
-                           create_add: Optional[bool] = None,
-                           create_sub: Optional[bool] = None,
-                           create_mul: Optional[bool] = None,
-                           create_div: Optional[bool] = None,
-                           create_neg: Optional[bool] = None,
-                           create_to_class: Optional[bool] = None):
+    def link_interval_type(
+        cls,
+        skip_name_check: bool = False,
+        create_init: Optional[bool] = None,
+        create_add: Optional[bool] = None,
+        create_sub: Optional[bool] = None,
+        create_mul: Optional[bool] = None,
+        create_div: Optional[bool] = None,
+        create_neg: Optional[bool] = None,
+        create_to_class: Optional[bool] = None,
+    ):
         """
         A decorator to link an interval type to its base type.
-
+        :param skip_name_check: skip the name check and don't raise
+        :param create_init: if True, create a default __init__ method
+        :param create_add: if True, create a default __add__ method
+        :param create_sub: if True, create a default __sub__ method
+        :param create_mul: if True, create a default __mul__ method
+        :param create_div: if True, create a default __truediv__ method
+        :param create_neg: if True, create a default __neg__ method
+        :param create_to_class: if True, create a default to_class method
         :meta private:
         """
+
         def decorator(sub_type):
             # link types
             cls.Interval = sub_type
@@ -134,12 +152,12 @@ class AbstractBase:
                 super(sub_type, self).__init__(value=value, is_pitch=False, is_class=False, **kwargs)
 
             def __add__(self, other):
-                if type(other) == self.Interval:
+                if type(other) is self.Interval:
                     return self.Interval(self.value + other.value)
                 return NotImplemented
 
             def __sub__(self, other):
-                if type(other) == self.Interval:
+                if type(other) is self.Interval:
                     return self.Interval(self.value - other.value)
                 return NotImplemented
 
@@ -159,30 +177,38 @@ class AbstractBase:
                 return self.IntervalClass(self.value)
 
             # set default functions
-            AbstractBase.set_func_attr(
+            AbstractBase._set_func_attr(
                 sub_type,
                 [create_init, create_add, create_sub, create_mul, create_mul, create_div, create_neg, create_to_class],
-                ['__init__', '__add__', '__sub__', '__mul__', '__rmul__', '__truediv__', '__neg__', 'to_class'],
-                [__init__, __add__, __sub__, __mul__, __rmul__, __truediv__, __neg__, to_class]
+                ["__init__", "__add__", "__sub__", "__mul__", "__rmul__", "__truediv__", "__neg__", "to_class"],
+                [__init__, __add__, __sub__, __mul__, __rmul__, __truediv__, __neg__, to_class],
             )
 
             # perform name check
-            AbstractBase.name_check(cls, sub_type, "Interval", skip_name_check)
+            AbstractBase._name_check(cls, sub_type, "Interval", skip_name_check)
 
             return sub_type
+
         return decorator
 
     @classmethod
-    def link_pitch_class_type(cls,
-                              skip_name_check: bool = False,
-                              create_init: Optional[bool] = None,
-                              create_add: Optional[bool] = None,
-                              create_sub: Optional[bool] = None):
+    def link_pitch_class_type(
+        cls,
+        skip_name_check: bool = False,
+        create_init: Optional[bool] = None,
+        create_add: Optional[bool] = None,
+        create_sub: Optional[bool] = None,
+    ):
         """
         A decorator to link a pitch class type to its base type.
-
+        :param skip_name_check: skip the name check and don't raise
+        :param create_init: if True, create a default __init__ method
+        :param create_add: if True, create a default __add__ method
+        :param create_sub: if True, create a default __sub__ method
+        :return: a decorator that links the pitch class type to the base type
         :meta private:
         """
+
         def decorator(sub_type):
             # link types
             cls.PitchClass = sub_type
@@ -193,43 +219,55 @@ class AbstractBase:
                 super(sub_type, self).__init__(value=value, is_pitch=True, is_class=True, **kwargs)
 
             def __add__(self, other):
-                if type(other) == self.IntervalClass:
+                if type(other) is self.IntervalClass:
                     return self.PitchClass(self.value + other.value)
                 return NotImplemented
 
             def __sub__(self, other):
-                if type(other) == self.PitchClass:
+                if type(other) is self.PitchClass:
                     return self.IntervalClass(self.value - other.value)
-                elif type(other) == self.IntervalClass:
+                elif type(other) is self.IntervalClass:
                     return self.PitchClass(self.value - other.value)
                 return NotImplemented
 
             # set default functions
-            AbstractBase.set_func_attr(sub_type,
-                                       [create_init, create_add, create_sub],
-                                       ['__init__', '__add__', '__sub__'],
-                                       [__init__, __add__, __sub__])
+            AbstractBase._set_func_attr(
+                sub_type,
+                [create_init, create_add, create_sub],
+                ["__init__", "__add__", "__sub__"],
+                [__init__, __add__, __sub__],
+            )
 
             # check name
-            AbstractBase.name_check(cls, sub_type, "PitchClass", skip_name_check)
+            AbstractBase._name_check(cls, sub_type, "PitchClass", skip_name_check)
 
             return sub_type
+
         return decorator
 
     @classmethod
-    def link_interval_class_type(cls,
-                                 skip_name_check: bool = False,
-                                 create_init: Optional[bool] = None,
-                                 create_add: Optional[bool] = None,
-                                 create_sub: Optional[bool] = None,
-                                 create_mul: Optional[bool] = None,
-                                 create_div: Optional[bool] = None,
-                                 create_neg: Optional[bool] = None):
+    def link_interval_class_type(
+        cls,
+        skip_name_check: bool = False,
+        create_init: Optional[bool] = None,
+        create_add: Optional[bool] = None,
+        create_sub: Optional[bool] = None,
+        create_mul: Optional[bool] = None,
+        create_div: Optional[bool] = None,
+        create_neg: Optional[bool] = None,
+    ):
         """
         A decorator to link an interval class type to its base type.
-
+        :param skip_name_check: skip the name check and don't raise
+        :param create_init: if True, create a default __init__ method
+        :param create_add: if True, create a default __add__ method
+        :param create_sub: if True, create a default __sub__ method
+        :param create_mul: if True, create a default __mul__ method
+        :param create_div: if True, create a default __truediv__ method
+        :param create_neg: if True, create a default __neg__ method
         :meta private:
         """
+
         def decorator(sub_type):
             # link types
             cls.IntervalClass = sub_type
@@ -240,12 +278,12 @@ class AbstractBase:
                 super(sub_type, self).__init__(value=value, is_pitch=False, is_class=True, **kwargs)
 
             def __add__(self, other):
-                if type(other) == self.IntervalClass:
+                if type(other) is self.IntervalClass:
                     return self.IntervalClass(self.value + other.value)
                 return NotImplemented
 
             def __sub__(self, other):
-                if type(other) == self.IntervalClass:
+                if type(other) is self.IntervalClass:
                     return self.IntervalClass(self.value - other.value)
                 return NotImplemented
 
@@ -262,17 +300,18 @@ class AbstractBase:
                 return -1 * self
 
             # set default functions
-            AbstractBase.set_func_attr(
+            AbstractBase._set_func_attr(
                 sub_type,
                 [create_init, create_add, create_sub, create_mul, create_mul, create_div, create_neg],
-                ['__init__', '__add__', '__sub__', '__mul__', '__rmul__', '__truediv__', '__neg__'],
-                [__init__, __add__, __sub__, __mul__, __rmul__, __truediv__, __neg__]
+                ["__init__", "__add__", "__sub__", "__mul__", "__rmul__", "__truediv__", "__neg__"],
+                [__init__, __add__, __sub__, __mul__, __rmul__, __truediv__, __neg__],
             )
 
             # perform name check
-            AbstractBase.name_check(cls, sub_type, "IntervalClass", skip_name_check)
+            AbstractBase._name_check(cls, sub_type, "IntervalClass", skip_name_check)
 
             return sub_type
+
         return decorator
 
     @staticmethod
@@ -286,29 +325,34 @@ class AbstractBase:
             # Pitch
             class Pitch(cls):
                 pass
+
             Pitch.__name__ = cls.__name__ + "Pitch"
             cls.link_pitch_type()(Pitch)
 
             # Interval
             class Interval(cls):
                 pass
+
             Interval.__name__ = cls.__name__ + "Interval"
             cls.link_interval_type()(Interval)
 
             # PitchClass
             class PitchClass(cls):
                 pass
+
             PitchClass.__name__ = cls.__name__ + "PitchClass"
             cls.link_pitch_class_type()(PitchClass)
 
             # IntervalClass
             class IntervalClass(cls):
                 pass
+
             IntervalClass.__name__ = cls.__name__ + "IntervalClass"
             cls.link_interval_class_type()(IntervalClass)
 
-            # return the class (which now has the linked sub-types)
+            # return the class (which now has the linked subtypes)
             return cls
+
         return decorator
 
     def __init__(self, value, is_pitch, is_class, **kwargs):
@@ -319,7 +363,7 @@ class AbstractBase:
         # __setattr__ will check for that and raise an error
         # to set __isfrozen__ for the first time, we need to bypass __setattr__ via super
         # otherwise it would try to check on the not (yet) existing attribute
-        super().__setattr__('__isfrozen__', False)
+        super().__setattr__("__isfrozen__", False)
         # we can now set attributes normally (better than dynamically setting, because IDE's can autocomplete)
         self.is_pitch = is_pitch
         self.is_interval = not is_pitch
@@ -338,7 +382,7 @@ class AbstractBase:
         return f"{self.__class__.__name__}({self.value})"
 
     def __eq__(self, other):
-        if type(other) == type(self):
+        if type(other) is type(self):
             assert self.is_pitch == other.is_pitch
             assert self.is_class == other.is_class
             if isinstance(self.value, np.ndarray) or isinstance(other.value, np.ndarray):
@@ -356,6 +400,7 @@ class AbstractBase:
 
     def convert_to(self, other_type):
         return Converters.convert(self, other_type)
+
 
 class Interval(abc.ABC):
     """
@@ -403,20 +448,20 @@ class Interval(abc.ABC):
         Returns the difference of two intervals.
         """
         raise NotImplementedError
-    
+
     # @abc.abstractmethod
     def __mul__(self, other):
         """
         Returns an integer multiple of the interval.
         """
         raise NotImplementedError
-    
+
     def __rmul__(self, other):
         """
         Returns an integer multiple of the interval.
         """
         return self.__mul__(other)
-    
+
     # @abc.abstractmethod
     def __neg__(self):
         """
@@ -431,9 +476,8 @@ class Interval(abc.ABC):
         """
         raise NotImplementedError
 
-    
     # other interface methods
-    
+
     @abc.abstractmethod
     def direction(self):
         """
@@ -452,7 +496,7 @@ class Interval(abc.ABC):
         :return: the absolute interval
         """
         return abs(self)
-    
+
     @abc.abstractmethod
     def ic(self):
         """
@@ -546,7 +590,7 @@ class Pitch(abc.ABC):
         if isinstance(other, Pitch):
             try:
                 return self.interval_from(other)
-            except:
+            except TypeError | NotImplementedError:
                 return NotImplemented
         elif isinstance(other, Interval):
             return self + (-other)
@@ -572,8 +616,8 @@ class Pitch(abc.ABC):
         :param other: another pitch
         :return: the interval from self to other
         """
-        return - self.interval_from(other)
-    
+        return -self.interval_from(other)
+
     @abc.abstractmethod
     def pc(self):
         """
@@ -604,7 +648,6 @@ class Pitch(abc.ABC):
 
 
 class Converters:
-
     # store converters for classes derived from Pitch;
     # it's a dict of dicts, so that _converters[A][B] returns is a list of functions that, when executed
     # successively, converts A to B
@@ -613,7 +656,7 @@ class Converters:
     @staticmethod
     def convert(obj, to_type):
         # skip self-conversion
-        if type(obj) == to_type:
+        if type(obj) is to_type:
             ret = obj
         else:
             # use conversion pipeline starting with the object itself
@@ -635,8 +678,9 @@ class Converters:
             try:
                 return all_converters[to_type]
             except KeyError:
-                raise NotImplementedError(f"Type '{from_type}' does not have any converter registered for type "
-                                          f"'{to_type}'")
+                raise NotImplementedError(
+                    f"Type '{from_type}' does not have any converter registered for type " f"'{to_type}'"
+                )
         else:
             try:
                 return Converters._converters[from_type]
@@ -644,20 +688,25 @@ class Converters:
                 raise NotImplementedError(f"There are no converters registered for type '{from_type}'")
 
     @staticmethod
-    def register_converter(from_type, to_type, conv_func,
-                           overwrite_explicit_converters=False,
-                           overwrite_implicit_converters=False,
-                           create_implicit_converters=False):
+    def register_converter(
+        from_type,
+        to_type,
+        conv_func,
+        overwrite_explicit_converters=False,
+        overwrite_implicit_converters=False,
+        create_implicit_converters=False,
+    ):
         """
         Register a converter from from_type to other type. The converter function should be function taking as its
-        single argument an from_type object and returning an other_type object.
+        single argument a from_type object and returning an other_type object.
+        :param from_type: type derived from AbstractBase, which the converter function converts from
         :param to_type: other type derived from AbstractBase, which the converter function converts to
         :param conv_func: converter function from from_type to other_type
         :param overwrite_explicit_converters: can be True, False, or None (default); if True and there exists an
         explicit converter (i.e. the list of converter functions is of length 1), replace it by this converter function;
         if False raise a ValueError if an explicit converter exists
-        :param overwrite_implicit_converters: if there exists an implicit converter (i.e. the list of converter functions
-        is of length greater than 1) replace it by this converter function
+        :param overwrite_implicit_converters: if there exists an implicit converter
+        (i.e. the list of converter functions is of length greater than 1) replace it by this converter function
         :param create_implicit_converters: if there is an (explicit or implicit) converter from type X to type
         from_type, add an implicit converter from type X to other_type by extending the list of converter functions from
         X to from_type by this converter function; if there already exists an (explicit or implicit) converter from X to
@@ -670,7 +719,6 @@ class Converters:
         if from_type not in Converters._converters:
             Converters._converters[from_type] = {}
         # get existing converters from from_type to to_type and decide whether to set new converter
-        set_new_converter = False
         try:
             converter = Converters.get_converter(from_type, to_type)
         except NotImplementedError:
@@ -683,15 +731,17 @@ class Converters:
                 if overwrite_explicit_converters:
                     set_new_converter = True
                 else:
-                    raise ValueError("An explicit converter already exists. Set overwrite_explicit_converters=True to "
-                                     "overwrite.")
+                    raise ValueError(
+                        "An explicit converter already exists. Set overwrite_explicit_converters=True to " "overwrite."
+                    )
             else:
                 # implicit converter
                 if overwrite_implicit_converters:
                     set_new_converter = True
                 else:
-                    raise ValueError("An implicit converter already exists. Set overwrite_implicit_converters=True to "
-                                     "overwrite.")
+                    raise ValueError(
+                        "An implicit converter already exists. Set overwrite_implicit_converters=True to " "overwrite."
+                    )
         # set the new converter
         if set_new_converter:
             Converters._converters[from_type][to_type] = [conv_func]
@@ -710,9 +760,9 @@ class Converters:
                         if another_to_type not in converters:
                             converters[another_to_type] = [conv_func] + converter_pipeline
                     # try to append this converter (but don't add implicit self-converters)
-                    # another_from_type --> to_type := (another_from_type --> another_to_type) + ( from_type --> to_type)
+                    # another_from_type --> to_type := (another_from_type --> another_to_type) + (from_type --> to_type)
                     if another_to_type == from_type and another_from_type != to_type:
-                        # already initialised and we have the existing converters another_from_type --> ???
+                        # already initialised, and we have the existing converters another_from_type --> ???
                         # add the extended converter if one does not exist
                         if to_type not in other_converters:
                             new_converters.append((to_type, converter_pipeline + [conv_func]))

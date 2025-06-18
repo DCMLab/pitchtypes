@@ -1,17 +1,18 @@
 #  Copyright (c) 2021 Robert Lieck
 
 import numbers
+from typing import SupportsInt
 
 from pitchtypes.basetypes import AbstractBase
-from pitchtypes.spelled import Spelled
 from pitchtypes.logfreq import LogFreq
+from pitchtypes.spelled import Spelled
 
 
 class Enharmonic(AbstractBase):
 
     # how should Pitch and PitchClass types be printed
     _print_as_int = False
-    _print_flat_sharp = 'sharp'
+    _print_flat_sharp = "sharp"
 
     @classmethod
     def print_options(cls, as_int=None, flat_sharp=None):
@@ -21,14 +22,16 @@ class Enharmonic(AbstractBase):
         if as_int is not None:
             cls._print_as_int = as_int
         if flat_sharp is not None:
-            if flat_sharp not in ['sharp', 'flat']:
+            if flat_sharp not in ["sharp", "flat"]:
                 raise ValueError("'flat_sharp' has to be one of ['sharp', 'flat']")
             else:
                 cls._print_flat_sharp = flat_sharp
         if as_int is None and flat_sharp is None:
-            print(f"print options in {cls.__name__}:\n"
-                  f"    as_int: {cls._print_as_int}\n"
-                  f"    flat_sharp: {cls._print_flat_sharp}")
+            print(
+                f"print options in {cls.__name__}:\n"
+                f"    as_int: {cls._print_as_int}\n"
+                f"    flat_sharp: {cls._print_flat_sharp}"
+            )
 
     @staticmethod
     def pitch_class_name_from_midi(midi_pitch, flat_sharp):
@@ -59,7 +62,7 @@ class Enharmonic(AbstractBase):
                     value = Spelled.IntervalClass(value=value).convert_to(EnharmonicIntervalClass).value
                 else:
                     value = Spelled.Interval(value=value).convert_to(EnharmonicInterval).value
-        elif isinstance(value, numbers.Number):
+        elif isinstance(value, SupportsInt):
             int_value = int(value)
             if int_value != value:
                 raise ValueError(f"Expected integer pitch value but got {value}")
@@ -69,7 +72,7 @@ class Enharmonic(AbstractBase):
         # hand on initialisation to other base classes
         super().__init__(value=value, is_pitch=is_pitch, is_class=is_class, **kwargs)
 
-    def convert_to_logfreq(self):
+    def convert_to_log_freq(self):
         raise NotImplementedError
 
     def __int__(self):
@@ -109,7 +112,7 @@ class EnharmonicPitch(Enharmonic):
     def freq(self):
         return 2 ** ((self.value - 69) / 12) * 440
 
-    def convert_to_logfreq(self):
+    def convert_to_log_freq(self):
         return LogFreq.Pitch(self.freq(), is_freq=True)
 
     @property
@@ -129,7 +132,7 @@ class EnharmonicInterval(Enharmonic):
     def octaves(self):
         return self.value // 12
 
-    def convert_to_logfreq(self):
+    def convert_to_log_freq(self):
         return LogFreq.Interval(2 ** (self.value / 12), is_ratio=True)
 
 
@@ -145,7 +148,7 @@ class EnharmonicPitchClass(Enharmonic):
             return str(self.value)
         return self.pitch_class_name_from_midi(self.value, flat_sharp=flat_sharp)
 
-    def convert_to_logfreq(self):
+    def convert_to_log_freq(self):
         return LogFreq.PitchClass(2 ** ((self.value - 69) / 12) * 440, is_freq=True)
 
     def pc(self):
@@ -162,5 +165,5 @@ class EnharmonicIntervalClass(Enharmonic):
         sign = "-" if self.value < 0 else ""
         return sign + str(abs(self.value))
 
-    def convert_to_logfreq(self):
+    def convert_to_log_freq(self):
         return LogFreq.IntervalClass(2 ** (self.value / 12), is_ratio=True)

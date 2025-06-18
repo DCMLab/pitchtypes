@@ -35,7 +35,7 @@ class HarmonicInterval(Harmonic):
                          is_class=False)
 
     def __repr__(self):
-        return f"{self.__class__.__name__}({list(self.value)})"
+        return f"{self.__class__.__name__}({[int(v) for v in self.value]})"
 
     def to_class(self):
         return self.IntervalClass(exponents=self.value[1:].copy())
@@ -49,4 +49,4 @@ class HarmonicIntervalClass(Harmonic):
                          is_class=True)
 
     def __repr__(self):
-        return f"{self.__class__.__name__}({[None] + list(self.value)})"
+        return f"{self.__class__.__name__}({[None] + [int(v) for v in self.value]})"

@@ -1,12 +1,15 @@
 #  Copyright (c) 2022 Christoph Finkensiep
 
 import abc
-import numbers
-import numpy as np
 import copy
+import numbers
+
+import numpy as np
 
 from pitchtypes.basetypes import Pitch, Interval, Diatonic, Chromatic
-from pitchtypes.spelled import Spelled, SpelledInterval, SpelledIntervalClass, SpelledPitch, SpelledPitchClass
+from pitchtypes.spelled import Spelled, SpelledInterval, SpelledIntervalClass, \
+    SpelledPitch, SpelledPitchClass
+
 
 class SpelledArray(abc.ABC):
     """
@@ -16,14 +19,14 @@ class SpelledArray(abc.ABC):
 
     # constructors
 
-    @abc.abstractstaticmethod
+    @staticmethod
     def from_onehot():
         raise NotImplementedError
 
     # printing
 
     _print_name = "SpelledArray"
-    
+
     def __repr__(self):
         # For vectorized types, name() returns an array of names,
         # so we convert it to a string here:
@@ -32,7 +35,7 @@ class SpelledArray(abc.ABC):
     def __str__(self):
         # with np.printoptions(formatter={'all': lambda x: str(x)}):
         #     return f"{self._print_name}{self.name()}"
-        return np.array2string(self.name(), formatter={'all': lambda x: str(x)})
+        return np.array2string(self.name(), formatter={"all": lambda x: str(x)})
 
     # mandatory array methods
 
@@ -120,7 +123,7 @@ class SpelledArray(abc.ABC):
             return False
 
     # element-wise comparison
-    
+
     @abc.abstractmethod
     def compare(self, other):
         """
@@ -143,7 +146,7 @@ class SpelledArray(abc.ABC):
         :return: an array of ``-1`` / ``0`` / ``1`` (integer)
         """
         raise NotImplementedError
-    
+
     def __lt__(self, other):
         """
         Element-wise ``<`` between two spelled arrays.
@@ -154,7 +157,7 @@ class SpelledArray(abc.ABC):
         try:
             return self.compare(other) == -1
         except TypeError:
-           return NotImplemented
+            return NotImplemented
 
     def __le__(self, other):
         """
@@ -166,7 +169,7 @@ class SpelledArray(abc.ABC):
         try:
             return self.compare(other) != 1
         except TypeError:
-           return NotImplemented
+            return NotImplemented
 
     def __gt__(self, other):
         """
@@ -178,7 +181,7 @@ class SpelledArray(abc.ABC):
         try:
             return self.compare(other) == 1
         except TypeError:
-           return NotImplemented
+            return NotImplemented
 
     def __ge__(self, other):
         """
@@ -190,7 +193,7 @@ class SpelledArray(abc.ABC):
         try:
             return self.compare(other) != -1
         except TypeError:
-           return NotImplemented
+            return NotImplemented
 
     def __eq__(self, other):
         """
@@ -202,7 +205,7 @@ class SpelledArray(abc.ABC):
         try:
             return self.compare(other) == 0
         except TypeError:
-           return NotImplemented
+            return NotImplemented
 
     def __ne__(self, other):
         """
@@ -214,7 +217,7 @@ class SpelledArray(abc.ABC):
         try:
             return self.compare(other) != 0
         except TypeError:
-           return NotImplemented
+            return NotImplemented
 
     # spelled interface
 
@@ -236,7 +239,7 @@ class SpelledArray(abc.ABC):
         :return: an array of fifths (integers)
         """
         raise NotImplementedError
-    
+
     @abc.abstractmethod
     def octaves(self):
         """
@@ -273,8 +276,7 @@ class SpelledArray(abc.ABC):
     @abc.abstractmethod
     def alteration(self):
         """
-        Return the number of semitones by which the interval is altered
-        from its the perfect or major variant.
+        Return the number of semitones by which the interval is altered from its perfect or major variant.
         Positive alteration always indicates augmentation,
         negative alteration indicates diminution (minor or smaller) of the interval's magnitude.
         For interval classes, alteration refers to the upward version of the interval
@@ -295,10 +297,12 @@ class SpelledArray(abc.ABC):
         """
         raise NotImplementedError
 
+
 class AbstractSpelledArrayInterval(abc.ABC):
     """
     The interface for spelled interval array types.
     """
+
     @abc.abstractmethod
     def generic(self):
         """
@@ -320,19 +324,21 @@ class AbstractSpelledArrayInterval(abc.ABC):
         """
         raise NotImplementedError
 
+
 class AbstractSpelledArrayPitch(abc.ABC):
     """
     The interface for spelled pitch array types.
     """
+
     @abc.abstractmethod
-    def letter(self):        
+    def letter(self):
         """
         Returns the letter associated with the pitch (without accidentals).
 
         :return: an array of pitch letters (single-character strings)
         """
         raise NotImplementedError
-        
+
 
 class SpelledIntervalArray(SpelledArray, AbstractSpelledArrayInterval, Interval, Diatonic, Chromatic):
     """
@@ -340,9 +346,9 @@ class SpelledIntervalArray(SpelledArray, AbstractSpelledArrayInterval, Interval,
     """
 
     _print_name = "asi"
-    
+
     def __init__(self, fifths, octaves):
-        """        
+        """
         Takes two numpy arrays,
         one for fifths and one for internal/dependent octaves,
         both as integers.
@@ -351,7 +357,10 @@ class SpelledIntervalArray(SpelledArray, AbstractSpelledArrayInterval, Interval,
         :param octaves: the internal octaves of each interval (numpy array of integers)
         """
         if fifths.shape != octaves.shape:
-            raise ValueError(f"Cannot create SpelledIntervalArray from arrays of different sizes ({fifths.shape} and {octaves.shape}).")
+            raise ValueError(
+                f"Cannot create SpelledIntervalArray from arrays of different sizes "
+                f"({fifths.shape} and {octaves.shape})."
+            )
         self._fifths = fifths
         self._octaves = octaves
 
@@ -374,13 +383,15 @@ class SpelledIntervalArray(SpelledArray, AbstractSpelledArrayInterval, Interval,
         :param strings: an array-like of interval notation strings
         :return: the corresponding interval array
         """
+
         def parse_interval(string):
             sign, octave, fifth = Spelled.parse_interval(string)
             if octave is None:
                 raise ValueError(f"Missing octave specifier in interval '{string}'.")
             return sign, octave, fifth
-        sign, octaves, fifths = np.vectorize(parse_interval, otypes=[np.int_, np.int_, np.int_])(strings)
-        return SpelledIntervalArray(fifths * sign, (octaves - (fifths * 4) // 7) * sign)
+
+        signs, octaves, fifths = np.vectorize(parse_interval, otypes=[np.int_, np.int_, np.int_])(strings)
+        return SpelledIntervalArray(fifths * signs, (octaves - (fifths * 4) // 7) * signs)
 
     @staticmethod
     def from_array(intervals):
@@ -390,8 +401,10 @@ class SpelledIntervalArray(SpelledArray, AbstractSpelledArrayInterval, Interval,
         :param intervals: an array-like of ``SpelledInterval``
         :return: the corresponding interval array
         """
+
         def from_interval(interval):
             return interval.fifths(), interval.internal_octaves()
+
         fifths, octaves = np.vectorize(from_interval, otypes=[np.int_, np.int_])(intervals)
         return SpelledIntervalArray(fifths, octaves)
 
@@ -408,11 +421,11 @@ class SpelledIntervalArray(SpelledArray, AbstractSpelledArrayInterval, Interval,
         :param octave_low: the lowest octave expressible in the one-hot tensor (integer)
         :return: the corresponding interval array
         """
-        if (onehot.sum((-2,-1)) != 1).any():
+        if (onehot.sum((-2, -1)) != 1).any():
             raise ValueError(f"{onehot} is not a one-hot tensor.")
-        
-        ones = np.where(onehot==1)
-        indices = ones[:-2] # first n-2 dimensions are indices
+
+        ones = np.where(onehot == 1)
+        indices = ones[:-2]  # first n-2 dimensions are indices
         fifths_values = ones[-2] + fifth_low
         octs_values = ones[-1] + octave_low
 
@@ -430,7 +443,7 @@ class SpelledIntervalArray(SpelledArray, AbstractSpelledArrayInterval, Interval,
 
     def __deepcopy__(self, memo):
         return SpelledIntervalArray(copy.deepcopy(self.fifths(), memo), copy.deepcopy(self.internal_octaves(), memo))
-    
+
     def __getitem__(self, index):
         f = self._fifths[index]
         o = self._octaves[index]
@@ -448,8 +461,7 @@ class SpelledIntervalArray(SpelledArray, AbstractSpelledArrayInterval, Interval,
 
     def __contains__(self, item):
         if isinstance(item, SpelledInterval):
-            return ((self.fifths() == item.fifths()) & \
-                    (self.internal_octaves() == item.internal_octaves())).any()
+            return ((self.fifths() == item.fifths()) & (self.internal_octaves() == item.internal_octaves())).any()
         else:
             return False
 
@@ -468,10 +480,10 @@ class SpelledIntervalArray(SpelledArray, AbstractSpelledArrayInterval, Interval,
                 return SpelledInterval.from_fifths_and_octaves(f, o)
             else:
                 return SpelledIntervalArray(f, o)
-        
+
     def __iter__(self):
         return self.SpelledIntervalArrayIter(self)
-        
+
     # interval interface
 
     @classmethod
@@ -482,7 +494,7 @@ class SpelledIntervalArray(SpelledArray, AbstractSpelledArrayInterval, Interval,
         :param shape: the shape of the resulting array (tuple of integers)
         :return: a ``SpelledIntervalArray`` of shape ``shape`` filled with P1:0
         """
-        return cls(np.full(shape, 0, dtype=np.int_),np.full(shape, 0, dtype=np.int_))
+        return cls(np.full(shape, 0, dtype=np.int_), np.full(shape, 0, dtype=np.int_))
 
     @classmethod
     def octave(cls, shape):
@@ -492,7 +504,7 @@ class SpelledIntervalArray(SpelledArray, AbstractSpelledArrayInterval, Interval,
         :param shape: the shape of the resulting array (tuple of integers)
         :return: a ``SpelledIntervalArray`` of shape ``shape`` filled with P1:0
         """
-        return cls(np.full(shape, 0, dtype=np.int_),np.full(shape, 1, dtype=np.int_))
+        return cls(np.full(shape, 0, dtype=np.int_), np.full(shape, 1, dtype=np.int_))
 
     @classmethod
     def chromatic_semitone(cls, shape):
@@ -505,43 +517,46 @@ class SpelledIntervalArray(SpelledArray, AbstractSpelledArrayInterval, Interval,
         return SpelledIntervalArray(np.full(shape, 7, dtype=np.int_), np.full(shape, -4, dtype=np.int_))
 
     def __add__(self, other):
-        if type(other) == SpelledInterval or type(other) == SpelledIntervalArray:
-            return SpelledIntervalArray(self.fifths() + other.fifths(),
-                                        self.internal_octaves() + other.internal_octaves())
+        if type(other) is SpelledInterval or type(other) is SpelledIntervalArray:
+            return SpelledIntervalArray(
+                self.fifths() + other.fifths(), self.internal_octaves() + other.internal_octaves()
+            )
         else:
             return NotImplemented
 
     def __sub__(self, other):
-        if type(other) == SpelledInterval or type(other) == SpelledIntervalArray:
-            return SpelledIntervalArray(self.fifths() - other.fifths(),
-                                        self.internal_octaves() - other.internal_octaves())
+        if type(other) is SpelledInterval or type(other) is SpelledIntervalArray:
+            return SpelledIntervalArray(
+                self.fifths() - other.fifths(), self.internal_octaves() - other.internal_octaves()
+            )
         else:
             return NotImplemented
 
     def __mul__(self, other):
-        if isinstance(other, numbers.Integral) or\
-           (hasattr(other, 'dtype') and issubclass(other.dtype.type, numbers.Integral)):
+        if isinstance(other, numbers.Integral) or (
+            hasattr(other, "dtype") and issubclass(other.dtype.type, numbers.Integral)
+        ):
             return SpelledIntervalArray(self.fifths() * other, self.internal_octaves() * other)
         else:
             return NotImplemented
-    
+
     def __neg__(self):
         return SpelledIntervalArray(-self.fifths(), -self.internal_octaves())
 
     def __abs__(self):
         downs = self.direction() < 0
         abs_fifths = self.fifths().copy()
-        abs_octs = self.internal_octaves().copy()
+        abs_octaves = self.internal_octaves().copy()
         # manually invert the intervals that point downwards
         abs_fifths[downs] = -abs_fifths[downs]
-        abs_octs[downs] = -abs_octs[downs]
-        return SpelledIntervalArray(abs_fifths, abs_octs)
+        abs_octaves[downs] = -abs_octaves[downs]
+        return SpelledIntervalArray(abs_fifths, abs_octaves)
 
     def direction(self):
         """
         Returns the direction of the interval (1=up / 0=neutral / -1=down).
         The perfect unisons (``P1:0``) is considered neutral.
-        
+
         :return: an array of ``-1`` / ``0`` / ``1`` (integer)
         """
         dia = np.sign(self.diatonic_steps())
@@ -554,7 +569,7 @@ class SpelledIntervalArray(SpelledArray, AbstractSpelledArrayInterval, Interval,
 
     def embed(self):
         return self
-    
+
     def is_step(self):
         return abs(self.diatonic_steps()) <= 1
 
@@ -566,6 +581,7 @@ class SpelledIntervalArray(SpelledArray, AbstractSpelledArrayInterval, Interval,
                 return "-" + Spelled.interval_class_from_fifths(-fifths) + ":" + str(octaves)
             else:
                 return Spelled.interval_class_from_fifths(fifths) + ":" + str(octaves)
+
         return np.vectorize(interval_name, otypes=[np.str_])(self.fifths(), abs(self).octaves(), self.direction())
 
     def compare(self, other):
@@ -646,10 +662,11 @@ class SpelledIntervalArray(SpelledArray, AbstractSpelledArrayInterval, Interval,
         indices = tuple(np.indices(inner_shape)) + (f, o)
 
         # initialize one-hot tensor with 0s
-        out = np.zeros(inner_shape + (fhigh-flow+1, ohigh-olow+1), dtype=dtype)
+        out = np.zeros(inner_shape + (fhigh - flow + 1, ohigh - olow + 1), dtype=dtype)
         # set all elements picked by the indices to 1
         out[indices] = 1
         return out
+
 
 class SpelledIntervalClassArray(SpelledArray, AbstractSpelledArrayInterval, Interval, Diatonic, Chromatic):
     """
@@ -657,7 +674,7 @@ class SpelledIntervalClassArray(SpelledArray, AbstractSpelledArrayInterval, Inte
     """
 
     _print_name = "asic"
-    
+
     def __init__(self, fifths):
         """
         Takes a numpy array of fifths as integers.
@@ -674,11 +691,13 @@ class SpelledIntervalClassArray(SpelledArray, AbstractSpelledArrayInterval, Inte
         :param strings: an array-like of interval-class notation strings
         :return: the corresponding interval-class array
         """
+
         def parse_ic(string):
             sign, octave, fifth = Spelled.parse_interval(string)
             if octave is not None:
                 raise ValueError(f"Interval classes cannot have octave specifiers ({string}).")
             return sign, fifth
+
         sign, fifths = np.vectorize(parse_ic, otypes=[np.int_, np.int_])(strings)
         return SpelledIntervalClassArray(fifths * sign)
 
@@ -706,9 +725,9 @@ class SpelledIntervalClassArray(SpelledArray, AbstractSpelledArrayInterval, Inte
         """
         if (onehot.sum(-1) != 1).any():
             raise ValueError(f"{onehot} is not a one-hot tensor.")
-        
-        ones = np.where(onehot==1)
-        indices = ones[:-1] # first n-1 dimensions are indices
+
+        ones = np.where(onehot == 1)
+        indices = ones[:-1]  # first n-1 dimensions are indices
         fifths_values = ones[-1] + fifth_low
 
         new_shape = onehot.shape[:-1]
@@ -723,7 +742,7 @@ class SpelledIntervalClassArray(SpelledArray, AbstractSpelledArrayInterval, Inte
 
     def __deepcopy__(self, memo):
         return SpelledIntervalClassArray(copy.deepcopy(self.fifths(), memo))
-    
+
     def __getitem__(self, index):
         f = self._fifths[index]
         if isinstance(f, numbers.Integral):
@@ -745,21 +764,21 @@ class SpelledIntervalClassArray(SpelledArray, AbstractSpelledArrayInterval, Inte
 
     def __len__(self):
         return len(self.fifths())
-        
+
     class SpelledIntervalClassArrayIter:
         def __init__(self, array):
             self._fifths_iter = array.fifths().__iter__()
-            
+
         def __next__(self):
             f = self._fifths_iter.__next__()
             if isinstance(f, numbers.Integral):
                 return SpelledIntervalClass.from_fifths(f)
             else:
                 return SpelledIntervalClassArray(f)
-        
+
     def __iter__(self):
         return self.SpelledIntervalClassArrayIter(self)
-        
+
     # interval interface
 
     @classmethod
@@ -793,23 +812,24 @@ class SpelledIntervalClassArray(SpelledArray, AbstractSpelledArrayInterval, Inte
         return cls(np.full(shape, 7, dtype=np.int_))
 
     def __add__(self, other):
-        if type(other) == SpelledIntervalClass or type(other) == SpelledIntervalClassArray:
+        if type(other) is SpelledIntervalClass or type(other) is SpelledIntervalClassArray:
             return SpelledIntervalClassArray(self.fifths() + other.fifths())
         else:
             return NotImplemented
 
     def __sub__(self, other):
-        if type(other) == SpelledIntervalClass or type(other) == SpelledIntervalClassArray:
+        if type(other) is SpelledIntervalClass or type(other) is SpelledIntervalClassArray:
             return SpelledIntervalClassArray(self.fifths() - other.fifths())
         else:
             return NotImplemented
 
     def __mul__(self, other):
-        if isinstance(other, numbers.Integral) or\
-           (hasattr(other, 'dtype') and issubclass(other.dtype.type, numbers.Integral)):
+        if isinstance(other, numbers.Integral) or (
+            hasattr(other, "dtype") and issubclass(other.dtype.type, numbers.Integral)
+        ):
             return SpelledIntervalClassArray(self.fifths() * other)
         return NotImplemented
-    
+
     def __neg__(self):
         return SpelledIntervalClassArray(-self.fifths())
 
@@ -826,7 +846,7 @@ class SpelledIntervalClassArray(SpelledArray, AbstractSpelledArrayInterval, Inte
         The direction of each interval is determined by its shortest realization:
         ``m2``/``-M7`` is upward (1) while ``M7``/``-m2`` is downward (-1).
         Perfect unisons (``P1``) are neutral (0).
-        
+
         :return: an array of ``-1`` / ``0`` / ``1`` (integer)
         """
         ds = self.diatonic_steps()
@@ -843,13 +863,14 @@ class SpelledIntervalClassArray(SpelledArray, AbstractSpelledArrayInterval, Inte
         return SpelledIntervalArray.from_independent(self.fifths(), np.zeros_like(self.fifths()))
 
     def is_step(self):
-        return np.isin(self.degree(), [0,1,6])
+        return np.isin(self.degree(), [0, 1, 6])
 
     # spelled interface
 
     def name(self):
         def intervalclass_name(fifths):
             return Spelled.interval_class_from_fifths(fifths)
+
         return np.vectorize(intervalclass_name, otypes=[np.str_])(self.fifths())
 
     def compare(self, other):
@@ -920,10 +941,11 @@ class SpelledIntervalClassArray(SpelledArray, AbstractSpelledArrayInterval, Inte
         indices = tuple(np.indices(inner_shape)) + (f,)
 
         # initialize one-hot tensor with 0s
-        out = np.zeros(inner_shape + (fhigh-flow+1,), dtype=dtype)
+        out = np.zeros(inner_shape + (fhigh - flow + 1,), dtype=dtype)
         # set all elements picked by the indices to 1
         out[indices] = 1
         return out
+
 
 class SpelledPitchArray(SpelledArray, AbstractSpelledArrayPitch, Pitch):
     """
@@ -933,7 +955,7 @@ class SpelledPitchArray(SpelledArray, AbstractSpelledArrayPitch, Pitch):
     _print_name = "asp"
 
     # constructors
-    
+
     def __init__(self, fifths, octaves):
         """
         Takes two numpy arrays,
@@ -946,7 +968,9 @@ class SpelledPitchArray(SpelledArray, AbstractSpelledArrayPitch, Pitch):
         # assert fifths.dtype == np.int_
         # assert octaves.dtype == np.int_
         if fifths.shape != octaves.shape:
-            raise ValueError(f"Cannot create SpelledPitchArray from arrays of different sizes ({fifths.shape} and {octaves.shape}).")
+            raise ValueError(
+                f"Cannot create SpelledPitchArray from arrays of different sizes ({fifths.shape} and {octaves.shape})."
+            )
         self._fifths = fifths
         self._octaves = octaves
 
@@ -971,12 +995,14 @@ class SpelledPitchArray(SpelledArray, AbstractSpelledArrayPitch, Pitch):
         :param strings: an array-like of pitch notation strings
         :return: the corresponding pitch array
         """
+
         # assert isinstance(strings.dtype, np.str_)
         def parse_pitch(string):
             octave, fifth = Spelled.parse_pitch(string)
             if octave is None:
                 raise ValueError(f"Missing octave specifier in pitch '{string}'.")
             return octave, fifth
+
         octaves, fifths = np.vectorize(parse_pitch, otypes=[np.int_, np.int_])(strings)
         return SpelledPitchArray.from_independent(fifths, octaves)
 
@@ -988,8 +1014,10 @@ class SpelledPitchArray(SpelledArray, AbstractSpelledArrayPitch, Pitch):
         :param intervals: an array-like of ``SpelledPitch``
         :return: the corresponding pitch array
         """
+
         def from_pitch(pitch):
             return pitch.fifths(), pitch.internal_octaves()
+
         fifths, octaves = np.vectorize(from_pitch, otypes=[np.int_, np.int_])(pitches)
         return SpelledPitchArray(fifths, octaves)
 
@@ -1006,11 +1034,11 @@ class SpelledPitchArray(SpelledArray, AbstractSpelledArrayPitch, Pitch):
         :param octave_low: the lowest octave expressible in the one-hot tensor (integer)
         :return: the corresponding pitch array
         """
-        if (onehot.sum((-2,-1)) != 1).any():
+        if (onehot.sum((-2, -1)) != 1).any():
             raise ValueError(f"{onehot} is not a one-hot tensor.")
-        
-        ones = np.where(onehot==1)
-        indices = ones[:-2] # first n-2 dimensions are indices
+
+        ones = np.where(onehot == 1)
+        indices = ones[:-2]  # first n-2 dimensions are indices
         fifths_values = ones[-2] + fifth_low
         octs_values = ones[-1] + octave_low
 
@@ -1028,7 +1056,7 @@ class SpelledPitchArray(SpelledArray, AbstractSpelledArrayPitch, Pitch):
 
     def __deepcopy__(self, memo):
         return SpelledPitchArray(copy.deepcopy(self.fifths(), memo), copy.deepcopy(self.internal_octaves(), memo))
-    
+
     def __getitem__(self, index):
         f = self._fifths[index]
         o = self._octaves[index]
@@ -1046,14 +1074,13 @@ class SpelledPitchArray(SpelledArray, AbstractSpelledArrayPitch, Pitch):
 
     def __contains__(self, item):
         if isinstance(item, SpelledPitch):
-            return ((self.fifths() == item.fifths()) & \
-                    (self.internal_octaves() == item.internal_octaves())).any()
+            return ((self.fifths() == item.fifths()) & (self.internal_octaves() == item.internal_octaves())).any()
         else:
             return False
 
     def __len__(self):
         return len(self.fifths())
-    
+
     class SpelledPitchArrayIter:
         def __init__(self, array):
             self._fifths_iter = array.fifths().__iter__()
@@ -1066,22 +1093,22 @@ class SpelledPitchArray(SpelledArray, AbstractSpelledArrayPitch, Pitch):
                 return SpelledPitch.from_fifths_and_octaves(f, o)
             else:
                 return SpelledPitchArray(f, o)
-        
+
     def __iter__(self):
         return self.SpelledPitchArrayIter(self)
-        
+
     # Pitch interface
 
     def __add__(self, other):
-        if type(other) == SpelledInterval or type(other) == SpelledIntervalArray:
-            return SpelledPitchArray(self.fifths() + other.fifths(),
-                                     self.internal_octaves() + other.internal_octaves())
+        if type(other) is SpelledInterval or type(other) is SpelledIntervalArray:
+            return SpelledPitchArray(self.fifths() + other.fifths(), self.internal_octaves() + other.internal_octaves())
         return NotImplemented
 
     def interval_from(self, other):
-        if type(other) == SpelledPitch or type(other) == SpelledPitchArray:
-            return SpelledIntervalArray(self.fifths() - other.fifths(),
-                                     self.internal_octaves() - other.internal_octaves())
+        if type(other) is SpelledPitch or type(other) is SpelledPitchArray:
+            return SpelledIntervalArray(
+                self.fifths() - other.fifths(), self.internal_octaves() - other.internal_octaves()
+            )
         else:
             raise TypeError(f"Cannot take interval between SpelledPitchArray and {type(other)}.")
 
@@ -1120,6 +1147,7 @@ class SpelledPitchArray(SpelledArray, AbstractSpelledArrayPitch, Pitch):
     def name(self):
         def pitch_name(fifths, octave):
             return f"{Spelled.pitch_class_from_fifths(fifths)}{octave}"
+
         return np.vectorize(pitch_name, otypes=[np.str_])(self.fifths(), self.octaves())
 
     def fifths(self):
@@ -1135,7 +1163,7 @@ class SpelledPitchArray(SpelledArray, AbstractSpelledArrayPitch, Pitch):
         return (self.fifths() + 1) // 7
 
     def letter(self):
-        return ((self.degree() + 2) % 7 + ord('A')).astype(np.uint8).view('c').astype(np.str_)
+        return ((self.degree() + 2) % 7 + ord("A")).astype(np.uint8).view("c").astype(np.str_)
 
     def onehot(self, fifth_range, octave_range, dtype=int):
         """
@@ -1170,10 +1198,11 @@ class SpelledPitchArray(SpelledArray, AbstractSpelledArrayPitch, Pitch):
         indices = tuple(np.indices(inner_shape)) + (f, o)
 
         # initialize one-hot tensor with 0s
-        out = np.zeros(inner_shape + (fhigh-flow+1, ohigh-olow+1), dtype=dtype)
+        out = np.zeros(inner_shape + (fhigh - flow + 1, ohigh - olow + 1), dtype=dtype)
         # set all elements picked by the indices to 1
         out[indices] = 1
         return out
+
 
 class SpelledPitchClassArray(SpelledArray, AbstractSpelledArrayPitch, Pitch):
     """
@@ -1198,18 +1227,20 @@ class SpelledPitchClassArray(SpelledArray, AbstractSpelledArrayPitch, Pitch):
         :param strings: an array-like of pitch-class notation strings
         :return: the corresponding pitch-class array
         """
+
         def parse_pc(string):
             octave, fifth = Spelled.parse_pitch(string)
             if octave is not None:
                 raise ValueError(f"Pitch classes cannot have octave specifiers ({string}).")
             return fifth
+
         fifths = np.vectorize(parse_pc, otypes=[np.int_])(strings)
         return SpelledPitchClassArray(fifths)
 
     @staticmethod
     def from_array(pitches):
         """
-        Create an pitch class array from an array of pitch classes.
+        Create a pitch class array from an array of pitch classes.
 
         :param intervals: an array-like of ``SpelledPitchClass``
         :return: the corresponding pitch-class array
@@ -1230,9 +1261,9 @@ class SpelledPitchClassArray(SpelledArray, AbstractSpelledArrayPitch, Pitch):
         """
         if (onehot.sum(-1) != 1).any():
             raise ValueError(f"{onehot} is not a one-hot tensor.")
-        
-        ones = np.where(onehot==1)
-        indices = ones[:-1] # first n-1 dimensions are indices
+
+        ones = np.where(onehot == 1)
+        indices = ones[:-1]  # first n-1 dimensions are indices
         fifths_values = ones[-1] + fifth_low
 
         new_shape = onehot.shape[:-1]
@@ -1269,31 +1300,31 @@ class SpelledPitchClassArray(SpelledArray, AbstractSpelledArrayPitch, Pitch):
 
     def __len__(self):
         return len(self.fifths())
-    
+
     class SpelledPitchClassArrayIter:
         def __init__(self, array):
             self._fifths_iter = array.fifths().__iter__()
-            
+
         def __next__(self):
             f = self._fifths_iter.__next__()
             if isinstance(f, numbers.Integral):
                 return SpelledPitchClass.from_fifths(f)
             else:
                 return SpelledPitchClassArray(f)
-        
+
     def __iter__(self):
         return self.SpelledPitchClassArrayIter(self)
-        
+
     # pitch interface
 
     def __add__(self, other):
-        if type(other) == SpelledIntervalClass or type(other) == SpelledIntervalClassArray:
+        if type(other) is SpelledIntervalClass or type(other) is SpelledIntervalClassArray:
             return SpelledPitchClassArray(self.fifths() + other.fifths())
         else:
             return NotImplemented
 
     def interval_from(self, other):
-        if type(other) == SpelledPitchClass or type(other) == SpelledPitchClassArray:
+        if type(other) is SpelledPitchClass or type(other) is SpelledPitchClassArray:
             return SpelledIntervalClassArray(self.fifths() - other.fifths())
         else:
             raise TypeError(f"Cannot take interval between SpelledPitchClassArray and {type(other)}.")
@@ -1309,6 +1340,7 @@ class SpelledPitchClassArray(SpelledArray, AbstractSpelledArrayPitch, Pitch):
     def name(self):
         def pitchclass_name(fifths):
             return Spelled.pitch_class_from_fifths(fifths)
+
         return np.vectorize(pitchclass_name, otypes=[np.str_])(self.fifths())
 
     def compare(self, other):
@@ -1348,7 +1380,7 @@ class SpelledPitchClassArray(SpelledArray, AbstractSpelledArrayPitch, Pitch):
         return (self.fifths() + 1) // 7
 
     def letter(self):
-        return ((self.degree() + 2) % 7 + ord('A')).astype(np.uint8).view('c').astype(np.str_)
+        return ((self.degree() + 2) % 7 + ord("A")).astype(np.uint8).view("c").astype(np.str_)
 
     def onehot(self, fifth_range, dtype=int):
         """
@@ -1376,12 +1408,14 @@ class SpelledPitchClassArray(SpelledArray, AbstractSpelledArrayPitch, Pitch):
         indices = tuple(np.indices(inner_shape)) + (f,)
 
         # initialize one-hot tensor with 0s
-        out = np.zeros(inner_shape + (fhigh-flow+1,), dtype=dtype)
+        out = np.zeros(inner_shape + (fhigh - flow + 1,), dtype=dtype)
         # set all elements picked by the indices to 1
         out[indices] = 1
         return out
 
+
 # shorthand constructors
+
 
 def asi(things, things2=None):
     """
@@ -1393,13 +1427,14 @@ def asi(things, things2=None):
     :param things2: an array-like of dependent octaves (integers), when providing fifths in the first parameter
     :return: a spelled-interval array of the same shape as the input
     """
-    input = np.array(things)
-    if input.dtype.type is np.str_ or input.dtype.type is np.string_:
-        return SpelledIntervalArray.from_strings(input)
-    if isinstance(input.flat[0], SpelledInterval):
-        return SpelledIntervalArray.from_array(input)
+    input_array = np.array(things)
+    if input_array.dtype.type is np.str_ or input_array.dtype.type is np.bytes_:
+        return SpelledIntervalArray.from_strings(input_array)
+    if isinstance(input_array.flat[0], SpelledInterval):
+        return SpelledIntervalArray.from_array(input_array)
     else:
-        return SpelledIntervalArray(input, np.array(things2))
+        return SpelledIntervalArray(input_array, np.array(things2))
+
 
 def asic(things):
     """
@@ -1410,13 +1445,14 @@ def asic(things):
     :param things: an array-like of strings / fifths (integers) / ``SpelledIntervalClass``
     :return: a spelled-interval-class array of the same shape as the input
     """
-    input = np.array(things)
-    if input.dtype.type is np.str_ or input.dtype.type is np.string_:
-        return SpelledIntervalClassArray.from_strings(input)
-    if isinstance(input.flat[0], SpelledIntervalClass):
-        return SpelledIntervalClassArray.from_array(input)
+    input_array = np.array(things)
+    if input_array.dtype.type is np.str_ or input_array.dtype.type is np.bytes_:
+        return SpelledIntervalClassArray.from_strings(input_array)
+    if isinstance(input_array.flat[0], SpelledIntervalClass):
+        return SpelledIntervalClassArray.from_array(input_array)
     else:
-        return SpelledIntervalClassArray(input)
+        return SpelledIntervalClassArray(input_array)
+
 
 def asp(things, things2=None):
     """
@@ -1428,13 +1464,14 @@ def asp(things, things2=None):
     :param things2: an array-like of dependent octaves (integers), when providing fifths in the first parameter
     :return: a spelled-pitch array of the same shape as the input
     """
-    input = np.array(things)
-    if input.dtype.type is np.str_ or input.dtype.type is np.string_:
-        return SpelledPitchArray.from_strings(input)
-    if isinstance(input.flat[0], SpelledPitch):
-        return SpelledPitchArray.from_array(input)
+    input_array = np.array(things)
+    if input_array.dtype.type is np.str_ or input_array.dtype.type is np.bytes_:
+        return SpelledPitchArray.from_strings(input_array)
+    if isinstance(input_array.flat[0], SpelledPitch):
+        return SpelledPitchArray.from_array(input_array)
     else:
-        return SpelledPitchArray(input, np.array(things2))
+        return SpelledPitchArray(input_array, np.array(things2))
+
 
 def aspc(things):
     """
@@ -1445,10 +1482,10 @@ def aspc(things):
     :param things: an array-like of strings / fifths (integers) / ``SpelledPitchClass``
     :return: a spelled-pitch-class array of the same shape as the input
     """
-    input = np.array(things)
-    if input.dtype.type is np.str_ or input.dtype.type is np.string_:
-        return SpelledPitchClassArray.from_strings(input)
-    if isinstance(input.flat[0], SpelledPitchClass):
-        return SpelledPitchClassArray.from_array(input)
+    input_array = np.array(things)
+    if input_array.dtype.type is np.str_ or input_array.dtype.type is np.bytes_:
+        return SpelledPitchClassArray.from_strings(input_array)
+    if isinstance(input_array.flat[0], SpelledPitchClass):
+        return SpelledPitchClassArray.from_array(input_array)
     else:
-        return SpelledPitchClassArray(input)
+        return SpelledPitchClassArray(input_array)

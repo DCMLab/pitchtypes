@@ -2,7 +2,8 @@ import io
 import sys
 from unittest import TestCase
 
-from pitchtypes import Enharmonic, EnharmonicPitch, EnharmonicInterval, EnharmonicPitchClass, EnharmonicIntervalClass
+from pitchtypes import Enharmonic, EnharmonicPitch, EnharmonicInterval, \
+    EnharmonicPitchClass, EnharmonicIntervalClass
 
 
 class TestEnharmonic(TestCase):
@@ -57,15 +58,15 @@ class TestEnharmonic(TestCase):
                     if p.is_class:
                         self.assertEqual(str(p), "C#")
                         self.assertEqual(p.name(), "C#")
-                        self.assertEqual(p.name(flat_sharp='sharp'), "C#")
-                        self.assertEqual(p.name(flat_sharp='flat'), "Db")
-                        self.assertRaises(ValueError, lambda: p.name(flat_sharp='invalid'))
+                        self.assertEqual(p.name(flat_sharp="sharp"), "C#")
+                        self.assertEqual(p.name(flat_sharp="flat"), "Db")
+                        self.assertRaises(ValueError, lambda: p.name(flat_sharp="invalid"))
                     else:
                         self.assertEqual(str(p), "C#4")
                         self.assertEqual(p.name(), "C#4")
-                        self.assertEqual(p.name(flat_sharp='sharp'), "C#4")
-                        self.assertEqual(p.name(flat_sharp='flat'), "Db4")
-                        self.assertRaises(ValueError, lambda: p.name(flat_sharp='invalid'))
+                        self.assertEqual(p.name(flat_sharp="sharp"), "C#4")
+                        self.assertEqual(p.name(flat_sharp="flat"), "Db4")
+                        self.assertRaises(ValueError, lambda: p.name(flat_sharp="invalid"))
                 else:
                     if p.is_class:
                         self.assertEqual(str(p), "1")
@@ -87,13 +88,14 @@ class TestEnharmonic(TestCase):
             interval = pitch - EnharmonicPitch("C4")
             self.assertEqual(interval.octaves(), i - 4)
 
-    def test_convert_to_logfreq(self):
-        self.assertRaises(NotImplementedError, lambda: Enharmonic("C", True, True).convert_to_logfreq())
+    def test_convert_to_log_freq(self):
+        self.assertRaises(NotImplementedError, lambda: Enharmonic("C", True, True).convert_to_log_freq())
         for x in [EnharmonicPitch("C4"), EnharmonicPitchClass("C"), EnharmonicInterval(1), EnharmonicIntervalClass(1)]:
-            x.convert_to_logfreq()
+            x.convert_to_log_freq()
             if not x.is_class:
-                self.assertAlmostEqual(float(x.to_class().convert_to_logfreq()),
-                                       float(x.convert_to_logfreq().to_class()))
+                self.assertAlmostEqual(
+                    float(x.to_class().convert_to_log_freq()), float(x.convert_to_log_freq().to_class())
+                )
 
     def test_print_options(self):
         # bad input raises
@@ -112,33 +114,33 @@ class TestEnharmonic(TestCase):
         pc = EnharmonicPitchClass("C#")
         # check default values
         self.assertEqual(EnharmonicPitch._print_as_int, False)
-        self.assertEqual(EnharmonicPitch._print_flat_sharp, 'sharp')
+        self.assertEqual(EnharmonicPitch._print_flat_sharp, "sharp")
         self.assertEqual(EnharmonicPitchClass._print_as_int, False)
-        self.assertEqual(EnharmonicPitchClass._print_flat_sharp, 'sharp')
+        self.assertEqual(EnharmonicPitchClass._print_flat_sharp, "sharp")
         self.assertEqual(p.name(), "C#4")
         self.assertEqual(pc.name(), "C#")
         # change for both
-        Enharmonic.print_options(as_int=True, flat_sharp='flat')
+        Enharmonic.print_options(as_int=True, flat_sharp="flat")
         self.assertEqual(EnharmonicPitch._print_as_int, True)
-        self.assertEqual(EnharmonicPitch._print_flat_sharp, 'flat')
+        self.assertEqual(EnharmonicPitch._print_flat_sharp, "flat")
         self.assertEqual(EnharmonicPitchClass._print_as_int, True)
-        self.assertEqual(EnharmonicPitchClass._print_flat_sharp, 'flat')
+        self.assertEqual(EnharmonicPitchClass._print_flat_sharp, "flat")
         self.assertEqual(p.name(), "61")
         self.assertEqual(pc.name(), "1")
         # change for Pitch
         EnharmonicPitch.print_options(as_int=False)
         self.assertEqual(EnharmonicPitch._print_as_int, False)
-        self.assertEqual(EnharmonicPitch._print_flat_sharp, 'flat')
+        self.assertEqual(EnharmonicPitch._print_flat_sharp, "flat")
         self.assertEqual(EnharmonicPitchClass._print_as_int, True)
-        self.assertEqual(EnharmonicPitchClass._print_flat_sharp, 'flat')
+        self.assertEqual(EnharmonicPitchClass._print_flat_sharp, "flat")
         self.assertEqual(p.name(), "Db4")
         self.assertEqual(pc.name(), "1")
         # change for PitchClass
         EnharmonicPitchClass.print_options(as_int=False)
         self.assertEqual(EnharmonicPitch._print_as_int, False)
-        self.assertEqual(EnharmonicPitch._print_flat_sharp, 'flat')
+        self.assertEqual(EnharmonicPitch._print_flat_sharp, "flat")
         self.assertEqual(EnharmonicPitchClass._print_as_int, False)
-        self.assertEqual(EnharmonicPitchClass._print_flat_sharp, 'flat')
+        self.assertEqual(EnharmonicPitchClass._print_flat_sharp, "flat")
         self.assertEqual(p.name(), "Db4")
         self.assertEqual(pc.name(), "Db")
 
@@ -151,6 +153,7 @@ class TestEnharmonic(TestCase):
             self.assertEqual(EnharmonicPitch(p), EnharmonicPitch(72))
         for p in ["C5-", "B#b", "c5"]:
             self.assertRaises(ValueError, lambda: EnharmonicPitch(p))
+        # fmt: off
         for midi_name_sharp, midi_name_flat, midi_number in zip(
                 ["C4", "C#4", "D4", "D#4", "E4", "F4", "F#4", "G4", "G#4", "A4", "A#4", "B4",
                  "C5", "C#5", "D5", "D#5", "E5", "F5", "F#5", "G5", "G#5", "A5", "A#5", "B5", ],
@@ -158,6 +161,7 @@ class TestEnharmonic(TestCase):
                  "C5", "Db5", "D5", "Eb5", "E5", "F5", "Gb5", "G5", "Ab5", "A5", "Bb5", "B5", ],
                 range(60, 85)
         ):
+            # fmt: on
             from_flat = EnharmonicPitch(midi_name_flat)
             from_sharp = EnharmonicPitch(midi_name_sharp)
             from_number = EnharmonicPitch(midi_number)

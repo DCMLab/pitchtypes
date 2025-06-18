@@ -5,6 +5,7 @@ from unittest.mock import patch
 
 from pitchtypes import Interval, Chromatic, Diatonic, Pitch
 
+
 class TestGeneralInterface(TestCase):
 
     @patch.multiple(Interval, __abstractmethods__=set())
