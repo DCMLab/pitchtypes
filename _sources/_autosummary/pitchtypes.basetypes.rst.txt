@@ -20,11 +20,11 @@ pitchtypes.basetypes
       :template: custom-class-template.rst
    
       AbstractBase
+      AbstractInterval
+      AbstractPitch
       Chromatic
       Converters
       Diatonic
-      Interval
-      Pitch
    
    
 

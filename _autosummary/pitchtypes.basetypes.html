@@ -54,11 +54,11 @@
 <li class="toctree-l2 current"><a class="reference internal" href="pitchtypes.html">pitchtypes</a><ul class="current">
 <li class="toctree-l3 current"><a class="current reference internal" href="#">pitchtypes.basetypes</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="pitchtypes.basetypes.AbstractBase.html">pitchtypes.basetypes.AbstractBase</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pitchtypes.basetypes.AbstractInterval.html">pitchtypes.basetypes.AbstractInterval</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pitchtypes.basetypes.AbstractPitch.html">pitchtypes.basetypes.AbstractPitch</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pitchtypes.basetypes.Chromatic.html">pitchtypes.basetypes.Chromatic</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pitchtypes.basetypes.Converters.html">pitchtypes.basetypes.Converters</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pitchtypes.basetypes.Diatonic.html">pitchtypes.basetypes.Diatonic</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pitchtypes.basetypes.Interval.html">pitchtypes.basetypes.Interval</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pitchtypes.basetypes.Pitch.html">pitchtypes.basetypes.Pitch</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="pitchtypes.converters.html">pitchtypes.converters</a></li>
@@ -107,6 +107,12 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="pitchtypes.basetypes.AbstractBase.html#pitchtypes.basetypes.AbstractBase" title="pitchtypes.basetypes.AbstractBase"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AbstractBase</span></code></a>(value, is_pitch, is_class, **kwargs)</p></td>
 <td><p>This is the abstract base class for all pitch and interval types of the library.</p></td>
 </tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pitchtypes.basetypes.AbstractInterval.html#pitchtypes.basetypes.AbstractInterval" title="pitchtypes.basetypes.AbstractInterval"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AbstractInterval</span></code></a>()</p></td>
+<td><p>The basic interface implemented by every interval (and interval class) type.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pitchtypes.basetypes.AbstractPitch.html#pitchtypes.basetypes.AbstractPitch" title="pitchtypes.basetypes.AbstractPitch"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AbstractPitch</span></code></a>()</p></td>
+<td><p>The basic interface that is implemented by every pitch (and pitch class) type.</p></td>
+</tr>
 <tr class="row-even"><td><p><a class="reference internal" href="pitchtypes.basetypes.Chromatic.html#pitchtypes.basetypes.Chromatic" title="pitchtypes.basetypes.Chromatic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Chromatic</span></code></a>()</p></td>
 <td><p>Some intervals have the notion of a chromatic semitone and implement this interface.</p></td>
 </tr>
@@ -115,12 +121,6 @@
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="pitchtypes.basetypes.Diatonic.html#pitchtypes.basetypes.Diatonic" title="pitchtypes.basetypes.Diatonic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Diatonic</span></code></a>()</p></td>
 <td><p>Some intervals have a notion of a diatonic step and implement this interface.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="pitchtypes.basetypes.Interval.html#pitchtypes.basetypes.Interval" title="pitchtypes.basetypes.Interval"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Interval</span></code></a>()</p></td>
-<td><p>The basic interface implemented by every interval (and interval class) type.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="pitchtypes.basetypes.Pitch.html#pitchtypes.basetypes.Pitch" title="pitchtypes.basetypes.Pitch"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Pitch</span></code></a>()</p></td>
-<td><p>The basic interface that is implemented by every pitch (and pitch class) type.</p></td>
 </tr>
 </tbody>
 </table>
