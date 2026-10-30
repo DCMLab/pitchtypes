@@ -1,2 +1,36 @@
+[project]
+name = "pitchtypes"
+version = "0.4.0"
+license = "GPL-3.0-or-later"
+authors = [
+  { name="Robert Lieck", email="robert.lieck@durham.ac.uk" },
+  { name="Christoph Finkensiep", email="c.finkensiep@uva.nl" },
+  { name="Joris Monnet", email="joris.monnet@epfl.ch" },
+]
+description = "Musically meaningful pitch and interval types."
+url = "https://github.com/DCMLab/pitchtypes"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "numpy>=2",
+]
+
+[build-system]
+requires = ["uv_build>=0.12.10,<0.13.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "black",
+    "ipython",
+    "jupyter",
+    "jupyterlab-code-formatter",
+    "mypy",
+    "pandas-stubs",
+    "pylsp-mypy",
+    "pytest>=8.4.2",
+    "python-lsp-server[all]",
+]
+
 [tool.black]
 line-length = 120
