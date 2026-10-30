@@ -1,0 +1,6 @@
+pitchtypes.converters.convert\_spelled\_to\_enharmonic
+======================================================
+
+.. currentmodule:: pitchtypes.converters
+
+.. autofunction:: convert_spelled_to_enharmonic

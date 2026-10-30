@@ -1,0 +1,47 @@
+pitchtypes.enharmonic.EnharmonicPitch
+=====================================
+
+.. currentmodule:: pitchtypes.enharmonic
+
+.. autoclass:: EnharmonicPitch
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members:
+   :exclude-members: __init__
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~EnharmonicPitch.__init__
+      ~EnharmonicPitch.convert_to
+      ~EnharmonicPitch.convert_to_log_freq
+      ~EnharmonicPitch.create_subtypes
+      ~EnharmonicPitch.freq
+      ~EnharmonicPitch.link_interval_class_type
+      ~EnharmonicPitch.link_interval_type
+      ~EnharmonicPitch.link_pitch_class_type
+      ~EnharmonicPitch.link_pitch_type
+      ~EnharmonicPitch.name
+      ~EnharmonicPitch.octaves
+      ~EnharmonicPitch.pc
+      ~EnharmonicPitch.pitch_class_name_from_midi
+      ~EnharmonicPitch.print_options
+      ~EnharmonicPitch.to_class
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~EnharmonicPitch.midi
+   
+   

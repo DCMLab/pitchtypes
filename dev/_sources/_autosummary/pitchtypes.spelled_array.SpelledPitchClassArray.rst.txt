@@ -1,0 +1,47 @@
+pitchtypes.spelled\_array.SpelledPitchClassArray
+================================================
+
+.. currentmodule:: pitchtypes.spelled_array
+
+.. autoclass:: SpelledPitchClassArray
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members:
+   :exclude-members: __init__
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~SpelledPitchClassArray.__init__
+      ~SpelledPitchClassArray.alteration
+      ~SpelledPitchClassArray.array_equal
+      ~SpelledPitchClassArray.compare
+      ~SpelledPitchClassArray.copy
+      ~SpelledPitchClassArray.deepcopy
+      ~SpelledPitchClassArray.degree
+      ~SpelledPitchClassArray.embed
+      ~SpelledPitchClassArray.fifths
+      ~SpelledPitchClassArray.from_array
+      ~SpelledPitchClassArray.from_onehot
+      ~SpelledPitchClassArray.from_strings
+      ~SpelledPitchClassArray.internal_octaves
+      ~SpelledPitchClassArray.interval_from
+      ~SpelledPitchClassArray.interval_to
+      ~SpelledPitchClassArray.letter
+      ~SpelledPitchClassArray.name
+      ~SpelledPitchClassArray.octaves
+      ~SpelledPitchClassArray.onehot
+      ~SpelledPitchClassArray.pc
+      ~SpelledPitchClassArray.to_class
+   
+   
+
+   
+   
+   

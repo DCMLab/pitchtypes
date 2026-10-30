@@ -1,0 +1,30 @@
+pitchtypes.converters
+=====================
+
+.. automodule:: pitchtypes.converters
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      convert_spelled_to_enharmonic
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

@@ -1,0 +1,37 @@
+pitchtypes.spelled
+==================
+
+.. automodule:: pitchtypes.spelled
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree:
+      :template: custom-class-template.rst
+   
+      AbstractSpelledInterval
+      AbstractSpelledPitch
+      Spelled
+      SpelledInterval
+      SpelledIntervalClass
+      SpelledPitch
+      SpelledPitchClass
+   
+   
+
+   
+   
+   
+
+
+

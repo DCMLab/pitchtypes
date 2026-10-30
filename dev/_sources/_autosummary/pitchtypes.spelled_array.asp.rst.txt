@@ -1,0 +1,6 @@
+pitchtypes.spelled\_array.asp
+=============================
+
+.. currentmodule:: pitchtypes.spelled_array
+
+.. autofunction:: asp

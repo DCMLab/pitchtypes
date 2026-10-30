@@ -1,0 +1,30 @@
+pitchtypes.basetypes.Converters
+===============================
+
+.. currentmodule:: pitchtypes.basetypes
+
+.. autoclass:: Converters
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members:
+   :exclude-members: __init__
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~Converters.__init__
+      ~Converters.convert
+      ~Converters.get_converter
+      ~Converters.register_converter
+   
+   
+
+   
+   
+   

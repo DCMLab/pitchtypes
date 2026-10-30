@@ -1,0 +1,35 @@
+pitchtypes.harmonic.HarmonicInterval
+====================================
+
+.. currentmodule:: pitchtypes.harmonic
+
+.. autoclass:: HarmonicInterval
+   :members:
+   :show-inheritance:
+   :inherited-members:
+   :special-members:
+   :exclude-members: __init__
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~HarmonicInterval.__init__
+      ~HarmonicInterval.convert_to
+      ~HarmonicInterval.create_subtypes
+      ~HarmonicInterval.link_interval_class_type
+      ~HarmonicInterval.link_interval_type
+      ~HarmonicInterval.link_pitch_class_type
+      ~HarmonicInterval.link_pitch_type
+      ~HarmonicInterval.parse_exponents
+      ~HarmonicInterval.to_class
+   
+   
+
+   
+   
+   
