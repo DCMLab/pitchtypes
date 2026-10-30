@@ -44,7 +44,7 @@ jobs:
 
       - name: Format code with ruff format
         run: |
-          uv run ruff format --check .
+          uv run black --check .
 
       - name: Test with pytest
         run: |
