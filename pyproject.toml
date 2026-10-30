@@ -22,15 +22,21 @@ build-backend = "uv_build"
 [dependency-groups]
 dev = [
     "black",
+    "ruff",
     "ipython",
     "jupyter",
-    "jupyterlab-code-formatter",
+    # "jupyterlab-code-formatter",
     "mypy",
     "pandas-stubs",
     "pylsp-mypy",
-    "pytest>=8.4.2",
+    "pytest",
+    "pytest-cov",
+    "coverage",
     "python-lsp-server[all]",
 ]
 
 [tool.black]
+line-length = 120
+
+[tool.ruff]
 line-length = 120
